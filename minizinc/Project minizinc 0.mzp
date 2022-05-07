@@ -6,6 +6,7 @@
     "projectFiles": [
         "Data 3.dzn",
         "Data 8.dzn",
+        "Data Unsat.dzn",
         "model_0.mzn",
         "solver_0.mpc"
     ],
