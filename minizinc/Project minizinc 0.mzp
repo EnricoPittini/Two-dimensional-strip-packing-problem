@@ -1,0 +1,14 @@
+{
+    "openFiles": [
+        "model_0.mzn",
+        "Data 1.dzn"
+    ],
+    "openTab": 0,
+    "projectFiles": [
+        "Data 1.dzn",
+        "Solver 0.mpc",
+        "model_0.mzn"
+    ],
+    "selectedSolverConfigFile": "Solver 0.mpc",
+    "version": 106
+}
