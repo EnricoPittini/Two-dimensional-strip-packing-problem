@@ -2,3 +2,4 @@
 - Static types refactoring
 - Try-except handling
 - Already existing output file handling
+- Refactor private functions
