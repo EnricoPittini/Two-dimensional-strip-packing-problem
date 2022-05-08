@@ -48,7 +48,9 @@ def main():
     plt.xticks(range(w+1))
     plt.yticks(range(l+1))
 
-    fig.savefig('figure.png')
+    plt.gca().set_aspect('equal', adjustable='box')
+
+    # fig.savefig('figure.png')
     plt.show()
 
 
