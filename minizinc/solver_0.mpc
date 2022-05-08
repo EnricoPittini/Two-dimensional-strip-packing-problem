@@ -2,5 +2,5 @@
     "intermediate-solutions": false,
     "output-mode": "json",
     "solver": "org.gecode.gecode@6.3.0",
-    "time-limit": 200
+    "time-limit": 300000
 }
