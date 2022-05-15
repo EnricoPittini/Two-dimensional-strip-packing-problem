@@ -4,7 +4,6 @@ import subprocess
 import json
 import sys
 import os
-import re
 
 import utils
 #python scripts\execute_minizinc.py minizinc\model_1.mzn minizinc\instances\ins-13.txt minizinc\solver_0.mpc
@@ -19,7 +18,10 @@ def main():
     parser.add_argument('solver-path', type=str, help='The solver used for optimization.')
 
     parser.add_argument('output-folder-path', type=str, default=os.getcwd(), nargs='?', 
-                        help='The path in which the output file is stored')
+                        help='The path in which the output file is stored.')
+    
+    parser.add_argument('visualize-output', type=bool, default=True, nargs='?', 
+                        help='Whether to visualize or not the output solution.')
 
     arguments = parser.parse_args()
 
@@ -56,8 +58,13 @@ def main():
     try:
         utils.create_output_file(output_file, w, n, dims, l, coordsX, coordsY)
     except FileNotFoundError as e:
-        print(e) 
-        #sys.exit(f'Output path {output_folder_path} does not exist.')
+        #print(e) 
+        sys.exit(f'Output path {output_folder_path} does not exist.')
+    
+    if vars(arguments)['visualize-output']:
+        scripts_folder = os.path.dirname(sys.argv[0])
+        visualize_script_path = os.path.join(scripts_folder,'visualize.py')
+        os.system(f'python {visualize_script_path} {output_file}')
 
 
 def create_cmdline_data(w, n, dims):
