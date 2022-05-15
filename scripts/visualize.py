@@ -9,6 +9,7 @@ from matplotlib.collections import PatchCollection
 
 import random
 
+#python scripts\visualize.py solution-ins-12.txt
 
 def main():
     parser = argparse.ArgumentParser(description='Script for visualizing a VLSI output solution.')
@@ -40,8 +41,8 @@ def main():
         myPatches.append(r)
 
     collection = PatchCollection(myPatches, cmap=mpl.cm.hsv, alpha=0.5, edgecolor='black', linewidth=4)
-    collection.set_array(np.linspace(0, 200, n, dtype=int))
-    print(np.linspace(0, 200, n, dtype=int))
+    collection.set_array(np.linspace(0, 254, n, dtype=int))
+    #print(np.linspace(0, 200, n, dtype=int))
     collection.set_clim([0, 255])
     ax.add_collection(collection)
 

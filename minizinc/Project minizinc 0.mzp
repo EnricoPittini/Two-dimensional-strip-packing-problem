@@ -1,15 +1,21 @@
 {
     "openFiles": [
-        "model_0.mzn"
+        "model_0.mzn",
+        "model_1.mzn",
+        "model_2.mzn"
     ],
-    "openTab": 0,
+    "openTab": 2,
     "projectFiles": [
         "Data 3.dzn",
         "Data 8.dzn",
         "Data Unsat.dzn",
         "model_0.mzn",
-        "solver_0.mpc"
+        "model_1.mzn",
+        "model_2.mzn",
+        "solver_0.mpc",
+        "solver_1.mpc"
     ],
-    "selectedSolverConfigFile": "solver_0.mpc",
+    "selectedBuiltinConfigId": "org.gecode.gecode",
+    "selectedBuiltinConfigVersion": "6.3.0",
     "version": 106
 }

@@ -1,10 +1,13 @@
 import argparse
+from cgi import print_environ_usage
 import subprocess
 import json
 import sys
+import os
+import re
 
 import utils
-
+#python scripts\execute_minizinc.py minizinc\model_1.mzn minizinc\instances\ins-13.txt minizinc\solver_0.mpc
 
 def main():
     parser = argparse.ArgumentParser(description='Script for executing a VLSI MiniZinc model.')
@@ -15,7 +18,7 @@ def main():
 
     parser.add_argument('solver-path', type=str, help='The solver used for optimization.')
 
-    parser.add_argument('output-folder-path', type=str, default='./', nargs='?', 
+    parser.add_argument('output-folder-path', type=str, default=os.getcwd(), nargs='?', 
                         help='The path in which the output file is stored')
 
     arguments = parser.parse_args()
@@ -28,11 +31,16 @@ def main():
     command = f'minizinc {vars(arguments)["model-path"]} {parsed_cmdline_data} --param-file {vars(arguments)["solver-path"]}'
     result = subprocess.run(command, stdout=subprocess.PIPE)
     output = result.stdout.decode('UTF-8').replace('-', '').replace('=', '')
-
+    #print(output)
+    time = output.split('%')[-1]
+    output = output.split('%')[0]
+    print(time)
+    #print(output)
     try:
         json_result = json.loads(output)
         print(json_result)
     except:
+        print('Warning:')
         sys.exit(output)
 
     l = json_result['l']
@@ -40,14 +48,16 @@ def main():
     coordsY = json_result['coordsY']
 
     output_folder_path = vars(arguments)['output-folder-path']
-    if output_folder_path[-1] != '/':
-        output_folder_path += '/'
-    output_file = f'{output_folder_path}solution-{instance_file.name.split("/")[-1]}'
+    #if output_folder_path[-1] != '\\':
+    #   output_folder_path += '\\'
+    instance_file_name = os.path.basename(instance_file.name)
+    output_file = os.path.join(output_folder_path,f'solution-{instance_file_name}')#f'{output_folder_path}\\solution-{instance_file.name.split("/")[-1]}'
 
     try:
         utils.create_output_file(output_file, w, n, dims, l, coordsX, coordsY)
-    except FileNotFoundError: 
-        sys.exit(f'Output path {output_folder_path} does not exist.')
+    except FileNotFoundError as e:
+        print(e) 
+        #sys.exit(f'Output path {output_folder_path} does not exist.')
 
 
 def create_cmdline_data(w, n, dims):
