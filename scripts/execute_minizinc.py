@@ -64,7 +64,8 @@ def main():
     if vars(arguments)['visualize-output']:
         scripts_folder = os.path.dirname(sys.argv[0])
         visualize_script_path = os.path.join(scripts_folder,'visualize.py')
-        os.system(f'python {visualize_script_path} {output_file}')
+        print(output_file)
+        os.system(f'python {visualize_script_path} "{output_file}"')
 
 
 def create_cmdline_data(w, n, dims):
