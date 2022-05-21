@@ -20,7 +20,7 @@ def main():
     parser.add_argument('output-folder-path', type=str, default=os.getcwd(), nargs='?', 
                         help='The path in which the output file is stored.')
     
-    parser.add_argument('visualize-output', type=bool, default=True, nargs='?', 
+    parser.add_argument('--no-visualize-output', action='store_true', 
                         help='Whether to visualize or not the output solution.')
 
     arguments = parser.parse_args()
@@ -61,7 +61,7 @@ def main():
         #print(e) 
         sys.exit(f'Output path {output_folder_path} does not exist.')
     
-    if vars(arguments)['visualize-output']:
+    if not arguments.no_visualize_output:
         scripts_folder = os.path.dirname(sys.argv[0])
         visualize_script_path = os.path.join(scripts_folder,'visualize.py')
         print(output_file)
