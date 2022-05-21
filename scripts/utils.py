@@ -14,7 +14,6 @@ def parse_instance_txt(instance_txt_file: io.TextIOWrapper):
 
     return w, n, dims
 
-
 def create_output_file(output_file, w, n, dims, l, coordsX, coordsY):
     os.makedirs(os.path.dirname(output_file), exist_ok=True)
     with open(output_file, 'w') as f:

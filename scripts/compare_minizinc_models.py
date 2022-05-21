@@ -1,17 +1,16 @@
 import argparse
-import subprocess
 import json
 import os
 import re
+import subprocess
+
 
 MODEL_CHOICES = [f'model_{i}' for i in range(3)] + [f'model_{j}{i}' for i in ['A', 'B', 'C'] for j in [3, 4]] + \
     ['model_5_gecode', 'model_6']
 
 # SOLVER_CHOICES = [f'solver_{i}' for i in range(3)]
-
 #python scripts/compare_minizinc_models.py minizinc minizinc/instances minizinc\solver_1.mpc results/ --models-list model_2 model_3A model_3B model_3C -lb 1 -ub 8
-
-def main():
+def main() -> None:
     parser = argparse.ArgumentParser(description='Script for executing a VLSI MiniZinc model.')
 
     parser.add_argument('models-folder-path', type=str, help='The folder path of the models to compare.')
@@ -25,7 +24,6 @@ def main():
     parser.add_argument('output-folder-path', type=str, default=os.getcwd(), nargs='?', 
                         help='The path in which the output file is stored.')
 
-    # TODO: handle models string structure with a regexp possibly (model_x / model_x.mzn?)
     parser.add_argument('--models-list', '-m',
                         metavar='model',
                         type=str, 
@@ -36,7 +34,6 @@ def main():
                         'Example of usage: --models-list model_0 model_2 model_3',
                         nargs='*')
 
-    # TODO check lower bound is greater or equal to upper bound
     parser.add_argument('--instances-lower-bound', '-lb',
                         metavar='1..40',
                         type=int,
@@ -69,34 +66,34 @@ def main():
 
     models_list = arguments.models_list
     
-    instances_range = range(arguments.instances_lower_bound, arguments.instances_upper_bound + 1) 
+    instances_lower_bound = arguments.instances_lower_bound
+    instances_upper_bound = arguments.instances_upper_bound
+    if instances_lower_bound > instances_upper_bound:
+        parser.error(f'argument --instances-lower-bound/-lb: invalid choice: {instances_lower_bound} ' 
+                     f'(must be lower or equal than --instances-upper-bound/-ub: {instances_upper_bound})')
+    
+    instances_range = range(instances_lower_bound, instances_upper_bound + 1) 
 
     # TODO: handling of error solutions
-    # TODO: check of list parameters
     for instance in instances_range:
         instance_file_path = os.path.join(instances_folder_path, f'ins-{instance}.txt')
         instance_dict = dict()
         for model in models_list:
             model_file_path = os.path.join(models_folder_path, f'{model}.mzn')
-        
-            #if 'gecode' in model.lower():
-            #    solver_file_path = os.path.join(solvers_folder_path, f'solver_0.mpc')
-            #else:
-            #    solver_file_path = os.path.join(solvers_folder_path, f'solver_1.mpc')
             solver_file_path = vars(arguments)['solver-path']
 
-            #output_subfolder_path = os.path.join(output_folder_path, f'ins-{instance}/{model}/')
             print(f'Executing instance {instance} with model {model}...')
-            command = f'python "{execute_minizinc_script_path}" "{model_file_path}" "{instance_file_path}" ' + \
-                        f'"{solver_file_path}" --no-create-output'
-            result = subprocess.run(command, stdout=subprocess.PIPE)
+            command = f'python "{execute_minizinc_script_path}" "{model_file_path}" "{instance_file_path}" ' +\
+                      f'"{solver_file_path}" --no-create-output'
+            result = subprocess.run(command, capture_output=True)
+            
             output = result.stdout.decode('UTF-8')
             time_list = re.findall('\d+\.\d+', output)
             if len(time_list):
                 instance_dict[model] = float(time_list[0])
             else:
-                instance_dict[model] = 'NaN'
-            #f.write(f'instance {instance} {model} {output}')
+                instance_dict[model] =  float('NaN')
+                
         result_list.append({f'ins-{instance}': instance_dict})
 
     output_file = os.path.join(output_folder_path, 'solution.json')
@@ -106,6 +103,5 @@ def main():
     with open(output_file, 'w') as f:
         json.dump(result_list, f, sort_keys=False, indent=4, separators=(',', ': '))
 
-
-if __name__ == "__main__":
+if __name__ == '__main__':
     main()
