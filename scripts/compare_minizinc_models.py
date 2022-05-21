@@ -2,15 +2,10 @@ import argparse
 import subprocess
 import json
 import os
-import sys
 import re
-from tokenize import Number
 
-from numpy import number
-#python scripts/compare_minizinc_models.py minizinc minizinc/instances minizinc output/
 
-# Mega file con per ogni Istanza + [modelli + tempi]
-
+#python scripts/compare_minizinc_models.py minizinc minizinc/instances minizinc output/ --models-list "model_0" "model_1" --instances-list 1 3 5 9
 def main():
     parser = argparse.ArgumentParser(description='Script for executing a VLSI MiniZinc model.')
 
@@ -24,14 +19,23 @@ def main():
                         help='The path in which the output file is stored.')
 
     # TODO: handle models string structure with a regexp possibly (model_x / model_x.mzn?)
-    parser.add_argument('models-list', type=list,
-                        #default=['model_0', 'model_1', 'model_2', 'model_3', 'model_4_geocode'], 
-                        default=['model_0', 'model_1', 'model_2'], 
-                        help='The models to compare.', nargs='*')
+    parser.add_argument('--models-list', 
+                        metavar='model',
+                        type=str, 
+                        choices=[f'model_{i}' for i in range(4)] + ['model_4_gecode'],
+                        default=['model_0', 'model_1', 'model_2', 'model_3'], #'model_4_gecode'
+                        help='List of models to compare (default all models). ' +\
+                        'Example of usage: --models-list model_0 model_2 model_3',
+                        nargs='*')
 
-    parser.add_argument('instances-list', type=list, #default=[*range(10,31)], #default=' '.join([*range(10,31)]), nargs='?', 
+    parser.add_argument('--instances-list', 
+                        metavar='instance',
+                        type=int,
+                        choices=range(1, 41),
                         default=[*range(1, 5)],
-                        help='The instances to solve.', nargs='*')
+                        help='List of instances to solve (default [1, ..., 4]). ' +\
+                        'Example of usage: --instances-list 1 2 15 20', 
+                        nargs='*')
     
 
     arguments = parser.parse_args()
@@ -47,15 +51,15 @@ def main():
     execute_minizinc_script_path = os.path.join(os.path.dirname(__file__), 'execute_minizinc.py')
 
     result_list = []
+
+    models_list = arguments.models_list
     
     # TODO: handling of error solutions
-    # TODO: handling of parameters (instance and parameters list)
-    # TODO: Handle exit codes returned by file system.
-    # TODO: Handle times and output failure if UNSAT or errors.
-    for instance in vars(arguments)['instances-list']:
+    # TODO: check of list parameters
+    for instance in arguments.instances_list:
         instance_file_path = os.path.join(instances_folder_path, f'ins-{instance}.txt')
         instance_dict = dict()
-        for model in vars(arguments)['models-list']:
+        for model in models_list:
             model_file_path = os.path.join(models_folder_path, f'{model}.mzn')
         
             if 'gecode' in model.lower():
