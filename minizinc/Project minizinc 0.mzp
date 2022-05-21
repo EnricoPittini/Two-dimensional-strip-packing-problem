@@ -1,13 +1,12 @@
 {
     "openFiles": [
-        "model_0.mzn",
-        "model_1.mzn",
-        "model_2.mzn",
-        "model_3A.mzn",
         "model_3B.mzn",
-        "model_3C.mzn"
+        "model_3A.mzn",
+        "model_3C.mzn",
+        "model_2.mzn",
+        "model_6.mzn"
     ],
-    "openTab": 5,
+    "openTab": 1,
     "projectFiles": [
         "Data 3.dzn",
         "Data 8.dzn",
@@ -18,6 +17,11 @@
         "model_3A.mzn",
         "model_3B.mzn",
         "model_3C.mzn",
+        "model_4A.mzn",
+        "model_4B.mzn",
+        "model_4C.mzn",
+        "model_5_gecode.mzn",
+        "model_6.mzn",
         "solver_0.mpc",
         "solver_1.mpc"
     ],

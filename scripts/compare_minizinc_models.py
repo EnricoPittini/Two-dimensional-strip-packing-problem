@@ -4,6 +4,8 @@ import json
 import os
 import re
 
+MODEL_CHOICES = [f'model_{i}' for i in range(3)] + [f'model_{j}{i}' for i in ['A', 'B', 'C'] for j in [3, 4]] + \
+    ['model_5_gecode', 'model_6']
 
 #python scripts/compare_minizinc_models.py minizinc minizinc/instances minizinc output/ --models-list "model_0" "model_1" --instances-list 1 3 5 9
 def main():
@@ -22,7 +24,8 @@ def main():
     parser.add_argument('--models-list', 
                         metavar='model',
                         type=str, 
-                        choices=[f'model_{i}' for i in range(4)] + ['model_4_gecode'],
+                        choices=MODEL_CHOICES,
+                        # TODO: add all possible model choices
                         default=['model_0', 'model_1', 'model_2', 'model_3'], #'model_4_gecode'
                         help='List of models to compare (default all models). ' +\
                         'Example of usage: --models-list model_0 model_2 model_3',
@@ -32,8 +35,8 @@ def main():
                         metavar='instance',
                         type=int,
                         choices=range(1, 41),
-                        default=[*range(1, 5)],
-                        help='List of instances to solve (default [1, ..., 4]). ' +\
+                        default=[*range(1, 41)],
+                        help='List of instances to solve (default all instances). ' +\
                         'Example of usage: --instances-list 1 2 15 20', 
                         nargs='*')
     
@@ -68,7 +71,7 @@ def main():
                 solver_file_path = os.path.join(solvers_folder_path, f'solver_1.mpc')
             
             #output_subfolder_path = os.path.join(output_folder_path, f'ins-{instance}/{model}/')
-            
+            print(f'Executing instance {instance} with model {model}...')
             command = f'python "{execute_minizinc_script_path}" "{model_file_path}" "{instance_file_path}" ' + \
                         f'"{solver_file_path}" --no-create-output'
             result = subprocess.run(command, stdout=subprocess.PIPE)

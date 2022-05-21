@@ -8,6 +8,7 @@
 - Handle platform path independency
 - Solver parameters through script
 - Optional auto visualization
+- Automatic instance and model path files retrival
 
 # MiniZinc model TODOs
 - Heuristic
@@ -15,6 +16,7 @@
 - Remove 'dims' and keep only 'dimsX, dimsY'
 - Set refactoring
 - Test the implied constraints (implied-redundant)
+- For the final model try Graph vs Bound consistency
 
 # Generic TODOs
 - Possible solve perfect model
