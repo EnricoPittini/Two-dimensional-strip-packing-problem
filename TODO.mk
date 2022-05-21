@@ -2,12 +2,11 @@
 - Static types refactoring
 - Try-except handling
 - Already existing output file handling
-- Refactor private functions
+- * Refactor private functions
 - Check and clean visualization script
-- Do sys.exit on every case
+- * Do sys.exit on every case
 - Handle platform path independency
 - Solver parameters through script
-- Optional auto visualization
 - Automatic instance and model path files retrival
 
 # MiniZinc model TODOs
