@@ -5,11 +5,16 @@
 - Refactor private functions
 - Check and clean visualization script
 - Do sys.exit on every case
-- **Print time for the solver**
 - Handle platform path independency
 - Solver parameters through script
 - Optional auto visualization
 
-# MiniZinc model 
+# MiniZinc model TODOs
 - Heuristic
 - Change domains
+- Remove 'dims' and keep only 'dimsX, dimsY'
+- Set refactoring
+- Test the implied constraints (implied-redundant)
+
+# Generic TODOs
+- Possible solve perfect model

@@ -2,7 +2,6 @@
 
 include "cumulative.mzn";
 include "diffn.mzn";
-include "gecode.mzn";
 
 
 %%%%%%% PARAMETERS
@@ -52,9 +51,13 @@ constraint l = max(i in 1..n)(coordsY[i]+dimsY[i]);
 
 
 %%%%%%% SOLVING
-ann: search_ann = int_search(coordsY ++ coordsX, dom_w_deg, indomain_random);
 
-solve :: search_ann
-  :: restart_luby(500)
-  :: relax_and_reconstruct(coordsY, 85)
+% Variables selection heuristic: first the coordsX, then the coordsY; the coordsX are sorted by rectangles width, the coordsX are 
+% sorted by rectangles height.
+% Variables order: coordX of the rectangle with max width; coordX of the rectangle with second max width; ... ; coordY of the rectangle
+% with max height; coordY of the rectangle with second max height; ... . 
+ann: search_annY = int_search(reverse(sort_by(coordsY, dimsY)), input_order, indomain_min);
+ann: search_annX = int_search(reverse(sort_by(coordsX, dimsX)), input_order, indomain_min);
+
+solve :: seq_search([search_annY, search_annX]) 
 minimize l;
