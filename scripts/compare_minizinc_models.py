@@ -1,11 +1,12 @@
 import argparse
-from cgi import print_environ_usage
 import subprocess
 import json
-import sys
 import os
-from typing import List
-import utils
+import sys
+import re
+from tokenize import Number
+
+from numpy import number
 #python scripts/compare_minizinc_models.py minizinc minizinc/instances minizinc output/
 
 # Mega file con per ogni Istanza + [modelli + tempi]
@@ -45,33 +46,44 @@ def main():
 
     execute_minizinc_script_path = os.path.join(os.path.dirname(__file__), 'execute_minizinc.py')
 
-    output_file = os.path.join(output_folder_path, 'solution.txt')
-
+    result_list = []
+    
     # TODO: handling of error solutions
     # TODO: handling of parameters (instance and parameters list)
     # TODO: Handle exit codes returned by file system.
     # TODO: Handle times and output failure if UNSAT or errors.
+    for instance in vars(arguments)['instances-list']:
+        instance_file_path = os.path.join(instances_folder_path, f'ins-{instance}.txt')
+        instance_dict = dict()
+        for model in vars(arguments)['models-list']:
+            model_file_path = os.path.join(models_folder_path, f'{model}.mzn')
+        
+            if 'gecode' in model.lower():
+                solver_file_path = os.path.join(solvers_folder_path, f'solver_0.mpc')
+            else:
+                solver_file_path = os.path.join(solvers_folder_path, f'solver_1.mpc')
+            
+            #output_subfolder_path = os.path.join(output_folder_path, f'ins-{instance}/{model}/')
+            
+            command = f'python "{execute_minizinc_script_path}" "{model_file_path}" "{instance_file_path}" ' + \
+                        f'"{solver_file_path}" --no-create-output'
+            result = subprocess.run(command, stdout=subprocess.PIPE)
+            output = result.stdout.decode('UTF-8')
+            time_list = re.findall('\d+\.\d+', output)
+            if len(time_list):
+                instance_dict[model] = float(time_list[0])
+            else:
+                instance_dict[model] = 'NaN'
+            #f.write(f'instance {instance} {model} {output}')
+        result_list.append({f'ins-{instance}': instance_dict})
+
+    output_file = os.path.join(output_folder_path, 'solution.json')
+
+    os.makedirs(os.path.dirname(output_folder_path), exist_ok=True)
 
     with open(output_file, 'w') as f:
-        for instance in vars(arguments)['instances-list']:
-            instance_file_path = os.path.join(instances_folder_path, f'ins-{instance}.txt')
-            for model in vars(arguments)['models-list']:
-                model_file_path = os.path.join(models_folder_path, f'{model}.mzn')
-            
-                if 'gecode' in model.lower():
-                    solver_file_path = os.path.join(solvers_folder_path, f'solver_0.mpc')
-                else:
-                    solver_file_path = os.path.join(solvers_folder_path, f'solver_1.mpc')
-                
-                output_subfolder_path = os.path.join(output_folder_path, f'ins-{instance}/{model}/')
-                os.makedirs(os.path.dirname(output_subfolder_path), exist_ok=True)
-                command = f'python "{execute_minizinc_script_path}" "{model_file_path}" "{instance_file_path}" ' + \
-                          f'"{solver_file_path}" "{output_subfolder_path}" --no-visualize-output'
-                result = subprocess.run(command, stdout=subprocess.PIPE)
-                output = result.stdout.decode('UTF-8')
-                time = output.split('\r')[0].split('time elapsed:')[-1]
-                f.write(f'instance {instance} {model} {time}\n')
-            f.write('\n')
+        json.dump(result_list, f, sort_keys=False, indent=4, separators=(',', ': '))
+
 
 if __name__ == "__main__":
     main()

@@ -19,9 +19,13 @@ def main():
 
     parser.add_argument('output-folder-path', type=str, default=os.getcwd(), nargs='?', 
                         help='The path in which the output file is stored.')
-    
+
+    parser.add_argument('--no-create-output', action='store_true', 
+                        help='Skip the creation of the output solution.')
+
     parser.add_argument('--no-visualize-output', action='store_true', 
-                        help='Whether to visualize or not the output solution.')
+                        help='Skip the visualization of the output solution (defaults as true if `--no-create-output` ' + \
+                        'is passed).')
 
     arguments = parser.parse_args()
 
@@ -37,7 +41,6 @@ def main():
     time = output.split('%')[-1]
     output = output.split('%')[0]
     print(time)
-    #print(output)
     try:
         json_result = json.loads(output)
         print(json_result)
@@ -45,27 +48,27 @@ def main():
         print('Warning:')
         sys.exit(output)
 
-    l = json_result['l']
-    coordsX = json_result['coordsX']
-    coordsY = json_result['coordsY']
+    if not arguments.no_create_output:
+        l = json_result['l']
+        coordsX = json_result['coordsX']
+        coordsY = json_result['coordsY']
 
-    output_folder_path = vars(arguments)['output-folder-path']
-    #if output_folder_path[-1] != '\\':
-    #   output_folder_path += '\\'
-    instance_file_name = os.path.basename(instance_file.name)
-    output_file = os.path.join(output_folder_path,f'solution-{instance_file_name}')#f'{output_folder_path}\\solution-{instance_file.name.split("/")[-1]}'
+        output_folder_path = vars(arguments)['output-folder-path']
 
-    try:
-        utils.create_output_file(output_file, w, n, dims, l, coordsX, coordsY)
-    except FileNotFoundError as e:
-        #print(e) 
-        sys.exit(f'Output path {output_folder_path} does not exist.')
+        instance_file_name = os.path.basename(instance_file.name)
+        output_file = os.path.join(output_folder_path,f'solution-{instance_file_name}')#f'{output_folder_path}\\solution-{instance_file.name.split("/")[-1]}'
+
+        try:
+            utils.create_output_file(output_file, w, n, dims, l, coordsX, coordsY)
+        except FileNotFoundError as e:
+            #print(e) 
+            sys.exit(f'Output path {output_folder_path} does not exist.')
     
-    if not arguments.no_visualize_output:
-        scripts_folder = os.path.dirname(sys.argv[0])
-        visualize_script_path = os.path.join(scripts_folder,'visualize.py')
-        print(output_file)
-        os.system(f'python {visualize_script_path} "{output_file}"')
+        if not arguments.no_visualize_output:
+            scripts_folder = os.path.dirname(sys.argv[0])
+            visualize_script_path = os.path.join(scripts_folder,'visualize.py')
+            print(output_file)
+            os.system(f'python {visualize_script_path} "{output_file}"')
 
 
 def create_cmdline_data(w, n, dims):
