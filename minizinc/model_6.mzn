@@ -46,7 +46,7 @@ constraint cumulative(coordsX, dimsX, dimsY, l);
 %    - the durations of the tasks are dimsY
 %    - the resource recquirements of the tasks are dimsX
 %    - the maximum resource bound is w
-constraint cumulative(coordsY, dimsY, dimsX, w);
+% constraint cumulative(coordsY, dimsY, dimsX, w);
 
 % Each rectangle must not exceed the width of the plate (IT IS AN IMPLIED CONSTRAINT)
 constraint forall(i in 1..n) (coordsX[i]+dimsX[i]<=w);
@@ -54,6 +54,11 @@ constraint forall(i in 1..n) (coordsX[i]+dimsX[i]<=w);
 % The length of the plate is the maximum height reached (IT IS AN IMPLIED CONSTRAINT)
 constraint l = max(i in 1..n)(coordsY[i]+dimsY[i]);
 
+
+%%%%%%% SYMMETRY BREAKING
+constraint forall(i,j in 1..n where i < j /\ dimsX[i] = dimsX[j] /\ dimsY[i] = dimsY[j])(
+  lex_lesseq([coordsX[i], coordsY[i]], [coordsX[j], coordsY[j]])
+);
 
 %%%%%%% SOLVING
 

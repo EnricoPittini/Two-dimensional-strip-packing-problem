@@ -1,12 +1,9 @@
 {
     "openFiles": [
-        "model_3B.mzn",
-        "model_3A.mzn",
-        "model_3C.mzn",
-        "model_2.mzn",
-        "model_6.mzn"
+        "model_6.mzn",
+        "model_3B.mzn"
     ],
-    "openTab": 1,
+    "openTab": 0,
     "projectFiles": [
         "Data 3.dzn",
         "Data 8.dzn",

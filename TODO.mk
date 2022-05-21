@@ -12,11 +12,10 @@
 
 # MiniZinc model TODOs
 - Heuristic
-- Change domains
 - Remove 'dims' and keep only 'dimsX, dimsY'
 - Set refactoring
-- Test the implied constraints (implied-redundant)
 - For the final model try Graph vs Bound consistency
+- Test "gecode" (restarting "dom_w_deg" "LNS")
 
 # Generic TODOs
 - Possible solve perfect model

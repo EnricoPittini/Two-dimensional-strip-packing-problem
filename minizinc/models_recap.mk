@@ -11,7 +11,7 @@ Instance 8: Gecode exceeded 5 minutes; Chuffed 31 seconds.
 # Model 1
 - **New global constraint**: Cumulative constraint `cumulative(coordsX, dimsX, dimsY, l)`
 - **New global constraint**: Cumulative constraint `cumulative(coordsY, dimsY, dimsX, w)`
-- Now the constraints "Non-exceeding width of the plate" and "Definition of `l` constraint" are **implied constraints**
+- They are **implied constraints** of the constraints "Non-exceeding width of the plate" and "Definition of `l` constraint"
 
 ### Instances
 Instance 8: Gecode 252 ms; Chuffed 360 ms.
@@ -34,10 +34,18 @@ Instance 25: Chuffed exceed 5 minutes.
 Instance 28: Chuffed 23.11 s.
 
 # Model 3
+Testing the implied constraints (*cumulative constraints*)
+- 3A. Kept only `cumulative(coordsY, dimsY, dimsX, w)`.
+- 3B. Kept only `cumulative(coordsX, dimsX, dimsY, l)`.
+- 3C. Removed both *cumulative constraints*.
+In the end 3B was the best model (see *cumulative_results_i.json* files).
+
+<!-- TODO: Change index. -->
+# Model 4
 New variables selection heuristic 
-- 3A. Variables selection heuristic based on: the rectangles areas; it interleaves coordX and coordY.
-- 3B. Variables selection heuristic based on: the rectangles width; it interleaves coordX and coordY.
-- 3C. Variables selection heuristic: first the coordsX, then the coordsY; the coordsX are sorted by rectangles width, the 
+- 4A. Variables selection heuristic based on: the rectangles areas; it interleaves coordX and coordY.
+- 4B. Variables selection heuristic based on: the rectangles width; it interleaves coordX and coordY.
+- 4C. Variables selection heuristic: first the coordsX, then the coordsY; the coordsX are sorted by rectangles width, the 
 coordsX are sorted by rectangles height.
 
 ### Instances
@@ -51,5 +59,13 @@ Instance 26: Chuffed 0.32 s. (HEURISTIC BY HEIGTH COORDY AND HEURISTIC BY WIDTH 
 Instance 28: Chuffed 43.68 s. (FIRST FAIL HEURISTIC)
 Instance 28: Chuffed 0.32 s (and 2.44 s).  (HEURISTIC BY HEIGTH BOTH COORDX AND COORDY)
 
-# Model 4 (Geocode specific)
+# Model 5 (Geocode specific)
 - Variables selection heuristic specific for Geocode: dom_w_deg, restarting (luby) with random values selection heuristic, LNS
+
+# Model 6
+Improved variable bounds.
+- improved `l_max` "sum(sort(dimsY)[n-max_rects_per_col+1..n])".
+- improved upper bound of `coordsX` "w-w_min"
+- improved upper bound of `coordsy` "l_max-h_min"
+Symmetry breaking constraints:
+- for identical rectangles.
