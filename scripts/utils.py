@@ -1,8 +1,5 @@
-import argparse
 import io
-import subprocess
-import json
-import sys
+import os
 
 
 def parse_instance_txt(instance_txt_file: io.TextIOWrapper):
@@ -19,6 +16,7 @@ def parse_instance_txt(instance_txt_file: io.TextIOWrapper):
 
 
 def create_output_file(output_file, w, n, dims, l, coordsX, coordsY):
+    os.makedirs(os.path.dirname(output_file), exist_ok=True)
     with open(output_file, 'w') as f:
         f.write(f'{w} {l}\n')
         f.write(f'{n}\n')
