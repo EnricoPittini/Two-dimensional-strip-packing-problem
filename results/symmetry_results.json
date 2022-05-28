@@ -1,0 +1,123 @@
+[
+    {
+        "ins-20": {
+            "model_6_sym_0": 0.78,
+            "model_6_sym_1": 1.74,
+            "model_6_sym_2": 0.43,
+            "model_6_sym_3": 1.44,
+            "model_6_sym_4": 36.64,
+            "model_6_sym_5": 0.54,
+            "model_6_sym_6": 34.25,
+            "model_6_sym_7": 15.98
+        }
+    },
+    {
+        "ins-21": {
+            "model_6_sym_0": 15.54,
+            "model_6_sym_1": 24.7,
+            "model_6_sym_2": 11.66,
+            "model_6_sym_3": 2.67,
+            "model_6_sym_4": 0.86,
+            "model_6_sym_5": 99.8,
+            "model_6_sym_6": 8.59,
+            "model_6_sym_7": 1.17
+        }
+    },
+    {
+        "ins-22": {
+            "model_6_sym_0": 2.67,
+            "model_6": "NaN",
+            "model_6_sym_3": 150.95,
+            "model_6_sym_5": 36.09,
+            "model_6_sym_7": 158.11
+        }
+    },
+    {
+        "ins-23": {
+            "model_6_sym_0": 2.65,
+            "model_6_sym_1": 13.33,
+            "model_6_sym_2": 8.7,
+            "model_6_sym_3": 4.6,
+            "model_6_sym_4": 1.84,
+            "model_6_sym_5": 26.95,
+            "model_6_sym_6": 0.71,
+            "model_6_sym_7": 23.29
+        }
+    },
+    {
+        "ins-24": {
+            "model_6_sym_0": 1.6,
+            "model_6_sym_1": 17.19,
+            "model_6_sym_2": 1.57,
+            "model_6_sym_3": 11.0,
+            "model_6_sym_4": 8.65,
+            "model_6_sym_5": 1.26,
+            "model_6_sym_6": 1.27,
+            "model_6_sym_7": 9.96
+        }
+    },
+    {
+        "ins-25": {
+            "model_6_sym_0": 27.12,
+            "model_6": "NaN",
+            "model_6_sym_2": 150.58,
+            "model_6_sym_3": 33.87,
+            "model_6_sym_4": 21.91,
+            "model_6_sym_5": 141.53,
+            "model_6_sym_7": 6.69
+        }
+    },
+    {
+        "ins-26": {
+            "model_6_sym_0": 231.92,
+            "model_6_sym_1": 1.88,
+            "model_6_sym_2": 4.57,
+            "model_6_sym_3": 25.2,
+            "model_6": "NaN",
+            "model_6_sym_7": 23.53
+        }
+    },
+    {
+        "ins-27": {
+            "model_6_sym_0": 7.73,
+            "model_6_sym_1": 11.85,
+            "model_6_sym_2": 8.05,
+            "model_6_sym_3": 9.75,
+            "model_6_sym_4": 6.71,
+            "model_6_sym_5": 6.14,
+            "model_6_sym_6": 13.25,
+            "model_6_sym_7": 18.97
+        }
+    },
+    {
+        "ins-28": {
+            "model_6_sym_0": 34.93,
+            "model_6_sym_1": 2.25,
+            "model_6_sym_2": 1.69,
+            "model_6_sym_3": 1.17,
+            "model_6": "NaN",
+            "model_6_sym_5": 18.02,
+            "model_6_sym_6": 3.3,
+            "model_6_sym_7": 21.01
+        }
+    },
+    {
+        "ins-29": {
+            "model_6_sym_0": 3.42,
+            "model_6_sym_1": 52.12,
+            "model_6_sym_2": 5.5,
+            "model_6": "NaN",
+            "model_6_sym_4": 109.98,
+            "model_6_sym_5": 2.81,
+            "model_6_sym_6": 4.64,
+            "model_6_sym_7": 87.3
+        }
+    },
+    {
+        "ins-30": {
+            "model_6_sym_0": 23.07,
+            "model_6": "NaN",
+            "model_6_sym_5": 74.03
+        }
+    }
+]

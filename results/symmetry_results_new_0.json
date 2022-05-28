@@ -1,0 +1,62 @@
+[
+    {
+        "ins-33": {
+            "model_6_sym_0": "Unsat",
+            "model_6_sym_1": 82.47,
+            "model_6_sym_2": 1.62,
+            "model_6_sym_3": 61.43,
+            "model_6_sym_4": 61.35,
+            "model_6_sym_5": 0.96,
+            "model_6_sym_6": 44.67,
+            "model_6_sym_7": 53.39
+        }
+    },
+    {
+        "ins-34": {
+            "model_6_sym_0": 1.46,
+            "model_6_sym_1": 40.25,
+            "model_6_sym_2": 44.17,
+            "model_6_sym_3": 189.32,
+            "model_6_sym_4": 5.76,
+            "model_6_sym_5": 4.09,
+            "model_6_sym_6": 51.59,
+            "model_6_sym_7": 0.66
+        }
+    },
+    {
+        "ins-35": {
+            "model_6_sym_0": 1.23,
+            "model_6_sym_1": 0.98,
+            "model_6_sym_2": 1.92,
+            "model_6_sym_3": 1.68,
+            "model_6_sym_4": 0.99,
+            "model_6_sym_5": 1.83,
+            "model_6_sym_6": 187.67,
+            "model_6_sym_7": 3.2
+        }
+    },
+    {
+        "ins-36": {
+            "model_6_sym_0": 58.4,
+            "model_6_sym_1": 69.74,
+            "model_6_sym_2": 11.28,
+            "model_6_sym_3": 0.83,
+            "model_6_sym_4": 271.88,
+            "model_6_sym_5": 0.81,
+            "model_6_sym_6": 4.79,
+            "model_6_sym_7": "Unsat"
+        }
+    },
+    {
+        "ins-37": {
+            "model_6_sym_0": "Unsat",
+            "model_6_sym_1": 30.09,
+            "model_6_sym_2": 13.41,
+            "model_6_sym_3": "Unsat",
+            "model_6_sym_4": 170.6,
+            "model_6_sym_5": "Unsat",
+            "model_6_sym_6": "Unsat",
+            "model_6_sym_7": "Unsat"
+        }
+    }
+]

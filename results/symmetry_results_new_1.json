@@ -1,0 +1,226 @@
+[
+    {
+        "ins-1": {
+            "model_6_sym_1": 0.28,
+            "model_6_sym_2": 0.28,
+            "model_6_sym_4": 0.29
+        }
+    },
+    {
+        "ins-2": {
+            "model_6_sym_1": 0.28,
+            "model_6_sym_2": 0.28,
+            "model_6_sym_4": 0.33
+        }
+    },
+    {
+        "ins-3": {
+            "model_6_sym_1": 0.34,
+            "model_6_sym_2": 0.29,
+            "model_6_sym_4": 0.29
+        }
+    },
+    {
+        "ins-4": {
+            "model_6_sym_1": 0.29,
+            "model_6_sym_2": 0.29,
+            "model_6_sym_4": 0.28
+        }
+    },
+    {
+        "ins-5": {
+            "model_6_sym_1": 0.29,
+            "model_6_sym_2": 0.29,
+            "model_6_sym_4": 0.28
+        }
+    },
+    {
+        "ins-6": {
+            "model_6_sym_1": 0.31,
+            "model_6_sym_2": 0.31,
+            "model_6_sym_4": 0.3
+        }
+    },
+    {
+        "ins-7": {
+            "model_6_sym_1": 0.3,
+            "model_6_sym_2": 0.33,
+            "model_6_sym_4": 0.35
+        }
+    },
+    {
+        "ins-8": {
+            "model_6_sym_1": 0.51,
+            "model_6_sym_2": 0.39,
+            "model_6_sym_4": 0.4
+        }
+    },
+    {
+        "ins-9": {
+            "model_6_sym_1": 0.36,
+            "model_6_sym_2": 0.36,
+            "model_6_sym_4": 0.35
+        }
+    },
+    {
+        "ins-10": {
+            "model_6_sym_1": 0.37,
+            "model_6_sym_2": 0.34,
+            "model_6_sym_4": 0.33
+        }
+    },
+    {
+        "ins-11": {
+            "model_6_sym_1": 1.27,
+            "model_6_sym_2": 0.59,
+            "model_6_sym_4": 0.48
+        }
+    },
+    {
+        "ins-12": {
+            "model_6_sym_1": 0.36,
+            "model_6_sym_2": 0.43,
+            "model_6_sym_4": 0.49
+        }
+    },
+    {
+        "ins-13": {
+            "model_6_sym_1": 0.34,
+            "model_6_sym_2": 0.39,
+            "model_6_sym_4": 0.34
+        }
+    },
+    {
+        "ins-14": {
+            "model_6_sym_1": 0.48,
+            "model_6_sym_2": 0.42,
+            "model_6_sym_4": 0.38
+        }
+    },
+    {
+        "ins-15": {
+            "model_6_sym_1": 0.6,
+            "model_6_sym_2": 0.71,
+            "model_6_sym_4": 0.49
+        }
+    },
+    {
+        "ins-16": {
+            "model_6_sym_1": 16.92,
+            "model_6_sym_2": 1.2,
+            "model_6_sym_4": 72.33
+        }
+    },
+    {
+        "ins-17": {
+            "model_6_sym_1": 0.63,
+            "model_6_sym_2": 0.61,
+            "model_6_sym_4": 3.46
+        }
+    },
+    {
+        "ins-18": {
+            "model_6_sym_1": 30.97,
+            "model_6_sym_2": 1.28,
+            "model_6_sym_4": 2.62
+        }
+    },
+    {
+        "ins-19": {
+            "model_6_sym_1": 0.51,
+            "model_6_sym_2": "Unsat",
+            "model_6_sym_4": 1.79
+        }
+    },
+    {
+        "ins-20": {
+            "model_6_sym_1": 2.16,
+            "model_6_sym_2": 0.73,
+            "model_6_sym_4": 47.07
+        }
+    },
+    {
+        "ins-21": {
+            "model_6_sym_1": 27.75,
+            "model_6_sym_2": 12.58,
+            "model_6_sym_4": 0.91
+        }
+    },
+    {
+        "ins-22": {
+            "model_6_sym_1": "Unsat",
+            "model_6_sym_2": "Unsat",
+            "model_6_sym_4": "Unsat"
+        }
+    },
+    {
+        "ins-23": {
+            "model_6_sym_1": 15.19,
+            "model_6_sym_2": 10.86,
+            "model_6_sym_4": 2.09
+        }
+    },
+    {
+        "ins-24": {
+            "model_6_sym_1": 22.7,
+            "model_6_sym_2": 2.42,
+            "model_6_sym_4": 10.62
+        }
+    },
+    {
+        "ins-25": {
+            "model_6_sym_1": "Unsat",
+            "model_6_sym_2": 300.29,
+            "model_6_sym_4": 25.1
+        }
+    },
+    {
+        "ins-26": {
+            "model_6_sym_1": 1.84,
+            "model_6_sym_2": 300.26,
+            "model_6_sym_4": 300.27
+        }
+    },
+    {
+        "ins-27": {
+            "model_6_sym_1": 12.56,
+            "model_6_sym_2": 8.64,
+            "model_6_sym_4": 7.4
+        }
+    },
+    {
+        "ins-28": {
+            "model_6_sym_1": 52.16,
+            "model_6_sym_2": 1.83,
+            "model_6_sym_4": 300.28
+        }
+    },
+    {
+        "ins-29": {
+            "model_6_sym_1": 45.36,
+            "model_6_sym_2": 5.94,
+            "model_6_sym_4": 137.08
+        }
+    },
+    {
+        "ins-30": {
+            "model_6_sym_1": 300.41,
+            "model_6_sym_2": 300.31,
+            "model_6_sym_4": 300.35
+        }
+    },
+    {
+        "ins-31": {
+            "model_6_sym_1": 99.48,
+            "model_6_sym_2": 76.54,
+            "model_6_sym_4": 71.47
+        }
+    },
+    {
+        "ins-32": {
+            "model_6_sym_1": 300.34,
+            "model_6_sym_2": 300.33,
+            "model_6_sym_4": 300.32
+        }
+    }
+]
