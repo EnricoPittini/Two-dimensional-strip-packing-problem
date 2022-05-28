@@ -3,7 +3,6 @@
 include "cumulative.mzn";
 include "diffn.mzn";
 
-
 %%%%%%% PARAMETERS
 int: w;  % The width of the plate
 int: n;  % Number of the rectangles
@@ -41,7 +40,7 @@ constraint cumulative(coordsX, dimsX, dimsY, l);
 %    - the durations of the tasks are dimsY
 %    - the resource recquirements of the tasks are dimsX
 %    - the maximum resource bound is w
-constraint cumulative(coordsY, dimsY, dimsX, w);
+% constraint cumulative(coordsY, dimsY, dimsX, w);
 
 % Each rectangle must not exceed the width of the plate (IT IS AN IMPLIED CONSTRAINT)
 constraint forall(i in 1..n) (coordsX[i]+dimsX[i]<=w);
@@ -58,7 +57,7 @@ constraint l = max(i in 1..n)(coordsY[i]+dimsY[i]);
 array[1..n] of int: indices = reverse(arg_sort(areas));
 array[1..2*n] of var int: variables = [if (i mod 2 = 0) then coordsY[indices[i div 2]] else coordsX[indices[(i+1) div 2]] endif
   | i in 1..2*n];
-ann: search_ann = int_search(variables, input_order, indomain_min);
+  
+ann: search_ann = int_search(variables, dom_w_deg, indomain_random);
 
-solve :: search_ann
-minimize l;
+solve :: search_ann minimize l;

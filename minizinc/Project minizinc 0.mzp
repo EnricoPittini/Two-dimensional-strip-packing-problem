@@ -1,12 +1,23 @@
 {
     "openFiles": [
+        "model_7.mzn",
         "model_6.mzn",
-        "model_3B.mzn"
+        "model_4A.mzn",
+        "model_4B.mzn",
+        "model_4C.mzn",
+        "model_4D.mzn",
+        "model_6A.mzn",
+        "model_6B.mzn",
+        "model_6C.mzn",
+        "model_6D.mzn",
+        "model_6E.mzn",
+        "model_6F.mzn"
     ],
-    "openTab": 0,
+    "openTab": 11,
     "projectFiles": [
         "Data 3.dzn",
         "Data 8.dzn",
+        "Data 99.dzn",
         "Data Unsat.dzn",
         "model_0.mzn",
         "model_1.mzn",
@@ -17,12 +28,23 @@
         "model_4A.mzn",
         "model_4B.mzn",
         "model_4C.mzn",
+        "model_4D.mzn",
         "model_5_gecode.mzn",
         "model_6.mzn",
+        "model_6A.mzn",
+        "model_6B.mzn",
+        "model_6C.mzn",
+        "model_6D.mzn",
+        "model_6E.mzn",
+        "model_6F.mzn",
+        "model_6_1.mzn",
+        "model_6_2.mzn",
+        "model_6_try.mzn",
+        "model_7.mzn",
         "solver_0.mpc",
         "solver_1.mpc"
     ],
-    "selectedBuiltinConfigId": "org.gecode.gecode",
-    "selectedBuiltinConfigVersion": "6.3.0",
+    "selectedBuiltinConfigId": "org.chuffed.chuffed",
+    "selectedBuiltinConfigVersion": "0.10.4",
     "version": 106
 }

@@ -1,6 +1,8 @@
 import argparse
+from ast import arguments
 import json
 import os
+import re
 import subprocess
 import sys
 
@@ -26,6 +28,9 @@ def main() -> None:
     parser.add_argument('--no-visualize-output', action='store_true', 
                         help='Skip the visualization of the output solution (defaults as true if --no-create-output ' + \
                         'is passed).')
+    
+    #parser.add_argument('--symmetry-breaking-option', '-sbo', nargs='?',  type=int,
+    #                    help='The symmetry breaking options to use for the MiniZinc model.', default=None)
 
     arguments = parser.parse_args()
 
@@ -35,17 +40,33 @@ def main() -> None:
     parsed_cmdline_data = _create_cmdline_data(w, n, dims)
 
     command = f'minizinc {vars(arguments)["model-path"]} {parsed_cmdline_data} --param-file {vars(arguments)["solver-path"]}'
-    result = subprocess.run(command, stdout=subprocess.PIPE)
+    result = subprocess.run(command, capture_output=True)
+    
+    try: 
+        result.check_returncode()
+    except subprocess.CalledProcessError:
+        sys.exit(f'ERROR: {result.stderr.decode("UTF-8")}')
+
     output = result.stdout.decode('UTF-8').replace('-', '').replace('=', '')
-    time = output.split('%')[-1]
-    output = output.split('%')[0]
-    print(time)
     
     try:
-        json_result = json.loads(output)
+        json_substring = output.split('%')[0]
+        json_result = json.loads(json_substring)
         print(json_result)
     except ValueError:
-        sys.exit(f'Warning:\n{output}')
+        errors_re = re.compile('|'.join(['UNSATISFIABLE', 'UNBOUNDED', 'UNSATorUNBOUNDED', 'UNKNOWN', 'ERROR']))
+        error_list = re.findall(errors_re, output)
+        sys.exit(f'ERROR: {",".join(error_list) if len(error_list) else "N/D"}')
+    
+    # TODO: Make this function general even for "compare_minizinc_models.py"
+    # Print on stdout a notice that the time limit has exceeded if expressed in the result of the process.
+    if '% Time limit exceeded!' in output:
+        print('% Time limit exceeded!')
+    # Print on stdout the last elapsed time if the information is available.
+    else:
+        time_list = re.findall('% time elapsed: ' + r'\d+\.\d+', output)
+        if len(time_list):
+            print(time_list[-1])
 
     if not arguments.no_create_output:
         l = json_result['l']
@@ -76,7 +97,13 @@ def _create_cmdline_data(w, n, dims):
     parsed_n = f'{PREFIX} "n = {n}"'
     parsed_dims = f'{PREFIX} "dims = {formatted_dims}"'
     
-    return f'{parsed_w} {parsed_n} {parsed_dims}'
+    command_line_string = f'{parsed_w} {parsed_n} {parsed_dims}'
+    
+    # symmetry_breaking_option = arguments.symmetry_breaking_option
+    #if symmetry_breaking_option is not None:
+    #    command_line_string += f' {PREFIX} "symmetry_breaking_option = {symmetry_breaking_option}"'
+    
+    return command_line_string
 
 if __name__ == '__main__':
     main()

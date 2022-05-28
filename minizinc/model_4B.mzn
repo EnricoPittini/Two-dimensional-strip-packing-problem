@@ -41,7 +41,7 @@ constraint cumulative(coordsX, dimsX, dimsY, l);
 %    - the durations of the tasks are dimsY
 %    - the resource recquirements of the tasks are dimsX
 %    - the maximum resource bound is w
-constraint cumulative(coordsY, dimsY, dimsX, w);
+% constraint cumulative(coordsY, dimsY, dimsX, w);
 
 % Each rectangle must not exceed the width of the plate (IT IS AN IMPLIED CONSTRAINT)
 constraint forall(i in 1..n) (coordsX[i]+dimsX[i]<=w);
