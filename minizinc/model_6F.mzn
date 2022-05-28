@@ -11,8 +11,6 @@ array[1..n, 1..2] of int: dims;  % Dims X (i.e. width) and Y (i.e. height) of th
 array[1..n] of int: dimsX = col(dims,1);
 array[1..n] of int: dimsY = col(dims,2);
 
-opt 0..7: symmetry_breaking_option;
-
 array [1..n] of int: areas = [dimsX[i]*dimsY[i] | i in 1..n];  % The areas of the rectangles
 int: A_tot = sum(areas);  % The overall area of all the given rectangles
 int: h_min = min(dimsY);  % The minimum height of a rectangle
@@ -58,41 +56,7 @@ constraint l = max(i in 1..n)(coordsY[i]+dimsY[i]);
 
 
 %%%%%%% SYMMETRY BREAKING
-% Symmetry breaking constraint in which for all pairs of rectangles i, j having the same dimension a lexicographic order is
-% imposed between the coordinates of i and j:
-%    - the array that has to be lexicographically less than the other is the one containing the coordinates of i
-%    - the array that has to be lexicographically greater or equal than the other is the one containing the coordinates of j
-%constraint forall(i,j in 1..n where i < j /\ dimsX[i] = dimsX[j] /\ dimsY[i] = dimsY[j])(
-%  lex_lesseq([coordsX[i], coordsY[i]], [coordsX[j], coordsY[j]])
-%);
-
-predicate highest_rectangle_on_lower_left_corner() = coordsX[arg_max(dimsY)] = 0 /\ coordsY[arg_max(dimsY)] = 0;
-
-predicate break_A_x_symmetry() = 
-  let{int: w_half = ceil(w/2)} in (sum([areas[i] | i in 1..n where coordsX[i] >= w_half]) <= A_tot / 2);
-  
-predicate break_A_y_symmetry() = (sum([areas[i] | i in 1..n where coordsY[i] > l div 2]) <= A_tot / 2);
-
-
-constraint if absent(symmetry_breaking_option) 
-  then highest_rectangle_on_lower_left_corner() /\ break_A_x_symmetry() /\ break_A_y_symmetry()
-elseif symmetry_breaking_option = 1
-  then highest_rectangle_on_lower_left_corner() /\ break_A_x_symmetry() /\ break_A_y_symmetry()
-elseif symmetry_breaking_option = 2
-  then highest_rectangle_on_lower_left_corner() /\ break_A_x_symmetry()
-elseif symmetry_breaking_option = 3
-  then highest_rectangle_on_lower_left_corner() /\ break_A_y_symmetry()
-elseif symmetry_breaking_option = 4
-  then break_A_x_symmetry() /\ break_A_y_symmetry()
-elseif symmetry_breaking_option = 5
-  then highest_rectangle_on_lower_left_corner()
-elseif symmetry_breaking_option = 6
-  then break_A_x_symmetry()
-elseif symmetry_breaking_option = 7
-  then break_A_y_symmetry()
-else true endif;
-
-
+constraint sum([areas[i] | i in 1..n where coordsY[i] > l div 2]) <= A_tot / 2;
 
 %%%%%%% SOLVING
 

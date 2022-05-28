@@ -1,5 +1,5 @@
 %000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000|
-
+include "globals.mzn";
 include "cumulative.mzn";
 include "diffn.mzn";
 
@@ -57,42 +57,29 @@ constraint forall(i in 1..n) (coordsX[i]+dimsX[i]<=w);
 constraint l = max(i in 1..n)(coordsY[i]+dimsY[i]);
 
 
+% constraint forall(i,j in 1..n where i<j)(coordsX[i] != coordsX[j] \/ coordsY[i] != coordsY[j]);
+
 %%%%%%% SYMMETRY BREAKING
-% Symmetry breaking constraint in which for all pairs of rectangles i, j having the same dimension a lexicographic order is
-% imposed between the coordinates of i and j:
-%    - the array that has to be lexicographically less than the other is the one containing the coordinates of i
-%    - the array that has to be lexicographically greater or equal than the other is the one containing the coordinates of j
+constraint forall(i,j in 1..n where i < j /\ dimsX[i] = dimsX[j] /\ dimsY[i] = dimsY[j])(
+  lex_lesseq([coordsX[i], coordsY[i]], [coordsX[j], coordsY[j]])
+);
+
+constraint forall(i, j in 1..n where i < j /\ coordsX[i] = coordsX[j])(coordsY[i] != coordsY[j] + dimsY[j]);
+constraint forall(i, j in 1..n where i < j /\ coordsY[i] = coordsY[j])(coordsX[i] != coordsX[j] + dimsX[j]);
+
+%constraint forall(i in 1..w, j,k in 1..n where coordsX[j] = i /\ coordsX[k] = i)(coordsY[j] != coordsY[k] + dimsY[k]);
+
+%constraint forall(i in 1..l, j,k in 1..n where coordsY[j] = i /\ coordsY[k] = i)(coordsX[j] != coordsX[k] + dimsX[k]);
+
+% constraint forall(i, j in 1..n where i < j /\ coordsX[i] = coordsX[j])(coordsY[i] + dimsY[i] != coordsY[j]);
 %constraint forall(i,j in 1..n where i < j /\ dimsX[i] = dimsX[j] /\ dimsY[i] = dimsY[j])(
 %  lex_lesseq([coordsX[i], coordsY[i]], [coordsX[j], coordsY[j]])
 %);
 
-predicate highest_rectangle_on_lower_left_corner() = coordsX[arg_max(dimsY)] = 0 /\ coordsY[arg_max(dimsY)] = 0;
+%constraint increasing([dimsX[i]*coordsX[i] + coordsY[i] | i in 1..n ]);
 
-predicate break_A_x_symmetry() = 
-  let{int: w_half = ceil(w/2)} in (sum([areas[i] | i in 1..n where coordsX[i] >= w_half]) <= A_tot / 2);
-  
-predicate break_A_y_symmetry() = (sum([areas[i] | i in 1..n where coordsY[i] > l div 2]) <= A_tot / 2);
-
-
-constraint if absent(symmetry_breaking_option) 
-  then highest_rectangle_on_lower_left_corner() /\ break_A_x_symmetry() /\ break_A_y_symmetry()
-elseif symmetry_breaking_option = 1
-  then highest_rectangle_on_lower_left_corner() /\ break_A_x_symmetry() /\ break_A_y_symmetry()
-elseif symmetry_breaking_option = 2
-  then highest_rectangle_on_lower_left_corner() /\ break_A_x_symmetry()
-elseif symmetry_breaking_option = 3
-  then highest_rectangle_on_lower_left_corner() /\ break_A_y_symmetry()
-elseif symmetry_breaking_option = 4
-  then break_A_x_symmetry() /\ break_A_y_symmetry()
-elseif symmetry_breaking_option = 5
-  then highest_rectangle_on_lower_left_corner()
-elseif symmetry_breaking_option = 6
-  then break_A_x_symmetry()
-elseif symmetry_breaking_option = 7
-  then break_A_y_symmetry()
-else true endif;
-
-
+%constraint lex_lesseq([coordsX[i] | i in 1..n], [w - coordsX[i] - dimsX[i] | i in 1..n]);
+%constraint lex_lesseq([coordsY[i] | i in 1..n], [l - coordsY[i] - dimsY[i] | i in 1..n]);
 
 %%%%%%% SOLVING
 
