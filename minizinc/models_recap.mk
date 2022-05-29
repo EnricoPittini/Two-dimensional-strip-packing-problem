@@ -40,13 +40,31 @@ Testing the implied constraints (*cumulative constraints*)
 - 3C. Removed both *cumulative constraints*.
 In the end 3B was the best model (see *cumulative_results_i.json* files).
 
-<!-- TODO: Change index. -->
-# Model 4
-New variables selection heuristic 
-- 4A. Variables selection heuristic based on: the rectangles areas; it interleaves coordX and coordY.
-- 4B. Variables selection heuristic based on: the rectangles width; it interleaves coordX and coordY.
-- 4C. Variables selection heuristic: first the coordsX, then the coordsY; the coordsX are sorted by rectangles width, the 
-coordsX are sorted by rectangles height.
+# Model 4A
+Improved variable bounds.
+- improved `l_max`.
+- improved upper bound of `coordsX` "w-w_min"
+- improved upper bound of `coordsy` "l_max-h_min"
+Symmetry breaking constraints:
+- 4A batch of models test combinations of the following constraints:
+	- 1. Lexicographic order on the coordinates of rectangles having the same dimension;
+	- 2. The area of the rectangles on the right half of the plate is less or equal than half the total area of the rectangles;
+	- 3. The area of the rectangles on the top half of the plate is less or equal than half the total area of the rectangles;
+- 4A0: tests a model withouth any among 1, 2 and 3;
+- 4A1: tests 1, 2 and 3;
+- 4A2: tests 1 and 2;
+- 4A3: tests 1 and 3;
+- 4A4: tests 2 and 3;
+- 4A5: tests 1;
+- 4A6: tests 2;
+- 4A7: tests 3.
+
+# Model 4B
+Symmetry breaking constraints:
+4B batch of models use the best symmetry breaking combination found in the batch 4A and selects one of the following constraints:
+- 4B0: puts the highest rectangle on the bottom left corner;
+- 4B1: puts the rectangle with the greater area on the bottom left corner;
+- 4B2: puts the widest rectangle on the bottom left corner.
 
 ### Instances
 Instance 25: Chuffed 275.54 s (and 257.33 s). (HEURISTIC BY HEIGTH BOTH COORDX AND COORDY)
@@ -59,13 +77,27 @@ Instance 26: Chuffed 0.32 s. (HEURISTIC BY HEIGTH COORDY AND HEURISTIC BY WIDTH 
 Instance 28: Chuffed 43.68 s. (FIRST FAIL HEURISTIC)
 Instance 28: Chuffed 0.32 s (and 2.44 s).  (HEURISTIC BY HEIGTH BOTH COORDX AND COORDY)
 
-# Model 5 (Geocode specific)
-- Variables selection heuristic specific for Geocode: dom_w_deg, restarting (luby) with random values selection heuristic, LNS
+# Model 7
+Adds another view of the problem creating a dual model.
+Defines a grid of the dimension of the plate in which in each cell it is expressed which rectangle is present (from 1 to n)
+or 0 if no rectangle is present.
+Constraints:
+- In each row each rectangle either completely fits in or is not in the row;
+- In each column each rectangle either completely fits in or is not in the column;
+- Channeling constraint imposing that each cell of the grid containing a rectangle label `k` has:
+	- the second index of the cell between `coordX` and `coordX` + `dimsX` of the rectangle `k`;
+	- the first index of the cell between `coordY` and `coordY` + `dimsY` of the rectangle `k`.
 
-# Model 6
-Improved variable bounds.
-- improved `l_max` "sum(sort(dimsY)[n-max_rects_per_col+1..n])".
-- improved upper bound of `coordsX` "w-w_min"
-- improved upper bound of `coordsy` "l_max-h_min"
 Symmetry breaking constraints:
 - for identical rectangles.
+
+<!-- TODO: Update once done. -->
+# Model 8
+New variables selection heuristic 
+- 8A. Variables selection heuristic based on: the rectangles areas; it interleaves coordX and coordY.
+- 8B. Variables selection heuristic based on: the rectangles width; it interleaves coordX and coordY.
+- 8C. Variables selection heuristic: first the coordsX, then the coordsY; the coordsX are sorted by rectangles width, the 
+coordsX are sorted by rectangles height.
+
+# Model 8 (Geocode specific)
+- Variables selection heuristic specific for Geocode: dom_w_deg, restarting (luby) with random values selection heuristic,LNS

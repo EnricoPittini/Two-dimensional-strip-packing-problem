@@ -1,4 +1,9 @@
-%000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000|
+%---------------------------------------------------------------------------------------------------------------------------%
+%                                                      MODEL 4B2                                                            %
+%                                                                                                                           %
+% Model that uses the best symmetry breaking combination of the model 4A and adds a symmetry breaking constraint that:      %
+% - Puts the widest rectangle on the bottom left corner.                                                                    %
+%---------------------------------------------------------------------------------------------------------------------------%
 
 include "cumulative.mzn";
 include "diffn.mzn";
@@ -19,9 +24,12 @@ int: w_min = min(dimsX);  % The minimum width of a rectangle
 int: w_max = max(dimsX);  % The maximum width of a rectangle
 int: l_min = max([h_max, A_tot div w]);  % The lower bound for the length
 int: max_rects_per_row = w div w_max; % Maximum number of rectangles per row
-int: max_rects_per_col = ceil(n / max_rects_per_row); % Maximum number of rectangles per column
-int: l_max = sum(sort(dimsY)[n-max_rects_per_col+1..n]);  % The upper bound for the length
-
+int: max_rects_per_col = ceil(n / max([1, max_rects_per_row])); % Maximum number of rectangles per column
+% The upper bound for the length
+int: l_max = if max_rects_per_row = 1 
+  then sum(areas) 
+  else sum([dimsY[k] | k in 1..n where k mod max_rects_per_row = 1]) 
+endif;
 
 %%%%%%% VARIABLES
 % The length of the plate
@@ -41,16 +49,9 @@ constraint diffn(coordsX, coordsY, dimsX, dimsY);
 %    - the resource recquirements of the tasks are dimsY
 %    - the maximum resource bound is l
 constraint cumulative(coordsX, dimsX, dimsY, l);
-% Cumulative constraint in which:
-%    - the starting times of the tasks are coordsY
-%    - the durations of the tasks are dimsY
-%    - the resource recquirements of the tasks are dimsX
-%    - the maximum resource bound is w
-% constraint cumulative(coordsY, dimsY, dimsX, w);
 
 % Each rectangle must not exceed the width of the plate (IT IS AN IMPLIED CONSTRAINT)
 constraint forall(i in 1..n) (coordsX[i]+dimsX[i]<=w);
-%constraint forall(i in 1..n) (coordsY[i]+dimsY[i]<=l);
 % The length of the plate is the maximum height reached (IT IS AN IMPLIED CONSTRAINT)
 constraint l = max(i in 1..n)(coordsY[i]+dimsY[i]);
 
@@ -64,18 +65,11 @@ constraint forall(i,j in 1..n where i < j /\ dimsX[i] = dimsX[j] /\ dimsY[i] = d
   lex_lesseq([coordsX[i], coordsY[i]], [coordsX[j], coordsY[j]])
 );
 
+constraint let{int: w_half = ceil(w/2)} in (sum([areas[i] | i in 1..n where coordsX[i] >= w_half]) <= A_tot / 2);
+  
+constraint (sum([areas[i] | i in 1..n where coordsY[i] > l div 2]) <= A_tot / 2);
+
+constraint coordsX[arg_max(dimsX)] = 0 /\ coordsY[arg_max(dimsX)] = 0;
+
 %%%%%%% SOLVING
-
-% Variables selection heuristic: it is based on the rectangles widths; it interleaves coordX and coordY.
-% Variables order: coordX of the rectangle with max width; coordY of the rectangle with max width; coordX of the rectangle 
-% with second max width; coordY of the rectangle with second max width; ... .
-%array[1..n] of var int: sorted_coordsX = reverse(sort_by(coordsX, dimsX));
-%array[1..n] of var int: sorted_coordsY = reverse(sort_by(coordsY, dimsX));
-%array[1..2*n] of var int: variables = [if (i mod 2 = 0) then sorted_coordsY[i div 2] else sorted_coordsX[(i+1) div 2] endif
-%  | i in 1..2*n];
-%ann: search_ann = int_search(variables, input_order, indomain_min);
-
-%solve :: search_ann
-%minimize l;
-
 solve minimize l;

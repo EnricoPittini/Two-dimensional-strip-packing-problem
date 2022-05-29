@@ -1,4 +1,8 @@
-%000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000|
+%---------------------------------------------------------------------------------------------------------------------------%
+%                                                       MODEL 3B ☑                                                         %
+%                                                                                                                           %
+% Model that tests the `cumulative` implied constraints and keeps solely `cumulative(coordsX, dimsX, dimsY, l)`.            %
+%---------------------------------------------------------------------------------------------------------------------------%
 
 include "cumulative.mzn";
 include "diffn.mzn";
@@ -26,8 +30,7 @@ array[1..n] of var 0..l_max: coordsY;  % Coords X of the left-bottom corner of t
 array[1..n] of var 0..w: coordsX;  % Coords Y of the left-bottom corner of the rectangles
 
 
-%%%%%%% CONSTRAINTS 
-% NEW GLOBAL CONSTRAINT
+%%%%%%% CONSTRAINTS
 % The rectangles, given by their left-bottom corners `coordsX,coordsY` and sizes `dimsX,dimsY`, must be non-overlapping
 constraint diffn(coordsX, coordsY, dimsX, dimsY);
 
