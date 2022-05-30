@@ -18,3 +18,9 @@
 
 # Generic TODOs
 - Possible solve perfect model
+
+# SAT TODOs
+- Fix in-file TODOs 
+- Refactor and write better encoding 3, in order to fix it (write functions to access the indeces of the length_k_l variables)
+- Think about the constraints. In particular, think about the equivalence, about the implications, about the 'redundant' constraints
+- Implement encoding found in the pdf

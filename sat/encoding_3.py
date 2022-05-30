@@ -57,7 +57,7 @@ def __vlsi_sat(w, n, dimsX, dimsY, h_min, w_min, l_min, l_max, circuits, coords,
     # This reflects both on `circuits` and on `coords`.
     for i in range(w-w_min):
         for j in range(l_max-h_min):
-            # s.add(at_most_one(circuits[i][j], name=f'at_most_one_circuit_{i}_{j}'))  # TODO : redundant?
+            #s.add(at_most_one(circuits[i][j], name=f'at_most_one_circuit_{i}_{j}'))  # TODO : redundant?
             s.add(at_most_one(coords[i][j], name=f'at_most_one_coord_{i}_{j}'))
             
     # Constraint: the left-bottom corner of each circuit 'k' must be present exactly one time across the plate
@@ -82,6 +82,7 @@ def __vlsi_sat(w, n, dimsX, dimsY, h_min, w_min, l_min, l_max, circuits, coords,
                 
                 # List of tuples, representing the coordinates of the cells of the plate covered by the circuit
                 covered_positions = [(i+ii,j+jj) for ii in range(dimsX[k]) for jj in range(dimsY[k])]
+                                                 #if i+ii<=w-w_min-1 and j+jj<=l_max-h_min-1]
 
                 # Formula ensuring that no other circuit is present in the `covered_positions`
                 no_overlapping_circuit_formula = And([Not(circuits[ii][jj][kk]) 
@@ -93,16 +94,17 @@ def __vlsi_sat(w, n, dimsX, dimsY, h_min, w_min, l_min, l_max, circuits, coords,
                 # The added constraint is the following implication: if left-bottom corner of `k` in `(i,j)`, then 
                 # `no_overlapping_circuit_formula` and `all_positions_covered_formula`.
                 # Actually, it is not an implication, nut an equivalence.
-                s.add(coords[i][j][k] == And(no_overlapping_circuit_formula,all_positions_covered_formula))
+                s.add(coords[i][j][k] == And(no_overlapping_circuit_formula, all_positions_covered_formula))
 
                 # Formula ensuring that all the lengths up to `j+dimsY[k]-1` are used by the circuit `k`
-                print(l_min,j+dimsY[k],l_max)
-                used_lengths_formula = And([lengths[k][l] for l in range(l_min,min(j+dimsY[k],l_max))])
+                #print(l_min,j+dimsY[k],l_max)
+                #print(len(lengths))
+                used_lengths_formula = And([lengths[k][l] for l in range(j+dimsY[k]-l_min+1)])
                 # Formula ensuring that all the lengths from `j+dimsY[k]` are not used by the circuit `k`
-                #non_used_lengths_formula = And([Not(lengths[k][l]) for l in range(max(j+dimsY[k],l_min), l_max)])  # TODO: redundant?
+                non_used_lengths_formula = And([Not(lengths[k][l]) for l in range(j+dimsY[k]-l_min+1,l_max-l_min+1)])  # TODO: redundant?
                 # The added constraint is the following implication: if left-bottom corner of `k` in `(i,j)`, then 
                 # `used_lengths_formula` and `non_used_lengths_formula`.
-                s.add(Implies(coords[i][j][k], used_lengths_formula))#And(used_lengths_formula, non_used_lengths_formula)))
+                s.add(Implies(coords[i][j][k], And(used_lengths_formula,non_used_lengths_formula)))#And(used_lengths_formula, non_used_lengths_formula)))
 
     print('HERE')  # TODO: remove
 
@@ -157,7 +159,7 @@ def process_solver_instance(s, coords, lengths, w, n, w_min, h_min, l_min,l_max,
                   for i in range(w-w_min) for j in range(l_max-h_min) for k in range(n)])
 
     # Length of the plate
-    l = max([l for k in range(n) for l in range(l_min,l_max) if m.evaluate(lengths[k][l])])+1
+    l = max([l+l_min for k in range(n) for l in range(l_max-l_min+1) if m.evaluate(lengths[k][l])])+1
     
     # Add into the solver the negation of the returned `formula`, which represents the current solution.
     # In this way, in the next iteration, the same solution is not feasible anymore
@@ -167,7 +169,8 @@ def process_solver_instance(s, coords, lengths, w, n, w_min, h_min, l_min,l_max,
     # anymore: in this way, the next found solution, if any, is for sure better than the previous one.
     # This is implemented by ensuring that all the variables 'lengths_k_ll' with 'll' from 'l-1' (included) to 
     # 'current_best_l-1' (exclued) are False.
-    s.add(And([Not(lengths[k][ll]) for k in range(n) for ll in range(l-1,current_best_l-1)]))
+    print(l, l-l_min-1)
+    s.add(And([Not(lengths[k][ll]) for k in range(n) for ll in range(l-l_min,current_best_l-l_min)]))
     
     return coords_sol, l
 
@@ -225,7 +228,9 @@ def vlsi_sat(w, n, dims, timeout=300):
     min_rects_per_row = w // w_max  # Minimum number of circuits per row
     max_rects_per_col = ceil(n / max([1, min_rects_per_row]))  # Maximum number of circuits per column
     # The upper bound for the length
-    l_max =  sum(sorted(dimsY)[n-max_rects_per_col:n])
+    #l_max =  sum(sorted(dimsY)[n-max_rects_per_col:])
+    sorted_dimsY = sorted(dimsY, reverse=True)
+    l_max = sum([sorted_dimsY[i] for i in range(n) if i % min_rects_per_row == 0])
 
     # l_max = sum(dimsY)
     # Define the upper bound for the length of the plate
@@ -237,11 +242,13 @@ def vlsi_sat(w, n, dims, timeout=300):
     l_max = sum(sorted(dimsY)[n-max_rects_per_col:n])"""
 
     # List of lists of lists, containing the 'circuits' boolean variables: variables 'circuit_i_j_k'
-    circuits = [[[Bool(f'circuit_{i}_{j}_{k}') for k in range(n)] for j in range(l_max-h_min)] for i in range(w-w_min)]
+    circuits = [[[Bool(f'circuit_{i}_{j}_{k}') for k in range(n)] for j in range(l_max)] for i in range(w)]
     # List of lists of lists, containing the 'coords' boolean variables: variables 'coord_i_j_k'
-    coords = [[[Bool(f'coord_{i}_{j}_{k}') for k in range(n)] for j in range(l_max)] for i in range(w)]
+    coords = [[[Bool(f'coord_{i}_{j}_{k}') for k in range(n)] for j in range(l_max-h_min)] for i in range(w-w_min)]
     # List of lists of lists, containing the 'lengths' boolean variables: variables 'length_k_l'
-    lengths = [[Bool(f'length_{k}_{l}') for l in range(l_min,l_max)] for k in range(n)]
+    lengths = [[Bool(f'length_{k}_{l}') for l in range(l_min-1,l_max)] for k in range(n)]
+
+    print(l_min, l_max, len(lengths[0]))
 
     start_time = time.time()
     

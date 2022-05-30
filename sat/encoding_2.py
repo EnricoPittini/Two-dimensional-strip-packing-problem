@@ -224,9 +224,12 @@ def vlsi_sat(w, n, dims, timeout=300):
     # l_max = sum(dimsY)
     # Define the upper bound for the length of the plate
     w_max = max(dimsX)
-    max_rects_per_row = w // w_max 
-    max_rects_per_col = ceil(n / max_rects_per_row)
-    l_max = sum(sorted(dimsY)[n-max_rects_per_col:n])
+    min_rects_per_row = w // w_max  # Minimum number of circuits per row
+    max_rects_per_col = ceil(n / max([1, min_rects_per_row]))  # Maximum number of circuits per column
+    # The upper bound for the length
+    #l_max =  sum(sorted(dimsY)[n-max_rects_per_col:])
+    sorted_dimsY = sorted(dimsY, reverse=True)
+    l_max = sum([sorted_dimsY[i] for i in range(n) if i % min_rects_per_row == 0])
 
     start_time = time.time()
     
