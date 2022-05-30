@@ -36,7 +36,7 @@ Instance 28: Chuffed 23.11 s.
 # Model 3
 Testing the implied constraints (*cumulative constraints*)
 - 3A. Kept only `cumulative(coordsY, dimsY, dimsX, w)`.
-- 3B. Kept only `cumulative(coordsX, dimsX, dimsY, l)`.
+- 3B. ☑ Kept only `cumulative(coordsX, dimsX, dimsY, l)`.
 - 3C. Removed both *cumulative constraints*.
 In the end 3B was the best model (see *cumulative_results_i.json* files).
 
@@ -54,14 +54,16 @@ Symmetry breaking constraints:
 - 4A1: tests 1, 2 and 3;
 - 4A2: tests 1 and 2;
 - 4A3: tests 1 and 3;
-- 4A4: tests 2 and 3;
+- 4A4 ☑: tests 2 and 3;
 - 4A5: tests 1;
 - 4A6: tests 2;
 - 4A7: tests 3.
 
+4A4 and 4A1 had the best results and pretty similar ones. 4A4 has been chosen since it is more "lightweight".
+
 # Model 4B
 Symmetry breaking constraints:
-4B batch of models use the best symmetry breaking combination found in the batch 4A and selects one of the following constraints:
+4B batch of models use the best symmetry breaking combination found in the batch 4A (4A4) and selects one of the following constraints:
 - 4B0: puts the highest rectangle on the bottom left corner;
 - 4B1: puts the rectangle with the greater area on the bottom left corner;
 - 4B2: puts the widest rectangle on the bottom left corner.

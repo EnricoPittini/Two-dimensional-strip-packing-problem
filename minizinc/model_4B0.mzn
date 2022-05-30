@@ -23,12 +23,13 @@ int: h_max = max(dimsY);  % The maximum height of a rectangle
 int: w_min = min(dimsX);  % The minimum width of a rectangle
 int: w_max = max(dimsX);  % The maximum width of a rectangle
 int: l_min = max([h_max, A_tot div w]);  % The lower bound for the length
-int: max_rects_per_row = w div w_max; % Maximum number of rectangles per row
-int: max_rects_per_col = ceil(n / max([1, max_rects_per_row])); % Maximum number of rectangles per column
+int: min_rects_per_row = w div w_max; % Minimum number of rectangles per row
+int: max_rects_per_col = ceil(n / max([1, min_rects_per_row])); % Maximum number of rectangles per column
 % The upper bound for the length
-int: l_max = if max_rects_per_row = 1 
-  then sum(areas) 
-  else sum([dimsY[k] | k in 1..n where k mod max_rects_per_row = 1]) 
+int: l_max = if min_rects_per_row = 1 
+  then sum(dimsY) 
+  else let{array [1..n] of int: sorted_dimsY = reverse(sort(dimsY))} in 
+    sum([sorted_dimsY[k] | k in 1..n where k mod min_rects_per_row = 1]) 
 endif;
 
 %%%%%%% VARIABLES
@@ -57,18 +58,15 @@ constraint l = max(i in 1..n)(coordsY[i]+dimsY[i]);
 
 
 %%%%%%% SYMMETRY BREAKING
-% Symmetry breaking constraint in which for all pairs of rectangles i, j having the same dimension a lexicographic order is
-% imposed between the coordinates of i and j:
-%    - the array that has to be lexicographically less than the other is the one containing the coordinates of i
-%    - the array that has to be lexicographically greater or equal than the other is the one containing the coordinates of j
-constraint forall(i,j in 1..n where i < j /\ dimsX[i] = dimsX[j] /\ dimsY[i] = dimsY[j])(
-  lex_lesseq([coordsX[i], coordsY[i]], [coordsX[j], coordsY[j]])
-);
-
+% Symmetry breaking constraint that imposes that the area of the rectangles on the right half of the plate should be less
+% or equal than half of the total area of the rectangles.
 constraint let{int: w_half = ceil(w/2)} in (sum([areas[i] | i in 1..n where coordsX[i] >= w_half]) <= A_tot / 2);
-  
+
+% Symmetry breaking constraint that imposes that the area of the rectangles on the top half of the plate should be less
+% or equal than half of the total area of the rectangles.
 constraint (sum([areas[i] | i in 1..n where coordsY[i] > l div 2]) <= A_tot / 2);
 
+% Symmetry breaking constraint that puts the highest rectangle on the bottom left corner.
 constraint coordsX[arg_max(dimsY)] = 0 /\ coordsY[arg_max(dimsY)] = 0;
 
 %%%%%%% SOLVING

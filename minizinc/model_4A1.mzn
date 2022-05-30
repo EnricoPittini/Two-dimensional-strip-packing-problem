@@ -25,7 +25,7 @@ int: h_max = max(dimsY);  % The maximum height of a rectangle
 int: w_min = min(dimsX);  % The minimum width of a rectangle
 int: w_max = max(dimsX);  % The maximum width of a rectangle
 int: l_min = max([h_max, A_tot div w]);  % The lower bound for the length
-int: min_rects_per_row = w div w_min; % Minimum number of rectangles per row
+int: min_rects_per_row = w div w_max; % Minimum number of rectangles per row
 int: max_rects_per_col = ceil(n / max([1, min_rects_per_row])); % Maximum number of rectangles per column
 % The upper bound for the length
 int: l_max = if min_rects_per_row = 1 

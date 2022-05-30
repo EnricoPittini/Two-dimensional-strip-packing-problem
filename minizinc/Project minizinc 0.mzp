@@ -15,10 +15,11 @@
         "model_4B2.mzn",
         "model_7.mzn"
     ],
-    "openTab": 13,
+    "openTab": 10,
     "projectFiles": [
         "Data 13.dzn",
         "Data 3.dzn",
+        "Data 34.dzn",
         "Data 8.dzn",
         "Data 99.dzn",
         "Data Unsat.dzn",

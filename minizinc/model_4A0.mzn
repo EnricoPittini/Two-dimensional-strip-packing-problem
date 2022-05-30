@@ -22,16 +22,16 @@ int: h_max = max(dimsY);  % The maximum height of a rectangle
 int: w_min = min(dimsX);  % The minimum width of a rectangle
 int: w_max = max(dimsX);  % The maximum width of a rectangle
 int: l_min = max([h_max, A_tot div w]);  % The lower bound for the length
-int: min_rects_per_row = w div w_min; % Minimum number of rectangles per row
+int: min_rects_per_row = w div w_max; % Minimum number of rectangles per row
 int: max_rects_per_col = ceil(n / max([1, min_rects_per_row])); % Maximum number of rectangles per column
 % The upper bound for the length
-int: l_max = if min_rects_per_row = 1 
+int: l_max2 = if min_rects_per_row = 1 
   then sum(dimsY) 
   else let{array [1..n] of int: sorted_dimsY = reverse(sort(dimsY))} in 
     sum([sorted_dimsY[k] | k in 1..n where k mod min_rects_per_row = 1]) 
 endif;
 
-% int: l_max = sum(dimsY);
+int: l_max = sum(dimsY);
 
 %%%%%%% VARIABLES
 % The length of the plate
@@ -59,9 +59,8 @@ constraint l = max(i in 1..n)(coordsY[i]+dimsY[i]);
 
 %%%%%%% SOLVING
 solve minimize l;
-/*
+
 output ["l = \(l) ", "w = \(w) ", "n = \(n) ",
 "dims = \(dims) ", "dimsX = \(dimsX) ", "dimsY = \(dimsY) ", "areas = \(areas) ", "A_tot = \(A_tot) ",
-"h_min = \(h_min) ", "h_max = \(h_max) ", "w_min = \(w_min) ", "w_max = \(w_max) ", "l_min = \(l_min) ", "l_max = \(l_max) ",
+"h_min = \(h_min) ", "h_max = \(h_max) ", "w_min = \(w_min) ", "w_max = \(w_max) ", "l_min = \(l_min) ", "l_max = \(l_max2) ",
 "max_rects_per_row = \(min_rects_per_row) ", "max_rects_per_col = \(max_rects_per_col) "]
-*/
