@@ -1,254 +1,282 @@
 [
     {
+        "ins-1": {
+            "model_4B0": 0.45,
+            "model_4B1": 0.42,
+            "model_4B2": 0.41
+        }
+    },
+    {
+        "ins-2": {
+            "model_4B0": 0.43,
+            "model_4B1": 0.49,
+            "model_4B2": 0.61
+        }
+    },
+    {
+        "ins-3": {
+            "model_4B0": 0.52,
+            "model_4B1": 0.59,
+            "model_4B2": 0.54
+        }
+    },
+    {
+        "ins-4": {
+            "model_4B0": 0.5,
+            "model_4B1": 0.43,
+            "model_4B2": 0.44
+        }
+    },
+    {
+        "ins-5": {
+            "model_4B0": 0.44,
+            "model_4B1": 0.46,
+            "model_4B2": 0.41
+        }
+    },
+    {
+        "ins-6": {
+            "model_4B0": 0.47,
+            "model_4B1": 0.45,
+            "model_4B2": 0.52
+        }
+    },
+    {
+        "ins-7": {
+            "model_4B0": 0.45,
+            "model_4B1": 0.71,
+            "model_4B2": 0.59
+        }
+    },
+    {
+        "ins-8": {
+            "model_4B0": 0.51,
+            "model_4B1": 0.5,
+            "model_4B2": 0.59
+        }
+    },
+    {
+        "ins-9": {
+            "model_4B0": 0.53,
+            "model_4B1": 0.49,
+            "model_4B2": 0.57
+        }
+    },
+    {
+        "ins-10": {
+            "model_4B0": 0.54,
+            "model_4B1": 0.46,
+            "model_4B2": 0.49
+        }
+    },
+    {
+        "ins-11": {
+            "model_4B0": 1.95,
+            "model_4B1": 2.06,
+            "model_4B2": 0.81
+        }
+    },
+    {
+        "ins-12": {
+            "model_4B0": 0.92,
+            "model_4B1": 0.91,
+            "model_4B2": 0.69
+        }
+    },
+    {
+        "ins-13": {
+            "model_4B0": 0.56,
+            "model_4B1": 0.59,
+            "model_4B2": 0.57
+        }
+    },
+    {
+        "ins-14": {
+            "model_4B0": 0.54,
+            "model_4B1": 0.65,
+            "model_4B2": 0.55
+        }
+    },
+    {
+        "ins-15": {
+            "model_4B0": 0.56,
+            "model_4B1": 1.4,
+            "model_4B2": 0.8
+        }
+    },
+    {
+        "ins-16": {
+            "model_4B0": 20.71,
+            "model_4B1": 20.55,
+            "model_4B2": 17.94
+        }
+    },
+    {
+        "ins-17": {
+            "model_4B0": 3.12,
+            "model_4B1": 10.88,
+            "model_4B2": 0.94
+        }
+    },
+    {
+        "ins-18": {
+            "model_4B0": 1.66,
+            "model_4B1": 1.96,
+            "model_4B2": 20.3
+        }
+    },
+    {
+        "ins-19": {
+            "model_4B0": "NaN",
+            "model_4B1": "NaN",
+            "model_4B2": 2.83
+        }
+    },
+    {
         "ins-20": {
-            "model_6_sym_0": 1.26,
-            "model_6_sym_1": 1.83,
-            "model_6_sym_2": 0.45,
-            "model_6_sym_3": 1.53,
-            "model_6_sym_4": 38.37,
-            "model_6_sym_5": 0.54,
-            "model_6_sym_6": 35.18,
-            "model_6_sym_7": 16.7
+            "model_4B0": 12.8,
+            "model_4B1": 6.53,
+            "model_4B2": 8.2
         }
     },
     {
         "ins-21": {
-            "model_6_sym_0": 15.91,
-            "model_6_sym_1": 25.36,
-            "model_6_sym_2": 11.67,
-            "model_6_sym_3": 2.66,
-            "model_6_sym_4": 0.85,
-            "model_6_sym_5": 105.25,
-            "model_6_sym_6": 8.74,
-            "model_6_sym_7": 1.19
+            "model_4B0": 1.42,
+            "model_4B1": 17.31,
+            "model_4B2": 5.39
         }
     },
     {
         "ins-22": {
-            "model_6_sym_0": 2.71,
-            "model_6_sym_1": "Unsat",
-            "model_6_sym_2": "Unsat",
-            "model_6_sym_3": 155.34,
-            "model_6_sym_4": "Unsat",
-            "model_6_sym_5": 36.91,
-            "model_6_sym_6": "Unsat",
-            "model_6_sym_7": 159.2
+            "model_4B0": 61.1,
+            "model_4B1": 40.7,
+            "model_4B2": "NaN"
         }
     },
     {
         "ins-23": {
-            "model_6_sym_0": 2.32,
-            "model_6_sym_1": 13.54,
-            "model_6_sym_2": 9.11,
-            "model_6_sym_3": 4.92,
-            "model_6_sym_4": 1.99,
-            "model_6_sym_5": 28.57,
-            "model_6_sym_6": 0.74,
-            "model_6_sym_7": 24.63
+            "model_4B0": 6.24,
+            "model_4B1": 5.95,
+            "model_4B2": 5.94
         }
     },
     {
         "ins-24": {
-            "model_6_sym_0": 1.63,
-            "model_6_sym_1": 18.09,
-            "model_6_sym_2": 1.68,
-            "model_6_sym_3": 11.72,
-            "model_6_sym_4": 9.33,
-            "model_6_sym_5": 1.33,
-            "model_6_sym_6": 1.33,
-            "model_6_sym_7": 10.54
+            "model_4B0": 11.1,
+            "model_4B1": 13.68,
+            "model_4B2": 27.56
         }
     },
     {
         "ins-25": {
-            "model_6_sym_0": 29.32,
-            "model_6_sym_1": "Unsat",
-            "model_6_sym_2": 161.05,
-            "model_6_sym_3": 37.7,
-            "model_6_sym_4": 23.78,
-            "model_6_sym_5": 159.99,
-            "model_6_sym_6": "Unsat",
-            "model_6_sym_7": 6.25
+            "model_4B0": 150.62,
+            "model_4B1": 125.9,
+            "model_4B2": "NaN"
         }
     },
     {
         "ins-26": {
-            "model_6_sym_0": 195.47,
-            "model_6_sym_1": 1.84,
-            "model_6_sym_2": 4.41,
-            "model_6_sym_3": 21.9,
-            "model_6_sym_4": "Unsat",
-            "model_6_sym_5": "Unsat",
-            "model_6_sym_6": "Unsat",
-            "model_6_sym_7": 19.81
+            "model_4B0": 233.54,
+            "model_4B1": 5.03,
+            "model_4B2": 5.0
         }
     },
     {
         "ins-27": {
-            "model_6_sym_0": 7.43,
-            "model_6_sym_1": 11.18,
-            "model_6_sym_2": 7.55,
-            "model_6_sym_3": 9.24,
-            "model_6_sym_4": 6.27,
-            "model_6_sym_5": 5.92,
-            "model_6_sym_6": 12.26,
-            "model_6_sym_7": 17.83
+            "model_4B0": 21.94,
+            "model_4B1": 30.53,
+            "model_4B2": 30.76
         }
     },
     {
         "ins-28": {
-            "model_6_sym_0": 31.32,
-            "model_6_sym_1": 2.05,
-            "model_6_sym_2": 1.54,
-            "model_6_sym_3": 1.03,
-            "model_6_sym_4": "Unsat",
-            "model_6_sym_5": 14.98,
-            "model_6_sym_6": 2.91,
-            "model_6_sym_7": 17.08
+            "model_4B0": 2.28,
+            "model_4B1": 1.96,
+            "model_4B2": 1.89
         }
     },
     {
         "ins-29": {
-            "model_6_sym_0": 2.87,
-            "model_6_sym_1": 42.7,
-            "model_6_sym_2": 4.59,
-            "model_6_sym_3": "Unsat",
-            "model_6_sym_4": 104.03,
-            "model_6_sym_5": 2.19,
-            "model_6_sym_6": 4.23,
-            "model_6_sym_7": 80.97
+            "model_4B0": 28.07,
+            "model_4B1": 19.91,
+            "model_4B2": 13.17
         }
     },
     {
         "ins-30": {
-            "model_6_sym_0": 21.18,
-            "model_6_sym_1": "Unsat",
-            "model_6_sym_2": "Unsat",
-            "model_6_sym_3": "Unsat",
-            "model_6_sym_4": "Unsat",
-            "model_6_sym_5": 70.87,
-            "model_6_sym_6": "Unsat",
-            "model_6_sym_7": "Unsat"
+            "model_4B0": 26.11,
+            "model_4B1": 19.07,
+            "model_4B2": 22.73
         }
     },
     {
         "ins-31": {
-            "model_6_sym_0": 0.57,
-            "model_6_sym_1": 83.35,
-            "model_6_sym_2": 62.76,
-            "model_6_sym_3": 64.98,
-            "model_6_sym_4": 58.39,
-            "model_6_sym_5": 45.73,
-            "model_6_sym_6": 4.45,
-            "model_6_sym_7": 67.37
+            "model_4B0": 131.43,
+            "model_4B1": 132.78,
+            "model_4B2": 124.02
         }
     },
     {
         "ins-32": {
-            "model_6_sym_0": "Unsat",
-            "model_6_sym_1": "Unsat",
-            "model_6_sym_2": "Unsat",
-            "model_6_sym_3": "Unsat",
-            "model_6_sym_4": "Unsat",
-            "model_6_sym_5": "Unsat",
-            "model_6_sym_6": "Unsat",
-            "model_6_sym_7": "Unsat"
+            "model_4B0": "NaN",
+            "model_4B1": "NaN",
+            "model_4B2": "NaN"
         }
     },
     {
         "ins-33": {
-            "model_6_sym_0": "Unsat",
-            "model_6_sym_1": 71.69,
-            "model_6_sym_2": 1.51,
-            "model_6_sym_3": 56.19,
-            "model_6_sym_4": 56.5,
-            "model_6_sym_5": 0.91,
-            "model_6_sym_6": 40.33,
-            "model_6_sym_7": 44.88
+            "model_4B0": 100.48,
+            "model_4B1": 48.5,
+            "model_4B2": 48.47
         }
     },
     {
         "ins-34": {
-            "model_6_sym_0": 24.37,
-            "model_6_sym_1": 87.13,
-            "model_6_sym_2": 152.01,
-            "model_6_sym_3": "Unsat",
-            "model_6_sym_4": 3.57,
-            "model_6_sym_5": "Unsat",
-            "model_6_sym_6": 83.08,
-            "model_6_sym_7": 18.11
+            "model_4B0": 299.03,
+            "model_4B1": 22.75,
+            "model_4B2": 2.53
         }
     },
     {
         "ins-35": {
-            "model_6_sym_0": 2.06,
-            "model_6_sym_1": 3.41,
-            "model_6_sym_2": 6.71,
-            "model_6_sym_3": 19.8,
-            "model_6_sym_4": 2.01,
-            "model_6_sym_5": 0.99,
-            "model_6_sym_6": 2.49,
-            "model_6_sym_7": 2.48
+            "model_4B0": 7.51,
+            "model_4B1": 7.34,
+            "model_4B2": 46.04
         }
     },
     {
         "ins-36": {
-            "model_6_sym_0": 2.18,
-            "model_6_sym_1": 0.71,
-            "model_6_sym_2": 1.26,
-            "model_6_sym_3": 1.25,
-            "model_6_sym_4": 1.04,
-            "model_6_sym_5": 0.58,
-            "model_6_sym_6": 0.6,
-            "model_6_sym_7": 1.13
+            "model_4B0": 1.26,
+            "model_4B1": 1.13,
+            "model_4B2": 1.16
         }
     },
     {
         "ins-37": {
-            "model_6_sym_0": "Unsat",
-            "model_6_sym_1": 240.96,
-            "model_6_sym_2": 226.82,
-            "model_6_sym_3": "Unsat",
-            "model_6_sym_4": "Unsat",
-            "model_6_sym_5": "Unsat",
-            "model_6_sym_6": 8.94,
-            "model_6_sym_7": 115.51
+            "model_4B0": "NaN",
+            "model_4B1": "NaN",
+            "model_4B2": "NaN"
         }
     },
     {
         "ins-38": {
-            "model_6_sym_0": 282.18,
-            "model_6_sym_1": "Unsat",
-            "model_6_sym_2": "Unsat",
-            "model_6_sym_3": 103.33,
-            "model_6_sym_4": 114.81,
-            "model_6_sym_5": "Unsat",
-            "model_6_sym_6": 49.94,
-            "model_6_sym_7": "Unsat"
+            "model_4B0": "NaN",
+            "model_4B1": "NaN",
+            "model_4B2": "NaN"
         }
     },
     {
         "ins-39": {
-            "model_6_sym_0": 117.55,
-            "model_6_sym_1": "Unsat",
-            "model_6_sym_2": 180.22,
-            "model_6_sym_3": 21.09,
-            "model_6_sym_4": "Unsat",
-            "model_6_sym_5": 8.2,
-            "model_6_sym_6": "Unsat",
-            "model_6_sym_7": "Unsat"
+            "model_4B0": 154.29,
+            "model_4B1": 157.28,
+            "model_4B2": 76.29
         }
     },
     {
         "ins-40": {
-            "model_6_sym_0": "Unsat",
-            "model_6_sym_1": "Unsat",
-            "model_6_sym_2": "Unsat",
-            "model_6_sym_3": "Unsat",
-            "model_6_sym_4": "Unsat",
-            "model_6_sym_5": "Unsat",
-            "model_6_sym_6": "Unsat",
-            "model_6_sym_7": "Unsat"
+            "model_4B0": "NaN",
+            "model_4B1": "NaN",
+            "model_4B2": "NaN"
         }
     }
 ]
