@@ -1,9 +1,11 @@
+from math import ceil
+from socket import timeout
 import time
 from z3 import *
 from sat_utils import at_least_one, at_most_one, exactly_one, UnsatError, compute_l
 
 
-def __vlsi_sat(w, n, dimsX, dimsY, formulas=[]):
+def __vlsi_sat(w, n, dimsX, dimsY, l_max):
     """Solves the given VLSI instance using a SAT encoding.
 
     It is an auxiliary function. Its aim is to solve the VLSI instance without performing optimization: any solution is good.
@@ -18,20 +20,19 @@ def __vlsi_sat(w, n, dimsX, dimsY, formulas=[]):
         Dims X (i.e. width) of the circuits
     dimsY : list of int
         Dims Y (i.e. height) of the circuits
-    formulas : list of z3.z3.BoolRef, optional
-        List of additional constraints to impose, by default []
+    l_max : int
+        Upper bound of the length of the plate
 
     Returns
     -------
-    coords_sol: list of tuple of int
-        List containing the coordX and coordY of the lower-left vertex of each circuit
-    formula_sol: z3.z3.BoolRef
-        Boolean formula containing the solution
-
-    Raises
-    ------
-    UnsatError
-        If the given instance is UNSAT
+    s: z3.z3.Solver
+        The solver instance
+    coords : list of list of list of z3.z3.BoolRef
+        Boolean variables 'coord_i_j_k'.
+        See `Notes`.
+    lengths : list of list of z3.z3.BoolRef
+        Boolean variables 'length_k_l'.
+        See `Notes`.
 
     Notes
     ------
@@ -43,17 +44,21 @@ def __vlsi_sat(w, n, dimsX, dimsY, formulas=[]):
     - coord_i_j_k, where 'i' in [0,w], 'j' in [0,l_max], 'k' in [0,n].
       '(i,j)' represent two coordinates of the plate, 'k' represents a circuit.
        coord_i_j_k is True IIF the left-bottom corner of the circuit 'k' is put in the cell '(i,j)' of the plate.
+    - length_k_l, where 'k' in [0,n] and 'l' in [0,l_max], 'k' in [0,n].
+      'k' represent represents a circuit, 'l' represents a length of the plate.
+       length_k_l is True IIF the circuit 'k' uses the length 'l' of the plate.
     """
     s = Solver()  # Solver instance
-    s.add(And(formulas))  # Add the given optional formulas
     
-    # Upper bound of the length of the plate
-    l_max = sum(dimsY)
+    # Upper bound of the length of the plate, if not explicitely given in input
+    # l_max = sum(dimsY)
     
     # List of lists of lists, containing the 'circuits' boolean variables: variables 'circuit_i_j_k'
     circuits = [[[Bool(f'circuit_{i}_{j}_{k}') for k in range(n)] for j in range(l_max)] for i in range(w)]
     # List of lists of lists, containing the 'coords' boolean variables: variables 'coord_i_j_k'
     coords = [[[Bool(f'coord_{i}_{j}_{k}') for k in range(n)] for j in range(l_max)] for i in range(w)]
+    # List of lists of lists, containing the 'lengths' boolean variables: variables 'length_k_l'
+    lengths = [[Bool(f'length_{k}_{l}') for l in range(l_max)] for k in range(n)]
     
     # Constraint: in each cell '(i,j)' of the plate at most one circuit is present.
     # This reflects both on `circuits` and on `coords`.
@@ -65,6 +70,8 @@ def __vlsi_sat(w, n, dimsX, dimsY, formulas=[]):
     # Constraint: the left-bottom corner of each circuit 'k' must be present exactly one time across the plate
     for k in range(n):
         s.add(exactly_one([coords[i][j][k] for i in range(w) for j in range(l_max)], name=f'exactly_one_{k}'))
+
+    print('CUCU')  # TODO: remove
 
     # Constraint: for each circuit 'k' and for each cell '(i,j)' of the plate, if that cell contains the left-bottom corner 
     # of 'k', then all the cells covered by the circuit 'k' must contain only that circuit and no other circuits.      
@@ -89,14 +96,62 @@ def __vlsi_sat(w, n, dimsX, dimsY, formulas=[]):
                 # Formula ensuring that all the `covered_positions` actually contain that circuit `k`
                 all_positions_covered_formula = And([circuits[ii][jj][k] for (ii,jj) in covered_positions])
 
-                # TODO: put negation of all circuits[ii][jj][kk] related to wrong positions? 
+                # TODO: put negation of all circuits[ii][jj][k] related to wrong positions? 
                 # The added constraint is the following implication: if left-bottom corner of `k` in `(i,j)`, then 
-                # `no_overlapping_circuit_formula` and `all_positions_covered_formula`
+                # `no_overlapping_circuit_formula` and `all_positions_covered_formula`.
+                # Actually, it is not an implication, nut an equivalence.
                 s.add(coords[i][j][k] == And(no_overlapping_circuit_formula,all_positions_covered_formula))
+
+                # Formula ensuring that all the lengths up to `j+dimsY[k]-1` are used by the circuit `k`
+                used_lengths_formula = And([lengths[k][l] for l in range(j+dimsY[k])])
+                # Formula ensuring that all the lengths from `j+dimsY[k]` are not used by the circuit `k`
+                non_used_lengths_formula = And([Not(lengths[k][l]) for l in range(j+dimsY[k], l_max)])
+                # The added constraint is the following implication: if left-bottom corner of `k` in `(i,j)`, then 
+                # `used_lengths_formula` and `non_used_lengths_formula`.
+                s.add(Implies(coords[i][j][k], And(used_lengths_formula, non_used_lengths_formula)))
+
+    print('HERE')  # TODO: remove
 
     # Check if UNSAT 
     if s.check() != sat:
         raise UnsatError('UNSAT')
+        
+    return s, coords, lengths
+
+
+def process_solver_instance(s, coords, lengths, w, n, l_max, current_best_l):
+    """Processes the given solver instance.
+
+    Two operations are performed:
+        - the new solution is extracted from the given solver;
+        - additional constraints are injected into the solver, in order to find the next best solution (incremental solving).
+
+    Parameters
+    ----------
+    s : z3.z3.Solver
+        Solver instance
+    coords : list of list of list of z3.z3.BoolRef
+        Boolean variables 'coord_i_j_k'.
+    lengths : list of list of z3.z3.BoolRef
+        Boolean variables 'length_k_l'.
+    w : int
+        Width of the plate
+    n : int
+        Number of circuits
+    l_max : int
+        Upper bound of the length of the plate
+    current_best_l : int
+        Current best length of the plate (found so far)
+
+    Returns
+    -------
+    coords_sol : list of tuple of int
+        Coordinates of the left-bottom corner of the circuits of the new solution
+    l : int
+        Length of the plate of the new solution
+    """
+    if not current_best_l:
+        current_best_l = l_max+1
     
     # Get the solution
     m = s.model()
@@ -107,7 +162,20 @@ def __vlsi_sat(w, n, dimsX, dimsY, formulas=[]):
     formula = And([ (coords[i][j][k] if m.evaluate(coords[i][j][k]) else Not(coords[i][j][k])) 
                   for i in range(w) for j in range(l_max) for k in range(n)])
 
-    return coords_sol, formula
+    # Length of the plate
+    l = max([l for k in range(n) for l in range(l_max) if m.evaluate(lengths[k][l])])+1
+    
+    # Add into the solver the negation of the returned `formula`, which represents the current solution.
+    # In this way, in the next iteration, the same solution is not feasible anymore
+    s.add(Not(formula))  
+
+    # Add into the solver a constraint ensuring that a solution which has a length bigger or equal than `l-2` is not feasible
+    # anymore: in this way, the next found solution, if any, is for sure better than the previous one.
+    # This is implemented by ensuring that all the variables 'lengths_k_ll' with 'll' from 'l-1' (included) to 
+    # 'current_best_l-1' (exclued) are False.
+    s.add(And([Not(lengths[k][ll]) for k in range(n) for ll in range(l-1,current_best_l-1)]))
+    
+    return coords_sol, l
 
 
 def vlsi_sat(w, n, dims, timeout=300):
@@ -153,47 +221,46 @@ def vlsi_sat(w, n, dims, timeout=300):
     dimsX = [dims[i][0] for i in range(n)]
     dimsY = [dims[i][1] for i in range(n)]
 
-    start_time = time.time()
+    # l_max = sum(dimsY)
+    # Define the upper bound for the length of the plate
+    w_max = max(dimsX)
+    max_rects_per_row = w // w_max 
+    max_rects_per_col = ceil(n / max_rects_per_row)
+    l_max = sum(sorted(dimsY)[n-max_rects_per_col:n])
 
-    # List of additional constraints to inject
-    formulas = []
-    # Boolean flag reprenting if the first solution has not been found yet
-    first = True
+    start_time = time.time()
     
+    # Search for a first solution 
+    s, coords, lengths = __vlsi_sat(w, n, dimsX, dimsY, l_max)
+    best_coords, best_l = process_solver_instance(s, coords, lengths, w, n, l_max, current_best_l=None)
+
+    solving_time = time.time() - start_time
+    if solving_time>timeout:  # The first solution has been found after the time out: no found solution
+        raise UnsatError('UNSAT')
+
+    # A first solution has been found
+
+    print(best_coords)
+    print(best_l)
+       
     # Loop iterating over all the possible solutions, searching for the best one
     while True:
-        try:
-            # Search for a solution (given the additional constraints in `formulas`)
-            coords, formula = __vlsi_sat(w, n, dimsX, dimsY, formulas=formulas)
-
-            solving_time = time.time() - start_time
-            if solving_time>timeout:  # The solution has been found after the time out: no valid solution. Break the cycle
-                break
-
-            # Append into `formulas` the negation of the returned `formula`, which represents the current solution.
-            # In this way, in the next iteration, the same solution is not feasible anymore
-            formulas.append(Not(formula))  
-
-            # Length of the plate of the current solution
-            l = compute_l(coords, dimsY, n)
-
-            # TODO: remove
-            print(l)
-            print(coords)
-
-            # Check if the current solution is the best solution found so far
-            if first or l < best_l:
-                first = False
-                best_coords = coords
-                best_l = l
-                # print(f'best_l {best_l}') # TODO: remove
-
-        except UnsatError:  # Found UNSAT: leave the cycle
+        if s.check()!=sat:  # No more solutions: break the cycle
             break
-            
-    if first:  # No solution has been found: UNSAT
-        raise UnsatError('UNSAT')
+
+        # A new solution has been found
+
+        solving_time = time.time() - start_time
+        if solving_time>timeout:  # The new solution has been found after the time out: no valid solution. Break the cycle
+            break
+
+        # New valid solution
+
+        # Get the new valid solution and inject the new constraints into the solver
+        best_coords, best_l = process_solver_instance(s, coords, lengths, w, n, l_max, best_l)        
+        print(best_coords)
+        print(best_l)
     
     # Return the best found solution. 
     # (For sure one solution has been found, however it can be non-optimal due to the timeout).
-    return best_coords, best_l              
+    return best_coords, best_l            

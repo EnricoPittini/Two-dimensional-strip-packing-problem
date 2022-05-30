@@ -1,3 +1,4 @@
+import time
 from z3 import *
 from sat_utils import at_least_one, at_most_one, exactly_one, UnsatError, compute_l
 
@@ -17,16 +18,16 @@ def __vlsi_sat(w, n, dimsX, dimsY, formulas=[], l_max=None):
         Dims X (i.e. width) of the circuits
     dimsY : list of int
         Dims Y (i.e. height) of the circuits
-    formulas : list, optional
+    formulas : list of z3.z3.BoolRef, optional
         List of additional constraints to impose, by default []
-    formulas : l_max, optional
+    l_max : int, optional
         Maximum length of the plate, by default None
 
     Returns
     -------
-    coords_sol: list of tuples of int
+    coords_sol: list of tuple of int
         List containing the coordX and coordY of the lower-left vertex of each circuit
-    formula_sol: z3.
+    formula_sol: z3.z3.BoolRef
         Boolean formula containing the solution
 
     Raises
@@ -112,10 +113,14 @@ def __vlsi_sat(w, n, dimsX, dimsY, formulas=[], l_max=None):
     return coords_sol, formula
 
 
-def vlsi_sat(w, n, dims):
+def vlsi_sat(w, n, dims, timeout=300):
     """Solves the given VLSI instance using a SAT encoding.
 
     It performs optimization: the best solution is returned (if any).
+    More precisely, the best solution found strictly within the time limit is returned (if any).
+
+    The implementation is based on the usage of the `__vlsi_sat` auxiliary function.
+    Basically, a loop iterating over all the possible solutions is performed, searching for the best possible solution.
 
     Parameters
     ----------
@@ -125,6 +130,8 @@ def vlsi_sat(w, n, dims):
         The number of circuits
     dims : list of tuple of int
         Dims X and Y (i.e. width and height) of the circuits
+    timeout : int, optional
+        Time limit in seconds for executing the SAT solver, by default 300 (i.e. 5 minutes)
 
     Returns
     -------
@@ -136,16 +143,20 @@ def vlsi_sat(w, n, dims):
     Raises
     ------
     UnsatError
-        If the given instance is UNSAT
+        If the given instance is UNSAT in the specified time limit.
 
     Notes
     ------
-    The implementation is based on the usage of the `__vlsi_sat` auxiliary function.
-    Basically, a loop iterating over all the possible solutions is performed, searching for the best possible solution.
+    Remarks about the time limit.
+    It may happen that the user has to wait a bit longer than the specified time limit. (Basically, for recognizing the 
+    exceeding of the time limit, the solver has to terminate).
+    However, it is guaranteed that the returned solution has been found strictly within the time limit.
     """
-    # Splitting `dims` into `dimsX` and `dimsY`
+    # Split `dims` into `dimsX` and `dimsY`
     dimsX = [dims[i][0] for i in range(n)]
     dimsY = [dims[i][1] for i in range(n)]
+
+    start_time = time.time()
 
     # List of additional constraints to inject
     formulas = []
@@ -163,6 +174,10 @@ def vlsi_sat(w, n, dims):
             # Search for a solution (given the additional constraints in `formulas`)
             coords, formula = __vlsi_sat(w, n, dimsX, dimsY, formulas=formulas, l_max=l_max)
 
+            solving_time = time.time() - start_time
+            if solving_time>timeout:  # The solution has been found after the time out: no valid solution. Break the cycle
+                break
+
             # Append into `formulas` the negation of the returned `formula`, which represents the current solution.
             # In this way, in the next iteration, the same solution is not feasible anymore
             formulas.append(Not(formula))  
@@ -175,7 +190,7 @@ def vlsi_sat(w, n, dims):
             print(coords)
 
             # Check if the current solution is the best solution found so far
-            if first or l < best_l:
+            if first: #or l < best_l:
                 first = False
                 best_coords = coords
                 best_l = l
@@ -187,4 +202,6 @@ def vlsi_sat(w, n, dims):
     if first:  # No solution has been found: UNSAT
         raise UnsatError('UNSAT')
     
+    # Return the best found solution. 
+    # (For sure one solution has been found, however it can be non-optimal due to the timeout).
     return best_coords, best_l              
