@@ -1,19 +1,8 @@
 {
     "openFiles": [
-        "model_4A0.mzn",
-        "model_4A1.mzn",
-        "model_4A2.mzn",
-        "model_4A3.mzn",
-        "model_4A4.mzn",
-        "model_4A5.mzn",
-        "model_4A6.mzn",
-        "model_4A7.mzn",
-        "model_3C.mzn",
-        "model_3B.mzn",
-        "model_4B0.mzn",
-        "model_4B1.mzn",
-        "model_4B2.mzn",
-        "model_7.mzn"
+        "model_4C0.mzn",
+        "model_4C1.mzn",
+        "model_4C2.mzn"
     ],
     "openTab": 0,
     "projectFiles": [
@@ -40,6 +29,9 @@
         "model_4B0.mzn",
         "model_4B1.mzn",
         "model_4B2.mzn",
+        "model_4C0.mzn",
+        "model_4C1.mzn",
+        "model_4C2.mzn",
         "model_6_1.mzn",
         "model_6_2.mzn",
         "model_6_try.mzn",
