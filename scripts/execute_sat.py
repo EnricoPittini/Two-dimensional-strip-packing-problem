@@ -7,12 +7,13 @@ import os
 
 import importlib
 
-from vlsi_sat0 import *
+# sys.path.insert(1, os.path.join(os.path.dirname(__file__), '../sat/'))
+# import vlsi_sat0
 
 import time
 
 import utils
-#python scripts\execute_sat.py sat\vlsi_sat0.py minizinc\instances\ins-1.txt 
+#python scripts\execute_sat.py sat\encoding_0.py minizinc\instances\ins-1.txt 
 
 def main():
     parser = argparse.ArgumentParser(description='Script for executing a VLSI SAT encoding.')
@@ -39,13 +40,18 @@ def main():
     n = int(n)
     dims = [(int(dims[i][0]),int(dims[i][1])) for i in range(n)]
 
-    #encoding_file = importlib.import_module(vars(arguments)['encoding-path'])
-    #vlsi_sat = encoding_file.vlsi_sat
+    encoding_path = vars(arguments)['encoding-path']
+    encoding_abspath = os.path.abspath(encoding_path)
+    module_name = os.path.basename(encoding_path).split('.')[0]
+    sys.path.insert(1, os.path.join(os.path.dirname(__file__), os.path.dirname(encoding_abspath)))
+    encoding_file = importlib.import_module(module_name)
+    vlsi_sat = encoding_file.vlsi_sat
+    UnsatError = encoding_file.UnsatError  # TODO refactor
 
     try:
         start_time = time.time()
         coords, l = vlsi_sat(w, n, dims)
-        solving_time =time.time() - start_time
+        solving_time = time.time() - start_time
         coordsX = [coords[i][0] for i in range(n)]
         coordsY = [coords[i][1] for i in range(n)]
         print(solving_time)
