@@ -69,7 +69,7 @@ constraint forall(i,j in 1..n where i < j /\ dimsX[i] = dimsX[j] /\ dimsY[i] = d
   
 % Symmetry breaking constraint that imposes that the area of the rectangles on the top half of the plate should be less
 % or equal than half of the total area of the rectangles.
-constraint (sum([areas[i] | i in 1..n where coordsY[i] > l div 2]) <= A_tot / 2);
+constraint sum([areas[i] | i in 1..n where coordsY[i] > l div 2]) <= A_tot / 2;
 
 %%%%%%% SOLVING
 solve minimize l;

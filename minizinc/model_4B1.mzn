@@ -64,7 +64,7 @@ constraint let{int: w_half = ceil(w/2)} in (sum([areas[i] | i in 1..n where coor
 
 % Symmetry breaking constraint that imposes that the area of the rectangles on the top half of the plate should be less
 % or equal than half of the total area of the rectangles.
-constraint (sum([areas[i] | i in 1..n where coordsY[i] > l div 2]) <= A_tot / 2);
+constraint sum([areas[i] | i in 1..n where coordsY[i] > l div 2]) <= A_tot / 2;
 
 % Symmetry breaking constraint that puts the rectangle with the greatest area on the bottom left corner.
 constraint coordsX[arg_max(areas)] = 0 /\ coordsY[arg_max(areas)] = 0;
