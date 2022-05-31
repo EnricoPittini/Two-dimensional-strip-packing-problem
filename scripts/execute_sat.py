@@ -7,7 +7,7 @@ import importlib
 import time
 
 import utils
-#python scripts\execute_sat.py sat\encoding_2.py minizinc\instances\ins-10.txt 300
+#python scripts\execute_sat.py sat\encoding_2.py instances\ins-10.txt 300
 
 # TODO: remove
 """
