@@ -10,7 +10,7 @@ MODEL_CHOICES = [f'model_{i}' for i in range(3)] + [f'model_{j}{i}' for i in ['A
     ['model_5_gecode', 'model_6']
 
 # SOLVER_CHOICES = [f'solver_{i}' for i in range(3)]
-#python scripts/compare_minizinc_models.py minizinc minizinc/instances minizinc\solver_1.mpc results/ --models-list model_2 model_3A model_3B model_3C -lb 1 -ub 8
+#python scripts/compare_minizinc_models.py minizinc instances minizinc\solver_1.mpc results/ --models-list model_2 model_3A model_3B model_3C -lb 1 -ub 8
 def main() -> None:
     parser = argparse.ArgumentParser(description='Script for executing a VLSI MiniZinc model.')
 

@@ -9,7 +9,7 @@ import sys
 import utils
 
 
-#python scripts\execute_minizinc.py minizinc\model_1.mzn minizinc\instances\ins-13.txt minizinc\solver_0.mpc
+#python scripts\execute_minizinc.py minizinc\model_1.mzn instances\ins-13.txt minizinc\solver_0.mpc
 def main() -> None:
     parser = argparse.ArgumentParser(description='Script for executing a VLSI MiniZinc model.')
 
