@@ -4,6 +4,8 @@ import time
 from z3 import *
 from sat_utils import at_least_one, at_most_one, exactly_one, UnsatError, compute_l
 
+# TODO: put better bounds on w and l_max
+
 
 def __vlsi_sat(w, n, dimsX, dimsY, w_min, h_min, l_min, l_max):
 
@@ -17,7 +19,7 @@ def __vlsi_sat(w, n, dimsX, dimsY, w_min, h_min, l_min, l_max):
     # List of lists of lists, containing the 'coords' boolean variables: variables 'coord_i_j_k'
     # coords = [[[Bool(f'coord_{i}_{j}_{k}') for k in range(n)] for j in range(l_max-h_min+1)] for i in range(w-w_min+1)]
     # List of lists of lists, containing the 'lengths' boolean variables: variables 'length_k_l'
-    lengths = [Bool(f'length_{l}') for l in range(l_max)]
+    lengths = [Bool(f'length_{l}') for l in range(l_max-l_min+1)]
     
     # Constraint: in each cell '(i,j)' of the plate at most one circuit is present.
     # This reflects both on `circuits` and on `coords`.
@@ -89,10 +91,10 @@ def __vlsi_sat(w, n, dimsX, dimsY, w_min, h_min, l_min, l_max):
     print('HERE')  # TODO: remove
 
     s.add(exactly_one(lengths))
-    for l in range(l_max):
-        # l_index = l+l_min-1
-        at_least_one_circuit_of_that_length_formula = at_least_one([circuits[i][l][k] for i in range(w) for k in range(n)])
-        no_above_circuits_formula = And([Not(circuits[i][j][k]) for i in range(w-w_min) for j in range(l+1, l_max) for k in range(n)])
+    for l in range(l_max-l_min+1):
+        l_index = l+l_min-1
+        at_least_one_circuit_of_that_length_formula = at_least_one([circuits[i][l_index][k] for i in range(w) for k in range(n)])
+        no_above_circuits_formula = And([Not(circuits[i][j][k]) for i in range(w) for j in range(l_index+1, l_max) for k in range(n)])
         s.add(lengths[l] == And(at_least_one_circuit_of_that_length_formula,no_above_circuits_formula))
 
     # Check if UNSAT 
@@ -163,7 +165,7 @@ def process_solver_instance(s, circuits, lengths, w, n, w_min, h_min, l_min, l_m
     # Length of the plate
     #print(type(lengths[0][0]))
     #print(lengths[0][0])
-    l = max([l for l in range(l_max) if m.evaluate(lengths[l])])+1
+    l = max([l for l in range(l_max-l_min+1) if m.evaluate(lengths[l])])+l_min-1+1
     
     # Add into the solver the negation of the returned `formula`, which represents the current solution.
     # In this way, in the next iteration, the same solution is not feasible anymore
@@ -174,7 +176,7 @@ def process_solver_instance(s, circuits, lengths, w, n, w_min, h_min, l_min, l_m
     # This is implemented by ensuring that all the variables 'lengths_k_ll' with 'll' from 'l-1' (included) to 
     # 'current_best_l-1' (exclued) are False.
     #s.add(And([Not(lengths[ll]) for ll in range(l-1,current_best_l-1)]))
-    s.add(Or([lengths[ll] for ll in range(l-1)]))
+    s.add(Or([lengths[ll] for ll in range(l-1-l_min+1)]))
     
     return coords_sol, l
 
