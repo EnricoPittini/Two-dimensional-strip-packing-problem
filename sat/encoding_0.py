@@ -149,11 +149,11 @@ def vlsi_sat(w, n, dims, timeout=300):
     exceeding of the time limit, the solver has to terminate).
     However, it is guaranteed that the returned solution has been found strictly within the time limit.
     """
+    start_time = time.time()
+
     # Split `dims` into `dimsX` and `dimsY`
     dimsX = [dims[i][0] for i in range(n)]
     dimsY = [dims[i][1] for i in range(n)]
-
-    start_time = time.time()
 
     # List of additional constraints to inject
     formulas = []

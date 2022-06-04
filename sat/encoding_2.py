@@ -217,6 +217,8 @@ def vlsi_sat(w, n, dims, timeout=300):
     exceeding of the time limit, the solver has to terminate).
     However, it is guaranteed that the returned solution has been found strictly within the time limit.
     """
+    start_time = time.time()
+
     # Split `dims` into `dimsX` and `dimsY`
     dimsX = [dims[i][0] for i in range(n)]
     dimsY = [dims[i][1] for i in range(n)]
@@ -230,8 +232,6 @@ def vlsi_sat(w, n, dims, timeout=300):
     #l_max =  sum(sorted(dimsY)[n-max_rects_per_col:])
     sorted_dimsY = sorted(dimsY, reverse=True)
     l_max = sum([sorted_dimsY[i] for i in range(n) if i % min_rects_per_row == 0])
-
-    start_time = time.time()
     
     # Search for a first solution 
     s, coords, lengths = __vlsi_sat(w, n, dimsX, dimsY, l_max)
