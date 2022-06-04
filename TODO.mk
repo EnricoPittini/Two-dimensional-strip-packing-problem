@@ -26,3 +26,4 @@
 - Try binary search for optimization
 - Try other encodings of at most one
 - Add timeout info (timeout/not timeout)
+- Improve timeout
