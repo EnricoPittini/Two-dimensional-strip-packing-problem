@@ -80,11 +80,15 @@ def main():
 
     try:
         start_time = time.time()
-        coords, l = vlsi_sat(w, n, dims, timeout=vars(arguments)['time-limit'])
+        coords, l, finish = vlsi_sat(w, n, dims, timeout=vars(arguments)['time-limit'])
         solving_time = time.time() - start_time
+        if not finish:
+            print('Time elapsed')
+        print(solving_time)
+        if not coords:
+            raise UnsatError()
         coordsX = [coords[i][0] for i in range(n)]
         coordsY = [coords[i][1] for i in range(n)]
-        print(solving_time)
     except UnsatError:
         sys.exit('UNSAT')
 

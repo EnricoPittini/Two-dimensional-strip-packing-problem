@@ -25,5 +25,6 @@
 - Implement encoding found in the pdf
 - Try binary search for optimization
 - Try other encodings of at most one
+- Put simmetry breaking constraints
 - Add timeout info (timeout/not timeout)
 - Improve timeout
