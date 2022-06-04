@@ -38,5 +38,6 @@ class UnsatError(BaseException):
 """class TimeoutError(BaseException):
     pass"""
 
+# TODO move to encoding_0 and encoding_1 (it is used only by them)
 def compute_l(coords, dimsY, n):
     return max([coords[i][1]+dimsY[i] for i in range(n)])
