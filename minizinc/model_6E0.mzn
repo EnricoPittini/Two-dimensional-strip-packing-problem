@@ -78,4 +78,4 @@ ann: search_ann_l_from_min = int_search([l], input_order, indomain_min, complete
 ann: search_ann_y_by_height = int_search(reverse(sort_by(coordsY, dimsY)), input_order, indomain_min);
 ann: search_ann_x_by_width = int_search(reverse(sort_by(coordsX, dimsX)), input_order, indomain_min);
 
-solve :: search_ann_l_from_min :: search_ann_y_by_height :: search_ann_x_by_width minimize l;
+solve :: seq_search([search_ann_x_by_width, search_ann_y_by_height, search_ann_l_from_min]) minimize l;

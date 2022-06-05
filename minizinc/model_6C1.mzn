@@ -82,4 +82,4 @@ array[1..2*n] of var int: variables = [if (i mod 2 = 0) then sorted_coordsY[i di
   | i in 1..2*n];
 ann: search_ann_dec_width = int_search(variables, input_order, indomain_random);
 
-solve :: search_ann_l_from_min :: search_ann_dec_width :: restart_luby(100) minimize l;
+solve :: seq_search([search_ann_dec_width, search_ann_l_from_min]) :: restart_luby(100) minimize l;

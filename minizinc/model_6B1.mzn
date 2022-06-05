@@ -81,4 +81,4 @@ array[1..2*n] of var int: variables = [if (i mod 2 = 0) then coordsY[indices[i d
   
 ann: search_ann_dec_areas = int_search(variables, input_order, indomain_random);
 
-solve :: search_ann_l_from_min :: search_ann_dec_areas :: restart_luby(100) minimize l;
+solve :: seq_search([search_ann_dec_areas, search_ann_l_from_min]) :: restart_luby(100) minimize l;

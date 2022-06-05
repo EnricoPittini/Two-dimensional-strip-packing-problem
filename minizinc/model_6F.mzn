@@ -76,4 +76,4 @@ ann: search_ann_l_from_min = int_search([l], input_order, indomain_min, complete
 
 ann: search_ann = int_search(coordsY ++ coordsX, dom_w_deg, indomain_random);
 
-solve :: search_ann_l_from_min :: search_ann :: restart_luby(100) minimize l;
+solve :: seq_search([search_ann, search_ann_l_from_min]) :: restart_luby(100) minimize l;

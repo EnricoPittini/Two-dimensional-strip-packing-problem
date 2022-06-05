@@ -1,7 +1,15 @@
 {
     "openFiles": [
+        "model_6C0.mzn",
+        "model_6D0.mzn",
+        "model_6E0.mzn",
+        "model_6F.mzn",
+        "model_6B1.mzn",
+        "model_6C1.mzn",
+        "model_6D1.mzn",
+        "model_6E1.mzn"
     ],
-    "openTab": -1,
+    "openTab": 3,
     "projectFiles": [
         "Data 13.dzn",
         "Data 3.dzn",
