@@ -4,10 +4,10 @@ import time
 from z3 import *
 from sat_utils import at_least_one, at_most_one, exactly_one, UnsatError, compute_l
 
-# TODO remove
+# TODO: remove
 
 
-def __vlsi_sat(variables, w, n, dimsX, dimsY, l_max):
+def __vlsi_sat(w, n, dimsX, dimsY, l_max):
     """Solves the given VLSI instance using a SAT encoding.
 
     It is an auxiliary function. Its aim is to solve the VLSI instance without performing optimization: any solution is good.
@@ -54,8 +54,13 @@ def __vlsi_sat(variables, w, n, dimsX, dimsY, l_max):
     
     # Upper bound of the length of the plate, if not explicitely given in input
     # l_max = sum(dimsY)
-
-    circuits, coords, lengths = variables
+    
+    # List of lists of lists, containing the 'circuits' boolean variables: variables 'circuit_i_j_k'
+    circuits = [[[Bool(f'circuit_{i}_{j}_{k}') for k in range(n)] for j in range(l_max)] for i in range(w)]
+    # List of lists of lists, containing the 'coords' boolean variables: variables 'coord_i_j_k'
+    coords = [[[Bool(f'coord_{i}_{j}_{k}') for k in range(n)] for j in range(l_max)] for i in range(w)]
+    # List of lists of lists, containing the 'lengths' boolean variables: variables 'length_k_l'
+    lengths = [[Bool(f'length_{k}_{l}') for l in range(l_max)] for k in range(n)]
     
     # Constraint: in each cell '(i,j)' of the plate at most one circuit is present.
     # This reflects both on `circuits` and on `coords`.
@@ -113,10 +118,10 @@ def __vlsi_sat(variables, w, n, dimsX, dimsY, l_max):
     if s.check() != sat:
         raise UnsatError('UNSAT')
         
-    return s
+    return s, coords, lengths
 
 
-def process_solver_instance(s, variables, w, n, l_max, current_best_l):
+def process_solver_instance(s, coords, lengths, w, n, l_max, current_best_l):
     """Processes the given solver instance.
 
     Two operations are performed:
@@ -152,8 +157,6 @@ def process_solver_instance(s, variables, w, n, l_max, current_best_l):
     
     # Get the solution
     m = s.model()
-
-    circuits, coords, lengths = variables
 
     # List containing the coordX and coordY of the lower-left vertex of each circuit
     coords_sol = [(i, j) for k in range(n) for j in range(l_max) for i in range(w) if m.evaluate(coords[i][j][k])]
@@ -231,20 +234,10 @@ def vlsi_sat(w, n, dims, timeout=300):
     #l_max =  sum(sorted(dimsY)[n-max_rects_per_col:])
     sorted_dimsY = sorted(dimsY, reverse=True)
     l_max = sum([sorted_dimsY[i] for i in range(n) if i % min_rects_per_row == 0])
-
-    # VARIABLES
-    # List of lists of lists, containing the 'circuits' boolean variables: variables 'circuit_i_j_k'
-    circuits = [[[Bool(f'circuit_{i}_{j}_{k}') for k in range(n)] for j in range(l_max)] for i in range(w)]
-    # List of lists of lists, containing the 'coords' boolean variables: variables 'coord_i_j_k'
-    coords = [[[Bool(f'coord_{i}_{j}_{k}') for k in range(n)] for j in range(l_max)] for i in range(w)]
-    # List of lists of lists, containing the 'lengths' boolean variables: variables 'length_k_l'
-    lengths = [[Bool(f'length_{k}_{l}') for l in range(l_max)] for k in range(n)]
-
-    variables = circuits, coords, lengths
     
     # Search for a first solution 
-    s = __vlsi_sat(variables, w, n, dimsX, dimsY, l_max)
-    best_coords, best_l = process_solver_instance(s, variables, w, n, l_max, current_best_l=None)
+    s, coords, lengths = __vlsi_sat(w, n, dimsX, dimsY, l_max)
+    best_coords, best_l = process_solver_instance(s, coords, lengths, w, n, l_max, current_best_l=None)
 
     solving_time = time.time() - start_time
     if solving_time>timeout:  # The first solution has been found after the time out: no found solution
@@ -269,7 +262,7 @@ def vlsi_sat(w, n, dims, timeout=300):
         # New valid solution
 
         # Get the new valid solution and inject the new constraints into the solver
-        best_coords, best_l = process_solver_instance(s, variables, w, n, l_max, best_l)        
+        best_coords, best_l = process_solver_instance(s, coords, lengths, w, n, l_max, best_l)        
         print(best_coords)
         print(best_l)
     
