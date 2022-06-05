@@ -3,7 +3,7 @@ from sat_utils import at_least_one, at_most_one, exactly_one, UnsatError, Vlsi_s
 
 
 class Vlsi_sat(Vlsi_sat_abstract):
-    """Class for solving the VLSI problem in SAT, using the encoding 0.
+    """Class for solving the VLSI problem in SAT, using the encoding 1.
 
     """
 
@@ -11,7 +11,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
         super().__init__(w, n, dims, results)
 
 
-    def __solve(self, formulas=[]):
+    def __solve(self, formulas=[], l_max=None):
         """Solves the given VLSI instance, using the SAT encoding 1.
 
         It is an auxiliary method. Its aim is to solve the VLSI instance without performing optimization: any solution is 
@@ -21,6 +21,8 @@ class Vlsi_sat(Vlsi_sat_abstract):
         ----------
         formulas : list of z3.z3.BoolRef, optional
             List of additional constraints to impose, by default []
+        l_max : int, optional
+            Maximum length of the plate, by default None
 
         Returns
         -------
@@ -51,8 +53,9 @@ class Vlsi_sat(Vlsi_sat_abstract):
         s = Solver()  # Solver instance
         s.add(And(formulas))  # Add the given optional formulas
         
-        # Upper bound of the length of the plate
-        l_max = sum(dimsY)
+        # Upper bound of the length of the plate, if not explicitely given in input
+        if not l_max:
+            l_max = sum(dimsY)
         
         # List of lists of lists, containing the 'circuits' boolean variables: variables 'circuit_i_j_k'
         circuits = [[[Bool(f'circuit_{i}_{j}_{k}') for k in range(n)] for j in range(l_max)] for i in range(w)]
@@ -156,12 +159,16 @@ class Vlsi_sat(Vlsi_sat_abstract):
         formulas = []
         # Boolean flag reprenting if the first solution has not been found yet
         first = True
-        
-        # Loop iterating over all the possible solutions, searching for the best one
+
         while True:
             try:
+                if first:
+                    l_max = None
+                else:
+                    l_max = self.results['best_l']-1
+
                 # Search for a solution (given the additional constraints in `formulas`)
-                coords, formula = self.__solve(formulas=formulas)
+                coords, formula = self.__solve(formulas=formulas, l_max=l_max)
 
                 # Append into `formulas` the negation of the returned `formula`, which represents the current solution.
                 # In this way, in the next iteration, the same solution is not feasible anymore
@@ -175,10 +182,9 @@ class Vlsi_sat(Vlsi_sat_abstract):
                 print(coords)
 
                 # Check if the current solution is the best solution found so far
-                if first or l < self.results['best_l']:
-                    first = False
-                    self.results['best_coords'] = coords
-                    self.results['best_l'] = l
+                first = False
+                self.results['best_coords'] = coords
+                self.results['best_l'] = l
 
             except UnsatError:  # Found UNSAT: leave the cycle
                 break

@@ -1,5 +1,60 @@
 from z3 import *
 from itertools import combinations
+import multiprocessing    
+
+
+class Vlsi_sat_abstract(multiprocessing.Process):
+    """Class for solving the VLSI problem using SAT.
+
+    It inheriths from `multiprocessing.Process`, in order to be executable as parallel process.
+    The typical usage is to run this process in parallel using a certain time limit. In such case, if the time limit exceed,
+    the user is not guaranteed to get an optimal solution, but only the best solution found so far.
+
+    It is a general class, it is not a specific encoding.
+    It collects the basic common attributes and properties, shared among the different encodings. 
+    A SAT encoding class inherits from this class.
+
+    Attributes
+    ----------
+    w : int
+        The width of the plate
+    n : int
+        The number of circuits
+    dimsX : list of int
+        Dims X (i.e. width) of the circuits
+    dimsY : list of int
+        Dims Y (i.e. height) of the circuits
+    results : dict
+        Dictionary containing the results. It contains three elements.
+            1. results['best_coords'] : list of tuples of int
+               List containing the coordX and coordY of the lower-left vertex of each circuit in the best solution.
+            2. results['best_l'] : int
+               Length of the plate in the best solution.
+            3. results['finish'] : bool
+               Boolean flag saying whether the solving has finished or not.
+               (This is useful in particular if this class is run as parallel process).
+    
+    Notes
+    -----
+    The way the user and the `Vlsi_sat` class instance communicate is through the `results` dictionary. It is given to the
+    class constructor and it is stored inside the class: then, it is modified by injecting the solution (this each time a 
+    better solution is found).
+
+    """
+
+    def __init__(self, w, n, dims, results):
+        super().__init__()
+
+        self.w = w
+        self.n = n 
+        self.dimsX = [dims[i][0] for i in range(n)]
+        self.dimsY = [dims[i][1] for i in range(n)]
+
+        self.results = results
+        self.results['best_coords'] = None
+        self.results['best_l'] = None
+        self.results['finish'] = False
+
 
 def at_least_one(B):
     return Or(B)

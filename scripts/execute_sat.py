@@ -1,4 +1,5 @@
 import argparse
+import multiprocessing
 import sys
 import os
 
@@ -9,38 +10,63 @@ import time
 import utils
 #python scripts\execute_sat.py sat\encoding_2.py instances\ins-10.txt 300
 
-# TODO: remove
-"""
-import threading
 
-class myThread(threading.Thread):
-    def __init__(self, w, n, dims, encoding_module):
-        threading.Thread.__init__(self)
-        self.w = w
-        self.n = n
-        self.dims = dims
-        self.vlsi_sat = encoding_module.vlsi_sat
-        self.UnsatError = encoding_module.UnsatError  # TODO refactor
-    def run(self):
-        try:
-            self.coords, self.l = self.vlsi_sat(self.w, self.n, self.dims)
-            self.unsat = False
-        except self.UnsatError:
-            self.unsat = True
-    def get_id(self): 
-        # returns id of the respective thread
-        if hasattr(self, '_thread_id'):
-            return self._thread_id
-        for id, thread in threading._active.items():
-            if thread is self:
-                return id
-    def raise_exception(self):
-        thread_id = self.get_id()
-        res = ctypes.pythonapi.PyThreadState_SetAsyncExc(thread_id,
-              ctypes.py_object(SystemExit))
-        if res > 1:
-            ctypes.pythonapi.PyThreadState_SetAsyncExc(thread_id, 0)
-            print('Exception raise failure')"""
+def vlsi_sat(w, n, dims, encoding_module, timeout=300):
+    """Solves the given VLSI instance, using the specified SAT encoding
+
+    It runs the solving process in parallel, within the specified time limit.
+
+    The encoding is specified by giving the Python module object containing it.
+    In particular, this module contains the class `Vlsi_sat`, for solving the problem with a certain desired encoding.
+
+    Parameters
+    ----------
+    w : int
+        The width of the plate
+    n : int
+        The number of circuits
+    dims : list of tuple of int
+        Dims X and Y (i.e. width and height) of the circuits
+    encoding_module : module
+        Python module object containing the specified SAT encoding.
+        (The encoding is contained in the `Vlsi_sat` class)
+    timeout : int, optional.
+        Time limit in seconds for executing the SAT solver, by default 300 (i.e. 5 minutes)
+
+    Returns
+    -------
+    best_coords: list of tuples of int
+        List containing the coordX and coordY of the lower-left vertex of each circuit in the best solution
+    best_l: int
+        Length of the plate in the best solution
+    finish: bool
+        Boolean flag saying whether the solving has finished or not.
+        (This is useful in particular for understanding whether the time has elapsed or not)
+
+    Raises
+    ------
+    UnsatError
+        If the given instance is UNSAT.
+
+    Raises
+    ------
+    The communication with the `Vlsi_sat` class instance is done through the `results` dictionary. It is given to the
+    class constructor and it is stored inside the class: then, it is modified by injecting the solution (this each time a 
+    better solution is found).
+    Indeed, this dictionary contains the keys 'best_coords', 'best_l', 'finish'.
+    """
+    manager = multiprocessing.Manager()
+    results = manager.dict()
+    p = encoding_module.Vlsi_sat(w, n, dims, results)
+    p.start()
+
+    p.join(timeout)
+
+    if p.is_alive():
+        p.terminate()
+        p.join()   
+
+    return results['best_coords'], results['best_l'], results['finish']
       
 
 def main():
@@ -75,42 +101,30 @@ def main():
     module_name = os.path.basename(encoding_path).split('.')[0]
     sys.path.insert(1, os.path.join(os.path.dirname(__file__), os.path.dirname(encoding_abspath)))
     encoding_module = importlib.import_module(module_name)
-    vlsi_sat = encoding_module.vlsi_sat
+    # vlsi_sat = encoding_module.vlsi_sat
     UnsatError = encoding_module.UnsatError  # TODO refactor
 
     try:
         start_time = time.time()
-        coords, l, finish = vlsi_sat(w, n, dims, timeout=vars(arguments)['time-limit'])
+        coords, l, finish = vlsi_sat(w, n, dims, encoding_module=encoding_module, timeout=vars(arguments)['time-limit'])        
         solving_time = time.time() - start_time
-        if not finish:
+
+        if not finish:  # Time out
             print('Time elapsed')
-        print(solving_time)
-        if not coords:
+
+        print('Time:', solving_time)
+
+        if not coords:  # The time is elapsed and no solution has been found: UNSAT. (It is UNSAT within the time limit).
+                        # No solution
             raise UnsatError()
+
+        # We have at least a solution.
+        # (It is guaranteed to be the best one iff the time is not elapsed).
         coordsX = [coords[i][0] for i in range(n)]
         coordsY = [coords[i][1] for i in range(n)]
+
     except UnsatError:
         sys.exit('UNSAT')
-
-    """# TODO: remove
-    start_time = time.time()
-    coords, l = vlsi_sat(w, n, dims)
-    # thr = myThread(w, n, dims, encoding_module)
-    # thr.start()
-    # thr.join(float(vars(arguments)['time-limit']))
-    solving_time = time.time() - start_time
-
-    if thr.is_alive():
-        thr.raise_exception()
-        sys.exit('Time limit exceeded')
-
-    if thr.unsat:
-        sys.exit('UNSAT')
-
-    coords, l = thr.coords, thr.l
-    coordsX = [coords[i][0] for i in range(n)]
-    coordsY = [coords[i][1] for i in range(n)]
-    print(solving_time)"""
 
     if not arguments.no_create_output:
         output_folder_path = vars(arguments)['output-folder-path']
