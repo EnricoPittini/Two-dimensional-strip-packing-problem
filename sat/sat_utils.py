@@ -10,8 +10,6 @@ class Vlsi_sat_abstract(multiprocessing.Process):
     The typical usage is to run this process in parallel using a certain time limit. In such case, if the time limit exceed,
     the user is not guaranteed to get an optimal solution, but only the best solution found so far.
 
-    If the problem is UNSAT, the `UnsatError` exception is raised.
-
     It is a general class, it is not a specific encoding.
     It collects the basic common attributes and properties, shared among the different SAT encodings. 
     A SAT encoding class inherits from this class.
@@ -34,7 +32,11 @@ class Vlsi_sat_abstract(multiprocessing.Process):
                Length of the plate in the best solution.
             3. results['finish'] : bool
                Boolean flag saying whether the solving has finished or not.
-               (This is useful in particular if this class is run as parallel process).
+               (This is useful in particular if this class is run as parallel process with a time limit).
+            4. results['unsat'] : bool
+               Boolean flag saying whether the problem is UNSAT or not.
+               (For proving that the problem is UNSAT, the solving process must have finishe, therefore results['finish'] 
+               must be True).
     
     Notes
     -----
@@ -56,6 +58,7 @@ class Vlsi_sat_abstract(multiprocessing.Process):
         self.results['best_coords'] = None
         self.results['best_l'] = None
         self.results['finish'] = False
+        self.results['unsat'] = False
 
 
 def at_least_one(B):

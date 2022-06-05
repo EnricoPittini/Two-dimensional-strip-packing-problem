@@ -91,7 +91,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
         for k in range(n):
             s.add(exactly_one([coords[i][j][k] for i in range(w) for j in range(l_max)], name=f'exactly_one_{k}'))
 
-        print('CUCU')  # TODO: remove
+        # print('CUCU')  # TODO: remove
 
         # Constraint: for each circuit 'k' and for each cell '(i,j)' of the plate, if that cell contains the left-bottom corner 
         # of 'k', then all the cells covered by the circuit 'k' must contain only that circuit and no other circuits.      
@@ -130,7 +130,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
                     # `used_lengths_formula` and `non_used_lengths_formula`.
                     s.add(Implies(coords[i][j][k], And(used_lengths_formula, non_used_lengths_formula)))
 
-        print('HERE')  # TODO: remove
+        # print('HERE')  # TODO: remove
 
         # Check if UNSAT 
         if s.check() != sat:
@@ -232,8 +232,8 @@ class Vlsi_sat(Vlsi_sat_abstract):
 
         # A first solution has been found
 
-        print(self.results['best_coords'])
-        print(self.results['best_l'])
+        # print(self.results['best_coords'])
+        # print(self.results['best_l'])
         
         # Loop iterating over all the possible solutions, searching for the best one
         while True:
@@ -245,8 +245,8 @@ class Vlsi_sat(Vlsi_sat_abstract):
             # Get the new valid solution and inject the new constraints into the solver
             self.results['best_coords'], self.results['best_l'] = self.__process_solver_instance(s, coords, lengths, l_max, 
                                                                                                  self.results['best_l'])        
-            print(self.results['best_coords'])
-            print(self.results['best_l'])
+            # print(self.results['best_coords'])
+            # print(self.results['best_l'])
         
 
         self.results['finish'] = True      
@@ -254,4 +254,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
 
     def run(self):
         # Code executed by the process when it is runned
-        self.__optimize()
+        try:
+            self.__optimize()
+        except UnsatError:
+            self.results['unsat'] = True

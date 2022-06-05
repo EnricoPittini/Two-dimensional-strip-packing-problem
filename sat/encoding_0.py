@@ -188,8 +188,8 @@ class Vlsi_sat(Vlsi_sat_abstract):
                 l = self.__compute_l(coords)
 
                 # TODO: remove
-                print(l)
-                print(coords)
+                # print(l)
+                # print(coords)
 
                 # Check if the current solution is the best solution found so far
                 if first or l < self.results['best_l']:
@@ -209,4 +209,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
 
     def run(self):
         # Code executed by the process when it is runned
-        self.__optimize()
+        try:
+            self.__optimize()
+        except UnsatError:
+            self.results['unsat'] = True

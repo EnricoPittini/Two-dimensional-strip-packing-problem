@@ -53,7 +53,7 @@ def vlsi_sat(w, n, dims, encoding_module, timeout=300):
     The communication with the `Vlsi_sat` class instance is done through the `results` dictionary. It is given to the
     class constructor and it is stored inside the class: then, it is modified by injecting the solution (this each time a 
     better solution is found).
-    Indeed, this dictionary contains the keys 'best_coords', 'best_l', 'finish'.
+    Indeed, this dictionary contains the keys 'best_coords', 'best_l', 'finish', 'unsat'.
     """
     manager = multiprocessing.Manager()
     results = manager.dict()
@@ -66,7 +66,7 @@ def vlsi_sat(w, n, dims, encoding_module, timeout=300):
         p.terminate()
         p.join()   
 
-    return results['best_coords'], results['best_l'], results['finish']
+    return results['best_coords'], results['best_l'], results['finish'], results['unsat']
       
 
 def main():
@@ -104,27 +104,31 @@ def main():
     # vlsi_sat = encoding_module.vlsi_sat
     UnsatError = encoding_module.UnsatError  # TODO refactor
 
-    try:
-        start_time = time.time()
-        coords, l, finish = vlsi_sat(w, n, dims, encoding_module=encoding_module, timeout=vars(arguments)['time-limit'])        
-        solving_time = time.time() - start_time
+    #try:
+    start_time = time.time()
+    coords, l, finish, unsat = vlsi_sat(w, n, dims, encoding_module=encoding_module, timeout=vars(arguments)['time-limit'])        
+    solving_time = time.time() - start_time
 
-        if not finish:  # Time out
-            print('Time elapsed')
+    print('Time:', solving_time)
 
-        print('Time:', solving_time)
-
-        if not coords:  # The time is elapsed and no solution has been found: UNSAT. (It is UNSAT within the time limit).
-                        # No solution
-            raise UnsatError()
-
-        # We have at least a solution.
-        # (It is guaranteed to be the best one iff the time is not elapsed).
-        coordsX = [coords[i][0] for i in range(n)]
-        coordsY = [coords[i][1] for i in range(n)]
-
-    except UnsatError:
+    if unsat:  # UNSAT (before the end of the time limit)
         sys.exit('UNSAT')
+
+    if not finish:  # Time out
+        print('Time elapsed')
+
+    if not coords:  # The time is elapsed and no solution has been found: UNSAT. (It is UNSAT within the time limit).
+                    # No solution
+        #raise UnsatError()
+        sys.exit('UNSAT')
+
+    # We have at least a solution.
+    # (It is guaranteed to be the best one iff the time is not elapsed).
+    coordsX = [coords[i][0] for i in range(n)]
+    coordsY = [coords[i][1] for i in range(n)]
+
+    #except UnsatError:
+    #    sys.exit('UNSAT')
 
     if not arguments.no_create_output:
         output_folder_path = vars(arguments)['output-folder-path']

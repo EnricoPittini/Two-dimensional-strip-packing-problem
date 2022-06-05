@@ -90,7 +90,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
         for k in range(n):
             s.add(exactly_one([coords[i][j][k] for i in range(w-w_min+1) for j in range(l_max-h_min+1)], name=f'exactly_one_{k}'))
 
-        print('CUCU')  # TODO: remove
+        # print('CUCU')  # TODO: remove
 
         # Constraint: for each circuit 'k' and for each cell '(i,j)' of the plate, if that cell contains the left-bottom corner 
         # of 'k', then all the cells covered by the circuit 'k' must contain only that circuit and no other circuits.      
@@ -130,7 +130,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
                     # `used_lengths_formula` and `non_used_lengths_formula`.
                     s.add(Implies(coords[i][j][k], And(used_lengths_formula, non_used_lengths_formula)))
 
-        print('HERE')  # TODO: remove
+        # print('HERE')  # TODO: remove
 
         # Check if UNSAT 
         if s.check() != sat:
@@ -240,8 +240,13 @@ class Vlsi_sat(Vlsi_sat_abstract):
         min_rects_per_row = w // w_max  # Minimum number of circuits per row
         # max_rects_per_col = ceil(n / max([1, min_rects_per_row]))  # Maximum number of circuits per column
         #l_max =  sum(sorted(dimsY)[n-max_rects_per_col:]) 
+        if min_rects_per_row==0:
+            raise UnsatError('UNSAT')
         sorted_dimsY = sorted(dimsY, reverse=True)  
-        l_max = sum([sorted_dimsY[i] for i in range(n) if i % min_rects_per_row == 0])  # The upper bound for the length
+        if min_rects_per_row==1:
+            l_max = sum(dimsY)
+        else:
+            l_max = sum([sorted_dimsY[i] for i in range(n) if i % min_rects_per_row == 0])  # The upper bound for the length
 
         # Search for a first solution 
         s, coords, lengths = self.__solve(w_min, h_min, l_min, l_max)
@@ -251,8 +256,8 @@ class Vlsi_sat(Vlsi_sat_abstract):
 
         # A first solution has been found
 
-        print(self.results['best_coords'])
-        print(self.results['best_l'])
+        # print(self.results['best_coords'])
+        # print(self.results['best_l'])
         
         # Loop iterating over all the possible solutions, searching for the best one
         while True:
@@ -265,8 +270,8 @@ class Vlsi_sat(Vlsi_sat_abstract):
             self.results['best_coords'], self.results['best_l'] = self.__process_solver_instance(s, coords, lengths, w_min, 
                                                                                                  h_min, l_min, l_max, 
                                                                                                  self.results['best_l'])        
-            print(self.results['best_coords'])
-            print(self.results['best_l'])
+            # print(self.results['best_coords'])
+            # print(self.results['best_l'])
         
 
         self.results['finish'] = True      
@@ -274,4 +279,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
 
     def run(self):
         # Code executed by the process when it is runned
-        self.__optimize()
+        try:
+            self.__optimize()
+        except UnsatError:
+            self.results['unsat'] = True
