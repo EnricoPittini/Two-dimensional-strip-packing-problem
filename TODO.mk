@@ -28,3 +28,5 @@
 - Put simmetry breaking constraints
 - Add timeout info (timeout/not timeout)
 - Improve timeout
+- Put the 'run()' method in the superclass
+- Delete instance 41
