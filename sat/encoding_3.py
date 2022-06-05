@@ -8,6 +8,16 @@ class Vlsi_sat(Vlsi_sat_abstract):
 
     It inherits from the class `Vlsi_sat_abstract`.
 
+    Both the solving and the optimization are very similar to the encoding 2.
+    The only difference is about the bounds of the variables. 
+
+    Better bounds for all the SAT variables: 'circuit_i_j_k', 'coord_i_j_k' and 'length_k_l'.
+        1. 'circuit_i_j_k': i in [0,w-w_min+1], j in [0,l_max-h_min+1], k in [0,n]
+        2. 'coord_i_j_k': i in [0,w-w_min+1], j in [0,l_max-h_min+1], k in [0,n]
+        3. 'length_k_l': k in [0,n], l in [0,l_max-l_min+1]
+            For going from an index 'l' of 'length_k_l' to the actual length: l+l_min-1.
+            For going from an actual length 'l' to an index of 'length_k_l': l-l_min+1.
+
     """
 
     def __init__(self, w, n, dims, results):
@@ -45,15 +55,17 @@ class Vlsi_sat(Vlsi_sat_abstract):
         Notes
         ------
         The following boolean variables are used
-        - circuit_i_j_k, where 'i' in [0,w], 'j' in [0,l_max], 'k' in [0,n]. 
+        - circuit_i_j_k, where 'i' in [0,w-w_min+1], 'j' in [0,l_max-h_min+1], 'k' in [0,n]. 
           '(i,j)' represent two coordinates of the plate, 'k' represents a circuit.
           circuit_i_j_k is True IIF the circuit 'k' is present in the cell '(i,j)' of the plate.
-        - coord_i_j_k, where 'i' in [0,w], 'j' in [0,l_max], 'k' in [0,n].
+        - coord_i_j_k, where 'i' in [0,w-w_min+1], 'j' in [0,l_max-h_min+1], 'k' in [0,n].
           '(i,j)' represent two coordinates of the plate, 'k' represents a circuit.
           coord_i_j_k is True IIF the left-bottom corner of the circuit 'k' is put in the cell '(i,j)' of the plate.
-        - length_k_l, where 'k' in [0,n] and 'l' in [0,l_max], 'k' in [0,n].
+        - length_k_l, where 'k' in [0,n] and 'l' in [0,l_max-l_min+1], 'k' in [0,n].
           'k' represent represents a circuit, 'l' represents a length of the plate.
            length_k_l is True IIF the circuit 'k' uses the length 'l' of the plate.
+           For going from an index 'l' of 'length_k_l' to the actual length: l+l_min-1.
+           For going from an actual length 'l' to an index of 'length_k_l': l-l_min+1.
 
         """
         w, n, dimsX, dimsY = self.w, self.n, self.dimsX, self.dimsY
@@ -107,7 +119,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
                     # TODO: put negation of all circuits[ii][jj][k] related to wrong positions? 
                     # The added constraint is the following implication: if left-bottom corner of `k` in `(i,j)`, then 
                     # `no_overlapping_circuit_formula` and `all_positions_covered_formula`.
-                    # Actually, it is not an implication, nut an equivalence.
+                    # Actually, it is not an implication, but an equivalence.
                     s.add(coords[i][j][k] == And(no_overlapping_circuit_formula,all_positions_covered_formula))
 
                     # Formula ensuring that all the lengths up to `j+dimsY[k]-1` are used by the circuit `k`
@@ -168,20 +180,20 @@ class Vlsi_sat(Vlsi_sat_abstract):
         # Get the solution
         m = s.model()
 
-        # List containing the coordX and coordY of the lower-left vertex of each circuit
+        # List containing the coordX and coordY of the lower-left vertex of each circuit in the new solution
         coords_sol = [(i, j) for k in range(n) for j in range(l_max-h_min+1) for i in range(w-w_min+1) if m.evaluate(coords[i][j][k])]
-        # Boolean formula containing the solution
+        # Boolean formula containing the new solution
         formula = And([ (coords[i][j][k] if m.evaluate(coords[i][j][k]) else Not(coords[i][j][k])) 
                     for i in range(w-w_min+1) for j in range(l_max-h_min+1) for k in range(n)])
 
-        # Length of the plate
+        # Length of the plate in the new solution
         l = max([l for k in range(n) for l in range(l_max-l_min+1) if m.evaluate(lengths[k][l])])+l_min-1+1
         
         # Add into the solver the negation of the returned `formula`, which represents the current solution.
         # In this way, in the next iteration, the same solution is not feasible anymore
         s.add(Not(formula))  
 
-        # Add into the solver a constraint ensuring that a solution which has a length bigger or equal than `l-2` is not feasible
+        # Add into the solver a constraint ensuring that a solution which has a length bigger or equal than `l-1` is not feasible
         # anymore: in this way, the next found solution, if any, is for sure better than the previous one.
         # This is implemented by ensuring that all the variables 'lengths_k_ll' with 'll' from 'l-1' (included) to 
         # 'current_best_l-1' (exclued) are False.
@@ -198,7 +210,12 @@ class Vlsi_sat(Vlsi_sat_abstract):
         solution, but only the best solution found so far).
 
         The implementation is based on the usage of the `__solve` method.
-        Basically, a loop iterating over all the possible solutions is performed, searching for the best possible solution.
+        The solver is created only one time, at the beginning. Then, a cycle is performed, in which at each iteration 
+        new constraints are injected into the solver, namely: the constraints imposing that the already found solutions are not 
+        feasible anymore (like in the previous encodings); the constraints imposing that the lengths of the plate bigger than 
+        the current best length are not feasible anymore (this is done using the 'length_k_l' variables).
+
+        Incremental solving.
 
         Raises
         ------
@@ -209,7 +226,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
         ------
         The solution is communicated to the user through the `results` dictionary, which is shared between the class and the 
         user. 
-        Each time a better solution is found, it is injected to the `results` dictionary.
+        Each time a better solution is found, it is injected into the `results` dictionary.
         """
         w, n, dimsX, dimsY = self.w, self.n, self.dimsX, self.dimsY
 
@@ -222,10 +239,9 @@ class Vlsi_sat(Vlsi_sat_abstract):
         l_min = max([h_max, A_tot // w])  # The lower bound for the length
         min_rects_per_row = w // w_max  # Minimum number of circuits per row
         # max_rects_per_col = ceil(n / max([1, min_rects_per_row]))  # Maximum number of circuits per column
-        # The upper bound for the length
-        #l_max =  sum(sorted(dimsY)[n-max_rects_per_col:])
-        sorted_dimsY = sorted(dimsY, reverse=True)
-        l_max = sum([sorted_dimsY[i] for i in range(n) if i % min_rects_per_row == 0])
+        #l_max =  sum(sorted(dimsY)[n-max_rects_per_col:]) 
+        sorted_dimsY = sorted(dimsY, reverse=True)  
+        l_max = sum([sorted_dimsY[i] for i in range(n) if i % min_rects_per_row == 0])  # The upper bound for the length
 
         # Search for a first solution 
         s, coords, lengths = self.__solve(w_min, h_min, l_min, l_max)

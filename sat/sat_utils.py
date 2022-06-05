@@ -10,8 +10,10 @@ class Vlsi_sat_abstract(multiprocessing.Process):
     The typical usage is to run this process in parallel using a certain time limit. In such case, if the time limit exceed,
     the user is not guaranteed to get an optimal solution, but only the best solution found so far.
 
+    If the problem is UNSAT, the `UnsatError` exception is raised.
+
     It is a general class, it is not a specific encoding.
-    It collects the basic common attributes and properties, shared among the different encodings. 
+    It collects the basic common attributes and properties, shared among the different SAT encodings. 
     A SAT encoding class inherits from this class.
 
     Attributes

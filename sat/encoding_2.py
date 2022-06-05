@@ -5,6 +5,21 @@ from sat_utils import at_least_one, at_most_one, exactly_one, UnsatError, Vlsi_s
 class Vlsi_sat(Vlsi_sat_abstract):
     """Class for solving the VLSI problem in SAT, using the encoding 2.
 
+    It inherits from the class `Vlsi_sat_abstract`.
+
+    The solving procedure is similar to the previous encodings. SAT variables 'circuit_i_j_k' and 'coord_i_j_k'.
+    In addition, there are also the SAT variables 'length_k_l'.
+    See the `__solve` method.
+
+    The optimization procedure has been improved, thanks to the variables 'length_k_l': they allow to perform incremental 
+    solving.
+    Indeed, the solver is created only one time, at the beginning. Then, a cycle is performed, in which at each iteration 
+    new constraints are injected into the solver, namely: the constraints imposing that the already found solutions are not 
+    feasible anymore (like in the previous encodings); the constraints imposing that the lengths of the plate bigger than 
+        the current best length are not feasible anymore (this is done using the 'length_k_l' variables).
+    Incremental solving.
+    
+
     """
 
     def __init__(self, w, n, dims, results):
@@ -52,7 +67,6 @@ class Vlsi_sat(Vlsi_sat_abstract):
         - length_k_l, where 'k' in [0,n] and 'l' in [0,l_max], 'k' in [0,n].
           'k' represent represents a circuit, 'l' represents a length of the plate.
            length_k_l is True IIF the circuit 'k' uses the length 'l' of the plate.
-        `l_max` is the upper bound of the length of the plate. It is defined as `sum(dimsY)`.
 
         """
         w, n, dimsX, dimsY = self.w, self.n, self.dimsX, self.dimsY
@@ -130,7 +144,8 @@ class Vlsi_sat(Vlsi_sat_abstract):
 
         Two operations are performed:
             - the new solution is extracted from the given solver;
-            - additional constraints are injected into the solver, in order to find the next best solution (incremental solving).
+            - additional constraints are injected into the solver, in order to find the next best solution (incremental 
+              solving).
 
         Parameters
         ----------
@@ -160,21 +175,21 @@ class Vlsi_sat(Vlsi_sat_abstract):
         # Get the solution
         m = s.model()
 
-        # List containing the coordX and coordY of the lower-left vertex of each circuit
+        # List containing the coordX and coordY of the lower-left vertex of each circuit in the new solution
         coords_sol = [(i, j) for k in range(n) for j in range(l_max) for i in range(w) if m.evaluate(coords[i][j][k])]
-        # Boolean formula containing the solution
+        # Boolean formula containing the new solution
         formula = And([ (coords[i][j][k] if m.evaluate(coords[i][j][k]) else Not(coords[i][j][k])) 
                     for i in range(w) for j in range(l_max) for k in range(n)])
 
-        # Length of the plate
+        # Length of the plate in the new solution
         l = max([l for k in range(n) for l in range(l_max) if m.evaluate(lengths[k][l])])+1
         
         # Add into the solver the negation of the returned `formula`, which represents the current solution.
         # In this way, in the next iteration, the same solution is not feasible anymore
         s.add(Not(formula))  
 
-        # Add into the solver a constraint ensuring that a solution which has a length bigger or equal than `l-2` is not feasible
-        # anymore: in this way, the next found solution, if any, is for sure better than the previous one.
+        # Add into the solver a constraint ensuring that a solution which has a length bigger or equal than `l-1` is not feasible
+        # anymore: in this way, the next found solution in the next iteration, if any, is for sure better than the previous one.
         # This is implemented by ensuring that all the variables 'lengths_k_ll' with 'll' from 'l-1' (included) to 
         # 'current_best_l-1' (exclued) are False.
         s.add(And([Not(lengths[k][ll]) for k in range(n) for ll in range(l-1,current_best_l-1)]))
@@ -190,7 +205,12 @@ class Vlsi_sat(Vlsi_sat_abstract):
         solution, but only the best solution found so far).
 
         The implementation is based on the usage of the `__solve` method.
-        Basically, a loop iterating over all the possible solutions is performed, searching for the best possible solution.
+        The solver is created only one time, at the beginning. Then, a cycle is performed, in which at each iteration 
+        new constraints are injected into the solver, namely: the constraints imposing that the already found solutions are not 
+        feasible anymore (like in the previous encodings); the constraints imposing that the lengths of the plate bigger than 
+        the current best length are not feasible anymore (this is done using the 'length_k_l' variables).
+
+        Incremental solving.
 
         Raises
         ------
@@ -201,7 +221,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
         ------
         The solution is communicated to the user through the `results` dictionary, which is shared between the class and the 
         user. 
-        Each time a better solution is found, it is injected to the `results` dictionary.
+        Each time a better solution is found, it is injected into the `results` dictionary.
         """
         l_max = sum(self.dimsY)
 

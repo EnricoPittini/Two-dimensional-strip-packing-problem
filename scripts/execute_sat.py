@@ -17,7 +17,7 @@ def vlsi_sat(w, n, dims, encoding_module, timeout=300):
     It runs the solving process in parallel, within the specified time limit.
 
     The encoding is specified by giving the Python module object containing it.
-    In particular, this module contains the class `Vlsi_sat`, for solving the problem with a certain desired encoding.
+    In particular, this module contains the class `Vlsi_sat`, which solves the problem with a certain encoding.
 
     Parameters
     ----------

@@ -5,6 +5,19 @@ from sat_utils import at_least_one, at_most_one, exactly_one, UnsatError, Vlsi_s
 class Vlsi_sat(Vlsi_sat_abstract):
     """Class for solving the VLSI problem in SAT, using the encoding 1.
 
+    It inherits from the class `Vlsi_sat_abstract`.
+
+    The solving procedure is the same of the encoding 0. SAT variables 'circuit_i_j_k' and 'coord_i_j_k'.
+    See the `__solve` method.
+
+    The optimization is instead improved. 
+    Same structure: cycle in which at each iteration the solver is created and run from scratch.
+    But now, at each iteration, the current best length of the plate (i.e. `l`) is given to the solver as upper bound for the
+    length of the plate (i.e. `l_max`). (Actually, `l-1` is given as `l_max`).
+    In this way, at each iteration is found a better solution with respect to the current one.
+    Still no incremental solving: at each iteration, the solver is created and run from scratch. 
+    See the `__optimize` method.
+
     """
 
     def __init__(self, w, n, dims, results):
@@ -22,7 +35,8 @@ class Vlsi_sat(Vlsi_sat_abstract):
         formulas : list of z3.z3.BoolRef, optional
             List of additional constraints to impose, by default []
         l_max : int, optional
-            Maximum length of the plate, by default None
+            Maximum length of the plate, by default None.
+            If None, `l_max` is computed as `sum(dimsY)`.
 
         Returns
         -------
@@ -45,7 +59,6 @@ class Vlsi_sat(Vlsi_sat_abstract):
         - coord_i_j_k, where 'i' in [0,w], 'j' in [0,l_max], 'k' in [0,n].
           '(i,j)' represent two coordinates of the plate, 'k' represents a circuit.
           coord_i_j_k is True IIF the left-bottom corner of the circuit 'k' is put in the cell '(i,j)' of the plate.
-        `l_max` is the upper bound of the length of the plate. It is defined as `sum(dimsY)`.
 
         """
         w, n, dimsX, dimsY = self.w, self.n, self.dimsX, self.dimsY
@@ -143,6 +156,12 @@ class Vlsi_sat(Vlsi_sat_abstract):
 
         The implementation is based on the usage of the `__solve` method.
         Basically, a loop iterating over all the possible solutions is performed, searching for the best possible solution.
+        At each iteration, the solver is created and run from scratch, with additional constraints imposing to search 
+        for a solution different from the ones already found (the already found solutions are not feasible anymore) and with 
+        the current best length of the plate (i.e. `l`) as upper bound for the length of the plate (i.e. `l_max`). 
+        (Actually, `l-1` is given as `l_max`).
+
+        No incremental solving: at each iteration, the solver is created and run from scratch.
 
         Raises
         ------

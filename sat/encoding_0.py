@@ -5,6 +5,19 @@ from sat_utils import at_least_one, at_most_one, exactly_one, UnsatError, Vlsi_s
 class Vlsi_sat(Vlsi_sat_abstract):
     """Class for solving the VLSI problem in SAT, using the encoding 0.
 
+    It inherits from the class `Vlsi_sat_abstract`.
+
+    The solving procedure is based on the SAT variables 'circuit_i_j_k' and 'coord_i_j_k'.
+    See the `__solve` method.
+
+    The optimization procedure is very naive. It simply loops through all the possible solutions, keeping the best one.
+    At each iteration, the solver is created and run from scratch, with additional constraints imposing to search for a 
+    solution different from the ones already found (the already found solutions are not feasible anymore).
+    No incremental solving: at each iteration, the solver is created and run from scratch. 
+    See the `__optimize` method.
+
+    This encoding is very basic. It can't be used in practice, because it is too slow.
+
     """
 
     def __init__(self, w, n, dims, results):
@@ -140,6 +153,10 @@ class Vlsi_sat(Vlsi_sat_abstract):
 
         The implementation is based on the usage of the `__solve` method.
         Basically, a loop iterating over all the possible solutions is performed, searching for the best possible solution.
+        At each iteration, the solver is created and run from scratch, with additional constraints imposing to search 
+        for a solution different from the ones already found (the already found solutions are not feasible anymore).
+
+        No incremental solving: at each iteration, the solver is created and run from scratch.
 
         Raises
         ------
