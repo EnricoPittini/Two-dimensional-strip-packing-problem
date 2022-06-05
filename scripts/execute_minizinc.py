@@ -1,5 +1,4 @@
 import argparse
-from ast import arguments
 import json
 import os
 import re
@@ -21,6 +20,9 @@ def main() -> None:
 
     parser.add_argument('output-folder-path', type=str, default=os.getcwd(), nargs='?', 
                         help='The path in which the output file is stored.')
+
+    parser.add_argument('output-name', type=str, default=None, nargs='?', 
+                        help='The name of the output solution.')
 
     parser.add_argument('--no-create-output', action='store_true', 
                         help='Skip the creation of the output solution.')
@@ -54,9 +56,9 @@ def main() -> None:
         json_result = json.loads(json_substring)
         print(json_result)
     except ValueError:
-        errors_re = re.compile('|'.join(['UNSATISFIABLE', 'UNBOUNDED', 'UNSATorUNBOUNDED', 'UNKNOWN', 'ERROR']))
+        errors_re = re.compile('|'.join(utils.MINIZINC_ERRORS))
         error_list = re.findall(errors_re, output)
-        sys.exit(f'ERROR: {",".join(error_list) if len(error_list) else "N/D"}')
+        sys.exit(f'ERROR: {error_list[0] if len(error_list) else "UNKNOWN"}')
     
     # TODO: Make this function general even for "compare_minizinc_models.py"
     # Print on stdout a notice that the time limit has exceeded if expressed in the result of the process.
@@ -76,7 +78,11 @@ def main() -> None:
         output_folder_path = vars(arguments)['output-folder-path']
 
         instance_file_name = os.path.basename(instance_file.name)
-        output_file = os.path.join(output_folder_path,f'solution-{instance_file_name}')
+        output_name = vars(arguments)['output-name']
+        if output_name is None:
+            output_file = os.path.join(output_folder_path, f'solution-{instance_file_name}')
+        else:
+            output_file = os.path.join(output_folder_path, f'{output_name}.txt')
 
         try:
             utils.create_output_file(output_file, w, n, dims, l, coordsX, coordsY)

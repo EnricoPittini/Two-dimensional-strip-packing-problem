@@ -4,15 +4,19 @@ import os
 import re
 import subprocess
 
+from utils import MINIZINC_ERRORS
 
+
+GECODE_MODELS = [f'model_6{i}1' for i in 'BCDE'] + ['model_6F']
 # TODO: Fix 
-MODEL_CHOICES = [f'model_{i}' for i in range(3)] + [f'model_{j}{i}' for i in ['A', 'B', 'C', 'D'] for j in [3, 4]] + \
-    ['model_5_gecode', 'model_6']
+CHUFFED_MODELS = [f'model_{i}' for i in range(3)] + [f'model_3{i}' for i in 'ABC'] + [f'model_4A{i}' for i in range(8)] +\
+    [f'model_4{i}{j}' for i in 'BC' for j in range(3)] + ['model_5', 'model_6A'] + [f'model_6{i}0' for i in 'BCDE']
+MODEL_CHOICES = GECODE_MODELS + CHUFFED_MODELS
 
 # SOLVER_CHOICES = [f'solver_{i}' for i in range(3)]
 #python scripts/compare_minizinc_models.py minizinc instances minizinc\solver_1.mpc results/ --models-list model_2 model_3A model_3B model_3C -lb 1 -ub 8
 def main() -> None:
-    parser = argparse.ArgumentParser(description='Script for executing a VLSI MiniZinc model.')
+    parser = argparse.ArgumentParser(description='Script comparing the execution time of MiniZinc models on a VLSI problem.')
 
     parser.add_argument('models-folder-path', type=str, help='The folder path of the models to compare.')
 
@@ -28,7 +32,7 @@ def main() -> None:
     parser.add_argument('--models-list', '-m',
                         metavar='model',
                         type=str, 
-                        #choices=MODEL_CHOICES,
+                        choices=MODEL_CHOICES,
                         # TODO: add all possible model choices
                         default=['model_0', 'model_1', 'model_2', 'model_3'], #'model_4_gecode'
                         help='List of models to compare (default all models). ' +\
@@ -84,7 +88,7 @@ def main() -> None:
         instance_dict = dict()
         for model in models_list:
             model_file_path = os.path.join(models_folder_path, f'{model}.mzn')
-            if model == 'model_4D':
+            if model in GECODE_MODELS:
                 solver_file_path = os.path.join(solvers_folder_path, 'solver_0.mpc')
             else:
                 solver_file_path = os.path.join(solvers_folder_path, 'solver_1.mpc')
@@ -97,9 +101,13 @@ def main() -> None:
             
             try: 
                 result.check_returncode()
-            except subprocess.CalledProcessError:
-                print('\tUnsat')
-                instance_dict[model] = 'Unsat'
+            except subprocess.CalledProcessError as e:
+                print(e)
+                error_list = str(e).split('ERROR: ')
+                if len(error_list) and error_list[-1] in MINIZINC_ERRORS:
+                    instance_dict[model] = error_list[-1]
+                else:
+                    instance_dict[model] = 'UNKNOWN'
                 # Continue to the next iteration.
                 continue
             

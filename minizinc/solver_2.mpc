@@ -3,5 +3,5 @@
     "output-mode": "json",
     "output-time": true,
     "solver": "org.chuffed.chuffed@0.10.4",
-    "time-limit": 30000
+    "time-limit": 100000
 }

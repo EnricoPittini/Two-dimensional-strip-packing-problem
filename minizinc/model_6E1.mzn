@@ -69,11 +69,14 @@ constraint let{int: w_half = ceil(w/2)} in (sum([areas[i] | i in 1..n where coor
 constraint sum([areas[i] | i in 1..n where coordsY[i] > l div 2]) <= A_tot / 2;
 
 
-
-
 %%%%%%% SOLVING
+
 ann: search_ann_l_from_min = int_search([l], input_order, indomain_min, complete);
+% Variables selection heuristic: first the coordsX, then the coordsY; the coordsX are sorted by rectangles width, the coordsX are 
+% sorted by rectangles height.
+% Variables order: coordX of the rectangle with max width; coordX of the rectangle with second max width; ... ; coordY of the rectangle
+% with max height; coordY of the rectangle with second max height; ... . 
+ann: search_ann_y_by_height = int_search(reverse(sort_by(coordsY, dimsY)), input_order, indomain_random);
+ann: search_ann_x_by_width = int_search(reverse(sort_by(coordsX, dimsX)), input_order, indomain_random);
 
-ann: search_ann = int_search(coordsY ++ coordsX, dom_w_deg, indomain_random);
-
-solve :: search_ann_l_from_min :: search_ann :: restart_luby(100) minimize l;
+solve :: search_ann_l_from_min :: search_ann_y_by_height :: search_ann_x_by_width :: restart_luby(100) minimize l;

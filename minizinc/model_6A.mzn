@@ -8,7 +8,6 @@
 
 include "cumulative.mzn";
 include "diffn.mzn";
-include "gecode.mzn";
 
 
 %%%%%%% PARAMETERS
@@ -68,12 +67,7 @@ constraint let{int: w_half = ceil(w/2)} in (sum([areas[i] | i in 1..n where coor
 % or equal than half of the total area of the rectangles.
 constraint sum([areas[i] | i in 1..n where coordsY[i] > l div 2]) <= A_tot / 2;
 
-
-
-
 %%%%%%% SOLVING
+
 ann: search_ann_l_from_min = int_search([l], input_order, indomain_min, complete);
-
-ann: search_ann = int_search(coordsY ++ coordsX, dom_w_deg, indomain_random);
-
-solve :: search_ann_l_from_min :: search_ann :: restart_luby(100) minimize l;
+solve :: search_ann_l_from_min minimize l;
