@@ -61,8 +61,8 @@ class Vlsi_sat(Vlsi_sat_abstract):
         - coord_i_j_k, where 'i' in [0,w-w_min+1], 'j' in [0,l_max-h_min+1], 'k' in [0,n].
           '(i,j)' represent two coordinates of the plate, 'k' represents a circuit.
           coord_i_j_k is True IIF the left-bottom corner of the circuit 'k' is put in the cell '(i,j)' of the plate.
-        - length_k_l, where 'k' in [0,n] and 'l' in [0,l_max-l_min+1], 'k' in [0,n].
-          'k' represent represents a circuit, 'l' represents a length of the plate.
+        - length_k_l, where 'k' in [0,n] and 'l' in [0,l_max-l_min+1].
+          'k' represents a circuit, 'l' represents a length of the plate.
            length_k_l is True IIF the circuit 'k' uses the length 'l' of the plate.
            For going from an index 'l' of 'length_k_l' to the actual length: l+l_min-1.
            For going from an actual length 'l' to an index of 'length_k_l': l-l_min+1.
@@ -122,9 +122,9 @@ class Vlsi_sat(Vlsi_sat_abstract):
                     # Actually, it is not an implication, but an equivalence.
                     s.add(coords[i][j][k] == And(no_overlapping_circuit_formula,all_positions_covered_formula))
 
-                    # Formula ensuring that all the lengths up to `j+dimsY[k]-1` are used by the circuit `k`
+                    # Formula ensuring that all the lengths up to height of the circuit in the plate are used
                     used_lengths_formula = And([lengths[k][l] for l in range(j+dimsY[k]-l_min+1)])
-                    # Formula ensuring that all the lengths from `j+dimsY[k]` are not used by the circuit `k`
+                    # Formula ensuring that all the lengths from the height of the circuit in plate are not used
                     non_used_lengths_formula = And([Not(lengths[k][l]) for l in range(j+dimsY[k]-l_min+1, l_max-l_min+1)])
                     # The added constraint is the following implication: if left-bottom corner of `k` in `(i,j)`, then 
                     # `used_lengths_formula` and `non_used_lengths_formula`.

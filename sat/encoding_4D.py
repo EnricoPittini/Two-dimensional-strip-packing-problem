@@ -4,11 +4,11 @@ from sat_utils import at_least_one, at_most_one, exactly_one, UnsatError, Vlsi_s
 
 
 class Vlsi_sat(Vlsi_sat_abstract):
-    """Class for solving the VLSI problem in SAT, using the encoding 3.
+    """Class for solving the VLSI problem in SAT, using the encoding 4D.
 
     It inherits from the class `Vlsi_sat_abstract`.
 
-    Same solving and optimization of the encoding 2.
+    Same solving and optimization of the encoding 3.
     The only difference is that some oft the non-necessary constraints are removed.
     (The non-necessary constraints are both in `__solve` and in `__process_solver_instance`).
 
@@ -19,7 +19,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
 
 
     def __solve(self, w_min, h_min, l_min, l_max):
-        """Solves the given VLSI instance, using the SAT encoding 3.
+        """Solves the given VLSI instance, using the SAT encoding 4D.
 
         It is an auxiliary method. Its aim is to solve the VLSI instance without performing optimization: any solution is 
         good.
@@ -55,8 +55,8 @@ class Vlsi_sat(Vlsi_sat_abstract):
         - coord_i_j_k, where 'i' in [0,w-w_min+1], 'j' in [0,l_max-h_min+1], 'k' in [0,n].
           '(i,j)' represent two coordinates of the plate, 'k' represents a circuit.
           coord_i_j_k is True IIF the left-bottom corner of the circuit 'k' is put in the cell '(i,j)' of the plate.
-        - length_k_l, where 'k' in [0,n] and 'l' in [0,l_max-l_min+1], 'k' in [0,n].
-          'k' represent represents a circuit, 'l' represents a length of the plate.
+        - length_k_l, where 'k' in [0,n] and 'l' in [0,l_max-l_min+1].
+          'k' represents a circuit, 'l' represents a length of the plate.
            length_k_l is True IIF the circuit 'k' uses the length 'l' of the plate.
            For going from an index 'l' of 'length_k_l' to the actual length: l+l_min-1.
            For going from an actual length 'l' to an index of 'length_k_l': l-l_min+1.
@@ -198,7 +198,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
 
 
     def __optimize(self):
-        """Solves the given VLSI instance, using the SAT encoding 3.
+        """Solves the given VLSI instance, using the SAT encoding 4D.
 
         It performs optimization: the best solution is found (if any).
         (If this class is used as a parallel process with a time limit, there is not gurantee of founding the optimal 
