@@ -5,7 +5,8 @@ import re
 import subprocess
 
 
-ENCODING_CHOICES = [f'encoding_{i}' for i in range(4)] + [f'encoding_{4}{i}' for i in ['A', 'B', 'C', 'D']]
+ENCODING_CHOICES = [f'encoding_{i}' for i in range(4)] + [f'encoding_{4}{i}' for i in ['A', 'B', 'C', 'D', 'E', 'F']] +\
+    ['encoding_5'] + ['encoding_6A', 'encoding_6B']
 
 #python scripts/compare_sat_encodings.py sat instances sat/results/ --encodings-list encoding_3 encoding_4A encoding_4B encoding_4C encoding_4D -lb 1 -ub 15
 

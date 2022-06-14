@@ -30,3 +30,5 @@
 - Improve timeout
 - Put the 'run()' method in the superclass
 - Delete instance 41
+- Fix bounds of the variables in the comments (e.g. w-w_min)
+- Fix name exactly_one for coords (name=f'exactly_one_coord_{k}')
