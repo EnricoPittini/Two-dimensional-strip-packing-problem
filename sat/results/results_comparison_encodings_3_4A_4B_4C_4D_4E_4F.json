@@ -5,7 +5,9 @@
             "encoding_4A": 1.3733141422271729,
             "encoding_4B": 2.2293612957000732,
             "encoding_4C": 1.6209278106689453,
-            "encoding_4D": 1.6037013530731201
+            "encoding_4D": 1.6037013530731201,
+            "encoding_4E": 1.4320604801177979,
+            "encoding_4F": 1.54878568649292
         }
     },
     {
@@ -14,7 +16,9 @@
             "encoding_4A": 1.629793405532837,
             "encoding_4B": 1.7012386322021484,
             "encoding_4C": 1.9100875854492188,
-            "encoding_4D": 1.7702610492706299
+            "encoding_4D": 1.7702610492706299,
+            "encoding_4E": 1.717846393585205,
+            "encoding_4F": 1.6404500007629395
         }
     },
     {
@@ -23,7 +27,9 @@
             "encoding_4A": 3.9107959270477295,
             "encoding_4B": 3.9200968742370605,
             "encoding_4C": 4.195142507553101,
-            "encoding_4D": 4.203625679016113
+            "encoding_4D": 4.203625679016113,
+            "encoding_4E": 3.512105703353882,
+            "encoding_4F": 3.6886165142059326
         }
     },
     {
@@ -32,7 +38,9 @@
             "encoding_4A": 16.242536544799805,
             "encoding_4B": 19.52112078666687,
             "encoding_4C": 10.719444036483765,
-            "encoding_4D": 12.921158790588379
+            "encoding_4D": 12.921158790588379,
+            "encoding_4E": 11.157199621200562,
+            "encoding_4F": 10.352317810058594
         }
     },
     {
@@ -41,7 +49,9 @@
             "encoding_4A": 13.689741611480713,
             "encoding_4B": 13.672842741012573,
             "encoding_4C": 19.497002840042114,
-            "encoding_4D": 17.890477180480957
+            "encoding_4D": 17.890477180480957,
+            "encoding_4E": 13.655331134796143,
+            "encoding_4F": 12.738834142684937
         }
     },
     {
@@ -50,7 +60,9 @@
             "encoding_4A": 43.41987705230713,
             "encoding_4B": 48.491350173950195,
             "encoding_4C": 46.09987759590149,
-            "encoding_4D": 48.99013352394104
+            "encoding_4D": 48.99013352394104,
+            "encoding_4E": 55.34830045700073,
+            "encoding_4F": 43.166146993637085
         }
     },
     {
@@ -59,7 +71,9 @@
             "encoding_4A": 28.13344645500183,
             "encoding_4B": 37.09502840042114,
             "encoding_4C": 32.3352906703949,
-            "encoding_4D": 42.189371824264526
+            "encoding_4D": 42.189371824264526,
+            "encoding_4E": 44.289713621139526,
+            "encoding_4F": 44.60304117202759
         }
     },
     {
@@ -68,7 +82,9 @@
             "encoding_4A": 52.95263886451721,
             "encoding_4B": 69.48043441772461,
             "encoding_4C": 59.564876317977905,
-            "encoding_4D": 50.41101145744324
+            "encoding_4D": 50.41101145744324,
+            "encoding_4E": 83.92905616760254,
+            "encoding_4F": 60.60591125488281
         }
     },
     {
@@ -77,7 +93,9 @@
             "encoding_4A": 50.592859745025635,
             "encoding_4B": 57.96108078956604,
             "encoding_4C": 56.62154459953308,
-            "encoding_4D": 63.984939098358154
+            "encoding_4D": 63.984939098358154,
+            "encoding_4E": 105.64184808731079,
+            "encoding_4F": 68.43461966514587
         }
     },
     {
@@ -86,7 +104,9 @@
             "encoding_4A": "NaN",
             "encoding_4B": "NaN",
             "encoding_4C": "NaN",
-            "encoding_4D": "NaN"
+            "encoding_4D": "NaN",
+            "encoding_4E": "NaN",
+            "encoding_4F": "NaN"
         }
     },
     {
@@ -95,7 +115,9 @@
             "encoding_4A": "NaN",
             "encoding_4B": "NaN",
             "encoding_4C": "NaN",
-            "encoding_4D": "NaN"
+            "encoding_4D": "NaN",
+            "encoding_4E": "NaN",
+            "encoding_4F": "NaN"
         }
     },
     {
@@ -104,7 +126,9 @@
             "encoding_4A": 184.70173501968384,
             "encoding_4B": 181.86222863197327,
             "encoding_4C": 268.8873302936554,
-            "encoding_4D": "NaN"
+            "encoding_4D": "NaN",
+            "encoding_4E": "NaN",
+            "encoding_4F": "NaN"
         }
     },
     {
@@ -113,7 +137,9 @@
             "encoding_4A": "NaN",
             "encoding_4B": "NaN",
             "encoding_4C": "NaN",
-            "encoding_4D": "NaN"
+            "encoding_4D": "NaN",
+            "encoding_4E": "NaN",
+            "encoding_4F": "NaN"
         }
     },
     {
@@ -122,7 +148,9 @@
             "encoding_4A": "NaN",
             "encoding_4B": "NaN",
             "encoding_4C": "NaN",
-            "encoding_4D": "NaN"
+            "encoding_4D": "NaN",
+            "encoding_4E": "NaN",
+            "encoding_4F": "NaN"
         }
     },
     {
@@ -131,7 +159,9 @@
             "encoding_4A": "NaN",
             "encoding_4B": "NaN",
             "encoding_4C": "NaN",
-            "encoding_4D": "NaN"
+            "encoding_4D": "NaN",
+            "encoding_4E": "NaN",
+            "encoding_4F": "NaN"
         }
     }
 ]

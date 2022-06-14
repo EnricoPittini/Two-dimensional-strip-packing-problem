@@ -8,15 +8,14 @@ class Vlsi_sat(Vlsi_sat_abstract):
 
     It inherits from the class `Vlsi_sat_abstract`.
 
-    Both the solving and the optimization are very similar to the encoding 2.
-    The only difference is about the bounds of the variables. 
+    Very similar to the encoding 2.
+    The only difference is about the SAT variables 'length_k_l'.
+    We don't use these variables anymore, but we use the variables 'length_l' (and, so, we use also different constraints).
 
-    Better bounds for all the SAT variables: 'circuit_i_j_k', 'coord_i_j_k' and 'length_k_l'.
-        1. 'circuit_i_j_k': i in [0,w-w_min+1], j in [0,l_max-h_min+1], k in [0,n]
-        2. 'coord_i_j_k': i in [0,w-w_min+1], j in [0,l_max-h_min+1], k in [0,n]
-        3. 'length_k_l': k in [0,n], l in [0,l_max-l_min+1]
-            For going from an index 'l' of 'length_k_l' to the actual length: l+l_min-1.
-            For going from an actual length 'l' to an index of 'length_k_l': l-l_min+1.
+    This is the same change seen in the encoding 5: alternative approach for the optimization procedure.
+
+    Remark: we remind that the improved bounds for the SAT variables 'circuit_i_j_k' and 'coord_i_j_k' can't be used anymore 
+    (basically, we can't use the bounds w-w_min and l_max-h_min). We can use only the bounds on 'length_l'.
 
     """
 
@@ -45,7 +44,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
             Boolean variables 'circuits_i_j_k'.
             See `Notes`.
         lengths : list of list of z3.z3.BoolRef
-            Boolean variables 'length_k_l'.
+            Boolean variables 'length_l'.
             See `Notes`.
 
         Notes
@@ -56,9 +55,9 @@ class Vlsi_sat(Vlsi_sat_abstract):
           circuit_i_j_k is True IIF the circuit 'k' is present in the cell '(i,j)' of the plate.
         - length_l, where 'l' in [0, l_max-l_min+1].
            'l' represents a length of the plate.
-           length_l is True IIF the length 'l'+l_min-1 is the maximum length of the plate.
-           For going from an index 'l' of 'length_k_l' to the actual length: l+l_min-1.
-           For going from an actual length 'l' to an index of 'length_k_l': l-l_min+1.
+           length_l is True IIF the length 'l' (actually, 'l'+l_min-1) is the maximum length of the plate.
+           For going from an index 'l' of 'length_l' to the actual length: l+l_min-1.
+           For going from an actual length 'l' to an index of 'length_l': l-l_min+1.
 
         """
         w, n, dimsX, dimsY = self.w, self.n, self.dimsX, self.dimsY
@@ -74,6 +73,8 @@ class Vlsi_sat(Vlsi_sat_abstract):
         for i in range(w):
             for j in range(l_max):
                 s.add(at_most_one(circuits[i][j], name=f'at_most_one_circuit_{i}_{j}'))  
+
+        all_possible_positions = [(ii,jj) for ii in range(w) for jj in range(l_max)]
 
         print('CUCU')  # TODO: remove
 
@@ -99,8 +100,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
                     covered_positions = [(i+ii,j+jj) for ii in range(dimsX[k]) for jj in range(dimsY[k])]
                     # List of tuples, representing the coordinates of the cells of the plate non-covered by the circuit in 
                     # that configuration
-                    non_covered_positions = list(set([(ii,jj) for ii in range(w) for jj in range(l_max)]) 
-                                                - set(covered_positions))
+                    non_covered_positions = list(set(all_possible_positions) - set(covered_positions))
                     
                     # Formula ensuring that all the `covered_positions` actually contain that circuit `k`
                     all_positions_covered_formula = And([circuits[ii][jj][k] for (ii,jj) in covered_positions])  
@@ -117,13 +117,13 @@ class Vlsi_sat(Vlsi_sat_abstract):
 
             # We have collected the formulas of all the possible configurations for the circuit `k`: we impose that exactly
             # one of them is True
-            s.add(exactly_one(configurations_formulas, name=f'exactly_one_{k}'))
+            s.add(exactly_one(configurations_formulas, name=f'exactly_one_formula_{k}'))
 
         print('HERE')  # TODO: remove
 
         # Now we impose the constraints about the variables 'length_l'
         # First of all, exactly one variable must be True
-        s.add(exactly_one(lengths))
+        s.add(exactly_one(lengths, name='exactly_one_length'))
         # Then, we have to impose a constraint for each possible length 'l', saying that the variable 'length_l' is True 
         # IFF there is at least one circuit reaching that length and no circuit goes above that length.
         for l in range(l_max-l_min+1):
@@ -160,11 +160,11 @@ class Vlsi_sat(Vlsi_sat_abstract):
         circuits : list of list of list of z3.z3.BoolRef
             Boolean variables 'circuits_i_j_k'.
         lengths : list of list of z3.z3.BoolRef
-            Boolean variables 'length_k_l'.
-        w_min : int
-            Minimum width of a circuit
-        h_min : int
-            Minimum height of a circuit
+            Boolean variables 'length_l'.
+        l_min : int
+            Lower bound of the length of the plate
+        l_max : int
+            Upper bound of the length of the plate
         current_best_l : int
             Current best length of the plate (found so far)
 

@@ -13,10 +13,9 @@ class Vlsi_sat(Vlsi_sat_abstract):
     Of course, this implies that different constraints must be ensured.
 
     The variables 'length_k_l' remain the same, and also the constraints about them.
+    The optimization procedure is exactly the same of the previous encodings (seen from the encoding 2).
 
-    The optimization procedure is exactly the same of the previous encodings (in particular, from the encoding 2).
-
-    Finally, the best bounds for the SAT variables (seen from the encoding 3) are used.
+    Finally, the improved bounds for the SAT variables (seen from the encoding 3) are used.
 
     """
 
@@ -81,7 +80,10 @@ class Vlsi_sat(Vlsi_sat_abstract):
 
         print('CUCU')  # TODO: remove
 
-        # Constraint: for each circuit 'k', we take all the possible configurations in which tkat circuit can be and we 
+        # All possible positions of the grid
+        all_possible_positions = [(ii,jj) for ii in range(w-w_min+1) for jj in range(l_max-h_min+1)]
+
+        # Constraint: for each circuit 'k', we take all the possible configurations in which that circuit can be and we 
         # impose that exactly one of these configurations is True     
         for k in range(n):
             # Current iteration: circuit 'k'
@@ -104,8 +106,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
                                                     if i+ii<w-w_min+1 and j+jj<l_max-h_min+1]
                     # List of tuples, representing the coordinates of the cells of the plate non-covered by the circuit in 
                     # that configuration
-                    non_covered_positions = list(set([(ii,jj) for ii in range(w-w_min+1) for jj in range(l_max-h_min+1)]) 
-                                                - set(covered_positions))
+                    non_covered_positions = list(set(all_possible_positions) - set(covered_positions))
                     
                     # Formula ensuring that all the `covered_positions` actually contain that circuit `k`
                     all_positions_covered_formula = And([circuits[ii][jj][k] for (ii,jj) in covered_positions])  
@@ -128,7 +129,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
 
             # We have collected the formulas of all the possible configurations for the circuit `k`: we impose that exactly
             # one of them is True
-            s.add(exactly_one(configurations_formulas, name=f'exactly_one_{k}'))
+            s.add(exactly_one(configurations_formulas, name=f'exactly_one_formula_{k}'))
 
         print('HERE')  # TODO: remove
 
@@ -153,7 +154,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
         circuits : list of list of list of z3.z3.BoolRef
             Boolean variables 'circuits_i_j_k'.
         lengths : list of list of z3.z3.BoolRef
-            Boolean variables 'length_k_l'.
+            Boolean variables 'length_l'.
         w_min : int
             Minimum width of a circuit
         h_min : int
