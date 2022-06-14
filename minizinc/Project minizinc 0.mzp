@@ -1,15 +1,22 @@
 {
     "openFiles": [
-        "model_6C0.mzn",
-        "model_6D0.mzn",
-        "model_6E0.mzn",
-        "model_6F.mzn",
+        "model_final0.mzn",
+        "model_4A3.mzn",
+        "model_final1.mzn",
+        "model_6A.mzn",
+        "model_4A4.mzn",
+        "model_final2.mzn",
+        "model_6B0.mzn",
         "model_6B1.mzn",
+        "model_6C0.mzn",
         "model_6C1.mzn",
+        "model_6D0.mzn",
         "model_6D1.mzn",
-        "model_6E1.mzn"
+        "model_6E0.mzn",
+        "model_6E1.mzn",
+        "model_6F.mzn"
     ],
-    "openTab": 3,
+    "openTab": 5,
     "projectFiles": [
         "Data 13.dzn",
         "Data 3.dzn",
@@ -48,10 +55,14 @@
         "model_6E0.mzn",
         "model_6E1.mzn",
         "model_6F.mzn",
+        "model_final0.mzn",
+        "model_final1.mzn",
+        "model_final2.mzn",
         "solver_0.mpc",
-        "solver_1.mpc"
+        "solver_1.mpc",
+        "solver_2.mpc",
+        "solver_3.mpc"
     ],
-    "selectedBuiltinConfigId": "org.gecode.gecode",
-    "selectedBuiltinConfigVersion": "6.3.0",
+    "selectedSolverConfigFile": "solver_3.mpc",
     "version": 106
 }

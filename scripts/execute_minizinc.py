@@ -24,6 +24,9 @@ def main() -> None:
     parser.add_argument('output-name', type=str, default=None, nargs='?', 
                         help='The name of the output solution.')
 
+    parser.add_argument('--time-limit', '-t', type=int, default=300, nargs='?',
+                        help='The allowed time to solve the task.', required=False)
+
     parser.add_argument('--no-create-output', action='store_true', 
                         help='Skip the creation of the output solution.')
 
@@ -40,6 +43,8 @@ def main() -> None:
     w, n, dims = utils.parse_instance_txt(instance_file)
 
     parsed_cmdline_data = _create_cmdline_data(w, n, dims)
+    
+    time_limit = arguments.time_limit
 
     command = f'minizinc {vars(arguments)["model-path"]} {parsed_cmdline_data} --param-file {vars(arguments)["solver-path"]}'
     
@@ -54,6 +59,7 @@ def main() -> None:
     except subprocess.CalledProcessError:
         sys.exit(f'ERROR: {result.stderr.decode("UTF-8")}')
 
+    # TODO: this part of printing the output JSON is repeated ieven in solve_vlsi_cp.py
     output = result.stdout.decode('UTF-8').replace('-', '').replace('=', '')
     
     try:
@@ -73,7 +79,11 @@ def main() -> None:
     else:
         time_list = re.findall('% time elapsed: ' + r'\d+\.\d+', output)
         if len(time_list):
-            print(time_list[-1])
+            elapsed_time = time_list[-1].split('% time elapsed: ')[-1]
+            if float(elapsed_time) > time_limit:
+                print('% Time limit exceeded!')
+            else:
+                print(time_list[-1])
 
     if not arguments.no_create_output:
         l = json_result['l']

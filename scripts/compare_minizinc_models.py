@@ -3,6 +3,7 @@ import json
 import os
 import re
 import subprocess
+import sys
 
 from utils import MINIZINC_ERRORS
 
@@ -11,7 +12,7 @@ GECODE_MODELS = [f'model_6{i}1' for i in 'BCDE'] + ['model_6F']
 # TODO: Fix 
 CHUFFED_MODELS = [f'model_{i}' for i in range(3)] + [f'model_3{i}' for i in 'ABC'] + [f'model_4A{i}' for i in range(8)] +\
     [f'model_4{i}{j}' for i in 'BC' for j in range(3)] + ['model_5', 'model_6A'] + [f'model_6{i}0' for i in 'BCDE']
-MODEL_CHOICES = GECODE_MODELS + CHUFFED_MODELS
+MODEL_CHOICES = GECODE_MODELS + CHUFFED_MODELS + ['model_final']
 
 # SOLVER_CHOICES = [f'solver_{i}' for i in range(3)]
 #python scripts/compare_minizinc_models.py minizinc instances minizinc\solver_1.mpc results/ --models-list model_2 model_3A model_3B model_3C -lb 1 -ub 8
@@ -34,7 +35,7 @@ def main() -> None:
                         type=str, 
                         choices=MODEL_CHOICES,
                         # TODO: add all possible model choices
-                        default=['model_0', 'model_1', 'model_2', 'model_3'], #'model_4_gecode'
+                        default=['model_final'], #'model_4_gecode'
                         help='List of models to compare (default all models). ' +\
                         'Example of usage: --models-list model_0 model_2 model_3',
                         nargs='*')
@@ -66,6 +67,7 @@ def main() -> None:
     output_folder_path = vars(arguments)['output-folder-path']
 
     execute_minizinc_script_path = os.path.join(os.path.dirname(__file__), 'execute_minizinc.py')
+    solve_vlsi_cp_script_path = os.path.join(os.path.dirname(__file__), 'solve_vlsi_cp.py')
 
     result_list = []
 
@@ -95,8 +97,11 @@ def main() -> None:
 
 
             print(f'Executing instance {instance} with model {model}...')
-            command = f'python "{execute_minizinc_script_path}" "{model_file_path}" "{instance_file_path}" ' +\
-                      f'"{solver_file_path}" --no-create-output'
+            if model == 'model_final':
+                command = f'python "{solve_vlsi_cp_script_path}" "{instance_file_path}" --no-create-output'
+            else:    
+                command = f'python "{execute_minizinc_script_path}" "{model_file_path}" "{instance_file_path}" ' +\
+                        f'"{solver_file_path}" --no-create-output'
                       
             try:
                 result = subprocess.run(command, capture_output=True)
