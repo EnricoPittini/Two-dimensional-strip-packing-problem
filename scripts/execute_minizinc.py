@@ -42,7 +42,12 @@ def main() -> None:
     parsed_cmdline_data = _create_cmdline_data(w, n, dims)
 
     command = f'minizinc {vars(arguments)["model-path"]} {parsed_cmdline_data} --param-file {vars(arguments)["solver-path"]}'
-    result = subprocess.run(command, capture_output=True)
+    
+    try:
+        result = subprocess.run(command, capture_output=True)
+    except KeyboardInterrupt:
+        # Send `UNKNOWN` error if MiniZinc returns a `KeyboardInterrupt` signal. This is due to an internal MiniZinc bug.
+        sys.exit('ERROR: UNKNOWN')
     
     try: 
         result.check_returncode()

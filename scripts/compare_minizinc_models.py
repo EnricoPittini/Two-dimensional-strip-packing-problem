@@ -97,16 +97,27 @@ def main() -> None:
             print(f'Executing instance {instance} with model {model}...')
             command = f'python "{execute_minizinc_script_path}" "{model_file_path}" "{instance_file_path}" ' +\
                       f'"{solver_file_path}" --no-create-output'
-            result = subprocess.run(command, capture_output=True)
+                      
+            try:
+                result = subprocess.run(command, capture_output=True)
+            except KeyboardInterrupt:
+                # Specify `UNKNOWN` error if MiniZinc returns a `KeyboardInterrupt` signal. 
+                # This is due to an internal MiniZinc bug.
+                print('\tERROR: UNKNOWN')
+                instance_dict[model] = 'UNKNOWN'
+                # Continue to the next iteration.
+                continue
             
-            try: 
+            try:
                 result.check_returncode()
-            except subprocess.CalledProcessError as e:
-                print(e)
-                error_list = str(e).split('ERROR: ')
-                if len(error_list) and error_list[-1] in MINIZINC_ERRORS:
-                    instance_dict[model] = error_list[-1]
+            except subprocess.CalledProcessError:
+                decoded_error = result.stderr.decode('UTF-8')
+                error_list = [err for err in decoded_error.split() if err in MINIZINC_ERRORS]
+                if len(error_list):
+                    print(f'\tERROR: {error_list[0]}')
+                    instance_dict[model] = error_list[0]
                 else:
+                    print('\tERROR: UNKNOWN')
                     instance_dict[model] = 'UNKNOWN'
                 # Continue to the next iteration.
                 continue
@@ -121,8 +132,8 @@ def main() -> None:
                 print('\tTime limit exceeded.')
                 instance_dict[model] = 'NaN'
             else: 
-                print('\tUnsat.')
-                instance_dict[model] = 'Unsat'
+                print('\tERROR: UNKNOWN.')
+                instance_dict[model] = 'UNKNOWN'
                 
         result_list.append({f'ins-{instance}': instance_dict})
 
