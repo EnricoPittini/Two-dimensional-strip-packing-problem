@@ -9,7 +9,8 @@ class Vlsi_sat(Vlsi_sat_abstract):
     It inherits from the class `Vlsi_sat_abstract`.
 
     The solving encoding has been changed with respect to the previous encodings. 
-    Now the SAT variables 'coord_i_j_k' are not used anymore: less variables.
+    Now the SAT variables 'coord_i_j_k' are not used anymore: less variables. The aim is to try to eliminate the redundancy
+    of having two grid of variables 'coord_i_j_k' and 'circuit_i_j_k'.
     Of course, this implies that different constraints must be ensured.
 
     The variables 'length_k_l' remain the same, and also the constraints about them.

@@ -85,6 +85,7 @@ def main() -> None:
             if 'Time elapsed' in output:
                 instance_dict[encoding] =  'NaN'
             else:
+                #print(output)
                 #print(output.split('Time: ')[-1].split('UNSAT'))
                 t = float(output.split('Time: ')[-1].split('UNSAT')[0])
                 instance_dict[encoding] = t

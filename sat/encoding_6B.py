@@ -8,7 +8,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
 
     It inherits from the class `Vlsi_sat_abstract`.
 
-    Very similar to the encoding 2.
+    Very similar to the encoding 6A.
     The only difference is about the SAT variables 'length_k_l'.
     We don't use these variables anymore, but we use the variables 'length_l' (and, so, we use also different constraints).
 
@@ -72,7 +72,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
         # Constraint: in each cell '(i,j)' of the plate at most one circuit is present.
         for i in range(w):
             for j in range(l_max):
-                s.add(at_most_one(circuits[i][j], name=f'at_most_one_circuit_{i}_{j}'))  
+                s.add(at_most_one(circuits[i][j], name=f'at_most_one_circuit_{i}_{j}'))
 
         all_possible_positions = [(ii,jj) for ii in range(w) for jj in range(l_max)]
 
