@@ -1,0 +1,7 @@
+{
+    "intermediate-solutions": false,
+    "output-mode": "json",
+    "output-time": true,
+    "solver": "org.minizinc.mip.coin-bc@2.10.7/1.17.7",
+    "time-limit": 300000
+}

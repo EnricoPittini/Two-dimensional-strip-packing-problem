@@ -1,0 +1,14 @@
+{
+    "openFiles": [
+        "models/model_0.mzn",
+        "data/data_13.dzn"
+    ],
+    "openTab": 0,
+    "projectFiles": [
+        "data/data_13.dzn",
+        "models/model_0.mzn",
+        "solvers/solver_coin_bc.mpc"
+    ],
+    "selectedSolverConfigFile": "solvers/solver_coin_bc.mpc",
+    "version": 106
+}
