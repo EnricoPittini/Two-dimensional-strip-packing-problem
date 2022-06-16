@@ -66,6 +66,7 @@ def vlsi_sat(w, n, dims, encoding_module, timeout=300):
         p.terminate()
         p.join()   
 
+    # print(results)
     return results['best_coords'], results['best_l'], results['finish'], results['unsat']
       
 

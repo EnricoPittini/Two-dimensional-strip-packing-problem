@@ -1,0 +1,152 @@
+[
+    {
+        "ins-1": {
+            "encoding_4A": 1.5356225967407227,
+            "encoding_8A": 1.5940518379211426,
+            "encoding_8B": 1.4309773445129395,
+            "encoding_8C": 2.8343639373779297,
+            "encoding_8D": 2.0198028087615967,
+            "encoding_8E": 1.915980577468872
+        }
+    },
+    {
+        "ins-2": {
+            "encoding_4A": 1.7957398891448975,
+            "encoding_8A": 1.7566206455230713,
+            "encoding_8B": 1.6257240772247314,
+            "encoding_8C": 1.740208387374878,
+            "encoding_8D": 1.7942397594451904,
+            "encoding_8E": 1.9247777462005615
+        }
+    },
+    {
+        "ins-3": {
+            "encoding_4A": 3.4622905254364014,
+            "encoding_8A": 3.5679214000701904,
+            "encoding_8B": 3.5580742359161377,
+            "encoding_8C": 3.745527744293213,
+            "encoding_8D": 3.7194197177886963,
+            "encoding_8E": 4.091445446014404
+        }
+    },
+    {
+        "ins-4": {
+            "encoding_4A": 10.119619131088257,
+            "encoding_8A": 10.179453372955322,
+            "encoding_8B": 9.651211738586426,
+            "encoding_8C": 10.2093346118927,
+            "encoding_8D": 9.98493242263794,
+            "encoding_8E": 10.770707130432129
+        }
+    },
+    {
+        "ins-5": {
+            "encoding_4A": 13.0197913646698,
+            "encoding_8A": 26.680482625961304,
+            "encoding_8B": 18.861674785614014,
+            "encoding_8C": 26.101805210113525,
+            "encoding_8D": 22.690590620040894,
+            "encoding_8E": 27.73136258125305
+        }
+    },
+    {
+        "ins-6": {
+            "encoding_4A": 45.7450156211853,
+            "encoding_8A": 42.49189114570618,
+            "encoding_8B": 42.485172271728516,
+            "encoding_8C": 41.96983885765076,
+            "encoding_8D": 40.06532692909241,
+            "encoding_8E": 45.38996767997742
+        }
+    },
+    {
+        "ins-7": {
+            "encoding_4A": 28.630769729614258,
+            "encoding_8A": 33.06006097793579,
+            "encoding_8B": 30.203283309936523,
+            "encoding_8C": 33.48627781867981,
+            "encoding_8D": 32.819812297821045,
+            "encoding_8E": 66.50390791893005
+        }
+    },
+    {
+        "ins-8": {
+            "encoding_4A": 80.66821670532227,
+            "encoding_8A": 53.29796552658081,
+            "encoding_8B": 55.115339517593384,
+            "encoding_8C": 57.807225465774536,
+            "encoding_8D": 52.00459337234497,
+            "encoding_8E": 57.129913568496704
+        }
+    },
+    {
+        "ins-9": {
+            "encoding_4A": 63.828341484069824,
+            "encoding_8A": 62.161006450653076,
+            "encoding_8B": 62.55908465385437,
+            "encoding_8C": 58.10274934768677,
+            "encoding_8D": 60.54533934593201,
+            "encoding_8E": 146.70540118217468
+        }
+    },
+    {
+        "ins-10": {
+            "encoding_4A": "NaN",
+            "encoding_8A": "NaN",
+            "encoding_8B": "NaN",
+            "encoding_8C": "NaN",
+            "encoding_8D": "NaN",
+            "encoding_8E": "NaN"
+        }
+    },
+    {
+        "ins-11": {
+            "encoding_4A": "NaN",
+            "encoding_8A": "NaN",
+            "encoding_8B": "NaN",
+            "encoding_8C": "NaN",
+            "encoding_8D": "NaN",
+            "encoding_8E": "NaN"
+        }
+    },
+    {
+        "ins-12": {
+            "encoding_4A": 212.0182650089264,
+            "encoding_8A": 188.8639748096466,
+            "encoding_8B": 187.27225637435913,
+            "encoding_8C": 161.72119879722595,
+            "encoding_8D": 161.25119042396545,
+            "encoding_8E": 251.65600442886353
+        }
+    },
+    {
+        "ins-13": {
+            "encoding_4A": "NaN",
+            "encoding_8A": "NaN",
+            "encoding_8B": "NaN",
+            "encoding_8C": "NaN",
+            "encoding_8D": "NaN",
+            "encoding_8E": "NaN"
+        }
+    },
+    {
+        "ins-14": {
+            "encoding_4A": "NaN",
+            "encoding_8A": "NaN",
+            "encoding_8B": "NaN",
+            "encoding_8C": "NaN",
+            "encoding_8D": "NaN",
+            "encoding_8E": "NaN"
+        }
+    },
+    {
+        "ins-15": {
+            "encoding_4A": "NaN",
+            "encoding_8A": "NaN",
+            "encoding_8B": "NaN",
+            "encoding_8C": "NaN",
+            "encoding_8D": "NaN",
+            "encoding_8E": "NaN"
+        }
+    }
+]
