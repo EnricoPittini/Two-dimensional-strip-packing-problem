@@ -126,9 +126,9 @@ class Vlsi_sat(Vlsi_sat_abstract):
 
     Finally, we have to put the other constraints about px_ie and py_if for the ordering encoding.
     For each circuit 'i', we have to put:
-            ∀e (¬px_ie \/ px_i{e+1})
+            ∀e (¬px_ie \/ px_i{e+1})    (which is equivalent to ∀e (px_ie -> px_i{e+1}))
     and
-            ∀f (¬py_if \/ py_i{f+1})
+            ∀f (¬py_if \/ py_i{f+1})    (which is equivalent to ∀f (py_if -> py_i{f+1}))
         
 
     --- SUM UP ---
@@ -313,7 +313,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
                     for e in range(dimsX[i]):
                         s.add( Or(Not(lr[i][j]),Not(px[j][e])) )
                     # Constraint A5)
-                    for e in range(dimsY[i]):
+                    for e in range(dimsX[j]):
                         s.add( Or(Not(lr[j][i]),Not(px[i][e])) )
                     
                 # Group B
