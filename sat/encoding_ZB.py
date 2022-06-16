@@ -113,6 +113,21 @@ class Vlsi_sat(Vlsi_sat_abstract):
         # List, containing the 'ph' boolean variables: variables 'ph_o'
         ph = [Bool(f'ph_{o}') for o in range(l_max-l_min+1)]
 
+        # Ensure the constraints of the group C)
+        for i in range(n):
+            # Constraint C2)
+            for e in range(w-dimsX[i]):
+                s.add( Or(Not(px[i][e]),px[i][e+1]) )  
+            # Constraint C1)
+            for e in range(w-dimsX[i],w):
+                s.add(px[i][e])   
+            # Constraint C4)
+            for f in range(l_max-dimsY[i]):
+                s.add( Or(Not(py[i][f]),py[i][f+1]) )      
+            # Constraint C3)
+            for f in range(l_max-dimsY[i],l_max):
+                s.add(py[i][f])            
+
         # Ensure the constraint 1) and the constraints of the group A and B
         for i in range(n):
             for j in range(i+1,n):
@@ -125,16 +140,16 @@ class Vlsi_sat(Vlsi_sat_abstract):
                     s.add( Not(lr[i][j]) )
                     s.add( Not(lr[j][i]) )
                 else:
-                    # Constraints A2) and A3)
-                    for e in range(w-dimsX[i]-dimsX[j]+1):
-                        s.add( Or(Not(lr[i][j]), px[i][e], Not(px[j][e+dimsX[i]])) )
-                        s.add( Or(Not(lr[j][i]), px[j][e], Not(px[i][e+dimsX[j]])) )
                     # Constraint A4)
                     for e in range(dimsX[i]):
                         s.add( Or(Not(lr[i][j]),Not(px[j][e])) )
                     # Constraint A5)
                     for e in range(dimsX[j]):
                         s.add( Or(Not(lr[j][i]),Not(px[i][e])) )
+                    # Constraints A2) and A3)
+                    for e in range(w-dimsX[i]-dimsX[j]+1):
+                        s.add( Or(Not(lr[i][j]), px[i][e], Not(px[j][e+dimsX[i]])) )
+                        s.add( Or(Not(lr[j][i]), px[j][e], Not(px[i][e+dimsX[j]])) )                    
                     
                 # Group B
                 # Constraint B1)
@@ -142,32 +157,17 @@ class Vlsi_sat(Vlsi_sat_abstract):
                     s.add( Not(ud[i][j]) )
                     s.add( Not(ud[j][i]) )
                 else:
-                    # Constraints B2) and B3)
-                    for f in range(l_max-dimsY[i]-dimsY[j]+1):
-                        s.add( Or(Not(ud[i][j]), py[i][f], Not(py[j][f+dimsY[i]])) )
-                        s.add( Or(Not(ud[j][i]), py[j][f], Not(py[i][f+dimsY[j]])) )
                     # Constraint B4)
                     for f in range(dimsY[i]):
                         s.add( Or(Not(ud[i][j]),Not(py[j][f])) )
                     # Constraint B5)
                     for f in range(dimsY[j]):
                         s.add( Or(Not(ud[j][i]),Not(py[i][f])) )
-
-        # Ensure the constraints of the group C)
-        for i in range(n):
-            # Constraint C1)
-            for e in range(w-dimsX[i],w):
-                s.add(px[i][e])
-            # Constraint C2)
-            for e in range(w-dimsX[i]):
-                s.add( Or(Not(px[i][e]),px[i][e+1]) )           
-            # Constraint C3)
-            for f in range(l_max-dimsY[i],l_max):
-                s.add(py[i][f])
-            # Constraint C4)
-            for f in range(l_max-dimsY[i]):
-                s.add( Or(Not(py[i][f]),py[i][f+1]) )
-
+                    # Constraints B2) and B3)
+                    for f in range(l_max-dimsY[i]-dimsY[j]+1):
+                        s.add( Or(Not(ud[i][j]), py[i][f], Not(py[j][f+dimsY[i]])) )
+                        s.add( Or(Not(ud[j][i]), py[j][f], Not(py[i][f+dimsY[j]])) )
+                    
         # Ensure the constraint O1        
         for i in range(n):
             for o in range(l_max-l_min+1):
