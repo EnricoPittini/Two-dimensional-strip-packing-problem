@@ -1,5 +1,5 @@
 from z3 import *
-from sat_utils import at_least_one, at_most_one, exactly_one, UnsatError, Vlsi_sat_abstract
+from sat_utils import at_most_one, exactly_one, UnsatError, Vlsi_sat_abstract
 
 
 class Vlsi_sat(Vlsi_sat_abstract):
@@ -17,6 +17,9 @@ class Vlsi_sat(Vlsi_sat_abstract):
     In this way, at each iteration is found a better solution with respect to the current one.
     Still no incremental solving: at each iteration, the solver is created and run from scratch. 
     See the `__optimize` method.
+
+    Remark: imposing at each iteration that the solution must be different from the already found solution may be redundant, 
+    since we are also imposing that l_max=l-1.
 
     """
 
@@ -53,10 +56,10 @@ class Vlsi_sat(Vlsi_sat_abstract):
         Notes
         ------
         The following SAT variables are used.
-        - circuit_i_j_k, where 'i' in [0,w], 'j' in [0,l_max], 'k' in [0,n].
+        - circuit_i_j_k, where 'i' in [0,w-1], 'j' in [0,l_max-1], 'k' in [0,n-1].
           '(i,j)' represent two coordinates of the plate, 'k' represents a circuit.
           circuit_i_j_k is True IIF the circuit 'k' is present in the cell '(i,j)' of the plate.
-        - coord_i_j_k, where 'i' in [0,w], 'j' in [0,l_max], 'k' in [0,n].
+        - coord_i_j_k, where 'i' in [0,w-1], 'j' in [0,l_max-1], 'k' in [0,n].
           '(i,j)' represent two coordinates of the plate, 'k' represents a circuit.
           coord_i_j_k is True IIF the left-bottom corner of the circuit 'k' is put in the cell '(i,j)' of the plate.
 
@@ -64,7 +67,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
         w, n, dimsX, dimsY = self.w, self.n, self.dimsX, self.dimsY
 
         s = Solver()  # Solver instance
-        s.add(And(formulas))  # Add the given optional formulas
+        s.add(And(formulas))  # Add the given optional formulas (MAYBE REDUNDANT?)
         
         # Upper bound of the length of the plate, if not explicitely given in input
         if not l_max:
@@ -77,9 +80,10 @@ class Vlsi_sat(Vlsi_sat_abstract):
         
         # Constraint: in each cell '(i,j)' of the plate at most one circuit is present.
         # This reflects both on `circuits` and on `coords`.
+        # (MAYBE REDUNDANT?)
         for i in range(w):
             for j in range(l_max):
-                s.add(at_most_one(circuits[i][j], name=f'at_most_one_circuit_{i}_{j}'))  # TODO : redundant?
+                s.add(at_most_one(circuits[i][j], name=f'at_most_one_circuit_{i}_{j}'))  
                 s.add(at_most_one(coords[i][j], name=f'at_most_one_coord_{i}_{j}'))
                 
         # Constraint: the left-bottom corner of each circuit 'k' must be present exactly one time across the plate
@@ -95,10 +99,12 @@ class Vlsi_sat(Vlsi_sat_abstract):
                     # Now the constraint about putting the left-bottom corner of `k` in `(i,j)` is ensured.
 
                     # Case in which `k` can't be put in `(i,j)`, because it goes out of the bounds of the plate.
-                    # In such case, a constraint ensuring that `k` can't be put in `(i,j)` is esnured.
+                    # In such case, a constraint ensuring that `k` can't be put in `(i,j)` is added.
                     if i+dimsX[k]-1>=w or j+dimsY[k]-1>=l_max:
                         s.add(Not(coords[i][j][k]))  # The left-bottom corner of `k` can't be put in `(i,j)`
                         continue
+
+                    # `k` can be put in `(i,j)`
                     
                     # List of tuples, representing the coordinates of the cells of the plate covered by the circuit
                     covered_positions = [(i+ii,j+jj) for ii in range(dimsX[k]) for jj in range(dimsY[k])]
@@ -109,9 +115,11 @@ class Vlsi_sat(Vlsi_sat_abstract):
                     # Formula ensuring that all the `covered_positions` actually contain that circuit `k`
                     all_positions_covered_formula = And([circuits[ii][jj][k] for (ii,jj) in covered_positions])
 
-                    # TODO: put negation of all circuits[ii][jj][kk] related to wrong positions? 
-                    # The added constraint is the following implication: if left-bottom corner of `k` in `(i,j)`, then 
-                    # `no_overlapping_circuit_formula` and `all_positions_covered_formula`
+                    # TODO: put negation of all circuits[ii][jj][kk] related to wrong positions?
+                    #  
+                    # The added constraint is the following implication: if bottom-left corner of `k` is in `(i,j)`, then 
+                    # `no_overlapping_circuit_formula` and `all_positions_covered_formula` are both True.
+                    # Actually, it is an equivalence, not an implication.
                     s.add(coords[i][j][k] == And(no_overlapping_circuit_formula, all_positions_covered_formula))
 
         # Check if UNSAT 
@@ -121,7 +129,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
         # Get the solution
         m = s.model()
 
-        # List containing the coordX and coordY of the lower-left vertex of each circuit
+        # List containing the coordX and coordY of the bottom-left vertex of each circuit
         coords_sol = [(i, j) for k in range(n) for j in range(l_max) for i in range(w) if m.evaluate(coords[i][j][k])]
         # Boolean formula containing the solution
         formula = And([ (coords[i][j][k] if m.evaluate(coords[i][j][k]) else Not(coords[i][j][k])) 
@@ -131,12 +139,12 @@ class Vlsi_sat(Vlsi_sat_abstract):
 
 
     def __compute_l(self, coords):
-        """Computes the length of the plate, given the coordinates of the lower-left verteces of the circuits
+        """Computes the length of the plate, given the coordinates of the bottom-left verteces of the circuits
 
         Parameters
         ----------
         coords : list of tuple of int
-            List containing the coordX and the coordY of the lower-left vertex of each circuit 
+            List containing the coordX and the coordY of the bottom-left vertex of each circuit 
 
         Returns
         -------
@@ -163,6 +171,11 @@ class Vlsi_sat(Vlsi_sat_abstract):
 
         No incremental solving: at each iteration, the solver is created and run from scratch.
 
+        Linear search.
+
+        Remark: imposing at each iteration that the solution must be different from the already found solution may be redundant, 
+        since we are also imposing that l_max=l-1.
+
         Raises
         ------
         UnsatError
@@ -181,17 +194,21 @@ class Vlsi_sat(Vlsi_sat_abstract):
 
         while True:
             try:
-                if first:
-                    l_max = None
-                else:
+                # Compute the bound for the maximum length of the plate, i.e. l_max 
+                if first:  # No solution for now
+                    l_max = None  
+                else:  # At least one solution has already been found
                     l_max = self.results['best_l']-1
 
-                # Search for a solution (given the additional constraints in `formulas`)
+                # Search for a solution, given the additional constraints in `formulas` and given the current l_max
                 coords, formula = self.__solve(formulas=formulas, l_max=l_max)
+
+                # SAT: a new solution has been found
 
                 # Append into `formulas` the negation of the returned `formula`, which represents the current solution.
                 # In this way, in the next iteration, the same solution is not feasible anymore
                 formulas.append(Not(formula))  
+                # (MAYBE REDUNDANT?)
 
                 # Length of the plate of the current solution
                 l = self.__compute_l(coords)
@@ -200,12 +217,12 @@ class Vlsi_sat(Vlsi_sat_abstract):
                 # print(l)
                 # print(coords)
 
-                # Check if the current solution is the best solution found so far
+                # Update the best solution found so far with the new solution
                 first = False
                 self.results['best_coords'] = coords
                 self.results['best_l'] = l
 
-            except UnsatError:  # Found UNSAT: leave the cycle
+            except UnsatError:  # UNSAT: leave the cycle
                 break
 
         # The computation is finished

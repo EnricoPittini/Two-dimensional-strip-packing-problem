@@ -16,6 +16,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
                         (xi + wi ≤ xj ) \/ (xj + wj ≤ xi) \/ (yi + hi ≤ yj ) \/ (yj + hj ≤ yi).
     (Scheduling-like constraints).
     Then, these constraints are encoded into SAT using the ORDER ENCODING.
+    See the description below.
 
     A basic optimization procedure has been used.
     Cycle in which at each iteration the solver is created and run from scratch, with the current best length of the plate 
