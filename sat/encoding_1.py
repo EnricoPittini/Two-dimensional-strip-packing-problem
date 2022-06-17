@@ -121,6 +121,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
                     # `no_overlapping_circuit_formula` and `all_positions_covered_formula` are both True.
                     # Actually, it is an equivalence, not an implication.
                     s.add(coords[i][j][k] == And(no_overlapping_circuit_formula, all_positions_covered_formula))
+                    # (MAYBE THE EQUIVALENCE IS REDUNDANT? AN IMPLICATION WOULD BE ENOUGH?)
 
         # Check if UNSAT 
         if s.check() != sat:

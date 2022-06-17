@@ -136,6 +136,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
                     # `no_overlapping_circuit_formula` and `all_positions_covered_formula` are both True.
                     # Actually, it is not an implication, but an equivalence.
                     s.add(coords[i][j][k] == And(no_overlapping_circuit_formula,all_positions_covered_formula))
+                    # (MAYBE THE EQUIVALENCE IS REDUNDANT? AN IMPLICATION WOULD BE ENOUGH?)
 
                     # Formula ensuring that all the lengths up to height of the circuit in the plate are used
                     used_lengths_formula = And([lengths[k][l] for l in range(j+dimsY[k]-l_min+1)])
@@ -249,6 +250,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
         The solution is communicated to the user through the `results` dictionary, which is shared between the class and the 
         user. 
         Each time a better solution is found, it is injected into the `results` dictionary.
+        
         """
         w, n, dimsX, dimsY = self.w, self.n, self.dimsX, self.dimsY
 

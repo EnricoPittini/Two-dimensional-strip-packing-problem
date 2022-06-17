@@ -129,6 +129,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
                     # `no_overlapping_circuit_formula` and `all_positions_covered_formula` are both True.
                     # Actually, it is not an implication, but an equivalence.
                     s.add(coords[i][j][k] == And(no_overlapping_circuit_formula,all_positions_covered_formula))
+                    # (MAYBE THE EQUIVALENCE IS REDUNDANT? AN IMPLICATION WOULD BE ENOUGH?)
 
                     # Formula ensuring that all the lengths up to height of the circuit in the plate are used
                     used_lengths_formula = And([lengths[k][l] for l in range(j+dimsY[k])])
@@ -136,6 +137,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
                     non_used_lengths_formula = And([Not(lengths[k][l]) for l in range(j+dimsY[k], l_max)])
                     # The added constraint is the following implication: if bottom-left corner of `k` is in `(i,j)`, then 
                     # `used_lengths_formula` and `non_used_lengths_formula` are both True.
+                    # (`non_used_lengths_formula` IS MAYBE REDUNDANT?).
                     s.add(Implies(coords[i][j][k], And(used_lengths_formula, non_used_lengths_formula)))
 
         # Check if UNSAT 
