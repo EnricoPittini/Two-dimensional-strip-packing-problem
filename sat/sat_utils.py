@@ -5,6 +5,12 @@ import math
 
 
 
+########## UNSAT ERROR
+class UnsatError(BaseException):
+    pass
+
+
+
 ########## VLSI SAT ABSTRACT
 
 class Vlsi_sat_abstract(multiprocessing.Process):
@@ -87,9 +93,11 @@ def at_most_one(B, encoding='sequential', name=''):
     elif encoding=='bimander':
         return at_most_one_BIMANDER(B, name)
 
+
 def at_most_one_PAIRWISE(B, name=''):
     return And( [Not(And(pair[0], pair[1])) for pair in combinations(B, 2)] )
     
+
 def at_most_one_SEQUENTIAL(B, name):
     # List which will contain all the formulas for the at_most_one constraint
     formulas_list = []
@@ -115,6 +123,7 @@ def at_most_one_SEQUENTIAL(B, name):
     # Return the conjunction among all the added formulas
     return And(formulas_list)
 
+
 def to_binary(n, length):
     """
     Returns the binary representation of given the number `n`, using `length` bits.
@@ -127,6 +136,7 @@ def to_binary(n, length):
     if length:
         return "0"*(length - len(n_binary)) + n_binary
     return n_binary
+
 
 def at_most_one_BITWISE(B, name):
     # List which will contain all the formulas for the at_most_one constraint
@@ -166,6 +176,7 @@ def at_most_one_BITWISE(B, name):
     # Return the conjunction among all the added formulas    
     return And(formulas_list)
 
+
 def at_most_one_HEULE(B, name):  
     n = len(B)  # Number of variables
     
@@ -187,8 +198,8 @@ def at_most_one_HEULE(B, name):
     # Return the conjunction between the recursive calls applied on the two groups 
     return And( at_most_one_HEULE(first_group, name=name), at_most_one_HEULE(second_group, name=name+'_') )
 
+
 def at_most_one_COMMANDER(B, name, m=None):
-    # print('HI')
     n = len(B)
     
     if not m:  # Case in which we fix the number of variables in each group
@@ -216,25 +227,19 @@ def at_most_one_COMMANDER(B, name, m=None):
         formula1.append(exactly_one(Gs[i] + [Not(c[i])], encoding='pairwise', name=name))
     formula1 = And(formula1)
     
-    # print(c)
     formula2 = at_most_one_COMMANDER(c, name=name+"_")
     
     return And(formula1, formula2) 
 
+
 def at_most_one_BIMANDER(B, name, m=None):
-    # print('HI')
     n = len(B)
     
     if not m:
         g = 4
         m = math.ceil(n/g)
-        #base_case = n <= g
     else:
         g = math.ceil(n/m)
-        #base_case = n <= m
-        
-    #if base_case:
-    #    return at_most_one_NAIVE(B, name=name)
         
     Gs = []
     for i in range(m):
@@ -243,7 +248,6 @@ def at_most_one_BIMANDER(B, name, m=None):
         else:
             Gs.append(B[g*i:])
         
-    #c = [Bool(f'c_{name}_{i}') for i in range(m)]
     r = math.ceil(math.log2(m))
     b = [Bool(f'b_{name}_{i}') for i in range(r)]
     
@@ -252,11 +256,9 @@ def at_most_one_BIMANDER(B, name, m=None):
         formula1.append(at_most_one_PAIRWISE(Gs[i], name=name))
     formula1 = And(formula1)
     
-    # print(c)
     formula2 = []
     for i in range(m):
         binary_representation = to_binary(i, r)
-        #print(binary_representation)
         for h in range(len(Gs[i])):  # g
             for j in range(r):
                 #phi = b[j] if (binary_representation[j]=="1") else Not(b[j])
@@ -273,16 +275,100 @@ def exactly_one(B, encoding='sequential', name=''):
 
 
 
+########## LEXICOGRAPHIC ORDERING CONSTRAINTS
+# We want to ensure an lexicographic-like ordering between lists of lists of boolean variables
+
+def eq(Xs, Ys):
+    """Returns the constraint ensuring that the list of boolean variables Xs and Ys are exactly equal.
+
+    This means that each pair of corresponding variables Xs[i]-Ys[i] are equivalent:  Xs[i] IFF Ys[i].
+
+    Parameters
+    ----------
+    Xs : list of z3.z3.BoolRef
+        List of boolean variables.
+    Ys : list of z3.z3.BoolRef
+        List of boolean variables.
+
+    Returns
+    -------
+    z3.z3.BoolRef
+        Formula ensuring that Xs and Ys are equal
+
+    """
+    n = len(Xs)
+    return And([Xs[i]==Ys[i] for i in range(n)])
+
+
+def lex_lesseq(Xs, Ys):
+    """Returns the constraint ensuring that the list of boolean variables Xs is lexicographically less or equal than the 
+    list of boolean variables Ys.
+
+    Xs is lexicographically less or equal than Ys if the first True in the list Xs is before or at the same index of the 
+    first True in Ys.
+
+    Basically:
+                (For all i<j (Xs[i] /\ Ys[i]))  AND   (not Xs[i])
+    Where 'j' is a certain index in [0,n] (n is the length of Xs and Ys).
+
+    Parameters
+    ----------
+    Xs : list of z3.z3.BoolRef
+        List of boolean variables.
+    Ys : list of z3.z3.BoolRef
+        List of boolean variables.
+
+    Returns
+    -------
+    z3.z3.BoolRef
+        Formula ensuring that Xs is lexicographically less or equal than Ys
+
+    """
+    n = len(Xs)
+    formulas = []
+    for i in range(n):
+        if i==0:
+            formula = Or(Xs[i], Not(Ys[i]))
+        else:
+            formula = Implies(And([Xs[j]==Ys[j] for j in range(i)]), Or(Xs[i], Not(Ys[i])))
+        formulas.append(formula)
+    return And(formulas)
+
+
+def lex_lesseq_compound(Xs, Ys):
+    """Returns the constraint ensuring that the list of lists of boolean variables Xs is lexicographically less or equal than
+    the list of lists of boolean variables Ys.
+
+    Xs is lexicographically less or equal than Ys if all the lists Xs[i] are equal to the corresponding lists Ys[i] up to 'j',
+    and in 'j' we have that the list Xs[j] is lexicographically less or equal than the list Ys[j].
+            For all i<j equal(Xs[i],Ys[i])  and  lex_lesseq(Xs[j], Ys[j])
+    Where 'j' is a certain index in [0,n] (n is the length of Xs and Ys).
+
+    The functions `equal` and `lex_lesseq` are used for comparing two lists of boolean variables.
+
+    Parameters
+    ----------
+    Xs : list of list of z3.z3.BoolRef
+        List of lists of boolean variables.
+    Ys : list of list of z3.z3.BoolRef
+        List of lists of boolean variables.
+
+    Returns
+    -------
+    z3.z3.BoolRef
+        Formula ensuring that Xs is lexicographically less or equal than Ys
+
+    """
+    n = len(Xs)
+    formulas = []
+    for i in range(n):
+        if i==0:
+            formula = lex_lesseq(Xs[i], Ys[i])
+        else:
+            formula = Implies(And([eq(Xs[j],Ys[j]) for j in range(i)]), lex_lesseq(Xs[i], Ys[i]))
+        formulas.append(formula)
+    return And(formulas)
 
     
 
-class UnsatError(BaseException):
-    pass
 
-# TODO
-"""class TimeoutError(BaseException):
-    pass"""
-
-# TODO move to encoding_0 and encoding_1 (it is used only by them)
-def compute_l(coords, dimsY, n):
-    return max([coords[i][1]+dimsY[i] for i in range(n)])
