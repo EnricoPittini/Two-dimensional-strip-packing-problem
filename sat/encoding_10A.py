@@ -320,7 +320,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
 
             # Current length of the plate of interest (in the middle of [lb,ub])  
             l = math.ceil((ub+lb)/2)
-            print(lb,ub,l)
+            #print(lb,ub,l)
 
             try:    
                 # Search for a solution, given the current length of interest 'l' and given l_min<-lb and l_max<-ub
@@ -335,7 +335,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
                 first = False
                 self.results['best_coords'] = coords
                 self.results['best_l'] = l
-                print(l)
+                #print(l)
 
                 # Update ub<-l
                 ub = l

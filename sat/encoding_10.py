@@ -453,7 +453,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
                 # Store the current solution into `self.results`
                 self.results['best_coords'] = coords
                 self.results['best_l'] = l_max
-                print(l_max)
+                #print(l_max)
 
                 # Update `l_max`
                 l_max = l_max-1

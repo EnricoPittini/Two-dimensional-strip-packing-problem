@@ -28,6 +28,17 @@ class Vlsi_sat(Vlsi_sat_abstract):
     solver. For obtaining this behaviour, we use the assertions stack (we push/pop levels into that stack).
     See the `__optimize` method.
 
+
+    ---- PRACTICAL DIFFERENCES WITH ENCODING 10A ----
+    In the encoding 10A, there is the binary search cycle, but at each iteration the solver is created and run from sratch,
+    with the additional information of the current lenght 'l' of interest: in this way, an additional constraint is ensured,
+    namely 'ph_{l-l_min}' (it ensures that the actual length of the plate is smaller or equal than 'l').
+
+    In the encoding 10B, there is still the binary search cycle, but the solver is created only one time at the beginning, 
+    and in each iteration the solver is simply incrementally modified, by adding/retracting the constraints 'ph_{l-l_min}'
+    (and also by adding the constraints '¬ph_{l-l_min}').
+    
+
     """
     def __init__(self, w, n, dims, results):
         super().__init__(w, n, dims, results)
@@ -294,7 +305,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
 
             # Current length of the plate of interest (in the middle of [lb,ub])    
             l = math.ceil((ub+lb)/2)
-            print(lb,ub,l)
+            #print(lb,ub,l)
 
             # We add the additional constraint ensuring that the actual length of the plate must be smaller or equal than 'l'.
             # Constraint: ph_{l-l_min}.
@@ -313,7 +324,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
                 first = False
                 self.results['best_coords'] = coords
                 self.results['best_l'] = l
-                print(l)
+                #print(l)
 
                 # Update ub<-l
                 ub = l
