@@ -33,10 +33,6 @@ class Vlsi_sat(Vlsi_sat_abstract):
     See the `__optimize` method.
 
     """
-    def __init__(self, w, n, dims, results):
-        super().__init__(w, n, dims, results)
-
-
     def __solve(self, w_min, h_min, l_min, l_max):
         """Solves the given VLSI instance, using the SAT encoding 9B.
 
@@ -299,6 +295,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
                 s.add(at_least_one([lengths[k][l_index] for k in range(n)]))
                 s.add(at_least_one([lengths[k][l_index+1] for k in range(n)]))
 
+                # Update l
                 l = l+1
 
         # The computation is finished
