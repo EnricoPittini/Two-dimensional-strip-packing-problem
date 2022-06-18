@@ -7,27 +7,8 @@ class Vlsi_sat(Vlsi_sat_abstract):
 
     It inherits from the class `Vlsi_sat_abstract`.
 
-    Same solving and optimization of the encoding 4A. SAT variables 'circuit_i_j_k', 'coord_i_j_k', 'length_k_l'.
-    The only difference is that the optimization procedure has been improved.
-
-    Now the BINARY SEARCH is used, instead of linear search.
-    Still incremental solving, but with binary search.
-
-    The solver is created only one time, at the beginning.
-    Cycle. At each iteration we have a certain lower bound (i.e. lb) and a certain upper bound (i.e. ub) for the length of 
-    the plate. We take as length of the plate of interest 'l' the middle between lb and ub. We inject into the solver a new 
-    constraint, ensuring that the actual length of the plate is smaller or equal than 'l'.  
-    Then, we solve that current solver instance.
-    If SAT, then we simply update ub<-l. If UNSAT, we update lb<-l+1, we remove the last constraint injected into the
-    solver (i.e. the one ensuring that the actual length of the plate is smaller or equal than 'l') and we add the new 
-    constraint ensuring that the actual length of the plate is strictly bigger than 'l'.
-    Then we repeat. 
-    At the beginning, lb<-l_min (minimum length of the plate) and ub<-l_max (maximum length of the plate) 
-
-    INCREMENTAL SOLVING: the solver is created only at the beginning, then we dinamically inject/remove constraints from that
-    solver. For obtaining this behaviour, we use the assertions stack (we push/pop levels into that stack).
-
-    See the `__optimize` method.
+    Same solving and optimization of the encoding 9A. 
+    Only difference: usage of the BITWISE encoding for the exactly_one constraint.
 
     """
     def __init__(self, w, n, dims, results):
@@ -104,8 +85,10 @@ class Vlsi_sat(Vlsi_sat_abstract):
         lengths = [[Bool(f'length_{k}_{l}') for l in range(l_max-l_min+1)] for k in range(n)]
                 
         # Constraint: the left-bottom corner of each circuit 'k' must be present exactly one time across the plate
+        """BITWISE ENCODING"""
         for k in range(n):
-            s.add(exactly_one([coords[i][j][k] for i in range(w-w_min+1) for j in range(l_max-h_min+1)], name=f'exactly_one_{k}'))
+            s.add(exactly_one([coords[i][j][k] for i in range(w-w_min+1) for j in range(l_max-h_min+1)], name=f'exactly_one_{k}',
+                  encoding='bitwise'))
 
         # print('CUCU')  # TODO: remove
 

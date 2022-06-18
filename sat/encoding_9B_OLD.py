@@ -1,34 +1,5 @@
 from z3 import *
-from sat_utils import at_least_one, at_most_one, exactly_one, UnsatError, Vlsi_sat_abstract
-# from math import ceil
-
-
-def eq(Xs, Ys):
-    n = len(Xs)
-    return And([Xs[i]==Ys[i] for i in range(n)])
-
-def lex_lesseq(Xs, Ys):
-    n = len(Xs)
-    formulas = []
-    for i in range(n):
-        if i==0:
-            formula = Or(Xs[i], Not(Ys[i]))
-        else:
-            formula = Implies(And([Xs[j]==Ys[j] for j in range(i)]), Or(Xs[i], Not(Ys[i])))
-        formulas.append(formula)
-    return And(formulas)
-
-def lex_lesseq_compound(Xs, Ys):
-    n = len(Xs)
-    formulas = []
-    for i in range(n):
-        if i==0:
-            formula = lex_lesseq(Xs[i], Ys[i])
-        else:
-            formula = Implies(And([eq(Xs[j],Ys[j]) for j in range(i)]), lex_lesseq(Xs[i], Ys[i]))
-        formulas.append(formula)
-    return And(formulas)
-
+from sat_utils import exactly_one, UnsatError, Vlsi_sat_abstract
 
 
 class Vlsi_sat(Vlsi_sat_abstract):
@@ -100,14 +71,6 @@ class Vlsi_sat(Vlsi_sat_abstract):
         coords = [[[Bool(f'coord_{i}_{j}_{k}') for k in range(n)] for j in range(l_max-h_min+1)] for i in range(w-w_min+1)]
         # List of lists of lists, containing the 'lengths' boolean variables: variables 'length_k_l'
         lengths = [[Bool(f'length_{k}_{l}') for l in range(l_max-l_min+1)] for k in range(n)]
-        
-        # Constraint: in each cell '(i,j)' of the plate at most one circuit is present.
-        # This reflects both on `circuits` and on `coords`.
-        """ NON-NECESSARY
-        for i in range(w-w_min+1):
-            for j in range(l_max-h_min+1):
-                s.add(at_most_one(circuits[i][j], name=f'at_most_one_circuit_{i}_{j}'))  # TODO : redundant?
-                s.add(at_most_one(coords[i][j], name=f'at_most_one_coord_{i}_{j}'))"""
                 
         # Constraint: the left-bottom corner of each circuit 'k' must be present exactly one time across the plate
         for k in range(n):
@@ -153,87 +116,56 @@ class Vlsi_sat(Vlsi_sat_abstract):
                     # `used_lengths_formula` and `non_used_lengths_formula`.
                     s.add(Implies(coords[i][j][k], And(used_lengths_formula, non_used_lengths_formula)))
 
-        print('HERE')  # TODO: remove
-
-        # SIMMETRY BREAKING
-        correct_positions = [coords[i][j] for i in range(w-w_min+1) for j in range(l_max-h_min+1)]
-        s.add(lex_lesseq_compound(correct_positions, 
-                                 [coords[w-w_min+1-i][j] for i in range(1, w-w_min+2) for j in range(l_max-h_min+1)]))
-        s.add(lex_lesseq_compound(correct_positions, 
-                                 [coords[i][l_max-h_min+1-j] for i in range(w-w_min+1) for j in range(1, l_max-h_min+2)]))
-        s.add(lex_lesseq_compound(correct_positions,
-                                  [coords[w-w_min+1-i][l_max-h_min+1-j] for i in range(1, w-w_min+2) for j in range(1, l_max-h_min+2)]))
-
-        print('HERE1')
+        # print('HERE')  # TODO: remove
 
         # Check if UNSAT 
-        if s.check() != sat:
-            raise UnsatError('UNSAT')
+        # if s.check() != sat:
+        #    raise UnsatError('UNSAT')
             
         return s, coords, lengths
 
 
-    def __process_solver_instance(self, s, coords, lengths, w_min, h_min, l_min, l_max, current_best_l):
-        """Processes the given solver instance.
+    def __process_solver_instance(self, s, lb, ub, coords, w_min, h_min, l_max):
+        res = s.check()==sat
+        if res:
+            self.results['best_coords'] = self.__compute_result(s, coords, w_min, h_min, l_max)
+            self.results['best_l'] = lb
+            if lb+1==ub:
+                ub = lb
+            else:
+                ub = math.ceil((lb+ub)/2)
+        else:
+            s.pop()
+            lb = lb+1
+        return res, lb, ub
 
-        Two operations are performed:
-            - the new solution is extracted from the given solver;
-            - additional constraints are injected into the solver, in order to find the next best solution (incremental solving).
+    
+    def __inject(self, s, lengths, lb, ub, l_min, l_max):
+        n = self.n
 
-        Parameters
-        ----------
-        s : z3.z3.Solver
-            Solver instance
-        coords : list of list of list of z3.z3.BoolRef
-            Boolean variables 'coord_i_j_k'.
-        lengths : list of list of z3.z3.BoolRef
-            Boolean variables 'length_k_l'.
-        w_min : int
-            Minimum width of a circuit
-        h_min : int
-            Minimum height of a circuit
-        l_min : int
-            Lower bound of the length of the plate
-        l_max : int
-            Upper bound of the length of the plate
-        current_best_l : int
-            Current best length of the plate (found so far)
+        med = math.ceil((lb+ub)/2)
 
-        Returns
-        -------
-        coords_sol : list of tuple of int
-            Coordinates of the left-bottom corner of the circuits of the new solution
-        l : int
-            Length of the plate of the new solution
-        """
+        lb_index = lb-l_min
+        ub_index = ub-l_min
+        med_index = med-l_min
+
+        s.add(And([Not(lengths[k][ll]) for k in range(n) for ll in range(lb_index+1,l_max-l_min)]))
+
+
+    def __compute_result(self, s, coords, w_min, h_min, l_max):
         w, n = self.w, self.n
-
-        if not current_best_l:
-            current_best_l = l_max+1
         
         # Get the solution
         m = s.model()
 
         # List containing the coordX and coordY of the lower-left vertex of each circuit in the new solution
         coords_sol = [(i, j) for k in range(n) for j in range(l_max-h_min+1) for i in range(w-w_min+1) if m.evaluate(coords[i][j][k])]
-        # Boolean formula containing the new solution
-        #formula = And([ (coords[i][j][k] if m.evaluate(coords[i][j][k]) else Not(coords[i][j][k])) 
-        #            for i in range(w-w_min+1) for j in range(l_max-h_min+1) for k in range(n)])
 
         # Length of the plate in the new solution
-        l = max([l for k in range(n) for l in range(l_max-l_min+1) if m.evaluate(lengths[k][l])])+l_min-1+1
-        
-        # Add into the solver the negation of the returned `formula`, which represents the current solution.
-        # In this way, in the next iteration, the same solution is not feasible anymore
-        """s.add(Not(formula))  NON-NECESSARY"""
+        # l = max([l for k in range(n) for l in range(l_max-l_min+1) if m.evaluate(lengths[k][l])])+l_min-1+1
 
-        # Add into the solver a constraint ensuring that a solution which has a length bigger or equal than `l-1` is not feasible
-        # anymore: in this way, the next found solution, if any, is for sure better than the previous one.
-        # This is implemented by ensuring that all the variables 'lengths_k_ll' with 'll' from 'l-1' (included) to 
-        # 'current_best_l-1' (exclued) are False.
-        s.add(And([Not(lengths[k][ll]) for k in range(n) for ll in range(l-1-l_min+1,current_best_l-1-l_min+1)]))
-        
-        return coords_sol, l
+        return coords_sol#, l
+
 
 
     def __optimize(self):
@@ -284,9 +216,16 @@ class Vlsi_sat(Vlsi_sat_abstract):
 
         # Search for a first solution 
         s, coords, lengths = self.__solve(w_min, h_min, l_min, l_max)
-        self.results['best_coords'], self.results['best_l'] = self.__process_solver_instance(s, coords, lengths, w_min, 
-                                                                                             h_min, l_min, l_max, 
-                                                                                             current_best_l=None)
+        s.push()
+        lb = l_min
+        ub = l_max
+        self.__inject(s, lengths, lb, ub, l_min, l_max)
+
+        res = False
+
+        #self.results['best_coords'], self.results['best_l'] = self.__process_solver_instance(s, coords, lengths, w_min, 
+         #                                                                                    h_min, l_min, l_max, 
+          #                                                                                   current_best_l=None)
 
         # A first solution has been found
 
@@ -294,19 +233,30 @@ class Vlsi_sat(Vlsi_sat_abstract):
         # print(self.results['best_l'])
         
         # Loop iterating over all the possible solutions, searching for the best one
-        while True:
-            if s.check()!=sat:  # No more solutions: break the cycle
-                break
+        while not res and lb<ub:
+            print(lb, ub)
+            #if s.check()!=sat:  # No more solutions: break the cycle
+            #    break
+            res, lb, ub = self.__process_solver_instance(s, lb, ub, coords, w_min, h_min, l_max)
+            print(res, lb, ub)
+            s.push()
+            self.__inject(s, lengths, lb, ub, l_min, l_max)
+
 
             # A new solution has been found
 
             # Get the new valid solution and inject the new constraints into the solver
-            self.results['best_coords'], self.results['best_l'] = self.__process_solver_instance(s, coords, lengths, w_min, 
-                                                                                                 h_min, l_min, l_max, 
-                                                                                                 self.results['best_l'])        
+            #self.results['best_coords'], self.results['best_l'] = self.__process_solver_instance(s, coords, lengths, w_min, 
+             #                                                                                    h_min, l_min, l_max, 
+              #                                                                                   self.results['best_l'])        
             # print(self.results['best_coords'])
             # print(self.results['best_l'])
         
+
+        if not res:
+            raise UnsatError('UNSAT')
+
+        print('HHH')
 
         self.results['finish'] = True      
 

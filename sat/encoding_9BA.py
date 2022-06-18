@@ -3,31 +3,12 @@ from sat_utils import at_least_one, exactly_one, UnsatError, Vlsi_sat_abstract
 
 
 class Vlsi_sat(Vlsi_sat_abstract):
-    """Class for solving the VLSI problem in SAT, using the encoding 9A.
+    """Class for solving the VLSI problem in SAT, using the encoding 9B.
 
     It inherits from the class `Vlsi_sat_abstract`.
 
-    Same solving and optimization of the encoding 4A. SAT variables 'circuit_i_j_k', 'coord_i_j_k', 'length_k_l'.
-    The only difference is that the optimization procedure has been improved.
-
-    Now the BINARY SEARCH is used, instead of linear search.
-    Still incremental solving, but with binary search.
-
-    The solver is created only one time, at the beginning.
-    Cycle. At each iteration we have a certain lower bound (i.e. lb) and a certain upper bound (i.e. ub) for the length of 
-    the plate. We take as length of the plate of interest 'l' the middle between lb and ub. We inject into the solver a new 
-    constraint, ensuring that the actual length of the plate is smaller or equal than 'l'.  
-    Then, we solve that current solver instance.
-    If SAT, then we simply update ub<-l. If UNSAT, we update lb<-l+1, we remove the last constraint injected into the
-    solver (i.e. the one ensuring that the actual length of the plate is smaller or equal than 'l') and we add the new 
-    constraint ensuring that the actual length of the plate is strictly bigger than 'l'.
-    Then we repeat. 
-    At the beginning, lb<-l_min (minimum length of the plate) and ub<-l_max (maximum length of the plate) 
-
-    INCREMENTAL SOLVING: the solver is created only at the beginning, then we dinamically inject/remove constraints from that
-    solver. For obtaining this behaviour, we use the assertions stack (we push/pop levels into that stack).
-
-    See the `__optimize` method.
+    Same solving and optimization of the encoding 9B. 
+    Only difference: usage of the BITWISE encoding for the exactly_one constraint.
 
     """
     def __init__(self, w, n, dims, results):
@@ -35,7 +16,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
 
 
     def __solve(self, w_min, h_min, l_min, l_max):
-        """Solves the given VLSI instance, using the SAT encoding 9A.
+        """Solves the given VLSI instance, using the SAT encoding 9B.
 
         It is an auxiliary method. Its aim is to solve the VLSI instance without performing optimization: any solution is 
         good.
@@ -104,8 +85,10 @@ class Vlsi_sat(Vlsi_sat_abstract):
         lengths = [[Bool(f'length_{k}_{l}') for l in range(l_max-l_min+1)] for k in range(n)]
                 
         # Constraint: the left-bottom corner of each circuit 'k' must be present exactly one time across the plate
+        """BITWISE ENCODING"""
         for k in range(n):
-            s.add(exactly_one([coords[i][j][k] for i in range(w-w_min+1) for j in range(l_max-h_min+1)], name=f'exactly_one_{k}'))
+            s.add(exactly_one([coords[i][j][k] for i in range(w-w_min+1) for j in range(l_max-h_min+1)], name=f'exactly_one_{k}',
+                  encoding='bitwise'))
 
         # print('CUCU')  # TODO: remove
 
@@ -190,7 +173,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
 
 
     def __optimize(self):
-        """Solves the given VLSI instance, using the SAT encoding 9A.
+        """Solves the given VLSI instance, using the SAT encoding 9B.
 
         It performs optimization: the best solution is found (if any).
         (If this class is used as a parallel process with a time limit, there is not gurantee of founding the optimal 
@@ -198,18 +181,21 @@ class Vlsi_sat(Vlsi_sat_abstract):
 
         The implementation uses the `__solve` method, which simply configurates the solver at the beginning.
 
-        This optimization procedure consists in performing BINARY SEARCH with incremental solving.
+        This optimization procedure consists in performing LINEAR SEARCH with incremental solving, but starting from the 
+        bottom (i.e. l_min) instead of the top (i.e. l_max). 
 
         The solver is created only one time, at the beginning.
-        Cycle. At each iteration we have a certain lower bound (i.e. lb) and a certain upper bound (i.e. ub) for the length of 
-        the plate. We take as length of the plate of interest 'l' the middle between lb and ub. We inject into the solver a new 
-        constraint, ensuring that the actual length of the plate is smaller or equal than 'l'. 
+        Cycle. At each iteration we have a certain current 'l' that we want to try. We have already tested all the lengths below 
+        'l', thus, if this 'l' is SAT, then this 'l' is the best possible 'l'.
+        We inject into the solver a new constraint, ensuring that the actual length of the plate is smaller or equal than 'l'. 
+        (Since we are sure that all the lengths below 'l' are not SAT, we are basically testing if 'l' is the best length for our
+        problem). 
         Then, we solve that current solver instance.
-        If SAT, then we simply update ub<-l. If UNSAT, we update lb<-l+1, we remove the last constraint injected into the
-        solver (i.e. the one ensuring that the actual length of the plate is smaller or equal than 'l') and we add the new 
-        constraint ensuring that the actual length of the plate is strictly bigger than 'l'.
+        If SAT, then we simply take the best solution and we exit. If UNSAT, we update l<-l+1, we remove the last constraint 
+        injected into the solver (i.e. the one ensuring that the actual length of the plate is smaller or equal than 'l') and we 
+        add the new constraint ensuring that the actual length of the plate is strictly bigger than 'l'.
         Then we repeat. 
-        At the beginning, lb<-l_min (minimum length of the plate) and ub<-l_max (maximum length of the plate) 
+        At the beginning, l<-l_min.
 
         INCREMENTAL SOLVING: the solver is created only at the beginning, then we dinamically inject/remove constraints from that
         solver. For obtaining this behaviour, we use the assertions stack (we push/pop levels into that stack).
@@ -250,32 +236,21 @@ class Vlsi_sat(Vlsi_sat_abstract):
         # Initializing the solver with all the constraints
         s, coords, lengths = self.__solve(w_min, h_min, l_min, l_max)
 
-        # Upper and lower bounds for the length of the plate
-        lb = l_min-1
-        ub = l_max
+        # Initial length of interest 'l'. We start from the bottom.
+        l = l_min 
         
-        # Loop iterating over all the possible solutions, searching for the best one
-        while lb<ub:
-            # print(lb, ub)
-
-            # Modification which is necessary in the last iteration (where lb and ub differ only by 1)
-            if lb+1==ub:
-                ub = lb
-
-            # Current length of the plate of interest (in the middle of [lb,ub])    
-            l = math.ceil((ub+lb)/2)
-
+        # Loop iterating over all the possible solutions, searching for the best one, starting from the bottom
+        while not first_solution and l<l_max:
             # We add the additional constraint ensuring that the actual length of the plate must be smaller or equal than 'l'.
             # More precisely, this constraints is about putting to False all variables 'length_k_ll' with 'll' from 'l'+1 to
-            # the upper bound 'ub'.
-            # Be careful in transforming 'l' and 'ub' from actual lengths to indeces before ensuring the constraint: l_index 
-            # is l-l_min and ub_index is ub-l_min.
+            # the max length 'l_max'.
+            # Be careful in transforming 'l' and 'l_max' from actual lengths to indeces before ensuring the constraint: l_index 
+            # is l-l_min and the index of l_max is l_max-l_min.
             # We push this constraint into a new level of the assertions stack of the solver: in this way, we can retract 
             # this constraint, if necessary (if UNSAT).  
             s.push()
-            ub_index = ub-l_min
             l_index = l-l_min
-            s.add(And([Not(lengths[k][ll]) for k in range(n) for ll in range(l_index+1,ub_index+1)]))
+            s.add(And([Not(lengths[k][ll]) for k in range(n) for ll in range(l_index+1,l_max-l_min+1)]))
 
             # Try to solve
  
@@ -288,29 +263,23 @@ class Vlsi_sat(Vlsi_sat_abstract):
                 self.results['best_coords'] = coords_sol
                 self.results['best_l'] = l
 
-                # Update ub<-l
-                ub = l
-
             else:   # UNSAT: no new best solution
                 # We remove the last added constraint, namely the one ensuring that the actual length of the plate must be 
                 # smaller or equal than 'l'. We retract that constraint.
                 s.pop()
 
                 # We add the new constraints ensuring that the actual length of the plate must be strictly bigger than 'l'.
-                # More precisely, these constraints consist in ensuring that, for each ll in [lb,l+1], at least one variable 
-                # among the n variables length_k_ll is True.
-                # Be careful in transforming 'l' and 'lb' from actual lengths to indeces before ensuring the constraint: l_index 
-                # is l-l_min and lb_index is lb-l_min.
-                # We add this constraint into the solver (we don't need to create a new level of the stack, because we don't 
+                # More precisely, these constraints are that at least one variable among the n variables length_k_l is True and
+                # at least one variable among the n variables length_k_{l+1} is True. 
+                # Be careful in transforming 'l' from actual length to index before ensuring the constraint: l_index 
+                # is l-l_min.
+                # We add these constraints into the solver (we don't need to create a new level of the stack, because we don't 
                 # need to retract this constraint).
-                lb_index = lb-l_min
                 l_index = l-l_min
-                for ll in range(lb_index, l_index+2):
-                    s.add(at_least_one([lengths[k][ll] for k in range(n)]))
+                s.add(at_least_one([lengths[k][l_index] for k in range(n)]))
+                s.add(at_least_one([lengths[k][l_index+1] for k in range(n)]))
 
-                # Update lb<-l+1
-                lb = l+1
-                print(lb, ub)
+                l = l+1
 
         # The computation is finished
         self.results['finish'] = True       
