@@ -1,4 +1,10 @@
-%000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000|
+%---------------------------------------------------------------------------------------------------------------------------%
+%                                                    MODEL FINAL 1                                                          %
+%                                                                                                                           %
+% Model that uses the following symmetry breaking constraints:                                                              %
+% - Lexicographic order on the coordinates of rectangles having the same dimension;                                         %
+% - The area of the rectangles on the top half of the plate is less or equal than half the total area of the rectangles;    %
+%---------------------------------------------------------------------------------------------------------------------------%
 
 include "cumulative.mzn";
 include "diffn.mzn";
@@ -18,10 +24,14 @@ int: h_max = max(dimsY);  % The maximum height of a rectangle
 int: w_min = min(dimsX);  % The minimum width of a rectangle
 int: w_max = max(dimsX);  % The maximum width of a rectangle
 int: l_min = max([h_max, A_tot div w]);  % The lower bound for the length
-int: max_rects_per_row = w div w_max; % Maximum number of rectangles per row
-int: max_rects_per_col = ceil(n / max_rects_per_row); % Maximum number of rectangles per column
-int: l_max = sum(sort(dimsY)[n-max_rects_per_col+1..n]);  % The upper bound for the length
-
+int: min_rects_per_row = w div w_max; % Minimum number of rectangles per row
+int: max_rects_per_col = ceil(n / max([1, min_rects_per_row])); % Maximum number of rectangles per column
+% The upper bound for the length
+int: l_max = if min_rects_per_row = 1 
+  then sum(dimsY) 
+  else let{array [1..n] of int: sorted_dimsY = reverse(sort(dimsY))} in 
+    sum([sorted_dimsY[k] | k in 1..n where k mod min_rects_per_row = 1]) 
+endif;
 
 %%%%%%% VARIABLES
 % The length of the plate
@@ -41,35 +51,25 @@ constraint diffn(coordsX, coordsY, dimsX, dimsY);
 %    - the resource recquirements of the tasks are dimsY
 %    - the maximum resource bound is l
 constraint cumulative(coordsX, dimsX, dimsY, l);
-% Cumulative constraint in which:
-%    - the starting times of the tasks are coordsY
-%    - the durations of the tasks are dimsY
-%    - the resource recquirements of the tasks are dimsX
-%    - the maximum resource bound is w
-% constraint cumulative(coordsY, dimsY, dimsX, w);
 
 % Each rectangle must not exceed the width of the plate (IT IS AN IMPLIED CONSTRAINT)
 constraint forall(i in 1..n) (coordsX[i]+dimsX[i]<=w);
-%constraint forall(i in 1..n) (coordsY[i]+dimsY[i]<=l);
 % The length of the plate is the maximum height reached (IT IS AN IMPLIED CONSTRAINT)
 constraint l = max(i in 1..n)(coordsY[i]+dimsY[i]);
 
 
 %%%%%%% SYMMETRY BREAKING
+% Symmetry breaking constraint in which for all pairs of rectangles i, j having the same dimension a lexicographic order is
+% imposed between the coordinates of i and j:
+%    - the array that has to be lexicographically less than the other is the one containing the coordinates of i
+%    - the array that has to be lexicographically greater or equal than the other is the one containing the coordinates of j
 constraint forall(i,j in 1..n where i < j /\ dimsX[i] = dimsX[j] /\ dimsY[i] = dimsY[j])(
   lex_lesseq([coordsX[i], coordsY[i]], [coordsX[j], coordsY[j]])
 );
+  
+% Symmetry breaking constraint that imposes that the area of the rectangles on the top half of the plate should be less
+% or equal than half of the total area of the rectangles.
+constraint sum([areas[i] | i in 1..n where coordsY[i] > l div 2]) <= A_tot / 2;
 
 %%%%%%% SOLVING
-
-% Variables selection heuristic: it is based on the rectangles widths; it interleaves coordX and coordY.
-% Variables order: coordX of the rectangle with max width; coordY of the rectangle with max width; coordX of the rectangle 
-% with second max width; coordY of the rectangle with second max width; ... .
-array[1..n] of var int: sorted_coordsX = reverse(sort_by(coordsX, dimsX));
-array[1..n] of var int: sorted_coordsY = reverse(sort_by(coordsY, dimsX));
-array[1..2*n] of var int: variables = [if (i mod 2 = 0) then sorted_coordsY[i div 2] else sorted_coordsX[(i+1) div 2] endif
-  | i in 1..2*n];
-ann: search_ann = int_search(variables, input_order, indomain_min);
-
-solve :: search_ann
-minimize l;
+solve minimize l;

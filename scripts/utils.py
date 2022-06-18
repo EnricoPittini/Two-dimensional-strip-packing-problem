@@ -2,6 +2,8 @@ import io
 import os
 
 
+MINIZINC_ERRORS = ['UNSATISFIABLE', 'UNBOUNDED', 'UNSATorUNBOUNDED', 'UNKNOWN', 'ERROR']
+
 def parse_instance_txt(instance_txt_file: io.TextIOWrapper):
     # TODO add try-except
     values = instance_txt_file.read().split()

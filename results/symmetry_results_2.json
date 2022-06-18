@@ -1,0 +1,282 @@
+[
+    {
+        "ins-1": {
+            "model_4C0": 0.47,
+            "model_4C1": 0.48,
+            "model_4C2": 0.47
+        }
+    },
+    {
+        "ins-2": {
+            "model_4C0": 0.44,
+            "model_4C1": 0.43,
+            "model_4C2": 0.41
+        }
+    },
+    {
+        "ins-3": {
+            "model_4C0": 0.44,
+            "model_4C1": 0.44,
+            "model_4C2": 0.43
+        }
+    },
+    {
+        "ins-4": {
+            "model_4C0": 0.54,
+            "model_4C1": 0.44,
+            "model_4C2": 0.48
+        }
+    },
+    {
+        "ins-5": {
+            "model_4C0": 0.45,
+            "model_4C1": 0.43,
+            "model_4C2": 0.43
+        }
+    },
+    {
+        "ins-6": {
+            "model_4C0": 0.48,
+            "model_4C1": 0.44,
+            "model_4C2": 0.53
+        }
+    },
+    {
+        "ins-7": {
+            "model_4C0": 0.47,
+            "model_4C1": 0.45,
+            "model_4C2": 0.46
+        }
+    },
+    {
+        "ins-8": {
+            "model_4C0": 0.55,
+            "model_4C1": 0.45,
+            "model_4C2": 0.53
+        }
+    },
+    {
+        "ins-9": {
+            "model_4C0": 0.53,
+            "model_4C1": 0.54,
+            "model_4C2": 0.46
+        }
+    },
+    {
+        "ins-10": {
+            "model_4C0": 1.17,
+            "model_4C1": 0.61,
+            "model_4C2": 0.79
+        }
+    },
+    {
+        "ins-11": {
+            "model_4C0": "NaN",
+            "model_4C1": 1.22,
+            "model_4C2": 67.43
+        }
+    },
+    {
+        "ins-12": {
+            "model_4C0": 6.11,
+            "model_4C1": 0.65,
+            "model_4C2": 1.08
+        }
+    },
+    {
+        "ins-13": {
+            "model_4C0": 1.41,
+            "model_4C1": 0.58,
+            "model_4C2": 3.77
+        }
+    },
+    {
+        "ins-14": {
+            "model_4C0": 9.93,
+            "model_4C1": 0.62,
+            "model_4C2": 4.01
+        }
+    },
+    {
+        "ins-15": {
+            "model_4C0": 10.08,
+            "model_4C1": 0.68,
+            "model_4C2": 2.18
+        }
+    },
+    {
+        "ins-16": {
+            "model_4C0": "NaN",
+            "model_4C1": 1.4,
+            "model_4C2": "NaN"
+        }
+    },
+    {
+        "ins-17": {
+            "model_4C0": 273.99,
+            "model_4C1": 0.62,
+            "model_4C2": 33.65
+        }
+    },
+    {
+        "ins-18": {
+            "model_4C0": "NaN",
+            "model_4C1": 13.83,
+            "model_4C2": 132.16
+        }
+    },
+    {
+        "ins-19": {
+            "model_4C0": "NaN",
+            "model_4C1": "NaN",
+            "model_4C2": "NaN"
+        }
+    },
+    {
+        "ins-20": {
+            "model_4C0": "NaN",
+            "model_4C1": 53.97,
+            "model_4C2": "NaN"
+        }
+    },
+    {
+        "ins-21": {
+            "model_4C0": "NaN",
+            "model_4C1": 60.32,
+            "model_4C2": "NaN"
+        }
+    },
+    {
+        "ins-22": {
+            "model_4C0": "NaN",
+            "model_4C1": 100.45,
+            "model_4C2": "NaN"
+        }
+    },
+    {
+        "ins-23": {
+            "model_4C0": "NaN",
+            "model_4C1": 51.5,
+            "model_4C2": "NaN"
+        }
+    },
+    {
+        "ins-24": {
+            "model_4C0": "NaN",
+            "model_4C1": 11.69,
+            "model_4C2": "NaN"
+        }
+    },
+    {
+        "ins-25": {
+            "model_4C0": "NaN",
+            "model_4C1": 93.82,
+            "model_4C2": "NaN"
+        }
+    },
+    {
+        "ins-26": {
+            "model_4C0": "NaN",
+            "model_4C1": "NaN",
+            "model_4C2": "NaN"
+        }
+    },
+    {
+        "ins-27": {
+            "model_4C0": "NaN",
+            "model_4C1": 5.71,
+            "model_4C2": "NaN"
+        }
+    },
+    {
+        "ins-28": {
+            "model_4C0": "NaN",
+            "model_4C1": 31.24,
+            "model_4C2": "NaN"
+        }
+    },
+    {
+        "ins-29": {
+            "model_4C0": "NaN",
+            "model_4C1": "NaN",
+            "model_4C2": "NaN"
+        }
+    },
+    {
+        "ins-30": {
+            "model_4C0": "NaN",
+            "model_4C1": "NaN",
+            "model_4C2": "NaN"
+        }
+    },
+    {
+        "ins-31": {
+            "model_4C0": "NaN",
+            "model_4C1": 62.36,
+            "model_4C2": "NaN"
+        }
+    },
+    {
+        "ins-32": {
+            "model_4C0": "NaN",
+            "model_4C1": "NaN",
+            "model_4C2": "NaN"
+        }
+    },
+    {
+        "ins-33": {
+            "model_4C0": "NaN",
+            "model_4C1": 156.11,
+            "model_4C2": "NaN"
+        }
+    },
+    {
+        "ins-34": {
+            "model_4C0": "NaN",
+            "model_4C1": 2.81,
+            "model_4C2": "NaN"
+        }
+    },
+    {
+        "ins-35": {
+            "model_4C0": "NaN",
+            "model_4C1": "NaN",
+            "model_4C2": "NaN"
+        }
+    },
+    {
+        "ins-36": {
+            "model_4C0": "NaN",
+            "model_4C1": 2.95,
+            "model_4C2": 18.07
+        }
+    },
+    {
+        "ins-37": {
+            "model_4C0": "NaN",
+            "model_4C1": "NaN",
+            "model_4C2": "NaN"
+        }
+    },
+    {
+        "ins-38": {
+            "model_4C0": "NaN",
+            "model_4C1": "NaN",
+            "model_4C2": "NaN"
+        }
+    },
+    {
+        "ins-39": {
+            "model_4C0": "NaN",
+            "model_4C1": "NaN",
+            "model_4C2": "NaN"
+        }
+    },
+    {
+        "ins-40": {
+            "model_4C0": "NaN",
+            "model_4C1": "NaN",
+            "model_4C2": "NaN"
+        }
+    }
+]
