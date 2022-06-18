@@ -1,5 +1,5 @@
 from z3 import *
-from sat_utils import at_least_one, at_most_one, exactly_one, UnsatError, Vlsi_sat_abstract
+from sat_utils import UnsatError, Vlsi_sat_abstract
 
 
 class Vlsi_sat(Vlsi_sat_abstract):
@@ -16,8 +16,8 @@ class Vlsi_sat(Vlsi_sat_abstract):
 
     The solver is created only one time, at the beginning.
     Cycle. At each iteration we have a certain lower bound (i.e. lb) and a certain upper bound (i.e. ub) for the length of 
-    the plate. We take as length of the plate of interest 'l' the middle between lb and ub. We inject into the solver new 
-    constraints, ensuring that the actual length of the plate is smaller or equal than 'l' (i.e. ph_{l-l_min}). 
+    the plate. We take as length of the plate of interest 'l' the middle between lb and ub. We inject into the solver a new 
+    constraint, ensuring that the actual length of the plate is smaller or equal than 'l' (i.e. ph_{l-l_min}). 
     Then, we solve that current solver instance.
     If SAT, then we simply update ub<-l. If UNSAT, we update lb<-l+1, we remove the last constraint injected into the
     solver (i.e. ph_{l-l_min}) and we add the new constraint ensuring that the actual length of the plate is strictly bigger
@@ -186,6 +186,8 @@ class Vlsi_sat(Vlsi_sat_abstract):
         # Ensure the constraint O2
         for o in range(l_max-l_min):
             s.add( Or(Not(ph[o]),ph[o+1]) )
+
+        # WE DON'T RUN THE SOLVING
         
         return s, px, py, ph
 
@@ -258,7 +260,6 @@ class Vlsi_sat(Vlsi_sat_abstract):
         At the beginning, lb<-l_min (minimum length of the plate) and ub<-l_max (maximum length of the plate) 
         INCREMENTAL SOLVING: the solver is created only at the beginning, then we dinamically inject/remove constraints from that
         solver. For obtaining this behaviour, we use the assertions stack (we push/pop levels into that stack).
-        See the `__optimize` method.
 
         Raises
         ------
@@ -272,7 +273,6 @@ class Vlsi_sat(Vlsi_sat_abstract):
         Each time a better solution is found, it is injected to the `results` dictionary.
 
         """
-        first = True
         w, n, dimsX, dimsY = self.w, self.n, self.dimsX, self.dimsY
 
         areas = [dimsX[i]*dimsY[i] for i in range(n)]  # The areas of the circuits
@@ -289,16 +289,18 @@ class Vlsi_sat(Vlsi_sat_abstract):
         else:
             l_max = sum([sorted_dimsY[i] for i in range(n) if i % min_rects_per_row == 0])  # The upper bound for the length
 
+        # Boolean flag reprenting if a first solution has already been found
+        first_solution = False
+
         # Initializing the solver with all the constraints
         s, px, py, ph = self.__solve(l_min, l_max)
 
         # Upper and lower bounds for the length of the plate
         ub = l_max 
-        lb = l_min 
-        # Lenght of the plate of interest
-        l = math.ceil((ub+lb)/2)        
+        lb = l_min        
 
         while lb<ub:
+            # print(lb, ub)
             # Modification which is necessary in the last iteration (where lb and ub differ only by 1)
             if lb+1==ub:
                 ub = lb  
@@ -309,19 +311,21 @@ class Vlsi_sat(Vlsi_sat_abstract):
 
             # We add the additional constraint ensuring that the actual length of the plate must be smaller or equal than 'l'.
             # Constraint: ph_{l-l_min}.
+            # (We have to be careful in transforming 'l' from actual length to index before ensuring the constraint: l_index 
+            # is l-l_min).
             # We push this constraint into a new level of the assertions stack of the solver: in this way, we can retract 
-            # this constraint, if necessary.       
+            # this constraint, if necessary (if UNSAT).       
             s.push()
             s.add( ph[l-l_min] )
 
             # Try to solve
 
             if s.check()==sat:  # SAT: we have found a solution
-                # Compute coords of the current solution
+                # Compute the coords of the current solution
                 coords = self.__compute_coords(s, px, py, l_max)
 
                 # Save the new best solution
-                first = False
+                first_solution = True
                 self.results['best_coords'] = coords
                 self.results['best_l'] = l
                 #print(l)
@@ -336,6 +340,10 @@ class Vlsi_sat(Vlsi_sat_abstract):
 
                 # We add the new constraint ensuring that the actual length of the plate must be strictly bigger than 'l'.
                 # Constraint: ¬ph_{l-l_min}.
+                # (We have to be careful in transforming 'l' from actual length to index before ensuring the constraint: l_index 
+                # is l-l_min).
+                # We add these constraints into the solver (we don't need to create a new level of the stack, because we don't 
+                # need to retract this constraint).
                 s.add( Not(ph[l-l_min]) )
 
                 # Update lb<-l+1
@@ -344,7 +352,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
         # The computation is finished
         self.results['finish'] = True
                 
-        if first:  # No solution has been found: UNSAT
+        if not first_solution:  # No solution has been found: UNSAT
             raise UnsatError('UNSAT')        
 
 

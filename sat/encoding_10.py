@@ -427,7 +427,6 @@ class Vlsi_sat(Vlsi_sat_abstract):
         Each time a better solution is found, it is injected to the `results` dictionary.
 
         """
-        first = True
         w, n, dimsX, dimsY = self.w, self.n, self.dimsX, self.dimsY
 
         w_max = max(dimsX)  # The maximum width of a circuit
@@ -440,13 +439,16 @@ class Vlsi_sat(Vlsi_sat_abstract):
         else:
             l_max = sum([sorted_dimsY[i] for i in range(n) if i % min_rects_per_row == 0])  # The upper bound for the length
 
+        # Boolean flag reprenting if a first solution has already been found
+        first_solution = False
+
         while True:
             try:
                 # Search for a solution, given the maximum l
                 s, px, py = self.__solve(l_max)
 
                 # A solution has been found
-                first = False
+                first_solution = True
 
                 # Compute the coords (x and y) of the rectangles in the current solution
                 coords = self.__compute_coords(s, px, py, l_max)
@@ -465,7 +467,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
         # The computation is finished
         self.results['finish'] = True
                 
-        if first:  # No solution has been found: UNSAT
+        if not first_solution:  # No solution has been found: UNSAT
             raise UnsatError('UNSAT')        
 
 

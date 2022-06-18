@@ -217,9 +217,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
 
 
     def __compute_coords(self, s, px, py, l_max):
-        """Computes the coords of the rectangles, namely the coordinates of the lower-left verteces of the circuits.
-
-        In the notation used above, coords correspond to the variables {xi,yi}_i.
+        """Computes the coords of the circuits, namely the coordinates of the lower-left verteces of the circuits.
 
         Parameters
         ----------
@@ -292,7 +290,6 @@ class Vlsi_sat(Vlsi_sat_abstract):
         Each time a better solution is found, it is injected to the `results` dictionary.
 
         """
-        first = True
         w, n, dimsX, dimsY = self.w, self.n, self.dimsX, self.dimsY
 
         areas = [dimsX[i]*dimsY[i] for i in range(n)]  # The areas of the circuits
@@ -308,6 +305,9 @@ class Vlsi_sat(Vlsi_sat_abstract):
             l_max = sum(dimsY)
         else:
             l_max = sum([sorted_dimsY[i] for i in range(n) if i % min_rects_per_row == 0])  # The upper bound for the length
+
+        # Boolean flag reprenting if a first solution has already been found
+        first_solution = False
 
         # Upper and lower bounds for the length of the plate
         ub = l_max 
@@ -332,7 +332,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
                 coords = self.__compute_coords(s, px, py, l_max)
 
                 # Save the new best solution
-                first = False
+                first_solution = True
                 self.results['best_coords'] = coords
                 self.results['best_l'] = l
                 #print(l)
@@ -349,7 +349,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
         # The computation is finished
         self.results['finish'] = True
                 
-        if first:  # No solution has been found: UNSAT
+        if not first_solution:  # No solution has been found: UNSAT
             raise UnsatError('UNSAT')        
 
 
