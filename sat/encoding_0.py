@@ -178,8 +178,8 @@ class Vlsi_sat(Vlsi_sat_abstract):
         """
         # List of additional constraints to inject
         formulas = []
-        # Boolean flag reprenting if the first solution has not been found yet
-        first = True
+        # Boolean flag reprenting if a first solution has already been found
+        first_solution = False
         
         # Loop iterating over all the possible solutions, searching for the best one
         while True:
@@ -200,8 +200,8 @@ class Vlsi_sat(Vlsi_sat_abstract):
 
                 # Check if the current solution is the best solution found so far and, if yer, update the current best 
                 # solution
-                if first or l < self.results['best_l']:
-                    first = False
+                if first_solution or l < self.results['best_l']:
+                    first_solution = True
                     self.results['best_coords'] = coords
                     self.results['best_l'] = l
 
@@ -211,7 +211,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
         # The computation is finished
         self.results['finish'] = True
                 
-        if first:  # No solution has been found: UNSAT
+        if not first_solution:  # No solution has been found: UNSAT
             raise UnsatError('UNSAT')        
 
 

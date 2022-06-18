@@ -190,13 +190,13 @@ class Vlsi_sat(Vlsi_sat_abstract):
         """
         # List of additional constraints to inject
         formulas = []
-        # Boolean flag reprenting if the first solution has not been found yet
-        first = True
+        # Boolean flag reprenting if a first solution has already been found
+        first_solution = False
 
         while True:
             try:
                 # Compute the bound for the maximum length of the plate, i.e. l_max 
-                if first:  # No solution for now
+                if not first_solution:  # No solution for now
                     l_max = None  
                 else:  # At least one solution has already been found
                     l_max = self.results['best_l']-1
@@ -219,7 +219,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
                 # print(coords)
 
                 # Update the best solution found so far with the new solution
-                first = False
+                first_solution = True
                 self.results['best_coords'] = coords
                 self.results['best_l'] = l
 
@@ -229,7 +229,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
         # The computation is finished
         self.results['finish'] = True
                 
-        if first:  # No solution has been found: UNSAT
+        if not first_solution:  # No solution has been found: UNSAT
             raise UnsatError('UNSAT')        
 
 

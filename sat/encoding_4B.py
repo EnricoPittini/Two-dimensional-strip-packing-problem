@@ -57,6 +57,9 @@ class Vlsi_sat(Vlsi_sat_abstract):
         - length_k_l, where 'k' in [0,n-1] and 'l' in [0,l_max-l_min].
           'k' represents a circuit, 'l' represents a length of the plate.
            length_k_l is True IIF the circuit 'k' uses the length 'l' of the plate.
+           "A circuit uses a length" means that the circuit reaches or is above that length.
+           Actually, the actual length corresponding to the variable 'length_k_l' is not 'l', but l+l_min: 'l' is just an 
+           index on the variables 'length_k_l'.
            For going from an index 'l' of 'length_k_l' to the actual length: l+l_min.
            For going from an actual length 'l' to an index of 'length_k_l': l-l_min.
                 Example. l_min=3, l_max=9.
