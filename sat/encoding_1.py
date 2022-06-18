@@ -22,11 +22,6 @@ class Vlsi_sat(Vlsi_sat_abstract):
     since we are also imposing that l_max=l-1.
 
     """
-
-    def __init__(self, w, n, dims, results):
-        super().__init__(w, n, dims, results)
-
-
     def __solve(self, formulas=[], l_max=None):
         """Solves the given VLSI instance, using the SAT encoding 1.
 

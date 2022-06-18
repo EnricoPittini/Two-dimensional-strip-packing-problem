@@ -11,10 +11,6 @@ class Vlsi_sat(Vlsi_sat_abstract):
     The only difference is that we use the HEULE encoding for the at_most_one constraint (in the exactly_one constraint).
 
     """
-    def __init__(self, w, n, dims, results):
-        super().__init__(w, n, dims, results)
-
-
     def __solve(self, w_min, h_min, l_min, l_max):
         """Solves the given VLSI instance, using the SAT encoding 8B.
 

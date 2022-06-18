@@ -19,10 +19,6 @@ class Vlsi_sat(Vlsi_sat_abstract):
     is used: see `lex_lesseq_compound` function.
 
     """
-    def __init__(self, w, n, dims, results):
-        super().__init__(w, n, dims, results)
-
-
     def __solve(self, w_min, h_min, l_min, l_max):
         """Solves the given VLSI instance, using the SAT encoding 7A.
 
@@ -278,7 +274,6 @@ class Vlsi_sat(Vlsi_sat_abstract):
         # print(self.results['best_coords'])
         # print(self.results['best_l'])
         
-        # Loop iterating over all the possible solutions, searching for the best one
         while True:
             if s.check()!=sat:  # No more solutions: break the cycle
                 break

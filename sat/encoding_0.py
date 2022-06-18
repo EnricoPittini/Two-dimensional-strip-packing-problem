@@ -20,10 +20,6 @@ class Vlsi_sat(Vlsi_sat_abstract):
     It can't be used in practice, because it is too slow.
 
     """
-    def __init__(self, w, n, dims, results):
-        super().__init__(w, n, dims, results)
-
-
     def __solve(self, formulas=[]):
         """Solves the given VLSI instance, using the SAT encoding 0.
 

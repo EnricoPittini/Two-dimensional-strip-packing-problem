@@ -232,11 +232,6 @@ class Vlsi_sat(Vlsi_sat_abstract):
     In all these constraints, we consider i!=j.
 
     """
-
-    def __init__(self, w, n, dims, results):
-        super().__init__(w, n, dims, results)
-
-
     def __solve(self, l_max):
         """Solves the given VLSI instance, using the SAT encoding 10.
 

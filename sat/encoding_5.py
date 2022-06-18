@@ -22,10 +22,6 @@ class Vlsi_sat(Vlsi_sat_abstract):
     We can use only the bounds on 'length_l': l in [0,l_max-l_min].
 
     """
-    def __init__(self, w, n, dims, results):
-        super().__init__(w, n, dims, results)
-
-
     def __solve(self, l_min, l_max):
         """Solves the given VLSI instance, using the SAT encoding 5.
 
@@ -273,8 +269,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
 
         # print(self.results['best_coords'])
         # print(self.results['best_l'])
-        
-        # Loop iterating over all the possible solutions, searching for the best one
+      
         while True:
             if s.check()!=sat:  # No more solutions: break the cycle
                 break

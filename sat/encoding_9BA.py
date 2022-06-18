@@ -11,10 +11,6 @@ class Vlsi_sat(Vlsi_sat_abstract):
     Only difference: usage of the BITWISE encoding for the exactly_one constraint.
 
     """
-    def __init__(self, w, n, dims, results):
-        super().__init__(w, n, dims, results)
-
-
     def __solve(self, w_min, h_min, l_min, l_max):
         """Solves the given VLSI instance, using the SAT encoding 9B.
 

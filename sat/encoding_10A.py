@@ -64,10 +64,6 @@ class Vlsi_sat(Vlsi_sat_abstract):
     O3) ph_{l-l_min}
 
     """
-    def __init__(self, w, n, dims, results):
-        super().__init__(w, n, dims, results)
-
-
     def __solve(self, l, l_min, l_max):
         """Solves the given VLSI instance, using the SAT encoding 10A.
 
