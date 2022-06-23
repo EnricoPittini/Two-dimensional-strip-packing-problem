@@ -1,6 +1,6 @@
 %---------------------------------------------------------------------------------------------------------------------------%
-%                                                         MODEL 0                                                           %
-%                                                                                                                           %
+%                                                         MODEL 00                                                          %
+% Adds check valid positions -> worse                                                                                       %
 %---------------------------------------------------------------------------------------------------------------------------%
 
 
@@ -35,6 +35,11 @@ endif;
 % The length of the plate
 var l_min..l_max: l;
 
+% Grid of valid positions for each circuit
+array[1..n, 0..l_max-1, 0..w-1] of var 0..1: valid_positions = 
+  array3d(1..n, 0..l_max-1, 0..w-1, 
+    [if (i + dimsY[k] <= l /\ j + dimsX[k] <= w) then 1 else 0 endif | k in 1..n, i in 0..l_max-1, j in 0..w-1]); 
+
 array[1..n] of var 0..l_max-h_min: coordsY;  % Coords X of the left-bottom corner of the rectangles
 array[1..n] of var 0..w-w_min: coordsX;  % Coords Y of the left-bottom corner of the rectangles
 
@@ -43,9 +48,12 @@ array[1..n] of var 0..w-w_min: coordsX;  % Coords Y of the left-bottom corner of
 solve minimize l;
 
 %%%%%%% SUCH THAT
+% In valid position
+constraint forall(i in 1..n)(valid_positions[i, coordsY[i], coordsX[i]] >= 1);
+
 % In bound
-constraint forall(i in 1..n)(coordsX[i] + dimsX[i] <= w);
-constraint forall(i in 1..n)(coordsY[i] + dimsY[i] <= l);
+% constraint forall(i in 1..n)(coordsX[i] + dimsX[i] <= w);
+% constraint forall(i in 1..n)(coordsY[i] + dimsY[i] <= l);
 
 % Non overlapping (http://yetanothermathprogrammingconsultant.blogspot.com/2017/07/rectangles-no-overlap-constraints.html)
 % This link provides symmetry breaking information (https://stackoverflow.com/questions/47406225/linearprogramming-non-overlapping-constraint)
@@ -69,3 +77,5 @@ constraint forall(i,j in 1..n where i<j)(b[i,j,1] + b[i,j,3] <= 1);
 constraint forall(i,j in 1..n where i<j)(b[i,j,2] + b[i,j,4] <= 1);
 % At least one of the above constraint must be active (not relaxed) for all the coordinates i,j.
 constraint forall(i,j in 1..n where i<j)(sum(b[i,j,..]) >= 1);
+
+%output ["\(valid_positions)\n", "\(dimsX)\n", "\(1..n)\n", "\(w)\n", "\(l_max)"];

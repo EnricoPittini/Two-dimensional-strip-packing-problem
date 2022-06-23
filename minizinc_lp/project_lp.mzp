@@ -1,14 +1,24 @@
 {
     "openFiles": [
+        "models/model_01.mzn",
         "models/model_0.mzn",
-        "data/data_13.dzn"
+        "data/data_dummy.dzn",
+        "data/data_3.dzn"
     ],
     "openTab": 0,
     "projectFiles": [
         "data/data_13.dzn",
+        "data/data_3.dzn",
+        "data/data_dummy.dzn",
         "models/model_0.mzn",
+        "models/model_00.mzn",
+        "models/model_01.mzn",
+        "models/model_1.mzn",
+        "models/model_2.mzn",
+        "models/model_3.mzn",
         "solvers/solver_coin_bc.mpc"
     ],
-    "selectedSolverConfigFile": "solvers/solver_coin_bc.mpc",
+    "selectedBuiltinConfigId": "org.minizinc.mip.coin-bc",
+    "selectedBuiltinConfigVersion": "2.10.7/1.17.7",
     "version": 106
 }

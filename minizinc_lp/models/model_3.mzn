@@ -69,3 +69,7 @@ constraint forall(i,j in 1..n where i<j)(b[i,j,1] + b[i,j,3] <= 1);
 constraint forall(i,j in 1..n where i<j)(b[i,j,2] + b[i,j,4] <= 1);
 % At least one of the above constraint must be active (not relaxed) for all the coordinates i,j.
 constraint forall(i,j in 1..n where i<j)(sum(b[i,j,..]) >= 1);
+
+% Symmetry Breaking
+constraint forall(i in 1..n)(coordsX[i] != w - coordsX[i])
+constraint forall(i,j in 1..n where i < j /\ dimsX[i] = dimsX[j] /\ dimsY[i] = dimsY[j])(coordsY[i] <= coordsY[j])
