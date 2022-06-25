@@ -4,7 +4,7 @@ import os
 import re
 import subprocess
 import sys
-from amplpy import AMPL
+from amplpy import AMPL, AMPLException
 import tempfile
 import pandas
 
@@ -48,40 +48,58 @@ def main() -> None:
     w, n, dims = utils.parse_instance_txt(instance_file)
     
     time_limit = arguments.time_limit
+    #TODO remove
+    time_limit = 300
+
     solver = vars(arguments)['solver-name']
 
-    ampl = AMPL()
-    ampl.set_option('solver', solver)
-    ampl.read(os.path.normpath(vars(arguments)["model-path"]))
-    _read_dat_file(w, n, dims, ampl)
-
-    # Solve
-    ampl.solve()
-
-    l = ampl.get_value('l')
-    coordsX = ampl.get_data('coordsX').to_pandas().coordsX.values
-    coordsY = ampl.get_data('coordsY').to_pandas().coordsY.values
-    coordsX = coordsX.astype(int)
-    coordsY = coordsY.astype(int)
-    l = int(l)
-    print(coordsX)
-    print(coordsY)
-    print(l)
-    ampl.display('_total_solve_time')
 
 
-    
-    '''if '% Time limit exceeded!' in output:
-        print('% Time limit exceeded!')
-    # Print on stdout the last elapsed time if the information is available.
-    else:
-        time_list = re.findall('% time elapsed: ' + r'\d+\.\d+', output)
-        if len(time_list):
-            elapsed_time = time_list[-1].split('% time elapsed: ')[-1]
-            if float(elapsed_time) > time_limit:
-                print('% Time limit exceeded!')
-            else:
-                print(time_list[-1])'''
+
+    try:
+        ampl = AMPL()
+        ampl.set_option('solver', solver)
+        if solver == 'cplex':
+            ampl.set_option('cplex_options',f"timelimit={time_limit}")
+
+        elif solver == 'cbc':
+            ampl.set_option('cbc_options',f"sec={time_limit}")
+        elif solver == 'gurobi':
+            ampl.set_option('gurobi_options',f"timelim={time_limit}")
+
+        ampl.read(os.path.normpath(vars(arguments)["model-path"]))
+        _read_dat_file(w, n, dims, ampl)
+        #print(ampl.get_value('solve_result'))
+        # Solve
+        #TODO start and stop timer
+        
+        ampl.solve()
+
+        #TODO time refactor
+        
+        result = ampl.get_value('solve_result')
+        if result == 'infeasible':
+            sys.exit('ERROR: UNSATISFIABLE')
+        elif result == 'limit':
+            print('% Time limit exceeded!')
+        elif result == 'solved':
+            print(ampl.get_value('_total_solve_time'))
+        else:
+            sys.exit('ERROR: UNKOWN')
+
+
+        l = ampl.get_value('l')
+        coordsX = ampl.get_data('coordsX').to_pandas().coordsX.values
+        coordsY = ampl.get_data('coordsY').to_pandas().coordsY.values
+        coordsX = coordsX.astype(int)
+        coordsY = coordsY.astype(int)
+        l = int(l)
+        print(f'l={l}')
+        print(f'CoordsX={coordsX}')
+        print(f'CoordsY={coordsY}')
+    except AMPLException:
+        sys.exit('ERROR: UNKNOWN')
+
     #TODO generalize
     if not arguments.no_create_output:
         
@@ -104,19 +122,9 @@ def main() -> None:
             visualize_script_path = os.path.join(scripts_folder,'visualize.py')
             os.system(f'python {visualize_script_path} "{output_file}"')
 
-def _read_dat_file(w, n, dims, ampl):
-    '''with tempfile.TemporaryDirectory() as tmp_dir_path:
-        with open(os.path.join(tmp_dir_path,'data.dat')) as fp:
-            fp.write(b'data;\n')
-            fp.write(f'param n := {n};\n'.encode())
-            fp.write(f'param w := {w};\n'.encode())
-            fp.write(b'param: dimsX dimsY :=\n')
-            for i, dim in enumerate(dims):
-                fp.write(f'{i+1}\t\t{dim[0]}\t\t{dim[1]}\n'.encode())
-            fp.write(b';')
-            ampl.read_data(fp.name)'''
-        
+def _read_dat_file(w, n, dims, ampl):         
     
+    #TODO delete file
     
     with open('data.dat','w') as fp:
         fp.write('data;\n')
