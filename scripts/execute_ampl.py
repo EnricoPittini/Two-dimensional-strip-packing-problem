@@ -71,13 +71,13 @@ def main() -> None:
         # Parse optimization result status.
         result = ampl.get_value('solve_result')
         if result == 'infeasible':
-            sys.exit('ERROR: UNSATISFIABLE')
+            sys.exit('error = UNSATISFIABLE')
         elif result == 'limit':
-            print('% Time limit exceeded!')
+            print('time = exceeded')
         elif result == 'solved':
-            print(f'% Time elapsed {solving_time}')
+            print(f'time = {solving_time}')
         else:
-            sys.exit('ERROR: UNKOWN')
+            sys.exit('error = UNKOWN')
 
         # Parse variables results.
         l = int(ampl.get_value('l'))
@@ -91,7 +91,7 @@ def main() -> None:
         print(f'CoordsX = {coordsX}')
         print(f'CoordsY = {coordsY}')
     except AMPLException:
-        sys.exit('ERROR: UNKNOWN')
+        sys.exit('error = UNKOWN')
 
     #TODO generalize
     if not arguments.no_create_output:
