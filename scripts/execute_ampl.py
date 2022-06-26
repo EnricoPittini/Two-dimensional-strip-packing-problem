@@ -61,7 +61,7 @@ def main() -> None:
             ampl.set_option('gurobi_options',f"timelim={time_limit}")
         else:
             parser.error(f"argument solver-name: invalid choice: '{solver}' " + 
-                         f"(choose from {', '.join([f'{s}' for s in utils.AMPL_SOLVER_CHOICES])})")
+                         f"(choose from {', '.join([f'{s}' for s in AMPL_SOLVER_CHOICES])})")
 
         # Read model and data files.
         ampl.read(os.path.join(os.path.dirname(os.path.dirname(__file__)), f'AMPL/{model}.mod'))

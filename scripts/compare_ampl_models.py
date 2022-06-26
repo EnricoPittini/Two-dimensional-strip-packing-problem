@@ -75,7 +75,7 @@ def main() -> None:
     
     execute_ampl_script_path = os.path.join(os.path.dirname(__file__), 'execute_ampl.py')
 
-    result_list = []
+    result_dict = dict()
 
     # TODO: handling of error solutions
     for instance in instances_range:
@@ -107,7 +107,7 @@ def main() -> None:
                 time_list = re.findall('time = ' + r'\d+\.\d+', stdout)
                 if len(time_list):
                     elapsed_time = time_list[-1].split('= ')[-1]
-                    print(f'\tsolved in {elapsed_time}s.')
+                    print(f'\tSolved in {elapsed_time}s.')
                     instance_dict[f'{model}_{solver}'] = float(elapsed_time)
                 elif 'time = exceeded' in stdout:
                     print('\tTime limit exceeded.')
@@ -116,11 +116,11 @@ def main() -> None:
                     print('\tERROR: UNKNOWN.')
                     instance_dict[f'{model}_{solver}'] = 'UNKNOWN'
                     
-        result_list.append({f'ins-{instance}': instance_dict})
+        result_dict[f'ins-{instance}'] = instance_dict
 
         # Save intermediate JSON solution.
         with open(output_file, 'w') as f:
-            json.dump(result_list, f, sort_keys=False, indent=4, separators=(',', ': '))
+            json.dump(result_dict, f, sort_keys=False, indent=4, separators=(',', ': '))
 
 if __name__ == '__main__':
     main()

@@ -2,6 +2,5 @@
     "intermediate-solutions": false,
     "output-mode": "json",
     "output-time": true,
-    "solver": "org.chuffed.chuffed@0.10.4",
-    "time-limit": 300000
+    "solver": "org.chuffed.chuffed@0.10.4"
 }

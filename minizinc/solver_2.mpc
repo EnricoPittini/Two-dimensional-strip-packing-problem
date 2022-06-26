@@ -1,7 +1,0 @@
-{
-    "intermediate-solutions": false,
-    "output-mode": "json",
-    "output-time": true,
-    "solver": "org.gecode.gecode@6.3.0",
-    "time-limit": 100000
-}

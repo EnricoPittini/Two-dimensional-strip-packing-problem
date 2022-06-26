@@ -1,122 +1,82 @@
-[
-    {
-        "ins-1": {
-            "model_3B": 0.28,
-            "model_4D": 0.28
-        }
+{
+    "ins-1": {
+        "model_3B": 0.28,
+        "model_4D": 0.28
     },
-    {
-        "ins-2": {
-            "model_3B": 0.29,
-            "model_4D": 0.28
-        }
+    "ins-2": {
+        "model_3B": 0.29,
+        "model_4D": 0.28
     },
-    {
-        "ins-3": {
-            "model_3B": 0.29,
-            "model_4D": 0.4
-        }
+    "ins-3": {
+        "model_3B": 0.29,
+        "model_4D": 0.4
     },
-    {
-        "ins-4": {
-            "model_3B": 0.29,
-            "model_4D": 0.28
-        }
+    "ins-4": {
+        "model_3B": 0.29,
+        "model_4D": 0.28
     },
-    {
-        "ins-5": {
-            "model_3B": 0.29,
-            "model_4D": 0.41
-        }
+    "ins-5": {
+        "model_3B": 0.29,
+        "model_4D": 0.41
     },
-    {
-        "ins-6": {
-            "model_3B": 0.3,
-            "model_4D": 0.28
-        }
+    "ins-6": {
+        "model_3B": 0.3,
+        "model_4D": 0.28
     },
-    {
-        "ins-7": {
-            "model_3B": 0.3,
-            "model_4D": 0.29
-        }
+    "ins-7": {
+        "model_3B": 0.3,
+        "model_4D": 0.29
     },
-    {
-        "ins-8": {
-            "model_3B": 0.32,
-            "model_4D": 0.29
-        }
+    "ins-8": {
+        "model_3B": 0.32,
+        "model_4D": 0.29
     },
-    {
-        "ins-9": {
-            "model_3B": 0.32,
-            "model_4D": 0.31
-        }
+    "ins-9": {
+        "model_3B": 0.32,
+        "model_4D": 0.31
     },
-    {
-        "ins-10": {
-            "model_3B": 0.34,
-            "model_4D": 0.34
-        }
+    "ins-10": {
+        "model_3B": 0.34,
+        "model_4D": 0.34
     },
-    {
-        "ins-11": {
-            "model_3B": 0.67,
-            "model_4D": 4.44
-        }
+    "ins-11": {
+        "model_3B": 0.67,
+        "model_4D": 4.44
     },
-    {
-        "ins-12": {
-            "model_3B": 0.57,
-            "model_4D": 0.63
-        }
+    "ins-12": {
+        "model_3B": 0.57,
+        "model_4D": 0.63
     },
-    {
-        "ins-13": {
-            "model_3B": 0.46,
-            "model_4D": 1.58
-        }
+    "ins-13": {
+        "model_3B": 0.46,
+        "model_4D": 1.58
     },
-    {
-        "ins-14": {
-            "model_3B": 0.43,
-            "model_4D": 0.52
-        }
+    "ins-14": {
+        "model_3B": 0.43,
+        "model_4D": 0.52
     },
-    {
-        "ins-15": {
-            "model_3B": 0.59,
-            "model_4D": 0.59
-        }
+    "ins-15": {
+        "model_3B": 0.59,
+        "model_4D": 0.59
     },
-    {
-        "ins-16": {
-            "model_3B": 0.77,
-            "model_4D": 11.65
-        }
+    "ins-16": {
+        "model_3B": 0.77,
+        "model_4D": 11.65
     },
-    {
-        "ins-17": {
-            "model_3B": 0.64,
-            "model_4D": 0.81
-        }
+    "ins-17": {
+        "model_3B": 0.64,
+        "model_4D": 0.81
     },
-    {
-        "ins-18": {
-            "model_3B": 1.37,
-            "model_4D": 6.01
-        }
+    "ins-18": {
+        "model_3B": 1.37,
+        "model_4D": 6.01
     },
-    {
-        "ins-19": {
-            "model_3B": 127.8,
-            "model_4D": 300.18
-        }
+    "ins-19": {
+        "model_3B": 127.8,
+        "model_4D": 300.18
     },
-    {
-        "ins-20": {
-            "model_3B": 37.3,
-            "model_4D": 2.01
-        }
+    "ins-20": {
+        "model_3B": 37.3,
+        "model_4D": 2.01
     }
-]
+}

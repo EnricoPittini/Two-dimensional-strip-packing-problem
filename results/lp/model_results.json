@@ -1,242 +1,82 @@
-[
-    {
-        "ins-1": {
-            "model_prova_cplex": 0.04532432556152344,
-            "model_prova2_cplex": 0.04112601280212402
-        }
+{
+    "ins-1": {
+        "model_prova_cplex": 0.04532432556152344,
+        "model_prova2_cplex": 0.04112601280212402
     },
-    {
-        "ins-1": {
-            "model_prova_cplex": 0.04532432556152344,
-            "model_prova2_cplex": 0.04112601280212402
-        }
+    "ins-2": {
+        "model_prova_cplex": 0.044708251953125,
+        "model_prova2_cplex": 0.05865168571472168
     },
-    {
-        "ins-2": {
-            "model_prova_cplex": 0.044708251953125,
-            "model_prova2_cplex": 0.05865168571472168
-        }
+    "ins-3": {
+        "model_prova_cplex": 0.05837249755859375,
+        "model_prova2_cplex": 0.049259185791015625
     },
-    {
-        "ins-2": {
-            "model_prova_cplex": 0.044708251953125,
-            "model_prova2_cplex": 0.05865168571472168
-        }
+    "ins-4": {
+        "model_prova_cplex": 0.07444882392883301,
+        "model_prova2_cplex": 0.05749106407165527
     },
-    {
-        "ins-3": {
-            "model_prova_cplex": 0.05837249755859375,
-            "model_prova2_cplex": 0.049259185791015625
-        }
+    "ins-5": {
+        "model_prova_cplex": 0.1474754810333252,
+        "model_prova2_cplex": 0.0867006778717041
     },
-    {
-        "ins-3": {
-            "model_prova_cplex": 0.05837249755859375,
-            "model_prova2_cplex": 0.049259185791015625
-        }
+    "ins-6": {
+        "model_prova_cplex": 0.1442887783050537,
+        "model_prova2_cplex": 0.10622310638427734
     },
-    {
-        "ins-4": {
-            "model_prova_cplex": 0.07444882392883301,
-            "model_prova2_cplex": 0.05749106407165527
-        }
+    "ins-7": {
+        "model_prova_cplex": 0.23584461212158203,
+        "model_prova2_cplex": 0.09002971649169922
     },
-    {
-        "ins-4": {
-            "model_prova_cplex": 0.07444882392883301,
-            "model_prova2_cplex": 0.05749106407165527
-        }
+    "ins-8": {
+        "model_prova_cplex": 0.13308095932006836,
+        "model_prova2_cplex": 0.11766862869262695
     },
-    {
-        "ins-5": {
-            "model_prova_cplex": 0.1474754810333252,
-            "model_prova2_cplex": 0.0867006778717041
-        }
+    "ins-9": {
+        "model_prova_cplex": 0.15893888473510742,
+        "model_prova2_cplex": 0.08287382125854492
     },
-    {
-        "ins-5": {
-            "model_prova_cplex": 0.1474754810333252,
-            "model_prova2_cplex": 0.0867006778717041
-        }
+    "ins-10": {
+        "model_prova_cplex": 0.2883477210998535,
+        "model_prova2_cplex": 0.2099616527557373
     },
-    {
-        "ins-6": {
-            "model_prova_cplex": 0.1442887783050537,
-            "model_prova2_cplex": 0.10622310638427734
-        }
+    "ins-11": {
+        "model_prova_cplex": "NaN",
+        "model_prova2_cplex": 183.91950821876526
     },
-    {
-        "ins-6": {
-            "model_prova_cplex": 0.1442887783050537,
-            "model_prova2_cplex": 0.10622310638427734
-        }
+    "ins-12": {
+        "model_prova_cplex": 17.41861653327942,
+        "model_prova2_cplex": 0.6922366619110107
     },
-    {
-        "ins-7": {
-            "model_prova_cplex": 0.23584461212158203,
-            "model_prova2_cplex": 0.09002971649169922
-        }
+    "ins-13": {
+        "model_prova_cplex": 11.928562641143799,
+        "model_prova2_cplex": 1.098447561264038
     },
-    {
-        "ins-7": {
-            "model_prova_cplex": 0.23584461212158203,
-            "model_prova2_cplex": 0.09002971649169922
-        }
+    "ins-14": {
+        "model_prova_cplex": 22.822890281677246,
+        "model_prova2_cplex": 0.40824103355407715
     },
-    {
-        "ins-8": {
-            "model_prova_cplex": 0.13308095932006836,
-            "model_prova2_cplex": 0.11766862869262695
-        }
+    "ins-15": {
+        "model_prova_cplex": 9.523871898651123,
+        "model_prova2_cplex": 7.934081792831421
     },
-    {
-        "ins-8": {
-            "model_prova_cplex": 0.13308095932006836,
-            "model_prova2_cplex": 0.11766862869262695
-        }
+    "ins-16": {
+        "model_prova_cplex": "NaN",
+        "model_prova2_cplex": 100.57673811912537
     },
-    {
-        "ins-9": {
-            "model_prova_cplex": 0.15893888473510742,
-            "model_prova2_cplex": 0.08287382125854492
-        }
+    "ins-17": {
+        "model_prova_cplex": 42.466471433639526,
+        "model_prova2_cplex": 155.36443066596985
     },
-    {
-        "ins-9": {
-            "model_prova_cplex": 0.15893888473510742,
-            "model_prova2_cplex": 0.08287382125854492
-        }
+    "ins-18": {
+        "model_prova_cplex": 79.11937427520752,
+        "model_prova2_cplex": 23.52305316925049
     },
-    {
-        "ins-10": {
-            "model_prova_cplex": 0.2883477210998535,
-            "model_prova2_cplex": 0.2099616527557373
-        }
+    "ins-19": {
+        "model_prova_cplex": "NaN",
+        "model_prova2_cplex": "NaN"
     },
-    {
-        "ins-10": {
-            "model_prova_cplex": 0.2883477210998535,
-            "model_prova2_cplex": 0.2099616527557373
-        }
-    },
-    {
-        "ins-11": {
-            "model_prova_cplex": "NaN",
-            "model_prova2_cplex": 183.91950821876526
-        }
-    },
-    {
-        "ins-11": {
-            "model_prova_cplex": "NaN",
-            "model_prova2_cplex": 183.91950821876526
-        }
-    },
-    {
-        "ins-12": {
-            "model_prova_cplex": 17.41861653327942,
-            "model_prova2_cplex": 0.6922366619110107
-        }
-    },
-    {
-        "ins-12": {
-            "model_prova_cplex": 17.41861653327942,
-            "model_prova2_cplex": 0.6922366619110107
-        }
-    },
-    {
-        "ins-13": {
-            "model_prova_cplex": 11.928562641143799,
-            "model_prova2_cplex": 1.098447561264038
-        }
-    },
-    {
-        "ins-13": {
-            "model_prova_cplex": 11.928562641143799,
-            "model_prova2_cplex": 1.098447561264038
-        }
-    },
-    {
-        "ins-14": {
-            "model_prova_cplex": 22.822890281677246,
-            "model_prova2_cplex": 0.40824103355407715
-        }
-    },
-    {
-        "ins-14": {
-            "model_prova_cplex": 22.822890281677246,
-            "model_prova2_cplex": 0.40824103355407715
-        }
-    },
-    {
-        "ins-15": {
-            "model_prova_cplex": 9.523871898651123,
-            "model_prova2_cplex": 7.934081792831421
-        }
-    },
-    {
-        "ins-15": {
-            "model_prova_cplex": 9.523871898651123,
-            "model_prova2_cplex": 7.934081792831421
-        }
-    },
-    {
-        "ins-16": {
-            "model_prova_cplex": "NaN",
-            "model_prova2_cplex": 100.57673811912537
-        }
-    },
-    {
-        "ins-16": {
-            "model_prova_cplex": "NaN",
-            "model_prova2_cplex": 100.57673811912537
-        }
-    },
-    {
-        "ins-17": {
-            "model_prova_cplex": 42.466471433639526,
-            "model_prova2_cplex": 155.36443066596985
-        }
-    },
-    {
-        "ins-17": {
-            "model_prova_cplex": 42.466471433639526,
-            "model_prova2_cplex": 155.36443066596985
-        }
-    },
-    {
-        "ins-18": {
-            "model_prova_cplex": 79.11937427520752,
-            "model_prova2_cplex": 23.52305316925049
-        }
-    },
-    {
-        "ins-18": {
-            "model_prova_cplex": 79.11937427520752,
-            "model_prova2_cplex": 23.52305316925049
-        }
-    },
-    {
-        "ins-19": {
-            "model_prova_cplex": "NaN",
-            "model_prova2_cplex": "NaN"
-        }
-    },
-    {
-        "ins-19": {
-            "model_prova_cplex": "NaN",
-            "model_prova2_cplex": "NaN"
-        }
-    },
-    {
-        "ins-20": {
-            "model_prova_cplex": "NaN",
-            "model_prova2_cplex": 290.65146255493164
-        }
-    },
-    {
-        "ins-20": {
-            "model_prova_cplex": "NaN",
-            "model_prova2_cplex": 290.65146255493164
-        }
+    "ins-20": {
+        "model_prova_cplex": "NaN",
+        "model_prova2_cplex": 290.65146255493164
     }
-]
+}

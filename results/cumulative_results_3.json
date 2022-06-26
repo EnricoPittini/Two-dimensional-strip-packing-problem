@@ -1,23 +1,17 @@
-[
-    {
-        "ins-30": {
-            "model_2": "NaN",
-            "model_3A": "NaN",
-            "model_3B": "NaN"
-        }
+{
+    "ins-30": {
+        "model_2": "NaN",
+        "model_3A": "NaN",
+        "model_3B": "NaN"
     },
-    {
-        "ins-31": {
-            "model_2": 10.37,
-            "model_3A": 102.37,
-            "model_3B": 1.3
-        }
+    "ins-31": {
+        "model_2": 10.37,
+        "model_3A": 102.37,
+        "model_3B": 1.3
     },
-    {
-        "ins-32": {
-            "model_2": "NaN",
-            "model_3A": "NaN",
-            "model_3B": "NaN"
-        }
+    "ins-32": {
+        "model_2": "NaN",
+        "model_3A": "NaN",
+        "model_3B": "NaN"
     }
-]
+}

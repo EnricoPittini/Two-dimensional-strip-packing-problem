@@ -2,11 +2,12 @@ import argparse
 import os
 import re
 import subprocess
+import sys
 import tempfile
 from shutil import copyfile
 from typing import List
 
-import utils
+from utils import INSTANCES, MINIZINC_ERRORS, parse_output_file
 
 # MODEL_LIST = [f'model_final_{i}' for i in range(3)]
 _MODEL_LIST = [f'model_final{i}' for i in range(3)]
@@ -14,7 +15,8 @@ _MODEL_LIST = [f'model_final{i}' for i in range(3)]
 def main() -> None:
     parser = argparse.ArgumentParser(description='Script for solving a VLSI problem with Minizinc.')
 
-    parser.add_argument('instance-path', type=str, help='The instance to solve.')
+    parser.add_argument('instance', metavar='ins-1..ins-40; ins-unsat', type=str, choices=INSTANCES, 
+                help='The instance to solve.')
     
     parser.add_argument('output-folder-path', type=str, default=os.getcwd(), nargs='?', 
                         help='The path in which the output file is stored.')
@@ -29,7 +31,7 @@ def main() -> None:
     
     arguments = parser.parse_args()
     
-    instance_file_path = vars(arguments)['instance-path']
+    instance = vars(arguments)['instance']
 
     output_folder_path = vars(arguments)['output-folder-path']
 
@@ -41,20 +43,20 @@ def main() -> None:
 
     with tempfile.TemporaryDirectory() as tmp_dir_path:
         # Run the models on the instance
-        _run_models(instance_file_path, tmp_dir_path, outputs, errors, l_results)
+        _run_models(instance, tmp_dir_path, outputs, errors, l_results)
         
         if all(l is None for l in l_results):
             if len(errors) and 'UNSATISFIABLE' in errors:
-                print('UNSATISFIABLE')
+                sys.exit('error = UNSATISFIABLE')
             else:
-                print('UNKOWN')
+                sys.exit('error = UNKOWN')
         else:
             if output_name is None:
-                output_file = os.path.join(output_folder_path, os.path.basename(instance_file_path))
+                output_file = os.path.join(output_folder_path, f'solution-{instance}.txt')
             else:
                 output_file = os.path.join(output_folder_path, f'{output_name}.txt')
             
-            best_l_result_index = l_results.index(min(l_results)) 
+            best_l_result_index = l_results.index(min([float('inf') if l is None else l for l in l_results ])) 
             
             # Print the results
             _print_json_result_and_elapsed_time(outputs, best_l_result_index)
@@ -70,7 +72,7 @@ def main() -> None:
                     visualize_script_path = os.path.join(scripts_folder,'visualize.py')
                     os.system(f'python {visualize_script_path} "{output_file}"')
 
-def _run_models(instance_file_path: str, tmp_dir_path: str, outputs: List[str], errors: List[str], 
+def _run_models(instance: str, tmp_dir_path: str, outputs: List[str], errors: List[str], 
                 l_results: List[str]) -> None:
     ''' Function that runs the models specified in `_MODEL_LIST` and saves the eventual output result files in the temporary
     directory `tmp_dir_path`. It also saves the eventual output results, the eventual errors and the eventual results of the 
@@ -78,8 +80,8 @@ def _run_models(instance_file_path: str, tmp_dir_path: str, outputs: List[str], 
     
     Parameters
     ----------
-    instance_file_path : str
-        String expressing the file path of the instance to solve.
+    instance : str
+        String expressing the instance to solve.
     tmp_dir_path : str
         String expressing the path of the temporary directory where the output files are saved.
     outputs : list of str
@@ -91,19 +93,12 @@ def _run_models(instance_file_path: str, tmp_dir_path: str, outputs: List[str], 
     '''
     
     execute_minizinc_script_path = os.path.join(os.path.dirname(__file__), 'execute_minizinc.py')
-
-    solver_file_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'minizinc/solver_3.mpc')
-
-    model_folder_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 'minizinc')
     
     for model in _MODEL_LIST:
-        # Create file path of current model.
-        model_file_path = os.path.join(model_folder_path, f'{model}.mzn')
-        
         print(f'Executing model {model}...')
         # Create the command to execute the current MiniZinc model on the instance. 
-        command = f'python "{execute_minizinc_script_path}" "{model_file_path}" "{instance_file_path}" ' +\
-                f'"{solver_file_path}" "{tmp_dir_path}" {model} --no-visualize-output --time-limit 100'
+        command = f'python "{execute_minizinc_script_path}" {model} {instance} ' +\
+                f'"{tmp_dir_path}" {model} --time-limit 100 --no-visualize-output'
         
         # Run the process launched by the command and save the results.
         try:
@@ -112,7 +107,7 @@ def _run_models(instance_file_path: str, tmp_dir_path: str, outputs: List[str], 
             # Save `UNKNOWN` error if MiniZinc returns a `KeyboardInterrupt` signal. This is due to an internal MiniZinc bug.
             outputs.append(None)
             l_results.append(None)
-            error_list.append('UNKNOWN')
+            errors.append('UNKNOWN')
             # Continue to the next iteration
             continue
         
@@ -124,28 +119,25 @@ def _run_models(instance_file_path: str, tmp_dir_path: str, outputs: List[str], 
             
             # Obtain the result of `l` by the file generated by the execution of the model and append it to `l_results`.
             try:
-                _, l, _, _, _, _ = utils.parse_output_file(os.path.join(tmp_dir_path, f'{model}.txt'))
+                _, l, _, _, _, _ = parse_output_file(os.path.join(tmp_dir_path, f'{model}.txt'))
                 l_results.append(l)
             # Append None to `l_results` to flag a lack of result if the output file doesn't exist.
             except OSError:
                 l_results.append(None)
             
             # If an optimal solution is found exit from the loop.
-            if '% Time limit exceeded!' not in decoded_result and len(re.findall('% time elapsed:', decoded_result)):
+            if 'time = exceeded' not in decoded_result and len(re.findall('time =', decoded_result)):
                 break   
              
-        except subprocess.CalledProcessError as e:
-            print(e)
+        except subprocess.CalledProcessError:
             # Find all errors that correspond to possible MiniZinc raised errors.
             decoded_error = result.stderr.decode('UTF-8')
-            error_list = [err for err in decoded_error.split() if err in utils.MINIZINC_ERRORS]
+            error_list = [err for err in decoded_error.split() if err in MINIZINC_ERRORS]
             
             # Print the first found MiniZinc error if it exist, otherwise print a general "UNKNOWN" error
             if len(error_list):
-                print(f'\tERROR: {error_list[0]}')
                 errors.append(error_list[0])
             else:
-                print('\tERROR: UNKNOWN')
                 errors.append('UNKNOWN')
             
             # Append None to `outputs` and `l_results` to flag a lack of result.
@@ -166,12 +158,12 @@ def _print_json_result_and_elapsed_time(outputs: List[str], best_l_result_index:
     best_output = outputs[best_l_result_index]
     
     # Print JSON output substring of the best result of `l`.
-    json_substring = best_output.split('%')[0]
+    json_substring = best_output.split('time = ')[0]
     print(json_substring)
     
     # Print on stdout that the time limit is exceeded if that is the case.
-    if '% Time limit exceeded!' in best_output:
-        print('% Time limit exceeded!')
+    if 'time = exceeded' in best_output:
+        print('time = exceeded')
     
     # Print on stdout the summed elapsed time if the information is available.
     else:
@@ -181,15 +173,15 @@ def _print_json_result_and_elapsed_time(outputs: List[str], best_l_result_index:
                 time_list = []
             else:
                 # Find all strings specifying the elapsed time of the current task
-                time_list = re.findall('% time elapsed: ' + r'\d+\.\d+', o)
+                time_list = re.findall('time = ' + r'\d+\.\d+', o)
             if len(time_list):
                 # Add to total time the last elapsed time of the current task
-                elapsed_time = time_list[-1].split('% time elapsed: ')[-1]
+                elapsed_time = time_list[-1].split('time = ')[-1]
                 total_time += float(elapsed_time)
             else:
                 # Add to total time maximum possible time
                 total_time += 100
-        print(f'% time elapsed: {total_time}')
+        print(f'time = {total_time}')
 
 if __name__ == '__main__':
     main()

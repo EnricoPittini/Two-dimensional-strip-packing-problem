@@ -1,26 +1,18 @@
-[
-    {
-        "ins-21": {
-            "model_3B": 1.98,
-            "model_4D": 17.98
-        }
+{
+    "ins-21": {
+        "model_3B": 1.98,
+        "model_4D": 17.98
     },
-    {
-        "ins-22": {
-            "model_3B": "NaN",
-            "model_4D": 300.31
-        }
+    "ins-22": {
+        "model_3B": "NaN",
+        "model_4D": 300.31
     },
-    {
-        "ins-23": {
-            "model_3B": 1.36,
-            "model_4D": 53.42
-        }
+    "ins-23": {
+        "model_3B": 1.36,
+        "model_4D": 53.42
     },
-    {
-        "ins-24": {
-            "model_3B": 2.7,
-            "model_4D": 3.3
-        }
+    "ins-24": {
+        "model_3B": 2.7,
+        "model_4D": 3.3
     }
-]
+}
