@@ -56,6 +56,8 @@ constraint forall(i in 1..n)(coordsY[i] + dimsY[i] <= l);
 
 /** Binary variables for each coordinate i,j related to the non-overlapping constraints. */
 array[1..n, 1..n, 1..4] of var 0..1: b;
+% Guarantee that the symmetric part of the 4 matrices over the diagonal has all zeroes.  
+constraint forall(i,j in 1..n where i >= j, k in 1..4)(b[i,j,k] = 0);
 
 % If a constraint is active b[i,j,k] = 1 then the circuits must not overlap in the given dimension.
 % Otherwise (the constraint is not active b[i,j,k] = 0). In practice the constraint will always be satisfied thanks to

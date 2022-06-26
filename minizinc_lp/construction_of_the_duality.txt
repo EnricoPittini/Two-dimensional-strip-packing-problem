@@ -1,0 +1,8 @@
+Noi vogliamo avere:
+- un vettore x con tutte le componenti maggiori di 0
+- Constraint nella forma Ax = b
+- Minimze c*x
+
+La nostra x ha concatenazione tra coordsX, coordsY, b, slack variables, l
+
+c*x è tutti 0 tranne un 1 sulla l 0*coordsX[i] + 0*coords[Y] + 0*b[i] + <slack variables> + l
