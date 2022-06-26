@@ -1,4 +1,4 @@
-#from amplpy import AMPL, AMPLException
+from amplpy import AMPL, AMPLException
 import argparse
 import os
 import sys
