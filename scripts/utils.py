@@ -3,6 +3,9 @@ import os
 
 
 MINIZINC_ERRORS = ['UNSATISFIABLE', 'UNBOUNDED', 'UNSATorUNBOUNDED', 'UNKNOWN', 'ERROR']
+AMPL_SOLVER_CHOICES = ['cbc','cplex','gurobi']
+AMPL_MODEL_CHOICES = ['model_prova','model_prova2']
+INSTANCES = [f'ins-{i}' for i in range(1,41)] + ['ins-unsat']
 
 def parse_instance_txt(instance_txt_file: io.TextIOWrapper):
     # TODO add try-except

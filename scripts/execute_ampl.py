@@ -1,23 +1,22 @@
-from amplpy import AMPL, AMPLException
+#from amplpy import AMPL, AMPLException
 import argparse
 import os
 import sys
 import time
 
-import utils
+from utils import INSTANCES, AMPL_MODEL_CHOICES, AMPL_SOLVER_CHOICES, create_output_file, parse_instance_txt
 
-
-_SOLVER_CHOICES = ['cbc','cplex','gurobi']
 
 #python scripts\execute_ampl.py AMPL\model_prova.mod instances\ins-1.txt cplex
 def main() -> None:
     parser = argparse.ArgumentParser(description='Script for executing a VLSI AMPL model.')
 
-    parser.add_argument('model-path', type=str, help='The model to execute.')
+    parser.add_argument('model', type=str, choices=AMPL_MODEL_CHOICES, help='The model to execute.')
 
-    parser.add_argument('instance-path', type=argparse.FileType('r', encoding='UTF-8'), help='The instance to solve.')
+    parser.add_argument('instance', metavar='ins-1..ins-40; ins-unsat', type=str, choices=INSTANCES, 
+                        help='The instance to solve.')
 
-    parser.add_argument('solver-name', type=str, default='cplex', nargs='?', choices=_SOLVER_CHOICES, 
+    parser.add_argument('solver', type=str, default='cplex', nargs='?', choices=AMPL_SOLVER_CHOICES, 
                         help='The solver used for optimization.')
 
     parser.add_argument('output-folder-path', type=str, default=os.getcwd(), nargs='?', 
@@ -38,12 +37,16 @@ def main() -> None:
 
     arguments = parser.parse_args()
 
-    model_path = vars(arguments)["model-path"]
-    instance_file = vars(arguments)['instance-path']
-    solver = vars(arguments)['solver-name']
+    model = vars(arguments)['model']
+    instance = vars(arguments)['instance']
+    solver = vars(arguments)['solver']
     time_limit = arguments.time_limit
     
-    w, n, dims = utils.parse_instance_txt(instance_file)
+    # Open instance file
+    instance_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), f'instances/{instance}.txt')
+    
+    with open(instance_path,'r') as f:
+        w, n, dims = parse_instance_txt(f)
     
     try:
         ampl = AMPL()
@@ -58,10 +61,10 @@ def main() -> None:
             ampl.set_option('gurobi_options',f"timelim={time_limit}")
         else:
             parser.error(f"argument solver-name: invalid choice: '{solver}' " + 
-                         f"(choose from {', '.join([f'{s}' for s in _SOLVER_CHOICES])})")
+                         f"(choose from {', '.join([f'{s}' for s in utils.AMPL_SOLVER_CHOICES])})")
 
         # Read model and data files.
-        ampl.read(os.path.normpath(model_path))
+        ampl.read(os.path.join(os.path.dirname(os.path.dirname(__file__)), f'AMPL/{model}.mod'))
         _read_dat_file(w, n, dims, ampl)
         
         start_time = time.time()
@@ -98,15 +101,15 @@ def main() -> None:
         
         output_folder_path = vars(arguments)['output-folder-path']
 
-        instance_file_name = os.path.basename(instance_file.name)
+        # instance_file_name = os.path.basename(instance_file.name)
         output_name = vars(arguments)['output-name']
         if output_name is None:
-            output_file = os.path.join(output_folder_path, f'solution-{instance_file_name}')
+            output_file = os.path.join(output_folder_path, f'solution-{instance}')
         else:
             output_file = os.path.join(output_folder_path, f'{output_name}.txt')
 
         try:
-            utils.create_output_file(output_file, w, n, dims, l, coordsX, coordsY)
+            create_output_file(output_file, w, n, dims, l, coordsX, coordsY)
         except FileNotFoundError:
             sys.exit(f'Output path {output_folder_path} does not exist.')
     
