@@ -8,7 +8,7 @@ import importlib
 import time
 
 import utils
-#python scripts\execute_smt.py smt\encoding_0.py instances\ins-1.txt z3 300
+#python scripts/execute_smt.py encoding_0 ins-3 z3 300
 
 
 def vlsi_smt(instance_name, solver_name, w, n, dims, encoding_module, timeout=300):
@@ -75,16 +75,19 @@ def vlsi_smt(instance_name, solver_name, w, n, dims, encoding_module, timeout=30
 def main():
     parser = argparse.ArgumentParser(description='Script for executing a VLSI SMT encoding.')
 
-    parser.add_argument('encoding-path', type=str, help='The encoding to execute.')
+    parser.add_argument('encoding', type=str, help='The encoding to execute.')
 
-    parser.add_argument('instance-path', type=argparse.FileType('r', encoding='UTF-8'), help='The instance to solve.')
+    parser.add_argument('instance', metavar='ins-1..ins-40; ins-unsat', type=str, help='The instance to solve.')
 
-    parser.add_argument('solver-name', type=str, help='The name of the SMT solver.')
+    parser.add_argument('solver', type=str, help='The name of the SMT solver.')
 
     parser.add_argument('time-limit', type=int, default=300, nargs='?', help='Time limit, in seconds')
 
     parser.add_argument('output-folder-path', type=str, default=os.getcwd(), nargs='?', 
                         help='The path in which the output file is stored.')
+
+    parser.add_argument('output-name', type=str, default=None, nargs='?', 
+                        help='The name of the output solution.')
 
     parser.add_argument('--no-create-output', action='store_true', 
                         help='Skip the creation of the output solution.')
@@ -95,24 +98,29 @@ def main():
 
     arguments = parser.parse_args()
 
-    solver_name = vars(arguments)['solver-name']
+    encoding = vars(arguments)['encoding']
+    instance_name = vars(arguments)['instance']
+    solver_name = vars(arguments)['solver']
+    time_limit = vars(arguments)['time-limit']
+    
+    # Open instance file 
+    abs_path_source_folder = os.path.split(os.path.dirname(os.path.abspath(__file__)))[0]
+    instance_path = os.path.join(abs_path_source_folder, 'instances', f'{instance_name}.txt')
+    instance_file = open(instance_path, 'r')
 
-    instance_file = vars(arguments)['instance-path']
-    instance_file_name = os.path.basename(instance_file.name)
-    instance_name = instance_file_name.split('.')[0]
     w, n, dims = utils.parse_instance_txt(instance_file)
     w = int(w)
     n = int(n)
     dims = [(int(dims[i][0]),int(dims[i][1])) for i in range(n)]
 
-    encoding_path = vars(arguments)['encoding-path']
-    encoding_abspath = os.path.abspath(encoding_path)
-    module_name = os.path.basename(encoding_path).split('.')[0]
+    #encoding_path = vars(arguments)['encoding-path']
+    encoding_abspath = os.path.join(os.path.dirname(os.path.dirname(__file__)), f'smt/{encoding}.py')
+    module_name = encoding
     sys.path.insert(1, os.path.join(os.path.dirname(__file__), os.path.dirname(encoding_abspath)))
     encoding_module = importlib.import_module(module_name)
 
     start_time = time.time()
-    coords, l, finish, unsat = vlsi_smt(instance_name, solver_name, w, n, dims, encoding_module=encoding_module, timeout=vars(arguments)['time-limit'])        
+    coords, l, finish, unsat = vlsi_smt(instance_name, solver_name, w, n, dims, encoding_module=encoding_module, timeout=time_limit)        
     solving_time = time.time() - start_time
 
     print('Time:', solving_time)
@@ -138,7 +146,7 @@ def main():
     if not arguments.no_create_output:
         output_folder_path = vars(arguments)['output-folder-path']
 
-        output_file = os.path.join(output_folder_path,f'solution-{instance_file_name}')#f'{output_folder_path}\\solution-{instance_file.name.split("/")[-1]}'
+        output_file = os.path.join(output_folder_path,f'solution-{instance_name}')#f'{output_folder_path}\\solution-{instance_file.name.split("/")[-1]}'
 
         try:
             utils.create_output_file(output_file, w, n, dims, l, coordsX, coordsY)
