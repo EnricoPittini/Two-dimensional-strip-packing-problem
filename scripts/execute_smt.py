@@ -3,8 +3,6 @@ import multiprocessing
 import sys
 import os
 
-import subprocess
-
 import importlib
 
 import time
@@ -14,15 +12,19 @@ import utils
 
 
 def vlsi_smt(instance_name, solver_name, w, n, dims, encoding_module, timeout=300):
-    """Solves the given VLSI instance, using the specified SAT encoding
+    """Solves the given VLSI instance, using the specified SMT encoding
 
     It runs the solving process in parallel, within the specified time limit.
 
     The encoding is specified by giving the Python module object containing it.
-    In particular, this module contains the class `Vlsi_sat`, which solves the problem with a certain encoding.
+    In particular, this module contains the class `Vlsi_smt`, which solves the problem with a certain encoding.
 
     Parameters
     ----------
+    instance_name : str
+        Name of the instance to solve (e.g. 'ins-1')
+    solver_name : str
+        Name of the solver (e.g. 'z3')
     w : int
         The width of the plate
     n : int
@@ -30,10 +32,10 @@ def vlsi_smt(instance_name, solver_name, w, n, dims, encoding_module, timeout=30
     dims : list of tuple of int
         Dims X and Y (i.e. width and height) of the circuits
     encoding_module : module
-        Python module object containing the specified SAT encoding.
-        (The encoding is contained in the `Vlsi_sat` class)
+        Python module object containing the specified SMT encoding.
+        (The encoding is contained in the `Vlsi_smt` class)
     timeout : int, optional.
-        Time limit in seconds for executing the SAT solver, by default 300 (i.e. 5 minutes)
+        Time limit in seconds for executing the SMT solver, by default 300 (i.e. 5 minutes)
 
     Returns
     -------
@@ -44,18 +46,16 @@ def vlsi_smt(instance_name, solver_name, w, n, dims, encoding_module, timeout=30
     finish: bool
         Boolean flag saying whether the solving has finished or not.
         (This is useful in particular for understanding whether the time has elapsed or not)
+    unsat : bool
+        Boolean flay saying whether the specific instance is UNSAT or not.
 
-    Raises
+    Notes
     ------
-    UnsatError
-        If the given instance is UNSAT.
-
-    Raises
-    ------
-    The communication with the `Vlsi_sat` class instance is done through the `results` dictionary. It is given to the
+    The communication with the `Vlsi_smt` class instance is done through the `results` dictionary. It is given to the
     class constructor and it is stored inside the class: then, it is modified by injecting the solution (this each time a 
     better solution is found).
     Indeed, this dictionary contains the keys 'best_coords', 'best_l', 'finish', 'unsat'.
+
     """
     manager = multiprocessing.Manager()
     results = manager.dict()

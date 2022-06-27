@@ -4,15 +4,19 @@ class Vlsi_smt_abstract(multiprocessing.Process):
     """Class for solving the VLSI problem using SMT.
 
     It inheriths from `multiprocessing.Process`, in order to be executable as parallel process.
-    The typical usage is to run this process in parallel using a certain time limit. In such case, if the time limit exceed,
+    The typical usage is to run this process in parallel using a certain time limit. In such case, if the time limit exceeds,
     the user is not guaranteed to get an optimal solution, but only the best solution found so far.
 
     It is a general class, it is not a specific encoding.
-    It collects the basic common attributes and properties, shared among the different SAT encodings. 
-    A SAT encoding class inherits from this class.
+    It collects the basic common attributes and properties, shared among the different SMT encodings. 
+    A SMT encoding class inherits from this class.
 
     Attributes
     ----------
+    instance_name : str
+        Name of the instance to solve (e.g. 'ins-1')
+    solver_name : str
+        Name of the solver (e.g. 'z3')
     w : int
         The width of the plate
     n : int
@@ -37,7 +41,7 @@ class Vlsi_smt_abstract(multiprocessing.Process):
     
     Notes
     -----
-    The way the user and the `Vlsi_sat` class instance communicate is through the `results` dictionary. It is given to the
+    The way the user and the `Vlsi_smt` class instance communicate is through the `results` dictionary. It is given to the
     class constructor and it is stored inside the class: then, it is modified by injecting the solution (this each time a 
     better solution is found).
 

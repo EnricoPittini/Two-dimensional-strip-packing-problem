@@ -42,18 +42,16 @@ def vlsi_sat(w, n, dims, encoding_module, timeout=300):
     finish: bool
         Boolean flag saying whether the solving has finished or not.
         (This is useful in particular for understanding whether the time has elapsed or not)
+    unsat : bool
+        Boolean flay saying whether the specific instance is UNSAT or not.
 
-    Raises
-    ------
-    UnsatError
-        If the given instance is UNSAT.
-
-    Raises
+    Notes
     ------
     The communication with the `Vlsi_sat` class instance is done through the `results` dictionary. It is given to the
     class constructor and it is stored inside the class: then, it is modified by injecting the solution (this each time a 
     better solution is found).
     Indeed, this dictionary contains the keys 'best_coords', 'best_l', 'finish', 'unsat'.
+
     """
     manager = multiprocessing.Manager()
     results = manager.dict()
