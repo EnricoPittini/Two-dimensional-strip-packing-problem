@@ -15,12 +15,12 @@ class Vlsi_smt(Vlsi_smt_abstract):
     The SMT encoding is generated only one time, at the beginning. And the solver is started only one time, at the
     beginning (the solver is run on the terminal in incremental mode).
     Cycle. At each iteration we have a certain lower bound (i.e. lb) and a certain upper bound (i.e. ub) for the length of 
-    the plate. We take as length of the plate of interest 'l' the middle between lb and ub. We inject into the solver a new 
-    constraint, ensuring that the actual length of the plate is smaller or equal than 'l'.  
+    the plate. We take as length of the plate of interest 'l_med' the middle between lb and ub. We inject into the solver a new 
+    constraint, ensuring that the actual length of the plate is smaller or equal than 'l_med'.  
     Then, we solve that current solver instance.
-    If SAT, then we simply update ub<-l-1. If UNSAT, we update lb<-l+1, we remove the last constraint injected into the
-    solver (i.e. the one ensuring that the actual length of the plate is smaller or equal than 'l') and we add the new 
-    constraint ensuring that the actual length of the plate is strictly bigger than 'l'.
+    If SAT, then we simply update ub<-l_med-1. If UNSAT, we update lb<-l_med+1, we remove the last constraint injected into the
+    solver (i.e. the one ensuring that the actual length of the plate is smaller or equal than 'l_med') and we add the new 
+    constraint ensuring that the actual length of the plate is strictly bigger than 'l_med'.
     Then we repeat. 
     At the beginning, lb<-l_min (minimum length of the plate) and ub<-l_max (maximum length of the plate) 
 
@@ -162,12 +162,12 @@ class Vlsi_smt(Vlsi_smt_abstract):
         The SMT encoding is generated only one time, at the beginning. And the solver is started only one time, at the
         beginning (the solver is run on the terminal in incremental mode).
         Cycle. At each iteration we have a certain lower bound (i.e. lb) and a certain upper bound (i.e. ub) for the length of 
-        the plate. We take as length of the plate of interest 'l' the middle between lb and ub. We inject into the solver a new 
-        constraint, ensuring that the actual length of the plate is smaller or equal than 'l'.  
+        the plate. We take as length of the plate of interest 'l_med' the middle between lb and ub. We inject into the solver a new 
+        constraint, ensuring that the actual length of the plate is smaller or equal than 'l_med'.  
         Then, we solve that current solver instance.
-        If SAT, then we simply update ub<-l-1. If UNSAT, we update lb<-l+1, we remove the last constraint injected into the
-        solver (i.e. the one ensuring that the actual length of the plate is smaller or equal than 'l') and we add the new 
-        constraint ensuring that the actual length of the plate is strictly bigger than 'l'.
+        If SAT, then we simply update ub<-l-1. If UNSAT, we update lb<-l_med+1, we remove the last constraint injected into the
+        solver (i.e. the one ensuring that the actual length of the plate is smaller or equal than 'l_med') and we add the new 
+        constraint ensuring that the actual length of the plate is strictly bigger than 'l_med'.
         Then we repeat. 
         At the beginning, lb<-l_min (minimum length of the plate) and ub<-l_max (maximum length of the plate) 
 

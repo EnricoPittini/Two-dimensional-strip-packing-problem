@@ -7,25 +7,11 @@ class Vlsi_smt(Vlsi_smt_abstract):
 
     It inherits from the class `Vlsi_smt_abstract`.
 
-    It is like the encoding 2A. SMT variables 'coordX[i]', 'coordY[i]' and 'l'. 
-    The only difference is about the optimization procedure: the BINARY SEARCH is now used, instead of linear search.
-    Still incremental solving, but with binary search.
-
-    The optimization procedure is the following.
-    The SMT encoding is generated only one time, at the beginning. And the solver is started only one time, at the
-    beginning (the solver is run on the terminal in incremental mode).
-    Cycle. At each iteration we have a certain lower bound (i.e. lb) and a certain upper bound (i.e. ub) for the length of 
-    the plate. We take as length of the plate of interest 'l' the middle between lb and ub. We inject into the solver a new 
-    constraint, ensuring that the actual length of the plate is smaller or equal than 'l'.  
-    Then, we solve that current solver instance.
-    If SAT, then we simply update ub<-l-1. If UNSAT, we update lb<-l+1, we remove the last constraint injected into the
-    solver (i.e. the one ensuring that the actual length of the plate is smaller or equal than 'l') and we add the new 
-    constraint ensuring that the actual length of the plate is strictly bigger than 'l'.
-    Then we repeat. 
-    At the beginning, lb<-l_min (minimum length of the plate) and ub<-l_max (maximum length of the plate) 
-
-    INCREMENTAL SOLVING: the solver is created only at the beginning, then we dinamically inject/remove constraints from that
-    solver. For obtaining this behaviour, we use the assertions stack (we push/pop levels into that stack).
+    Same as encoding 2B. The only difference is that, each time a solution is found, is computed the actual length of the 
+    plate 'l' of the found solution. 
+    This means that the actual length 'l' is used instead of the middle length 'l_min' for:
+    - storing the current best solution;
+    - updating the interval, i.e. ub<-l-1.
 
     See the `__optimize` method.
 
@@ -179,12 +165,13 @@ class Vlsi_smt(Vlsi_smt_abstract):
         The SMT encoding is generated only one time, at the beginning. And the solver is started only one time, at the
         beginning (the solver is run on the terminal in incremental mode).
         Cycle. At each iteration we have a certain lower bound (i.e. lb) and a certain upper bound (i.e. ub) for the length of 
-        the plate. We take as length of the plate of interest 'l' the middle between lb and ub. We inject into the solver a new 
-        constraint, ensuring that the actual length of the plate is smaller or equal than 'l'.  
+        the plate. We take as length of the plate of interest 'l_med' the middle between lb and ub. We inject into the solver a new 
+        constraint, ensuring that the actual length of the plate is smaller or equal than 'l_med'.  
         Then, we solve that current solver instance.
-        If SAT, then we simply update ub<-l-1. If UNSAT, we update lb<-l+1, we remove the last constraint injected into the
-        solver (i.e. the one ensuring that the actual length of the plate is smaller or equal than 'l') and we add the new 
-        constraint ensuring that the actual length of the plate is strictly bigger than 'l'.
+        If SAT, we compute the actual length 'l' of the plate in the current solution and we update ub<l-1. If UNSAT, we 
+        update lb<-l_med+1, we remove the last constraint injected into the solver (i.e. the one ensuring that the actual length
+        of the plate is smaller or equal than 'l_med') and we add the new constraint ensuring that the actual length of the plate
+        is strictly bigger than 'l_med'.
         Then we repeat. 
         At the beginning, lb<-l_min (minimum length of the plate) and ub<-l_max (maximum length of the plate) 
 
