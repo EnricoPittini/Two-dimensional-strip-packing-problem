@@ -22,7 +22,7 @@ class Vlsi_smt(Vlsi_smt_abstract):
 
     """
     def __generate_encoding(self, l_max):
-        """Generates the SMT encoding for the specific instance of the VLSI problem according to the encoding 0.
+        """Generates the SMT encoding for the specific instance of the VLSI problem, according to the encoding 0.
 
         The SMT encoding is generated into a SMT-LIB file, with name "encoding_0_{instance_name}.smt2".
 

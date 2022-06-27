@@ -7,12 +7,12 @@ class Vlsi_smt(Vlsi_smt_abstract):
 
     It inherits from the class `Vlsi_smt_abstract`.
 
-    Same solving and optimization of the encoding 0.
+    Same solving and optimization of the encoding 0. SMT variables 'coordX[i]' and 'coordY[i]'.
     The only difference is that a better initial upper bound for the length of the plate (i.e. `l_max`) has been used.
 
     """
     def __generate_encoding(self, l_max):
-        """Generates the SMT encoding for the specific instance of the VLSI problem according to the encoding 1.
+        """Generates the SMT encoding for the specific instance of the VLSI problem, according to the encoding 1.
 
         The SMT encoding is generated into a SMT-LIB file, with name "encoding_1_{instance_name}.smt2".
 
