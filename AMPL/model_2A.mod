@@ -23,15 +23,11 @@ subject to noOverlapX2 {i in N, j in 1..i-1}:
 	coordsX[j]+dimsX[j]<= coordsX[i]+ w*(1 - b[j,i,1]);
 subject to noOverlapY1 {i in N, j in 1..i-1}:
 	coordsY[i]+dimsY[i]<= coordsY[j]+ lMax*(1 - b[i,j,2]);
-subject to noOverlapY2 {i in N, j in 1..i-1}:
-	coordsY[i]+dimsY[i]<= coordsY[j]+ lMax*(1 - b[j,i,2]);
 	
 subject to oneOnlyX {i in N, j in 1..i-1}:
 	b[i,j,1] + b[j,i,1] <= 1;
-subject to oneOnlyY {i in N, j in 1..i-1}:
-	b[i,j,2] + b[j,i,2] <= 1;
 subject to noOverlap {i in N, j in 1..i-1}:
-	b[i,j,1] + b[i,j,2] + b[j,i,1] + b[j,i,2] >= 1;
+	b[i,j,1] + b[i,j,2] + b[j,i,1] >= 1;
 	
 subject to lowerBoundl1:
 	l * w >= sum {i in N} dimsX[i]*dimsY[i];

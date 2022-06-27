@@ -4,10 +4,12 @@ import os
 import sys
 import time
 
+from kiwisolver import BadRequiredStrength
+
 from utils import INSTANCES, AMPL_MODEL_CHOICES, AMPL_SOLVER_CHOICES, create_output_file, parse_instance_txt
 
 
-#python scripts\execute_ampl.py AMPL\model_prova.mod instances\ins-1.txt cplex
+#python scripts\execute_ampl.py model_1 ins-1 cplex
 def main() -> None:
     parser = argparse.ArgumentParser(description='Script for executing a VLSI AMPL model.')
 
@@ -36,8 +38,12 @@ def main() -> None:
                         'is passed).')
 
     arguments = parser.parse_args()
-
     model = vars(arguments)['model']
+    if model == 'dual_model':
+        model = 'model_1'#TODO best model here
+        use_dual = True
+    else:
+        use_dual = False
     instance = vars(arguments)['instance']
     solver = vars(arguments)['solver']
     time_limit = arguments.time_limit
@@ -51,10 +57,20 @@ def main() -> None:
     try:
         ampl = AMPL()
         ampl.set_option('solver', solver)
-        
+
+        if use_dual:
+            if solver == 'cplex':
+                ampl.set_option('cplex_options','dual')
+            elif solver == 'gurobi':
+                ampl.set_option('gurobi_options','predual 1')
+            else:
+                print('Ignoring dual solving option, solving with primal best model.')
+
+
         # Set solver dependent time limit option.
         if solver == 'cplex':
             ampl.set_option('cplex_options',f"timelimit={time_limit}")
+
         elif solver == 'cbc':
             ampl.set_option('cbc_options',f"sec={time_limit}")
         elif solver == 'gurobi':
@@ -83,16 +99,20 @@ def main() -> None:
             sys.exit('error = UNKOWN')
 
         # Parse variables results.
-        l = int(ampl.get_value('l'))
-        
-        coordsX = ampl.get_data('coordsX').to_pandas().coordsX.values
-        coordsY = ampl.get_data('coordsY').to_pandas().coordsY.values
-        coordsX = coordsX.astype(int)
-        coordsY = coordsY.astype(int)
+        if model == 'dual_model':
+            #print(ampl.get_constraint('l').dual())
+            print('CIAO')
+        else:
+            l = int(ampl.get_value('l'))
+            
+            coordsX = ampl.get_data('coordsX').to_pandas().coordsX.values
+            coordsY = ampl.get_data('coordsY').to_pandas().coordsY.values
+            coordsX = coordsX.astype(int)
+            coordsY = coordsY.astype(int)
 
-        print(f'l = {l}')
-        print(f'CoordsX = {coordsX}')
-        print(f'CoordsY = {coordsY}')
+            print(f'l = {l}')
+            print(f'CoordsX = {coordsX}')
+            print(f'CoordsY = {coordsY}')
     except AMPLException:
         sys.exit('error = UNKOWN')
 
