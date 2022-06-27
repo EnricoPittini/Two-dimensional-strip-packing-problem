@@ -39,8 +39,8 @@ def main() -> None:
 
     arguments = parser.parse_args()
     model = vars(arguments)['model']
-    if model == 'dual_model':
-        model = 'model_1'#TODO best model here
+    if model == 'model_dual':
+        model = 'model_2B'#TODO best model here
         use_dual = True
     else:
         use_dual = False
