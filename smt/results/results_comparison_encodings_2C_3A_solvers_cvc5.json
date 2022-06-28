@@ -1,0 +1,82 @@
+{
+    "ins-1": {
+        "encoding_2C_cvc5": 0.26527953147888184,
+        "encoding_3A_cvc5": 0.20524907112121582
+    },
+    "ins-2": {
+        "encoding_2C_cvc5": 0.237839937210083,
+        "encoding_3A_cvc5": 0.24665403366088867
+    },
+    "ins-3": {
+        "encoding_2C_cvc5": 0.2667217254638672,
+        "encoding_3A_cvc5": 0.3067793846130371
+    },
+    "ins-4": {
+        "encoding_2C_cvc5": 0.3619704246520996,
+        "encoding_3A_cvc5": 0.31211423873901367
+    },
+    "ins-5": {
+        "encoding_2C_cvc5": 2.1149590015411377,
+        "encoding_3A_cvc5": 0.4658548831939697
+    },
+    "ins-6": {
+        "encoding_2C_cvc5": 2.235797166824341,
+        "encoding_3A_cvc5": 0.49722886085510254
+    },
+    "ins-7": {
+        "encoding_2C_cvc5": 5.36746883392334,
+        "encoding_3A_cvc5": 0.6407325267791748
+    },
+    "ins-8": {
+        "encoding_2C_cvc5": 8.828601837158203,
+        "encoding_3A_cvc5": 0.8241846561431885
+    },
+    "ins-9": {
+        "encoding_2C_cvc5": 23.581830739974976,
+        "encoding_3A_cvc5": 0.8844256401062012
+    },
+    "ins-10": {
+        "encoding_2C_cvc5": 32.39681887626648,
+        "encoding_3A_cvc5": 2.189603805541992
+    },
+    "ins-11": {
+        "encoding_2C_cvc5": "NaN",
+        "encoding_3A_cvc5": 14.861988067626953
+    },
+    "ins-12": {
+        "encoding_2C_cvc5": "NaN",
+        "encoding_3A_cvc5": 2.010493278503418
+    },
+    "ins-13": {
+        "encoding_2C_cvc5": "NaN",
+        "encoding_3A_cvc5": 8.809523105621338
+    },
+    "ins-14": {
+        "encoding_2C_cvc5": "NaN",
+        "encoding_3A_cvc5": 16.619786500930786
+    },
+    "ins-15": {
+        "encoding_2C_cvc5": "NaN",
+        "encoding_3A_cvc5": 11.105837345123291
+    },
+    "ins-16": {
+        "encoding_2C_cvc5": "NaN",
+        "encoding_3A_cvc5": 20.33280920982361
+    },
+    "ins-17": {
+        "encoding_2C_cvc5": "NaN",
+        "encoding_3A_cvc5": 9.326030015945435
+    },
+    "ins-18": {
+        "encoding_2C_cvc5": "NaN",
+        "encoding_3A_cvc5": 122.83528017997742
+    },
+    "ins-19": {
+        "encoding_2C_cvc5": "NaN",
+        "encoding_3A_cvc5": "NaN"
+    },
+    "ins-20": {
+        "encoding_2C_cvc5": "NaN",
+        "encoding_3A_cvc5": 32.83421230316162
+    }
+}
