@@ -86,5 +86,21 @@
         "encoding_3D_yices-smt2": 65.26034903526306,
         "encoding_3E_yices-smt2": 3.8314430713653564,
         "encoding_3F_yices-smt2": 3.8709912300109863
+    },
+    "ins-32": {
+        "encoding_3A_yices-smt2": "NaN",
+        "encoding_3B_yices-smt2": "NaN",
+        "encoding_3C_yices-smt2": "NaN",
+        "encoding_3D_yices-smt2": "NaN",
+        "encoding_3E_yices-smt2": "NaN",
+        "encoding_3F_yices-smt2": "NaN"
+    },
+    "ins-33": {
+        "encoding_3A_yices-smt2": 25.382055044174194,
+        "encoding_3B_yices-smt2": 31.479527473449707,
+        "encoding_3C_yices-smt2": 26.923881769180298,
+        "encoding_3D_yices-smt2": 8.943101406097412,
+        "encoding_3E_yices-smt2": 3.4238131046295166,
+        "encoding_3F_yices-smt2": 3.43434739112854
     }
 }

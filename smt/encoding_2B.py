@@ -152,7 +152,7 @@ class Vlsi_smt(Vlsi_smt_abstract):
 
 
     def __optimize(self):
-        """Solves the given VLSI instance, using the SAT encoding 2C.
+        """Solves the given VLSI instance, using the SAT encoding 2B.
 
         It performs optimization: the best solution is found (if any).
         (If this class is used as a parallel process with a time limit, there is not gurantee of founding the optimal 

@@ -4,35 +4,28 @@ from smt_utils import Vlsi_smt_abstract
 import subprocess
 
 class Vlsi_smt(Vlsi_smt_abstract):
-    """Class for solving the VLSI problem in SMT, using the encoding 2B.
+    """Class for solving the VLSI problem in SMT, using the encoding 3C.
 
     It inherits from the class `Vlsi_smt_abstract`.
 
-    It is like the encoding 2A. SMT variables 'coordX[i]', 'coordY[i]' and 'l'. 
-    The only difference is about the optimization procedure: the BINARY SEARCH is now used, instead of linear search.
-    Still incremental solving, but with binary search.
+    It is like the encoding 3B. We are imposing the "QF_UFIDL" logic.
 
-    The optimization procedure is the following.
-    The SMT encoding is generated only one time, at the beginning. And the solver is started only one time, at the
-    beginning (the solver is run on the terminal in incremental mode).
-    Cycle. At each iteration we have a certain lower bound (i.e. lb) and a certain upper bound (i.e. ub) for the length of 
-    the plate. We take as length of the plate of interest 'l_med' the middle between lb and ub. We inject into the solver a new 
-    constraint, ensuring that the actual length of the plate is smaller or equal than 'l_med'.  
-    Then, we solve that current solver instance.
-    If SAT, then we simply update ub<-l_med-1. If UNSAT, we update lb<-l_med+1, we remove the last constraint injected into the
-    solver (i.e. the one ensuring that the actual length of the plate is smaller or equal than 'l_med') and we add the new 
-    constraint ensuring that the actual length of the plate is strictly bigger than 'l_med'.
-    Then we repeat. 
-    At the beginning, lb<-l_min (minimum length of the plate) and ub<-l_max (maximum length of the plate) 
-
-    INCREMENTAL SOLVING: the solver is created only at the beginning, then we dinamically inject/remove constraints from that
-    solver. For obtaining this behaviour, we use the assertions stack (we push/pop levels into that stack).
-
-    See the `__optimize` method.
+    The only difference is that now we make the constraints "more" compliant with the "QF_UFIDL" logic.
+    In the "QF_UFIDL" logic, each atom must be in one of the following forms:
+    - q
+    - (op (- x y) n),
+    - (op (- x y) (- n)), or
+    - (op x y)
+    where:
+    - q is a variable or free constant symbol of sort Bool,
+    - op is <, <=, >, >=, =, or distinct,
+    - x, y are free constant symbols of sort Int, 
+    - n is a numeral. 
+    See the `__generate_encoding` method.
 
     """
     def __generate_encoding(self, l_max):
-        """Generates the SMT encoding for the specific instance of the VLSI problem, according to the encoding 2C.
+        """Generates the SMT encoding for the specific instance of the VLSI problem, according to the encoding 3C.
 
         The SMT encoding is generated as a single string, containing the SMT-LIB code, which will be passed to the solver.
 
@@ -67,6 +60,7 @@ class Vlsi_smt(Vlsi_smt_abstract):
 
         # For getting the model
         lines.append('(set-option :produce-models true)')
+        # For setting the logic
         lines.append('(set-logic QF_UFIDL)')
 
         # VARIABLES
@@ -154,7 +148,7 @@ class Vlsi_smt(Vlsi_smt_abstract):
 
 
     def __optimize(self):
-        """Solves the given VLSI instance, using the SAT encoding 2C.
+        """Solves the given VLSI instance, using the SAT encoding 3C.
 
         It performs optimization: the best solution is found (if any).
         (If this class is used as a parallel process with a time limit, there is not gurantee of founding the optimal 

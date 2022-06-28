@@ -4,35 +4,31 @@ from smt_utils import Vlsi_smt_abstract
 import subprocess
 
 class Vlsi_smt(Vlsi_smt_abstract):
-    """Class for solving the VLSI problem in SMT, using the encoding 2B.
+    """Class for solving the VLSI problem in SMT, using the encoding 3D.
 
     It inherits from the class `Vlsi_smt_abstract`.
 
-    It is like the encoding 2A. SMT variables 'coordX[i]', 'coordY[i]' and 'l'. 
-    The only difference is about the optimization procedure: the BINARY SEARCH is now used, instead of linear search.
-    Still incremental solving, but with binary search.
+    It is exactly like the encoding 2B. Same SMT variables. Binary search optimization procedure.
+    The only difference is that a specific SMT logic has been imposed.
 
-    The optimization procedure is the following.
-    The SMT encoding is generated only one time, at the beginning. And the solver is started only one time, at the
-    beginning (the solver is run on the terminal in incremental mode).
-    Cycle. At each iteration we have a certain lower bound (i.e. lb) and a certain upper bound (i.e. ub) for the length of 
-    the plate. We take as length of the plate of interest 'l_med' the middle between lb and ub. We inject into the solver a new 
-    constraint, ensuring that the actual length of the plate is smaller or equal than 'l_med'.  
-    Then, we solve that current solver instance.
-    If SAT, then we simply update ub<-l_med-1. If UNSAT, we update lb<-l_med+1, we remove the last constraint injected into the
-    solver (i.e. the one ensuring that the actual length of the plate is smaller or equal than 'l_med') and we add the new 
-    constraint ensuring that the actual length of the plate is strictly bigger than 'l_med'.
-    Then we repeat. 
-    At the beginning, lb<-l_min (minimum length of the plate) and ub<-l_max (maximum length of the plate) 
+    In particular, the "QF_LIA" logic has been imposed: "unquantified linear integer arithmetic. In essence, Boolean 
+    combinations of inequations between linear polynomials over integer variables". 
+    Basically, we have only Quantifier-Free formulas, with Linear Integer Arithmetic.
 
-    INCREMENTAL SOLVING: the solver is created only at the beginning, then we dinamically inject/remove constraints from that
-    solver. For obtaining this behaviour, we use the assertions stack (we push/pop levels into that stack).
+    This is a more specific logic with respect to the encoding 3A. Because now there aren't uninterpreted functions.
 
-    See the `__optimize` method.
+    Actually, for making the encoding compliant with the "QF_LIA" logic, we have to get rid of uninterpreted functions. 
+    Basically, the we can have only uninterpreted constants.
+    Therefore, we have to slightly change the encoding. 
+    - We don't have anymore `n` variables coordX[0], ..., coordX[n-1], represented by the uninterpreted function `coordX[i]`.
+    - But we have `n` variables coordX_0, ..., coordX_{n_1}.
+    The same for coordY.
+    The constraints remain exactly the same.
+    See the `__generate_encoding` method.
 
     """
     def __generate_encoding(self, l_max):
-        """Generates the SMT encoding for the specific instance of the VLSI problem, according to the encoding 2C.
+        """Generates the SMT encoding for the specific instance of the VLSI problem, according to the encoding 3D.
 
         The SMT encoding is generated as a single string, containing the SMT-LIB code, which will be passed to the solver.
 
@@ -53,10 +49,10 @@ class Vlsi_smt(Vlsi_smt_abstract):
         Notes
         ------
         The following SMT variables are used.
-        - coordX[i], where 'i' in [0,n-1].
-          coordX[i] is the x coordinate of the bottom-left vertex of the 'i'-th circuit.
-        - coordY[i], where 'i' in [0,n-1].
-          coordY[i] is the y coordinate of the bottom-left vertex of the 'i'-th circuit.
+        - coordX_i, where 'i' in [0,n-1].
+          coordX_i is the x coordinate of the bottom-left vertex of the 'i'-th circuit.
+        - coordY_i, where 'i' in [0,n-1].
+          coordY_i is the y coordinate of the bottom-left vertex of the 'i'-th circuit.
         - l
           It represents the length of the plate.
           
@@ -67,12 +63,13 @@ class Vlsi_smt(Vlsi_smt_abstract):
 
         # For getting the model
         lines.append('(set-option :produce-models true)')
+        # For setting the logic
         lines.append('(set-logic QF_LIA)')
 
         # VARIABLES
-        # We are defining the function "coordX": we are declaring n variables "coordX[i]".
+        # We are defining the function "coordX": we are declaring n variables "coordX_i".
         lines += [f'(declare-const coordX_{i} Int)' for i in range(n)]
-        # We are defining the function "coordY": we are declaring n variables "coordY[i]".
+        # We are defining the function "coordY": we are declaring n variables "coordY_i".
         lines += [f'(declare-const coordY_{i} Int)' for i in range(n)]
         # We are defining the variable "l".
         lines.append('(declare-const l Int)')
@@ -84,24 +81,22 @@ class Vlsi_smt(Vlsi_smt_abstract):
         lines.append(f'(assert (<= l {l_max}))')
 
         # We create a list of strings, one for each variable "coordX[i]".
-        # For each "coordX[i]", we say that 0<="coordX[i]"<=w-dimsX[i]:
-        #                        "(assert (and (>= (coordX {i}) 0) (<= (coordX {i}) (- {w} {dimsX[i]}))))".
+        # For each "coordX_i", we say that 0<="coordX_i"<=w-dimsX_i:
         lines += [f'(assert (and (>= coordX_{i} 0) (<= coordX_{i} (- {w} {dimsX[i]}))))' for i in range(n)]
 
         # We create a list of strings, one for each variable "coordY[i]".
-        # For each "coordY[i]", we say that 0<="coordY[i]"<=l_max-dimsY[i]:
-        #                        "(assert (and (>= (coordY {i}) 0) (<= (coordY {i}) (- {l_max} {dimsY[i]}))))".
+        # For each "coordY_i", we say that 0<="coordY_i"<=l_max-dimsY_i:
         lines += [f'(assert (and (>= coordY_{i} 0) (<= coordY_{i} (- {l_max} {dimsY[i]}))))' for i in range(n)]
 
         # 2- Non-overlapping
         # For each pair of circuits (i,j), where i<j, we impose the non-overlapping constraint: 
-        #            coordX[i]+dimsX[i]<=coordX[j] \/ coordX[j]+dimsX[j]<=coordX[i] \/ coordY[i]+dimsY[i]<=coordY[j] \/ 
-        #                                             coordY[j]+dimsY[j]<=coordY[i]
+        #            coordX_i+dimsX_i<=coordX_j \/ coordX_j+dimsX_j<=coordX_i \/ coordY_i+dimsY_i<=coordY_j \/ 
+        #                                             coordY_j+dimsY_j<=coordY_i
         lines += [f'(assert (or (<= (+ coordX_{i} {dimsX[i]}) coordX_{j}) (<= (+ coordX_{j} {dimsX[j]}) coordX_{i}) (<= (+ coordY_{i} {dimsY[i]}) coordY_{j}) (<= (+ coordY_{j} {dimsY[j]}) coordY_{i})))' 
                 for i in range(n) for j in range(n) if i<j]
         
         # 3- Length of the plate
-        # For each circuit 'i', we impose that coordY[i]+dimsY[i]<=l
+        # For each circuit 'i', we impose that coordY_i+dimsY_i<=l
         lines += [f'(assert (<= (+ coordY_{i} {dimsY[i]}) l))' for i in range(n)]
 
         # FINAL REFINEMENTS
@@ -142,7 +137,7 @@ class Vlsi_smt(Vlsi_smt_abstract):
 
         # Check satisfiability and get the model
         lines.append('(check-sat)')
-        # String "(get-value ((coordX 0) (coordX 1) ... (coordX N) (coordY 0) (coordY 1) ... (coordY N)))"
+        # String "(get-value (coordX_0 coordX_1 ... coordX_N coordY_0 coordY_1 ... coordY_N))"
         lines.append(f'(get-value ({" ".join([f"coordX_{i} coordY_{i} " for i in range(self.n)])}))')
 
         # Join all these strings, by means of the new line '\n'. Now we have a single string.
@@ -154,7 +149,7 @@ class Vlsi_smt(Vlsi_smt_abstract):
 
 
     def __optimize(self):
-        """Solves the given VLSI instance, using the SAT encoding 2C.
+        """Solves the given VLSI instance, using the SAT encoding 3D.
 
         It performs optimization: the best solution is found (if any).
         (If this class is used as a parallel process with a time limit, there is not gurantee of founding the optimal 

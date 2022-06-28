@@ -3,7 +3,7 @@ from smt_utils import Vlsi_smt_abstract
 import subprocess
 
 class Vlsi_smt(Vlsi_smt_abstract):
-    """Class for solving the VLSI problem in SMT, using the encoding 2B.
+    """Class for solving the VLSI problem in SMT, using the encoding 2D.
 
     It inherits from the class `Vlsi_smt_abstract`.
 
@@ -17,7 +17,7 @@ class Vlsi_smt(Vlsi_smt_abstract):
 
     """
     def __generate_encoding(self, l_max):
-        """Generates the SMT encoding for the specific instance of the VLSI problem, according to the encoding 2C.
+        """Generates the SMT encoding for the specific instance of the VLSI problem, according to the encoding 2D.
 
         The SMT encoding is generated as a single string, containing the SMT-LIB code, which will be passed to the solver.
 
@@ -155,7 +155,7 @@ class Vlsi_smt(Vlsi_smt_abstract):
 
 
     def __optimize(self):
-        """Solves the given VLSI instance, using the SAT encoding 2C.
+        """Solves the given VLSI instance, using the SAT encoding 2D.
 
         It performs optimization: the best solution is found (if any).
         (If this class is used as a parallel process with a time limit, there is not gurantee of founding the optimal 
