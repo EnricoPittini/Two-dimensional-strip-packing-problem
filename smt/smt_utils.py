@@ -17,6 +17,8 @@ class Vlsi_smt_abstract(multiprocessing.Process):
         Name of the instance to solve (e.g. 'ins-1')
     solver_name : str
         Name of the solver (e.g. 'z3')
+    time_limit : int
+        Time limit, in seconds.
     w : int
         The width of the plate
     n : int
@@ -47,11 +49,12 @@ class Vlsi_smt_abstract(multiprocessing.Process):
 
     """
 
-    def __init__(self, instance_name, solver_name, w, n, dims, results):
+    def __init__(self, instance_name, solver_name, time_limit, w, n, dims, results):
         super().__init__()
 
         self.instance_name = instance_name
         self.solver_name = solver_name
+        self.time_limit = time_limit
         self.w = w
         self.n = n 
         self.dimsX = [dims[i][0] for i in range(n)]
