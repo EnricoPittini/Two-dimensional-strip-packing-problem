@@ -30,5 +30,61 @@
         "encoding_3D_z3": 5.3142266273498535,
         "encoding_3E_z3": 5.323530673980713,
         "encoding_3F_z3": 5.319458484649658
+    },
+    "ins-25": {
+        "encoding_3A_z3": "NaN",
+        "encoding_3B_z3": 23.216837882995605,
+        "encoding_3C_z3": "NaN",
+        "encoding_3D_z3": "NaN",
+        "encoding_3E_z3": "NaN",
+        "encoding_3F_z3": "NaN"
+    },
+    "ins-26": {
+        "encoding_3A_z3": "NaN",
+        "encoding_3B_z3": 13.411536455154419,
+        "encoding_3C_z3": "NaN",
+        "encoding_3D_z3": 157.72747421264648,
+        "encoding_3E_z3": "NaN",
+        "encoding_3F_z3": 111.82998299598694
+    },
+    "ins-27": {
+        "encoding_3A_z3": 241.86893773078918,
+        "encoding_3B_z3": 42.465412855148315,
+        "encoding_3C_z3": 40.36042904853821,
+        "encoding_3D_z3": 60.894426107406616,
+        "encoding_3E_z3": 59.526772260665894,
+        "encoding_3F_z3": 62.40062165260315
+    },
+    "ins-28": {
+        "encoding_3A_z3": 174.33100485801697,
+        "encoding_3B_z3": 6.722167253494263,
+        "encoding_3C_z3": 6.909949779510498,
+        "encoding_3D_z3": 120.75332760810852,
+        "encoding_3E_z3": 117.81570196151733,
+        "encoding_3F_z3": 119.78721618652344
+    },
+    "ins-29": {
+        "encoding_3A_z3": 249.38221764564514,
+        "encoding_3B_z3": 48.41751790046692,
+        "encoding_3C_z3": 45.60736846923828,
+        "encoding_3D_z3": 56.545387744903564,
+        "encoding_3E_z3": 91.02568292617798,
+        "encoding_3F_z3": 87.99281716346741
+    },
+    "ins-30": {
+        "encoding_3A_z3": "NaN",
+        "encoding_3B_z3": "NaN",
+        "encoding_3C_z3": "NaN",
+        "encoding_3D_z3": "NaN",
+        "encoding_3E_z3": "NaN",
+        "encoding_3F_z3": "NaN"
+    },
+    "ins-31": {
+        "encoding_3A_z3": 70.27923512458801,
+        "encoding_3B_z3": 4.152526378631592,
+        "encoding_3C_z3": 4.349470138549805,
+        "encoding_3D_z3": 24.564459800720215,
+        "encoding_3E_z3": 37.82640600204468,
+        "encoding_3F_z3": 37.464473247528076
     }
 }
