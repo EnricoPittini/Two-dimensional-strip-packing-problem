@@ -46,10 +46,10 @@ class Vlsi_smt(Vlsi_smt_abstract):
         Notes
         ------
         The following SMT variables are used.
-        - coordX[i], where 'i' in [0,n-1].
-          coordX[i] is the x coordinate of the bottom-left vertex of the 'i'-th circuit.
-        - coordY[i], where 'i' in [0,n-1].
-          coordY[i] is the y coordinate of the bottom-left vertex of the 'i'-th circuit.
+        - coordX_i, where 'i' in [0,n-1].
+          coordX_i is the x coordinate of the bottom-left vertex of the 'i'-th circuit.
+        - coordY_i, where 'i' in [0,n-1].
+          coordY_i is the y coordinate of the bottom-left vertex of the 'i'-th circuit.
         - l
           It represents the length of the plate.
           
@@ -64,9 +64,9 @@ class Vlsi_smt(Vlsi_smt_abstract):
         lines.append('(set-logic QF_IDL)')
 
         # VARIABLES
-        # We are defining the function "coordX": we are declaring n variables "coordX[i]".
+        # We are defining the function "coordX": we are declaring n variables "coordX_i".
         lines += [f'(declare-const coordX_{i} Int)' for i in range(n)]
-        # We are defining the function "coordY": we are declaring n variables "coordY[i]".
+        # We are defining the function "coordY": we are declaring n variables "coordY_i".
         lines += [f'(declare-const coordY_{i} Int)' for i in range(n)]
         # We are defining the variable "l".
         lines.append('(declare-const l Int)')
@@ -77,25 +77,25 @@ class Vlsi_smt(Vlsi_smt_abstract):
         # We add a single string, stating that l<=l_max
         lines.append(f'(assert (<= l {l_max}))')
 
-        # We create a list of strings, one for each variable "coordX[i]".
-        # For each "coordX[i]", we say that 0<="coordX[i]"<=w-dimsX[i]:
-        #                        "(assert (and (>= (coordX {i}) 0) (<= (coordX {i}) (- {w} {dimsX[i]}))))".
+        # We create a list of strings, one for each variable "coordX_i".
+        # For each "coordX_i", we say that 0<="coordX_i"<=w-dimsX_i:
         lines += [f'(assert (and (>= coordX_{i} 0) (<= coordX_{i} (- {w} {dimsX[i]}))))' for i in range(n)]
 
-        # We create a list of strings, one for each variable "coordY[i]".
-        # For each "coordY[i]", we say that 0<="coordY[i]"<=l_max-dimsY[i]:
-        #                        "(assert (and (>= (coordY {i}) 0) (<= (coordY {i}) (- {l_max} {dimsY[i]}))))".
+        # We create a list of strings, one for each variable "coordY_i".
+        # For each "coordY_i", we say that 0<="coordY_i"<=l_max-dimsY_i:
         lines += [f'(assert (and (>= coordY_{i} 0) (<= coordY_{i} (- {l_max} {dimsY[i]}))))' for i in range(n)]
 
         # 2- Non-overlapping
         # For each pair of circuits (i,j), where i<j, we impose the non-overlapping constraint: 
-        #            coordX[i]+dimsX[i]<=coordX[j] \/ coordX[j]+dimsX[j]<=coordX[i] \/ coordY[i]+dimsY[i]<=coordY[j] \/ 
-        #                                             coordY[j]+dimsY[j]<=coordY[i]
+        #            coordX_i+dimsX_i<=coordX_j \/ coordX_j+dimsX_j<=coordX_i \/ coordY_i+dimsY_i<=coordY_j \/ 
+        #                                             coordY_j+dimsY_j<=coordY_i
+        """MAKING THE CONSTRAINT COMPLIANT WITH DIFFERENCE LOGIC: ATOMS WITH THE STRUCTURE x-y<=k"""
         lines += [f'(assert (or (<= (- coordX_{i} coordX_{j}) (- {dimsX[i]})) (<= (- coordX_{j} coordX_{i}) (- {dimsX[j]})) (<= (- coordY_{i} coordY_{j}) (- {dimsY[i]})) (<= (- coordY_{j} coordY_{i}) (- {dimsY[j]}))))' 
                 for i in range(n) for j in range(n) if i<j]
         
         # 3- Length of the plate
-        # For each circuit 'i', we impose that coordY[i]+dimsY[i]<=l
+        # For each circuit 'i', we impose that coordY_i+dimsY_i<=l
+        """MAKING THE CONSTRAINT COMPLIANT WITH DIFFERENCE LOGIC: ATOMS WITH THE STRUCTURE x-y<=k"""
         lines += [f'(assert (<= (- coordY_{i} l) (- {dimsY[i]})))' for i in range(n)]
 
         # FINAL REFINEMENTS
@@ -136,7 +136,7 @@ class Vlsi_smt(Vlsi_smt_abstract):
 
         # Check satisfiability and get the model
         lines.append('(check-sat)')
-        # String "(get-value ((coordX 0) (coordX 1) ... (coordX N) (coordY 0) (coordY 1) ... (coordY N)))"
+        # String "(get-value (coordX_0 coordX_1 ... coordX_N coordY_0 coordY_1 ... coordY_N))"
         lines.append(f'(get-value ({" ".join([f"coordX_{i} coordY_{i} " for i in range(self.n)])}))')
 
         # Join all these strings, by means of the new line '\n'. Now we have a single string.

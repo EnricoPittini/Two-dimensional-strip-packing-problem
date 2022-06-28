@@ -91,11 +91,13 @@ class Vlsi_smt(Vlsi_smt_abstract):
         # For each pair of circuits (i,j), where i<j, we impose the non-overlapping constraint: 
         #            coordX[i]+dimsX[i]<=coordX[j] \/ coordX[j]+dimsX[j]<=coordX[i] \/ coordY[i]+dimsY[i]<=coordY[j] \/ 
         #                                             coordY[j]+dimsY[j]<=coordY[i]
+        """MAKING THE CONSTRAINT COMPLIANT WITH DIFFERENCE LOGIC: ATOMS WITH THE STRUCTURE x-y<=k"""
         lines += [f'(assert (or (<= (- (coordX {i}) (coordX {j})) (- {dimsX[i]})) (<= (- (coordX {j}) (coordX {i})) (- {dimsX[j]})) (<= (- (coordY {i}) (coordY {j})) (- {dimsY[i]})) (<= (- (coordY {j}) (coordY {i})) (- {dimsY[j]}))))' 
                 for i in range(n) for j in range(n) if i<j]
         
         # 3- Length of the plate
         # For each circuit 'i', we impose that coordY[i]+dimsY[i]<=l
+        """MAKING THE CONSTRAINT COMPLIANT WITH DIFFERENCE LOGIC: ATOMS WITH THE STRUCTURE x-y<=k"""
         lines += [f'(assert (<= (- (coordY {i}) l) (- {dimsY[i]})))' for i in range(n)]
 
         # FINAL REFINEMENTS
