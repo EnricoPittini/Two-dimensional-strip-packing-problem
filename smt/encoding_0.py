@@ -186,8 +186,8 @@ class Vlsi_smt(Vlsi_smt_abstract):
             l = self.__compute_l(coords)
 
             # TODO: remove
-            print(l)
-            print(coords)
+            #print(l)
+            #print(coords)
 
             # Update the best solution found so far with the new solution
             first_solution = True
