@@ -1,42 +1,90 @@
 {
-    "ins-1": {
-        "encoding_1_z3": 0.3847339153289795,
-        "encoding_2A_z3": 0.3100714683532715
+    "ins-21": {
+        "encoding_3A_yices-smt2": 19.874557971954346,
+        "encoding_3B_yices-smt2": 18.25037431716919,
+        "encoding_3C_yices-smt2": 18.429230451583862,
+        "encoding_3D_yices-smt2": 28.91431498527527,
+        "encoding_3E_yices-smt2": 50.37401509284973,
+        "encoding_3F_yices-smt2": 50.88687562942505
     },
-    "ins-2": {
-        "encoding_1_z3": 0.4122300148010254,
-        "encoding_2A_z3": 0.28315210342407227
+    "ins-22": {
+        "encoding_3A_yices-smt2": 47.73358917236328,
+        "encoding_3B_yices-smt2": "NaN",
+        "encoding_3C_yices-smt2": 47.069223403930664,
+        "encoding_3D_yices-smt2": 137.38639497756958,
+        "encoding_3E_yices-smt2": 55.86978197097778,
+        "encoding_3F_yices-smt2": 57.83111810684204
     },
-    "ins-3": {
-        "encoding_1_z3": 0.516852855682373,
-        "encoding_2A_z3": 0.3223419189453125
+    "ins-23": {
+        "encoding_3A_yices-smt2": 6.63320517539978,
+        "encoding_3B_yices-smt2": 6.572613000869751,
+        "encoding_3C_yices-smt2": 6.611963510513306,
+        "encoding_3D_yices-smt2": 12.00124740600586,
+        "encoding_3E_yices-smt2": 12.842514991760254,
+        "encoding_3F_yices-smt2": 13.098881483078003
     },
-    "ins-4": {
-        "encoding_1_z3": 0.5156610012054443,
-        "encoding_2A_z3": 0.365628719329834
+    "ins-24": {
+        "encoding_3A_yices-smt2": 3.8558425903320312,
+        "encoding_3B_yices-smt2": 3.853612184524536,
+        "encoding_3C_yices-smt2": 3.9030728340148926,
+        "encoding_3D_yices-smt2": 3.9059865474700928,
+        "encoding_3E_yices-smt2": 3.7109975814819336,
+        "encoding_3F_yices-smt2": 3.697134256362915
     },
-    "ins-5": {
-        "encoding_1_z3": 0.7435302734375,
-        "encoding_2A_z3": 0.375546932220459
+    "ins-25": {
+        "encoding_3A_yices-smt2": "NaN",
+        "encoding_3B_yices-smt2": "NaN",
+        "encoding_3C_yices-smt2": "NaN",
+        "encoding_3D_yices-smt2": 138.9276361465454,
+        "encoding_3E_yices-smt2": "NaN",
+        "encoding_3F_yices-smt2": "NaN"
     },
-    "ins-6": {
-        "encoding_1_z3": 1.0600628852844238,
-        "encoding_2A_z3": 0.4461853504180908
+    "ins-26": {
+        "encoding_3A_yices-smt2": 131.07351541519165,
+        "encoding_3B_yices-smt2": 164.80095291137695,
+        "encoding_3C_yices-smt2": "NaN",
+        "encoding_3D_yices-smt2": 59.13061857223511,
+        "encoding_3E_yices-smt2": 86.55781388282776,
+        "encoding_3F_yices-smt2": 76.26889324188232
     },
-    "ins-7": {
-        "encoding_1_z3": 0.9513475894927979,
-        "encoding_2A_z3": 0.40456128120422363
+    "ins-27": {
+        "encoding_3A_yices-smt2": "NaN",
+        "encoding_3B_yices-smt2": 9.792483568191528,
+        "encoding_3C_yices-smt2": 9.932706594467163,
+        "encoding_3D_yices-smt2": 14.005824565887451,
+        "encoding_3E_yices-smt2": 5.074822187423706,
+        "encoding_3F_yices-smt2": 4.967869758605957
     },
-    "ins-8": {
-        "encoding_1_z3": 0.8795197010040283,
-        "encoding_2A_z3": 0.40205907821655273
+    "ins-28": {
+        "encoding_3A_yices-smt2": 30.670438051223755,
+        "encoding_3B_yices-smt2": 31.68738579750061,
+        "encoding_3C_yices-smt2": 31.238292932510376,
+        "encoding_3D_yices-smt2": 149.7216296195984,
+        "encoding_3E_yices-smt2": 60.41512870788574,
+        "encoding_3F_yices-smt2": 60.58807849884033
     },
-    "ins-9": {
-        "encoding_1_z3": 1.3083009719848633,
-        "encoding_2A_z3": 0.346590518951416
+    "ins-29": {
+        "encoding_3A_yices-smt2": "NaN",
+        "encoding_3B_yices-smt2": 22.583516597747803,
+        "encoding_3C_yices-smt2": 22.635218858718872,
+        "encoding_3D_yices-smt2": 6.363360643386841,
+        "encoding_3E_yices-smt2": 70.87616920471191,
+        "encoding_3F_yices-smt2": 73.44150352478027
     },
-    "ins-10": {
-        "encoding_1_z3": 1.7185335159301758,
-        "encoding_2A_z3": 0.6724417209625244
+    "ins-30": {
+        "encoding_3A_yices-smt2": "NaN",
+        "encoding_3B_yices-smt2": "NaN",
+        "encoding_3C_yices-smt2": "NaN",
+        "encoding_3D_yices-smt2": "NaN",
+        "encoding_3E_yices-smt2": "NaN",
+        "encoding_3F_yices-smt2": "NaN"
+    },
+    "ins-31": {
+        "encoding_3A_yices-smt2": 141.21345257759094,
+        "encoding_3B_yices-smt2": 142.54745364189148,
+        "encoding_3C_yices-smt2": 142.17294573783875,
+        "encoding_3D_yices-smt2": 65.26034903526306,
+        "encoding_3E_yices-smt2": 3.8314430713653564,
+        "encoding_3F_yices-smt2": 3.8709912300109863
     }
 }
