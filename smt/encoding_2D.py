@@ -210,9 +210,9 @@ class Vlsi_smt(Vlsi_smt_abstract):
 
         # Command to execute on the terminal, for starting the solver process in incremental mode
         if solver_name=='z3':
-            command = 'z3 -in'
+            command = f'z3 -in -T:{self.time_limit}'
         elif solver_name=='cvc5':
-            command = 'cvc5 --incremental'
+            command = f'cvc5 --incremental --tlimit={self.time_limit*1000}'
         
         # Start the solver process on the terminal.
         # We use pipes for the stdin and the stdout of the solver process, for communicating with it.
@@ -268,8 +268,8 @@ class Vlsi_smt(Vlsi_smt_abstract):
                 l = self.__compute_l(coords)
 
                 # TODO: remove
-                print(l)
-                print(coords)
+                #print(l)
+                #print(coords)
 
                 # Update the best solution found so far with the new solution
                 self.results['best_coords'] = coords
