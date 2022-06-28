@@ -8,6 +8,14 @@ import subprocess
 def main() -> None:
     parser = argparse.ArgumentParser(description='Script comparing the execution time of SMT encodings on a VLSI problem.')
 
+    parser.add_argument('output-name', type=str, default='solution', nargs='?', 
+                        help='The name of the output solution.')
+
+    parser.add_argument('output-folder-path', type=str, 
+                        default=os.path.normpath('smt/results/'), 
+                        nargs='?', 
+                        help='The path in which the output file is stored.')
+
     parser.add_argument('--encodings-list', '-m', 
                         # TODO: correct description
                         help='List of SMT encodings to compare.',
@@ -35,13 +43,6 @@ def main() -> None:
                         help='Upper bound of instances to solve (default 40).', 
                         nargs='?')
 
-    parser.add_argument('output-folder-path', type=str, 
-                        default=os.path.normpath('smt/results/'), 
-                        nargs='?', 
-                        help='The path in which the output file is stored.')
-    
-    parser.add_argument('output-name', type=str, default='solution', nargs='?', 
-                        help='The name of the output solution.')
 
     arguments = parser.parse_args()
     
@@ -49,7 +50,7 @@ def main() -> None:
     output_file_name = vars(arguments)['output-name']
     output_file = os.path.join(output_folder_path, f'{output_file_name}.json')
     os.makedirs(output_folder_path, exist_ok=True)
-    print(output_file)
+    #print(output_file)
     
     encodings_list = arguments.encodings_list
     
@@ -95,13 +96,13 @@ def main() -> None:
             
                 stdout = result.stdout.decode('UTF-8')
                 time_list = re.findall('Time: ' + r'\d+\.\d+', stdout)
-                if len(time_list):
+                if 'Time elapsed' in stdout:
+                    print('\tTime limit exceeded.')
+                    instance_dict[f'{encoding}_{solver}'] = 'NaN'
+                elif len(time_list):
                     elapsed_time = time_list[-1].split('Time: ')[-1]
                     print(f'\tSolved in {elapsed_time}s.')
                     instance_dict[f'{encoding}_{solver}'] = float(elapsed_time)
-                elif 'time = exceeded' in stdout:
-                    print('\tTime limit exceeded.')
-                    instance_dict[f'{encoding}_{solver}'] = 'NaN'
                 else: 
                     print('\tERROR: UNKNOWN.')
                     instance_dict[f'{encoding}_{solver}'] = 'UNKNOWN'

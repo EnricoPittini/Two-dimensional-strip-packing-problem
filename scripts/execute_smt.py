@@ -11,7 +11,7 @@ import utils
 #python scripts/execute_smt.py encoding_0 ins-3 z3 300
 
 
-def vlsi_smt(instance_name, solver_name, w, n, dims, encoding_module, timeout=300):
+def vlsi_smt(instance_name, solver_name, time_limit, w, n, dims, encoding_module):
     """Solves the given VLSI instance, using the specified SMT encoding
 
     It runs the solving process in parallel, within the specified time limit.
@@ -25,6 +25,8 @@ def vlsi_smt(instance_name, solver_name, w, n, dims, encoding_module, timeout=30
         Name of the instance to solve (e.g. 'ins-1')
     solver_name : str
         Name of the solver (e.g. 'z3')
+    time_limit : int
+        Time limit, in seconds.
     w : int
         The width of the plate
     n : int
@@ -59,10 +61,10 @@ def vlsi_smt(instance_name, solver_name, w, n, dims, encoding_module, timeout=30
     """
     manager = multiprocessing.Manager()
     results = manager.dict()
-    p = encoding_module.Vlsi_smt(instance_name, solver_name, w, n, dims, results)
+    p = encoding_module.Vlsi_smt(instance_name, solver_name, time_limit, w, n, dims, results)
     p.start()
 
-    p.join(timeout)
+    p.join(time_limit)
 
     if p.is_alive():
         p.terminate()
@@ -120,7 +122,7 @@ def main():
     encoding_module = importlib.import_module(module_name)
 
     start_time = time.time()
-    coords, l, finish, unsat = vlsi_smt(instance_name, solver_name, w, n, dims, encoding_module=encoding_module, timeout=time_limit)        
+    coords, l, finish, unsat = vlsi_smt(instance_name, solver_name, time_limit, w, n, dims, encoding_module=encoding_module)        
     solving_time = time.time() - start_time
 
     print('Time:', solving_time)
