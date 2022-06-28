@@ -1,3 +1,17 @@
+; EXAMPLE OF SMT-LIB FILE, ACCORDING TO THE ENCODING 3E
+; Example on a very simple instance (it is not an existing instance, but it's a simpler instance)
+
+; EXAMPLE OF USAGE
+; From the CDMO-Project directory
+; $ z3 sm/encoding_3E_example.smt2
+; OUTPUT
+; sat
+; ((coordX_0 0)
+;  (coordY_0 0)
+;  (coordX_1 0)
+;  (coordY_1 2))
+
+
 ; w=4
 ; n=2
 ; 2 2
@@ -23,17 +37,4 @@
 
 (check-sat)
 (get-value (coordX_0 coordY_0 coordX_1 coordY_1))
-
-
-; EXAMPLE OF USAGE
-; From the CDMO-Project directory
-; $ z3 sm/encoding_3E_example.smt2
-; OUTPUT
-; sat
-; ((coordX_0 0)
-;  (coordY_0 0)
-;  (coordX_1 0)
-;  (coordY_1 2))
-;
-;
 

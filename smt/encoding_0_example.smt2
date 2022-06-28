@@ -1,3 +1,17 @@
+; EXAMPLE OF SMT-LIB FILE, ACCORDING TO THE ENCODING 0
+; Example on a very simple instance (it is not an existing instance, but it's a simpler instance)
+
+; EXAMPLE OF USAGE
+; From the CDMO-Project directory
+; $ z3 sm/encoding_0_example.smt2
+; OUTPUT
+; sat
+; (((coordX 0) 0)
+;  ((coordX 1) 0)
+;  ((coordY 0) 0)
+;  ((coordY 1) 2))
+
+
 ; w=4
 ; n=2
 ; 2 2
@@ -21,15 +35,4 @@
 (get-value ((coordX 0) (coordX 1) (coordY 0) (coordY 1)))
 
 
-; EXAMPLE OF USAGE
-; From the CDMO-Project directory
-; $ z3 sm/encoding_0_example.smt2
-; OUTPUT
-; sat
-; (((coordX 0) 0)
-;  ((coordX 1) 0)
-;  ((coordY 0) 0)
-;  ((coordY 1) 2))
-;
-;
 
