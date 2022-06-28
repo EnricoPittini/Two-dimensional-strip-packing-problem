@@ -70,8 +70,8 @@
         "encoding_2D_z3": 0.27016258239746094
     },
     "ins-11": {
-        "encoding_1_z3": 300.40820384025574,
-        "encoding_2A_z3": 300.5778818130493,
+        "encoding_1_z3": "NaN",
+        "encoding_2A_z3": "NaN",
         "encoding_2B_z3": 6.386426210403442,
         "encoding_2C_z3": 6.63118839263916,
         "encoding_2D_z3": 6.977949142456055
@@ -105,8 +105,8 @@
         "encoding_2D_z3": 0.7255184650421143
     },
     "ins-16": {
-        "encoding_1_z3": 300.21269178390503,
-        "encoding_2A_z3": 300.2464802265167,
+        "encoding_1_z3": "NaN",
+        "encoding_2A_z3": "NaN",
         "encoding_2B_z3": 8.223286867141724,
         "encoding_2C_z3": 17.161964893341064,
         "encoding_2D_z3": 7.808461666107178
@@ -126,15 +126,15 @@
         "encoding_2D_z3": 5.209805488586426
     },
     "ins-19": {
-        "encoding_1_z3": 300.2512197494507,
-        "encoding_2A_z3": 300.32183599472046,
+        "encoding_1_z3": "NaN",
+        "encoding_2A_z3": "NaN",
         "encoding_2B_z3": 130.03052353858948,
         "encoding_2C_z3": 223.74301552772522,
         "encoding_2D_z3": 84.61798882484436
     },
     "ins-20": {
-        "encoding_1_z3": 300.298615694046,
-        "encoding_2A_z3": 300.3083155155182,
+        "encoding_1_z3": "NaN",
+        "encoding_2A_z3": "NaN",
         "encoding_2B_z3": 13.986327171325684,
         "encoding_2C_z3": 54.74081873893738,
         "encoding_2D_z3": 14.012703657150269

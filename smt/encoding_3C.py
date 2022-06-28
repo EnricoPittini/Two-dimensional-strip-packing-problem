@@ -67,7 +67,7 @@ class Vlsi_smt(Vlsi_smt_abstract):
 
         # For getting the model
         lines.append('(set-option :produce-models true)')
-        lines.append('(set-logic QF_LIA)')
+        lines.append('(set-logic QF_IDL)')
 
         # VARIABLES
         # We are defining the function "coordX": we are declaring n variables "coordX[i]".
