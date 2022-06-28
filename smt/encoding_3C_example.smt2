@@ -5,7 +5,7 @@
 ; l_max=5
 
 (set-option :produce-models true)
-(set-logic QF_UFLIA)
+(set-logic QF_UFIDL)
 
 (declare-fun coordX (Int) Int)
 (declare-fun coordY (Int) Int)
@@ -16,8 +16,20 @@
 (assert (and (>= (coordY 0) 0) (<= (coordY 0) (- 5 2))))
 (assert (and (>= (coordY 1) 0) (<= (coordY 1) (- 5 3))))
 
-(assert (or (<= (+ (coordX 0) 2) (coordX 1)) (<= (+ (coordX 1) 3) (coordX 0)) (<= (+ (coordY 0) 2) (coordY 1)) (<= (+ (coordY 1) 3) (coordY 0))))
+(assert (or (<= (- (coordX 0) (coordX 1)) (- 2)) (<= (- (coordX 1) (coordX 0)) (- 3)) (<= (- (coordY 0) (coordY 1)) (- 2)) (<= (- (coordY 1) (coordY 0)) (- 3))))
 
 (check-sat)
 (get-value ((coordX 0) (coordX 1) (coordY 0) (coordY 1)))
 
+
+; EXAMPLE OF USAGE
+; From the CDMO-Project directory
+; $ z3 sm/encoding_3C_example.smt2
+; OUTPUT
+; sat
+; (((coordX 0) 0)
+;  ((coordX 1) 0)
+;  ((coordY 0) 0)
+;  ((coordY 1) 2))
+;
+;
