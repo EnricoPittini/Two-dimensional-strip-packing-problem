@@ -5,6 +5,7 @@
 ; l_max=5
 
 (set-option :produce-models true)
+(set-logic QF_UFLIA)
 
 (declare-fun coordX (Int) Int)
 (declare-fun coordY (Int) Int)
