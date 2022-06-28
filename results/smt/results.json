@@ -142,5 +142,21 @@
         "encoding_3D_yices-smt2": "NaN",
         "encoding_3E_yices-smt2": "NaN",
         "encoding_3F_yices-smt2": "NaN"
+    },
+    "ins-39": {
+        "encoding_3A_yices-smt2": "NaN",
+        "encoding_3B_yices-smt2": "NaN",
+        "encoding_3C_yices-smt2": "NaN",
+        "encoding_3D_yices-smt2": "NaN",
+        "encoding_3E_yices-smt2": 115.93361616134644,
+        "encoding_3F_yices-smt2": 119.36981534957886
+    },
+    "ins-40": {
+        "encoding_3A_yices-smt2": "NaN",
+        "encoding_3B_yices-smt2": "NaN",
+        "encoding_3C_yices-smt2": "NaN",
+        "encoding_3D_yices-smt2": "NaN",
+        "encoding_3E_yices-smt2": "NaN",
+        "encoding_3F_yices-smt2": "NaN"
     }
 }

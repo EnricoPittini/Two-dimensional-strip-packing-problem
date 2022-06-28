@@ -86,5 +86,29 @@
         "encoding_3D_z3": 24.564459800720215,
         "encoding_3E_z3": 37.82640600204468,
         "encoding_3F_z3": 37.464473247528076
+    },
+    "ins-32": {
+        "encoding_3A_z3": "NaN",
+        "encoding_3B_z3": "NaN",
+        "encoding_3C_z3": "NaN",
+        "encoding_3D_z3": "NaN",
+        "encoding_3E_z3": "NaN",
+        "encoding_3F_z3": "NaN"
+    },
+    "ins-33": {
+        "encoding_3A_z3": 73.75348830223083,
+        "encoding_3B_z3": 20.13320016860962,
+        "encoding_3C_z3": 20.27598261833191,
+        "encoding_3D_z3": 7.483202934265137,
+        "encoding_3E_z3": 7.449106454849243,
+        "encoding_3F_z3": 7.506650686264038
+    },
+    "ins-34": {
+        "encoding_3A_z3": "NaN",
+        "encoding_3B_z3": "NaN",
+        "encoding_3C_z3": 204.81364250183105,
+        "encoding_3D_z3": "NaN",
+        "encoding_3E_z3": "NaN",
+        "encoding_3F_z3": "NaN"
     }
 }
