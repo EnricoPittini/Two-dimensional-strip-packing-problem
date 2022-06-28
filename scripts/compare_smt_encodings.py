@@ -4,19 +4,22 @@ import os
 import re
 import subprocess
 
+ENCODING_CHOICES = [f'encoding_{i}' for i in range(2)] + [f'encoding_{2}{i}' for i in ['A', 'B', 'C']] +\
+     [f'encoding_{3}{i}' for i in ['A', 'B', 'C', 'D', 'E', 'F']] 
+
 #python scripts/compare_smt_encodings.py --encodings-list encoding_1 encoding_2A encoding_2B encoding_2C encoding_2D --solvers-list z3 -lb 1 -ub 20
 def main() -> None:
     parser = argparse.ArgumentParser(description='Script comparing the execution time of SMT encodings on a VLSI problem.')
 
-    parser.add_argument('output-name', type=str, default='solution', nargs='?', 
-                        help='The name of the output solution.')
+    parser.add_argument('output-name', type=str, default='results', nargs='?', 
+                        help='The name of the output file.')
 
     parser.add_argument('output-folder-path', type=str, 
-                        default=os.path.normpath('smt/results/'), 
+                        default=os.path.normpath('results/smt/'), 
                         nargs='?', 
                         help='The path in which the output file is stored.')
 
-    parser.add_argument('--encodings-list', '-m', 
+    parser.add_argument('--encodings-list', '-m',  metavar='encoding', type=str, choices=ENCODING_CHOICES,
                         # TODO: correct description
                         help='List of SMT encodings to compare.',
                         nargs='*')
@@ -77,23 +80,7 @@ def main() -> None:
                 command = f'python "{execute_smt_script_path}" {encoding} ins-{instance} {solver} --no-create-output'
                 
                 result = subprocess.run(command, capture_output=True)
-                
-                #result.check_returncode()
-                """try:
-                    result.check_returncode()
-                except subprocess.CalledProcessError:
-                    stderror = result.stderr.decode('UTF-8')
-                    error_list = re.findall('error = ' + r'(UNSATISFIABLE|UNKNOWN)', stderror)
-                    if len(error_list):
-                        error = error_list[0].split("= ")[-1]
-                        print(f'\tERROR: {error}')
-                        instance_dict[f'{encoding}_{solver}'] = error
-                    else:
-                        print('\tERROR: UNKNOWN')
-                        instance_dict[f'{encoding}_{solver}'] = 'UNKNOWN'
-                    # Continue to the next iteration.
-                    continue"""
-            
+                           
                 stdout = result.stdout.decode('UTF-8')
                 time_list = re.findall('Time: ' + r'\d+\.\d+', stdout)
                 if 'Time elapsed' in stdout:

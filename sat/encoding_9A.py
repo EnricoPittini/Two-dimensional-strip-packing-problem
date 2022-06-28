@@ -258,7 +258,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
             if lb+1==ub:
                 ub = lb
 
-            # Current length of the plate of interest (in the middle of [lb,ub])    
+            # Current length of interest of the plate (in the middle of [lb,ub])    
             l = math.ceil((ub+lb)/2)
 
             # We add the additional constraint ensuring that the actual length of the plate must be smaller or equal than 'l'.

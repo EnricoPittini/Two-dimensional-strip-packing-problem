@@ -8,7 +8,7 @@ import importlib
 import time
 
 import utils
-#python scripts\execute_sat.py sat\encoding_2.py instances\ins-10.txt 300
+#python scripts\execute_sat.py encoding_2 ins-3 300
 
 
 def vlsi_sat(w, n, dims, encoding_module, timeout=300):
@@ -71,14 +71,17 @@ def vlsi_sat(w, n, dims, encoding_module, timeout=300):
 def main():
     parser = argparse.ArgumentParser(description='Script for executing a VLSI SAT encoding.')
 
-    parser.add_argument('encoding-path', type=str, help='The encoding to execute.')
+    parser.add_argument('encoding', type=str, help='The encoding to execute.')
 
-    parser.add_argument('instance-path', type=argparse.FileType('r', encoding='UTF-8'), help='The instance to solve.')
+    parser.add_argument('instance', metavar='ins-1..ins-40; ins-unsat', type=str, help='The instance to solve.')
 
     parser.add_argument('time-limit', type=int, default=300, nargs='?', help='Time limit, in seconds')
 
     parser.add_argument('output-folder-path', type=str, default=os.getcwd(), nargs='?', 
                         help='The path in which the output file is stored.')
+
+    parser.add_argument('output-name', type=str, default=None, nargs='?', 
+                        help='The name of the output solution.')
 
     parser.add_argument('--no-create-output', action='store_true', 
                         help='Skip the creation of the output solution.')
@@ -89,15 +92,32 @@ def main():
 
     arguments = parser.parse_args()
 
-    instance_file = vars(arguments)['instance-path']
+    encoding = vars(arguments)['encoding']
+    instance = vars(arguments)['instance']
+    time_limit = vars(arguments)['time-limit']
+
+    """instance_file = vars(arguments)['instance-path']
+    w, n, dims = utils.parse_instance_txt(instance_file)
+    w = int(w)
+    n = int(n)
+    dims = [(int(dims[i][0]),int(dims[i][1])) for i in range(n)]"""
+    # Open instance file 
+    abs_path_source_folder = os.path.split(os.path.dirname(os.path.abspath(__file__)))[0]
+    instance_path = os.path.join(abs_path_source_folder, 'instances', f'{instance}.txt')
+    instance_file = open(instance_path, 'r')
+
     w, n, dims = utils.parse_instance_txt(instance_file)
     w = int(w)
     n = int(n)
     dims = [(int(dims[i][0]),int(dims[i][1])) for i in range(n)]
 
-    encoding_path = vars(arguments)['encoding-path']
+    """encoding_path = vars(arguments)['encoding-path']
     encoding_abspath = os.path.abspath(encoding_path)
     module_name = os.path.basename(encoding_path).split('.')[0]
+    sys.path.insert(1, os.path.join(os.path.dirname(__file__), os.path.dirname(encoding_abspath)))
+    encoding_module = importlib.import_module(module_name)"""
+    encoding_abspath = os.path.join(os.path.dirname(os.path.dirname(__file__)), f'sat/{encoding}.py')
+    module_name = encoding
     sys.path.insert(1, os.path.join(os.path.dirname(__file__), os.path.dirname(encoding_abspath)))
     encoding_module = importlib.import_module(module_name)
     # vlsi_sat = encoding_module.vlsi_sat
@@ -105,7 +125,7 @@ def main():
 
     #try:
     start_time = time.time()
-    coords, l, finish, unsat = vlsi_sat(w, n, dims, encoding_module=encoding_module, timeout=vars(arguments)['time-limit'])        
+    coords, l, finish, unsat = vlsi_sat(w, n, dims, encoding_module=encoding_module, timeout=time_limit)        
     solving_time = time.time() - start_time
 
     print('Time:', solving_time)

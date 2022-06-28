@@ -10,26 +10,22 @@ ENCODING_CHOICES = [f'encoding_{i}' for i in range(4)] + [f'encoding_{4}{i}' for
         [f'encoding_{8}{i}' for i in ['A', 'B', 'C', 'D', 'E']] +  [f'encoding_{9}{i}' for i in ['A', 'B', 'AA', 'AD', 'BA', 'BD']] +\
              ['encoding_10A', 'encoding_10B', 'encoding_10C']
 
-#python scripts/compare_sat_encodings.py sat instances sat/results/ --encodings-list encoding_3 encoding_4A encoding_4B encoding_4C encoding_4D -lb 1 -ub 15
+#python scripts/compare_sat_encodings.py --encodings-list encoding_3 encoding_4A encoding_4B encoding_4C encoding_4D -lb 1 -ub 15
 
 def main() -> None:
     parser = argparse.ArgumentParser(description='Script for comparing VLSI SAT encodings.')
 
-    parser.add_argument('encodings-folder-path', type=str, help='The folder path of the encodings to compare.')
+    parser.add_argument('output-name', type=str, default='results', nargs='?', 
+                        help='The name of the output file.')
 
-    parser.add_argument('instances-folder-path', type=str, help='The folder path of the instances to solve.')
+    parser.add_argument('output-folder-path', type=str, 
+                        default=os.path.normpath('results/sat/'), 
+                        nargs='?', 
+                        help='The path in which the output file is stored.')
 
-    parser.add_argument('output-folder-path', type=str, default=os.getcwd(), nargs='?', 
-                        help='The path in which the output file, containing the results of the comparisons, is stored.')
-
-    parser.add_argument('--encodings-list', '-m',
-                        metavar='encoding',
-                        type=str, 
-                        choices=ENCODING_CHOICES,
-                        # TODO: add all possible encoding choices
-                        default=['encoding_0', 'encoding_1', 'encoding_2', 'encoding_3'], #'encoding_4_gecode'
-                        help='List of encodings to compare (default all encodings). ' +\
-                        'Example of usage: --encodings-list encoding_0 encoding_2 encoding_3',
+    parser.add_argument('--encodings-list', '-m', metavar='encoding', type=str, choices=ENCODING_CHOICES,
+                        # TODO: correct description
+                        help='List of SAT encodings to compare.',
                         nargs='*')
 
     parser.add_argument('--instances-lower-bound', '-lb',
@@ -49,19 +45,14 @@ def main() -> None:
                         nargs='?')
 
     arguments = parser.parse_args()
-    
-    instances_folder_path = vars(arguments)['instances-folder-path']
-
-    encodings_folder_path = vars(arguments)['encodings-folder-path']
 
     output_folder_path = vars(arguments)['output-folder-path']
-
-    execute_sat_script_path = os.path.join(os.path.dirname(__file__), 'execute_sat.py')
-
-    result_list = []
+    output_file_name = vars(arguments)['output-name']
+    output_file = os.path.join(output_folder_path, f'{output_file_name}.json')
+    os.makedirs(output_folder_path, exist_ok=True)
 
     encodings_list = arguments.encodings_list
-    
+        
     instances_lower_bound = arguments.instances_lower_bound
     instances_upper_bound = arguments.instances_upper_bound
     if instances_lower_bound > instances_upper_bound:
@@ -70,36 +61,38 @@ def main() -> None:
     
     instances_range = range(instances_lower_bound, instances_upper_bound + 1) 
 
-    # TODO: handling of error solutions
+    execute_sat_script_path = os.path.join(os.path.dirname(__file__), 'execute_sat.py')
+
+    result_dict = dict()
+
     for instance in instances_range:
-        instance_file_path = os.path.join(instances_folder_path, f'ins-{instance}.txt')
         instance_dict = dict()
         for encoding in encodings_list:
-            encoding_file_path = os.path.join(encodings_folder_path, f'{encoding}.mzn')
-
-            print(f'Executing instance {instance} with encoding {encoding}...')
-            command = f'python "{execute_sat_script_path}" "{encoding_file_path}" "{instance_file_path}" ' +\
-                       '--no-create-output'
-            result = subprocess.run(command, capture_output=True)
-            
-            output = result.stdout.decode('UTF-8')
-            #print(output)
-            if 'Time elapsed' in output:
-                instance_dict[encoding] =  'NaN'
-            else:
-                #print(output)
-                #print(output.split('Time: ')[-1].split('UNSAT'))
-                t = float(output.split('Time: ')[-1].split('UNSAT')[0])
-                instance_dict[encoding] = t
+                print(f'Executing instance {instance} with encoding {encoding} ...')
                 
-        result_list.append({f'ins-{instance}': instance_dict})
+                command = f'python "{execute_sat_script_path}" {encoding} ins-{instance} --no-create-output'
+                
+                result = subprocess.run(command, capture_output=True)
+                           
+                stdout = result.stdout.decode('UTF-8')
+                time_list = re.findall('Time: ' + r'\d+\.\d+', stdout)
+                if 'Time elapsed' in stdout:
+                    print('\tTime limit exceeded.')
+                    instance_dict[f'{encoding}'] = 'NaN'
+                elif len(time_list):
+                    elapsed_time = time_list[-1].split('Time: ')[-1]
+                    print(f'\tSolved in {elapsed_time}s.')
+                    instance_dict[f'{encoding}'] = float(elapsed_time)
+                else: 
+                    print('\tERROR: UNKNOWN.')
+                    instance_dict[f'{encoding}'] = 'UNKNOWN'
+                    
+        result_dict[f'ins-{instance}'] = instance_dict
 
-    output_file = os.path.join(output_folder_path, 'results.json')
+        # Save intermediate JSON solution.
+        with open(output_file, 'w') as f:
+            json.dump(result_dict, f, sort_keys=False, indent=4, separators=(',', ': '))
 
-    os.makedirs(os.path.dirname(output_folder_path), exist_ok=True)
-
-    with open(output_file, 'w') as f:
-        json.dump(result_list, f, sort_keys=False, indent=4, separators=(',', ': '))
 
 if __name__ == '__main__':
     main()
