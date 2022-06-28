@@ -110,5 +110,53 @@
         "encoding_3D_z3": "NaN",
         "encoding_3E_z3": "NaN",
         "encoding_3F_z3": "NaN"
+    },
+    "ins-35": {
+        "encoding_3A_z3": "NaN",
+        "encoding_3B_z3": 55.3217499256134,
+        "encoding_3C_z3": 290.9486708641052,
+        "encoding_3D_z3": 122.27406096458435,
+        "encoding_3E_z3": "NaN",
+        "encoding_3F_z3": 118.13021969795227
+    },
+    "ins-36": {
+        "encoding_3A_z3": 244.03155851364136,
+        "encoding_3B_z3": 27.45021939277649,
+        "encoding_3C_z3": 14.093629837036133,
+        "encoding_3D_z3": 45.767502784729004,
+        "encoding_3E_z3": 259.23372292518616,
+        "encoding_3F_z3": 60.37139844894409
+    },
+    "ins-37": {
+        "encoding_3A_z3": "NaN",
+        "encoding_3B_z3": "NaN",
+        "encoding_3C_z3": 290.0696897506714,
+        "encoding_3D_z3": "NaN",
+        "encoding_3E_z3": "NaN",
+        "encoding_3F_z3": "NaN"
+    },
+    "ins-38": {
+        "encoding_3A_z3": "NaN",
+        "encoding_3B_z3": "NaN",
+        "encoding_3C_z3": "NaN",
+        "encoding_3D_z3": "NaN",
+        "encoding_3E_z3": "NaN",
+        "encoding_3F_z3": "NaN"
+    },
+    "ins-39": {
+        "encoding_3A_z3": "NaN",
+        "encoding_3B_z3": "NaN",
+        "encoding_3C_z3": 287.39659094810486,
+        "encoding_3D_z3": "NaN",
+        "encoding_3E_z3": "NaN",
+        "encoding_3F_z3": "NaN"
+    },
+    "ins-40": {
+        "encoding_3A_z3": "NaN",
+        "encoding_3B_z3": "NaN",
+        "encoding_3C_z3": "NaN",
+        "encoding_3D_z3": "NaN",
+        "encoding_3E_z3": "NaN",
+        "encoding_3F_z3": "NaN"
     }
 }
