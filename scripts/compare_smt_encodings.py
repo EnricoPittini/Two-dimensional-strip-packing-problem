@@ -78,7 +78,7 @@ def main() -> None:
                 
                 result = subprocess.run(command, capture_output=True)
                 
-                result.check_returncode()
+                #result.check_returncode()
                 """try:
                     result.check_returncode()
                 except subprocess.CalledProcessError:
