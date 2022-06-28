@@ -67,15 +67,15 @@ class Vlsi_smt(Vlsi_smt_abstract):
 
         # For getting the model
         lines.append('(set-option :produce-models true)')
-        lines.append('(set-logic QF_LIA)')
+        lines.append('(set-logic QF_UFIDL)')
 
         # VARIABLES
         # We are defining the function "coordX": we are declaring n variables "coordX[i]".
-        lines += [f'(declare-const coordX_{i} Int)' for i in range(n)]
+        lines.append('(declare-fun coordX (Int) Int)')
         # We are defining the function "coordY": we are declaring n variables "coordY[i]".
-        lines += [f'(declare-const coordY_{i} Int)' for i in range(n)]
+        lines.append('(declare-fun coordY (Int) Int)')
         # We are defining the variable "l".
-        lines.append('(declare-const l Int)')
+        lines.append('(declare-fun l () Int)')
 
         # CONSTRAINTS
 
@@ -86,23 +86,23 @@ class Vlsi_smt(Vlsi_smt_abstract):
         # We create a list of strings, one for each variable "coordX[i]".
         # For each "coordX[i]", we say that 0<="coordX[i]"<=w-dimsX[i]:
         #                        "(assert (and (>= (coordX {i}) 0) (<= (coordX {i}) (- {w} {dimsX[i]}))))".
-        lines += [f'(assert (and (>= coordX_{i} 0) (<= coordX_{i} (- {w} {dimsX[i]}))))' for i in range(n)]
+        lines += [f'(assert (and (>= (coordX {i}) 0) (<= (coordX {i}) (- {w} {dimsX[i]}))))' for i in range(n)]
 
         # We create a list of strings, one for each variable "coordY[i]".
         # For each "coordY[i]", we say that 0<="coordY[i]"<=l_max-dimsY[i]:
         #                        "(assert (and (>= (coordY {i}) 0) (<= (coordY {i}) (- {l_max} {dimsY[i]}))))".
-        lines += [f'(assert (and (>= coordY_{i} 0) (<= coordY_{i} (- {l_max} {dimsY[i]}))))' for i in range(n)]
+        lines += [f'(assert (and (>= (coordY {i}) 0) (<= (coordY {i}) (- {l_max} {dimsY[i]}))))' for i in range(n)]
 
         # 2- Non-overlapping
         # For each pair of circuits (i,j), where i<j, we impose the non-overlapping constraint: 
         #            coordX[i]+dimsX[i]<=coordX[j] \/ coordX[j]+dimsX[j]<=coordX[i] \/ coordY[i]+dimsY[i]<=coordY[j] \/ 
         #                                             coordY[j]+dimsY[j]<=coordY[i]
-        lines += [f'(assert (or (<= (- coordX_{i} coordX_{j}) (- {dimsX[i]})) (<= (- coordX_{j} coordX_{i}) (- {dimsX[j]})) (<= (- coordY_{i} coordY_{j}) (- {dimsY[i]})) (<= (- coordY_{j} coordY_{i}) (- {dimsY[j]}))))' 
+        lines += [f'(assert (or (<= (+ (coordX {i}) {dimsX[i]}) (coordX {j})) (<= (+ (coordX {j}) {dimsX[j]}) (coordX {i})) (<= (+ (coordY {i}) {dimsY[i]}) (coordY {j})) (<= (+ (coordY {j}) {dimsY[j]}) (coordY {i}))))' 
                 for i in range(n) for j in range(n) if i<j]
         
         # 3- Length of the plate
         # For each circuit 'i', we impose that coordY[i]+dimsY[i]<=l
-        lines += [f'(assert (<= (- coordY_{i} l) (- {dimsY[i]})))' for i in range(n)]
+        lines += [f'(assert (<= (+ (coordY {i}) {dimsY[i]}) l))' for i in range(n)]
 
         # FINAL REFINEMENTS
         # Join all these strings, by means of the new line '\n'. Now we have a single string.
@@ -143,7 +143,7 @@ class Vlsi_smt(Vlsi_smt_abstract):
         # Check satisfiability and get the model
         lines.append('(check-sat)')
         # String "(get-value ((coordX 0) (coordX 1) ... (coordX N) (coordY 0) (coordY 1) ... (coordY N)))"
-        lines.append(f'(get-value ({" ".join([f"coordX_{i} coordY_{i} " for i in range(self.n)])}))')
+        lines.append(f'(get-value ({" ".join([f"(coordX {i}) (coordY {i}) " for i in range(self.n)])}))')
 
         # Join all these strings, by means of the new line '\n'. Now we have a single string.
         constraint_string = '\n'.join(lines)
@@ -247,7 +247,7 @@ class Vlsi_smt(Vlsi_smt_abstract):
             output += process.stdout.read1().decode('utf-8') # String containing the model (if any)
             #sleep(0.00000000000000000001)
 
-            print(output)
+            #print(output)
 
             if 'unsat' in output:  # UNSAT
                 # Pop out the last imposed constraint (the one ensuring that the length of the plate must be smaller or equal
@@ -263,16 +263,18 @@ class Vlsi_smt(Vlsi_smt_abstract):
 
             elif 'sat' in output:  # SAT : a new best solution has been found
                 # Parse the output of the solver into the list of coords, i.e. `coords`
-                if solver_name=='z3' or solver_name=='yices-smt2':
-                    coords = [int(s.split(')')[0].split(' ')[-1]) for s in output.split('\n')[1:-1]]
+                if solver_name=='z3':
+                    coords = [int(s.split(')')[1]) for s in output.split('\n')[1:-1]]
                 elif solver_name=='cvc5':
-                    coords = [int(s.split(')')[0].split(' ')[-1]) for s in output.split('\n')[1:-1][0].split(' (')]
+                    coords = [int(s.split(')')[1]) for s in output.split('\n')[1:-1][0].split(' (')]
+                elif solver_name=='yices-smt2':
+                    coords = [int(s.split(')')[1]) for s in output.split('\n')[1:-1]]
                 # List of coords, for each circuit 'i'. For each circuit 'i', we have the list of two elements [coordX_i, coordY_i]
                 coords = [[coords[2*i], coords[2*i+1]] for i in range((len(coords))//2)]
 
                 # TODO: remove
-                print(l_med)
-                print(coords)
+                #print(l_med)
+                #print(coords)
 
                 # Update the best solution found so far with the new solution
                 self.results['best_coords'] = coords
