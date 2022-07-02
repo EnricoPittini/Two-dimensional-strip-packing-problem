@@ -6,7 +6,7 @@
 - Handle platform path independency
 - Solver parameters through script
 - Automatic instance and model path files retrival
-- Delete time selection from solver config and put it directly in minizinc call in execute_minizinc.py
+- Delete time selection from solver config and put it directly in minizinc call in execute_cp.py
 
 # MiniZinc model TODOs
 - Heuristic

@@ -8,9 +8,9 @@ import sys
 from utils import INSTANCES, MINIZINC_ERRORS, MINIZINC_MODELS, GECODE_MODELS, create_output_file, parse_instance_txt
 
 
-#python scripts\execute_minizinc.py minizinc\model_1.mzn instances\ins-13.txt minizinc\solver_0.mpc
+# python scripts\execute_cp.py model_1 ins-13
 def main() -> None:
-    parser = argparse.ArgumentParser(description='Script for executing a VLSI MiniZinc model.')
+    parser = argparse.ArgumentParser(description='Script for executing a VLSI CP model.')
 
     parser.add_argument('model', type=str, choices=MINIZINC_MODELS+[f'model_final{i}' for i in range(2)], 
                         help='The model to execute.')
@@ -33,9 +33,6 @@ def main() -> None:
     parser.add_argument('--no-visualize-output', action='store_true', 
                         help='Skip the visualization of the output solution (defaults as true if --no-create-output ' + \
                         'is passed).')
-    
-    #parser.add_argument('--symmetry-breaking-option', '-sbo', nargs='?',  type=int,
-    #                    help='The symmetry breaking options to use for the MiniZinc model.', default=None)
 
     arguments = parser.parse_args()
 
@@ -49,13 +46,13 @@ def main() -> None:
         w, n, dims = parse_instance_txt(f)
 
     parsed_cmdline_data = _create_cmdline_data(w, n, dims)
-    model_file_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), f'minizinc/{model}.mzn')
+    model_file_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), f'cp/{model}.mzn')
     
     if model in GECODE_MODELS:
         solver = 'solver_0'
     else:
         solver = 'solver_1'
-    solver_file_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), f'minizinc/{solver}.mpc')
+    solver_file_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), f'cp/{solver}.mpc')
     
     command = f'minizinc {model_file_path} {parsed_cmdline_data} --time-limit {time_limit*1_000}' +\
         f'--param-file {solver_file_path}'
@@ -83,7 +80,7 @@ def main() -> None:
         error_list = re.findall(errors_re, output)
         sys.exit(f'error = {error_list[0] if len(error_list) else "UNKNOWN"}')
     
-    # TODO: Make this function general even for "compare_minizinc_models.py"
+    # TODO: Make this function general even for "compare_cp_models.py"
     # Print on stdout a notice that the time limit has exceeded if expressed in the result of the process.
     if '% Time limit exceeded!' in output:
         print('time = exceeded')

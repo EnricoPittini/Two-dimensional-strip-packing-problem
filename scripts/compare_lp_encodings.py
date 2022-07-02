@@ -10,7 +10,7 @@ from utils import AMPL_SOLVER_CHOICES, AMPL_MODEL_CHOICES
 # SOLVER_CHOICES = [f'solver_{i}' for i in range(3)]
 #python scripts/compare_lp_encodings.py --models-list model_2B --solvers-list cplex -lb 1 -ub 10
 def main() -> None:
-    parser = argparse.ArgumentParser(description='Script comparing the execution time of MiniZinc models on a VLSI problem.')
+    parser = argparse.ArgumentParser(description='Script comparing the execution time of CP models on a VLSI problem.')
 
     parser.add_argument('output-folder-path', type=str, 
                         default=os.path.normpath('results/lp/'), 

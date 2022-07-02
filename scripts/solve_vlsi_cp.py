@@ -92,12 +92,12 @@ def _run_models(instance: str, tmp_dir_path: str, outputs: List[str], errors: Li
         List of strings containing the results of the lenghts of the plate `l` obtained by the executions of each model.
     '''
     
-    execute_minizinc_script_path = os.path.join(os.path.dirname(__file__), 'execute_minizinc.py')
+    execute_cp_script_path = os.path.join(os.path.dirname(__file__), 'execute_cp.py')
     
     for model in _MODEL_LIST:
         print(f'Executing model {model}...')
         # Create the command to execute the current MiniZinc model on the instance. 
-        command = f'python "{execute_minizinc_script_path}" {model} {instance} ' +\
+        command = f'python "{execute_cp_script_path}" {model} {instance} ' +\
                 f'"{tmp_dir_path}" {model} --time-limit 100 --no-visualize-output'
         
         # Run the process launched by the command and save the results.

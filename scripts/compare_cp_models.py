@@ -6,8 +6,8 @@ import subprocess
 
 from utils import MINIZINC_MODELS, MINIZINC_ERRORS
 
-# SOLVER_CHOICES = [f'solver_{i}' for i in range(3)]
-#python scripts/compare_minizinc_models.py minizinc instances minizinc\solver_1.mpc results/ --models-list model_2 model_3A model_3B model_3C -lb 1 -ub 8
+
+# python scripts/compare_cp_models.py --models-list model_2 model_3A model_3B model_3C -lb 1 -ub 8
 def main() -> None:
     parser = argparse.ArgumentParser(description='Script comparing the execution time of MiniZinc models on a VLSI problem.')
 
@@ -61,7 +61,7 @@ def main() -> None:
                      f'(must be lower or equal than --instances-upper-bound/-ub: {instances_upper_bound})')
     instances_range = range(instances_lower_bound, instances_upper_bound + 1) 
     
-    execute_minizinc_script_path = os.path.join(os.path.dirname(__file__), 'execute_minizinc.py')
+    execute_cp_script_path = os.path.join(os.path.dirname(__file__), 'execute_cp.py')
     solve_vlsi_cp_script_path = os.path.join(os.path.dirname(__file__), 'solve_vlsi_cp.py')
 
     result_dict = dict()
@@ -74,7 +74,7 @@ def main() -> None:
             if model == 'model_final':
                 command = f'python "{solve_vlsi_cp_script_path}" "ins-{instance}" --no-create-output'
             else:    
-                command = f'python "{execute_minizinc_script_path}" "{model}" "ins-{instance}" ' +\
+                command = f'python "{execute_cp_script_path}" "{model}" "ins-{instance}" ' +\
                         '--time-limit 300 --no-create-output'
 
             try:
