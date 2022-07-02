@@ -1,0 +1,162 @@
+{
+    "ins-21": {
+        "encoding_3A_yices-smt2": 19.874557971954346,
+        "encoding_3B_yices-smt2": 18.25037431716919,
+        "encoding_3C_yices-smt2": 18.429230451583862,
+        "encoding_3D_yices-smt2": 28.91431498527527,
+        "encoding_3E_yices-smt2": 50.37401509284973,
+        "encoding_3F_yices-smt2": 50.88687562942505
+    },
+    "ins-22": {
+        "encoding_3A_yices-smt2": 47.73358917236328,
+        "encoding_3B_yices-smt2": "NaN",
+        "encoding_3C_yices-smt2": 47.069223403930664,
+        "encoding_3D_yices-smt2": 137.38639497756958,
+        "encoding_3E_yices-smt2": 55.86978197097778,
+        "encoding_3F_yices-smt2": 57.83111810684204
+    },
+    "ins-23": {
+        "encoding_3A_yices-smt2": 6.63320517539978,
+        "encoding_3B_yices-smt2": 6.572613000869751,
+        "encoding_3C_yices-smt2": 6.611963510513306,
+        "encoding_3D_yices-smt2": 12.00124740600586,
+        "encoding_3E_yices-smt2": 12.842514991760254,
+        "encoding_3F_yices-smt2": 13.098881483078003
+    },
+    "ins-24": {
+        "encoding_3A_yices-smt2": 3.8558425903320312,
+        "encoding_3B_yices-smt2": 3.853612184524536,
+        "encoding_3C_yices-smt2": 3.9030728340148926,
+        "encoding_3D_yices-smt2": 3.9059865474700928,
+        "encoding_3E_yices-smt2": 3.7109975814819336,
+        "encoding_3F_yices-smt2": 3.697134256362915
+    },
+    "ins-25": {
+        "encoding_3A_yices-smt2": "NaN",
+        "encoding_3B_yices-smt2": "NaN",
+        "encoding_3C_yices-smt2": "NaN",
+        "encoding_3D_yices-smt2": 138.9276361465454,
+        "encoding_3E_yices-smt2": "NaN",
+        "encoding_3F_yices-smt2": "NaN"
+    },
+    "ins-26": {
+        "encoding_3A_yices-smt2": 131.07351541519165,
+        "encoding_3B_yices-smt2": 164.80095291137695,
+        "encoding_3C_yices-smt2": "NaN",
+        "encoding_3D_yices-smt2": 59.13061857223511,
+        "encoding_3E_yices-smt2": 86.55781388282776,
+        "encoding_3F_yices-smt2": 76.26889324188232
+    },
+    "ins-27": {
+        "encoding_3A_yices-smt2": "NaN",
+        "encoding_3B_yices-smt2": 9.792483568191528,
+        "encoding_3C_yices-smt2": 9.932706594467163,
+        "encoding_3D_yices-smt2": 14.005824565887451,
+        "encoding_3E_yices-smt2": 5.074822187423706,
+        "encoding_3F_yices-smt2": 4.967869758605957
+    },
+    "ins-28": {
+        "encoding_3A_yices-smt2": 30.670438051223755,
+        "encoding_3B_yices-smt2": 31.68738579750061,
+        "encoding_3C_yices-smt2": 31.238292932510376,
+        "encoding_3D_yices-smt2": 149.7216296195984,
+        "encoding_3E_yices-smt2": 60.41512870788574,
+        "encoding_3F_yices-smt2": 60.58807849884033
+    },
+    "ins-29": {
+        "encoding_3A_yices-smt2": "NaN",
+        "encoding_3B_yices-smt2": 22.583516597747803,
+        "encoding_3C_yices-smt2": 22.635218858718872,
+        "encoding_3D_yices-smt2": 6.363360643386841,
+        "encoding_3E_yices-smt2": 70.87616920471191,
+        "encoding_3F_yices-smt2": 73.44150352478027
+    },
+    "ins-30": {
+        "encoding_3A_yices-smt2": "NaN",
+        "encoding_3B_yices-smt2": "NaN",
+        "encoding_3C_yices-smt2": "NaN",
+        "encoding_3D_yices-smt2": "NaN",
+        "encoding_3E_yices-smt2": "NaN",
+        "encoding_3F_yices-smt2": "NaN"
+    },
+    "ins-31": {
+        "encoding_3A_yices-smt2": 141.21345257759094,
+        "encoding_3B_yices-smt2": 142.54745364189148,
+        "encoding_3C_yices-smt2": 142.17294573783875,
+        "encoding_3D_yices-smt2": 65.26034903526306,
+        "encoding_3E_yices-smt2": 3.8314430713653564,
+        "encoding_3F_yices-smt2": 3.8709912300109863
+    },
+    "ins-32": {
+        "encoding_3A_yices-smt2": "NaN",
+        "encoding_3B_yices-smt2": "NaN",
+        "encoding_3C_yices-smt2": "NaN",
+        "encoding_3D_yices-smt2": "NaN",
+        "encoding_3E_yices-smt2": "NaN",
+        "encoding_3F_yices-smt2": "NaN"
+    },
+    "ins-33": {
+        "encoding_3A_yices-smt2": 25.382055044174194,
+        "encoding_3B_yices-smt2": 31.479527473449707,
+        "encoding_3C_yices-smt2": 26.923881769180298,
+        "encoding_3D_yices-smt2": 8.943101406097412,
+        "encoding_3E_yices-smt2": 3.4238131046295166,
+        "encoding_3F_yices-smt2": 3.43434739112854
+    },
+    "ins-34": {
+        "encoding_3A_yices-smt2": "NaN",
+        "encoding_3B_yices-smt2": "NaN",
+        "encoding_3C_yices-smt2": "NaN",
+        "encoding_3D_yices-smt2": "NaN",
+        "encoding_3E_yices-smt2": 57.749207735061646,
+        "encoding_3F_yices-smt2": 55.51819038391113
+    },
+    "ins-35": {
+        "encoding_3A_yices-smt2": 137.8985800743103,
+        "encoding_3B_yices-smt2": 142.2875726222992,
+        "encoding_3C_yices-smt2": 140.95990204811096,
+        "encoding_3D_yices-smt2": 163.81203293800354,
+        "encoding_3E_yices-smt2": 236.85053777694702,
+        "encoding_3F_yices-smt2": 291.51528763771057
+    },
+    "ins-36": {
+        "encoding_3A_yices-smt2": 90.83908462524414,
+        "encoding_3B_yices-smt2": 81.99649953842163,
+        "encoding_3C_yices-smt2": 77.06396508216858,
+        "encoding_3D_yices-smt2": 56.60897946357727,
+        "encoding_3E_yices-smt2": "NaN",
+        "encoding_3F_yices-smt2": 298.3157639503479
+    },
+    "ins-37": {
+        "encoding_3A_yices-smt2": 148.02050590515137,
+        "encoding_3B_yices-smt2": 144.5651466846466,
+        "encoding_3C_yices-smt2": 143.9732003211975,
+        "encoding_3D_yices-smt2": "NaN",
+        "encoding_3E_yices-smt2": "NaN",
+        "encoding_3F_yices-smt2": "NaN"
+    },
+    "ins-38": {
+        "encoding_3A_yices-smt2": "NaN",
+        "encoding_3B_yices-smt2": "NaN",
+        "encoding_3C_yices-smt2": "NaN",
+        "encoding_3D_yices-smt2": "NaN",
+        "encoding_3E_yices-smt2": "NaN",
+        "encoding_3F_yices-smt2": "NaN"
+    },
+    "ins-39": {
+        "encoding_3A_yices-smt2": "NaN",
+        "encoding_3B_yices-smt2": "NaN",
+        "encoding_3C_yices-smt2": "NaN",
+        "encoding_3D_yices-smt2": "NaN",
+        "encoding_3E_yices-smt2": 115.93361616134644,
+        "encoding_3F_yices-smt2": 119.36981534957886
+    },
+    "ins-40": {
+        "encoding_3A_yices-smt2": "NaN",
+        "encoding_3B_yices-smt2": "NaN",
+        "encoding_3C_yices-smt2": "NaN",
+        "encoding_3D_yices-smt2": "NaN",
+        "encoding_3E_yices-smt2": "NaN",
+        "encoding_3F_yices-smt2": "NaN"
+    }
+}

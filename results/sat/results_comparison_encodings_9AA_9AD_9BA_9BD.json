@@ -1,0 +1,106 @@
+{
+    "ins-1": {
+        "encoding_9AA": 0.9654786586761475,
+        "encoding_9AD": 1.0094738006591797,
+        "encoding_9BA": 0.9796009063720703,
+        "encoding_9BD": 0.9926836490631104
+    },
+
+    "ins-2": {
+        "encoding_9AA": 1.2155897617340088,
+        "encoding_9AD": 1.24275803565979,
+        "encoding_9BA": 1.2058050632476807,
+        "encoding_9BD": 1.216602087020874
+    },
+
+    "ins-3": {
+        "encoding_9AA": 2.7021021842956543,
+        "encoding_9AD": 2.6445350646972656,
+        "encoding_9BA": 2.645109176635742,
+        "encoding_9BD": 2.6244943141937256
+    },
+
+    "ins-4": {
+        "encoding_9AA": 7.16698694229126,
+        "encoding_9AD": 7.290613412857056,
+        "encoding_9BA": 7.126996040344238,
+        "encoding_9BD": 7.240288019180298
+    },
+
+    "ins-5": {
+        "encoding_9AA": 9.041434526443481,
+        "encoding_9AD": 9.539015769958496,
+        "encoding_9BA": 8.987391471862793,
+        "encoding_9BD": 9.069405555725098
+    },
+
+    "ins-6": {
+        "encoding_9AA": 30.292985439300537,
+        "encoding_9AD": 30.165592908859253,
+        "encoding_9BA": 29.067455530166626,
+        "encoding_9BD": 28.9280788898468
+    },
+
+    "ins-7": {
+        "encoding_9AA": 22.08778691291809,
+        "encoding_9AD": 22.223706483840942,
+        "encoding_9BA": 23.980972051620483,
+        "encoding_9BD": 24.102901935577393
+    },
+
+    "ins-8": {
+        "encoding_9AA": 47.09180402755737,
+        "encoding_9AD": 46.663604497909546,
+        "encoding_9BA": 43.316171646118164,
+        "encoding_9BD": 43.200434923172
+    },
+
+    "ins-9": {
+        "encoding_9AA": 55.990917921066284,
+        "encoding_9AD": 48.43628239631653,
+        "encoding_9BA": 48.885520696640015,
+        "encoding_9BD": 47.939125537872314
+    },
+
+    "ins-10": {
+        "encoding_9AA": 80.03146719932556,
+        "encoding_9AD": 76.54630422592163,
+        "encoding_9BA": 78.83358979225159,
+        "encoding_9BD": 86.5461938381195
+    },
+
+    "ins-11": {
+        "encoding_9AA": 156.8866991996765,
+        "encoding_9AD": "NaN",
+        "encoding_9BA": 137.79620218276978,
+        "encoding_9BD": 136.87098860740662
+    },
+
+    "ins-12": {
+        "encoding_9AA": 185.17459678649902,
+        "encoding_9AD": "NaN",
+        "encoding_9BA": 138.37794995307922,
+        "encoding_9BD": 131.40703082084656
+    },
+
+    "ins-13": {
+        "encoding_9AA": "NaN",
+        "encoding_9AD": "NaN",
+        "encoding_9BA": "NaN",
+        "encoding_9BD": "NaN"
+    },
+
+    "ins-14": {
+        "encoding_9AA": "NaN",
+        "encoding_9AD": "NaN",
+        "encoding_9BA": 210.87875652313232,
+        "encoding_9BD": "NaN"
+    },
+    
+    "ins-15": {
+        "encoding_9AA": "NaN",
+        "encoding_9AD": "NaN",
+        "encoding_9BA": "NaN",
+        "encoding_9BD": "NaN"
+    }
+}

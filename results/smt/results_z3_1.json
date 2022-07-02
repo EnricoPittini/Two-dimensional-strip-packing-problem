@@ -1,0 +1,162 @@
+{
+    "ins-21": {
+        "encoding_3A_z3": 109.1320641040802,
+        "encoding_3B_z3": 4.21381402015686,
+        "encoding_3C_z3": 3.9709770679473877,
+        "encoding_3D_z3": 69.44355607032776,
+        "encoding_3E_z3": 53.427223920822144,
+        "encoding_3F_z3": 56.204787492752075
+    },
+    "ins-22": {
+        "encoding_3A_z3": "NaN",
+        "encoding_3B_z3": 41.55592679977417,
+        "encoding_3C_z3": "NaN",
+        "encoding_3D_z3": 262.50977993011475,
+        "encoding_3E_z3": "NaN",
+        "encoding_3F_z3": 255.84512901306152
+    },
+    "ins-23": {
+        "encoding_3A_z3": 163.06368708610535,
+        "encoding_3B_z3": 8.077341794967651,
+        "encoding_3C_z3": 8.348716735839844,
+        "encoding_3D_z3": 123.02354693412781,
+        "encoding_3E_z3": 96.46824741363525,
+        "encoding_3F_z3": 81.50718259811401
+    },
+    "ins-24": {
+        "encoding_3A_z3": 30.861144304275513,
+        "encoding_3B_z3": 44.01732683181763,
+        "encoding_3C_z3": 46.13775682449341,
+        "encoding_3D_z3": 5.3142266273498535,
+        "encoding_3E_z3": 5.323530673980713,
+        "encoding_3F_z3": 5.319458484649658
+    },
+    "ins-25": {
+        "encoding_3A_z3": "NaN",
+        "encoding_3B_z3": 23.216837882995605,
+        "encoding_3C_z3": "NaN",
+        "encoding_3D_z3": "NaN",
+        "encoding_3E_z3": "NaN",
+        "encoding_3F_z3": "NaN"
+    },
+    "ins-26": {
+        "encoding_3A_z3": "NaN",
+        "encoding_3B_z3": 13.411536455154419,
+        "encoding_3C_z3": "NaN",
+        "encoding_3D_z3": 157.72747421264648,
+        "encoding_3E_z3": "NaN",
+        "encoding_3F_z3": 111.82998299598694
+    },
+    "ins-27": {
+        "encoding_3A_z3": 241.86893773078918,
+        "encoding_3B_z3": 42.465412855148315,
+        "encoding_3C_z3": 40.36042904853821,
+        "encoding_3D_z3": 60.894426107406616,
+        "encoding_3E_z3": 59.526772260665894,
+        "encoding_3F_z3": 62.40062165260315
+    },
+    "ins-28": {
+        "encoding_3A_z3": 174.33100485801697,
+        "encoding_3B_z3": 6.722167253494263,
+        "encoding_3C_z3": 6.909949779510498,
+        "encoding_3D_z3": 120.75332760810852,
+        "encoding_3E_z3": 117.81570196151733,
+        "encoding_3F_z3": 119.78721618652344
+    },
+    "ins-29": {
+        "encoding_3A_z3": 249.38221764564514,
+        "encoding_3B_z3": 48.41751790046692,
+        "encoding_3C_z3": 45.60736846923828,
+        "encoding_3D_z3": 56.545387744903564,
+        "encoding_3E_z3": 91.02568292617798,
+        "encoding_3F_z3": 87.99281716346741
+    },
+    "ins-30": {
+        "encoding_3A_z3": "NaN",
+        "encoding_3B_z3": "NaN",
+        "encoding_3C_z3": "NaN",
+        "encoding_3D_z3": "NaN",
+        "encoding_3E_z3": "NaN",
+        "encoding_3F_z3": "NaN"
+    },
+    "ins-31": {
+        "encoding_3A_z3": 70.27923512458801,
+        "encoding_3B_z3": 4.152526378631592,
+        "encoding_3C_z3": 4.349470138549805,
+        "encoding_3D_z3": 24.564459800720215,
+        "encoding_3E_z3": 37.82640600204468,
+        "encoding_3F_z3": 37.464473247528076
+    },
+    "ins-32": {
+        "encoding_3A_z3": "NaN",
+        "encoding_3B_z3": "NaN",
+        "encoding_3C_z3": "NaN",
+        "encoding_3D_z3": "NaN",
+        "encoding_3E_z3": "NaN",
+        "encoding_3F_z3": "NaN"
+    },
+    "ins-33": {
+        "encoding_3A_z3": 73.75348830223083,
+        "encoding_3B_z3": 20.13320016860962,
+        "encoding_3C_z3": 20.27598261833191,
+        "encoding_3D_z3": 7.483202934265137,
+        "encoding_3E_z3": 7.449106454849243,
+        "encoding_3F_z3": 7.506650686264038
+    },
+    "ins-34": {
+        "encoding_3A_z3": "NaN",
+        "encoding_3B_z3": "NaN",
+        "encoding_3C_z3": 204.81364250183105,
+        "encoding_3D_z3": "NaN",
+        "encoding_3E_z3": "NaN",
+        "encoding_3F_z3": "NaN"
+    },
+    "ins-35": {
+        "encoding_3A_z3": "NaN",
+        "encoding_3B_z3": 55.3217499256134,
+        "encoding_3C_z3": 290.9486708641052,
+        "encoding_3D_z3": 122.27406096458435,
+        "encoding_3E_z3": "NaN",
+        "encoding_3F_z3": 118.13021969795227
+    },
+    "ins-36": {
+        "encoding_3A_z3": 244.03155851364136,
+        "encoding_3B_z3": 27.45021939277649,
+        "encoding_3C_z3": 14.093629837036133,
+        "encoding_3D_z3": 45.767502784729004,
+        "encoding_3E_z3": 259.23372292518616,
+        "encoding_3F_z3": 60.37139844894409
+    },
+    "ins-37": {
+        "encoding_3A_z3": "NaN",
+        "encoding_3B_z3": "NaN",
+        "encoding_3C_z3": 290.0696897506714,
+        "encoding_3D_z3": "NaN",
+        "encoding_3E_z3": "NaN",
+        "encoding_3F_z3": "NaN"
+    },
+    "ins-38": {
+        "encoding_3A_z3": "NaN",
+        "encoding_3B_z3": "NaN",
+        "encoding_3C_z3": "NaN",
+        "encoding_3D_z3": "NaN",
+        "encoding_3E_z3": "NaN",
+        "encoding_3F_z3": "NaN"
+    },
+    "ins-39": {
+        "encoding_3A_z3": "NaN",
+        "encoding_3B_z3": "NaN",
+        "encoding_3C_z3": 287.39659094810486,
+        "encoding_3D_z3": "NaN",
+        "encoding_3E_z3": "NaN",
+        "encoding_3F_z3": "NaN"
+    },
+    "ins-40": {
+        "encoding_3A_z3": "NaN",
+        "encoding_3B_z3": "NaN",
+        "encoding_3C_z3": "NaN",
+        "encoding_3D_z3": "NaN",
+        "encoding_3E_z3": "NaN",
+        "encoding_3F_z3": "NaN"
+    }
+}

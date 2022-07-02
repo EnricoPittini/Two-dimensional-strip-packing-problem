@@ -1,0 +1,121 @@
+{
+    "ins-1": {
+        "encoding_4A": 1.0159788131713867,
+        "encoding_7A": 3.9829108715057373,
+        "encoding_7B": 2.010556697845459,
+        "encoding_7C": 2.0694613456726074,
+        "encoding_7D": 2.0512473583221436
+    },
+
+    "ins-2": {
+        "encoding_4A": 1.2709064483642578,
+        "encoding_7A": 4.245969295501709,
+        "encoding_7B": 2.371293306350708,
+        "encoding_7C": 2.264570713043213,
+        "encoding_7D": 2.337385892868042
+    },
+
+    "ins-3": {
+        "encoding_4A": 2.7876522541046143,
+        "encoding_7A": 11.5498206615448,
+        "encoding_7B": 5.54756498336792,
+        "encoding_7C": 5.667945623397827,
+        "encoding_7D": 5.86030650138855
+    },
+
+    "ins-4": {
+        "encoding_4A": 8.014853954315186,
+        "encoding_7A": 48.266335248947144,
+        "encoding_7B": 21.060429573059082,
+        "encoding_7C": 21.35124397277832,
+        "encoding_7D": 21.457024097442627
+    },
+
+    "ins-5": {
+        "encoding_4A": 11.361666917800903,
+        "encoding_7A": 49.58161163330078,
+        "encoding_7B": 23.53229856491089,
+        "encoding_7C": 23.13157558441162,
+        "encoding_7D": 23.288368463516235
+    },
+
+    "ins-6": {
+        "encoding_4A": 33.74508762359619,
+        "encoding_7A": 240.03410363197327,
+        "encoding_7B": 108.93264365196228,
+        "encoding_7C": 111.43821549415588,
+        "encoding_7D": 112.79299283027649
+    },
+
+    "ins-7": {
+        "encoding_4A": 25.107054948806763,
+        "encoding_7A": 143.95607948303223,
+        "encoding_7B": 68.84439635276794,
+        "encoding_7C": 70.39897608757019,
+        "encoding_7D": 68.6024911403656
+    },
+
+    "ins-8": {
+        "encoding_4A": 43.6534104347229,
+        "encoding_7A": "NaN",
+        "encoding_7B": 148.23289132118225,
+        "encoding_7C": 141.86688804626465,
+        "encoding_7D": 137.55709171295166
+    },
+
+    "ins-9": {
+        "encoding_4A": 59.36793899536133,
+        "encoding_7A": "NaN",
+        "encoding_7B": 167.13780188560486,
+        "encoding_7C": 158.24491047859192,
+        "encoding_7D": 157.87942814826965
+    },
+
+    "ins-10": {
+        "encoding_4A": "NaN",
+        "encoding_7A": "NaN",
+        "encoding_7B": "NaN",
+        "encoding_7C": "NaN",
+        "encoding_7D": "NaN"
+    },
+
+    "ins-11": {
+        "encoding_4A": "NaN",
+        "encoding_7A": "NaN",
+        "encoding_7B": "NaN",
+        "encoding_7C": "NaN",
+        "encoding_7D": "NaN"
+    },
+
+    "ins-12": {
+        "encoding_4A": 213.44352841377258,
+        "encoding_7A": "NaN",
+        "encoding_7B": "NaN",
+        "encoding_7C": "NaN",
+        "encoding_7D": "NaN"
+    },
+
+    "ins-13": {
+        "encoding_4A": "NaN",
+        "encoding_7A": "NaN",
+        "encoding_7B": "NaN",
+        "encoding_7C": "NaN",
+        "encoding_7D": "NaN"
+    },
+
+    "ins-14": {
+        "encoding_4A": "NaN",
+        "encoding_7A": "NaN",
+        "encoding_7B": "NaN",
+        "encoding_7C": "NaN",
+        "encoding_7D": "NaN"
+    },
+    
+    "ins-15": {
+        "encoding_4A": "NaN",
+        "encoding_7A": "NaN",
+        "encoding_7B": "NaN",
+        "encoding_7C": "NaN",
+        "encoding_7D": "NaN"
+    }
+}

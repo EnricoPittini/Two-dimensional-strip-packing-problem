@@ -119,7 +119,7 @@ def main() -> None:
         if not arguments.no_visualize_output:
             scripts_folder = os.path.dirname(__file__)
             visualize_script_path = os.path.join(scripts_folder,'visualize.py')
-            os.system(f'python {visualize_script_path} "{output_file}"')
+            os.system(f'python "{visualize_script_path}" "{output_file}"')
 
 def _create_cmdline_data(w, n, dims):
     # Format `dims` as a MiniZinc 2-dimensional array
