@@ -1,6 +1,6 @@
 %---------------------------------------------------------------------------------------------------------------------------%
 %                                                         MODEL 0                                                           %
-% First base interpretation of the problem that does not make use of global constraints.                                    %
+% First base interpretation of the problem.                                                                                 %
 %---------------------------------------------------------------------------------------------------------------------------%
 
 
@@ -49,9 +49,9 @@ endif;
 /** The length of the plate. */
 var l_min..l_max: l;
 
-/** X coordinate of the bottom-left corner of the circuits. */
-array[1..n] of var 0..l_max-h_min: coordsY;
 /** Y coordinate of the bottom-left corner of the circuits. */
+array[1..n] of var 0..l_max-h_min: coordsY;
+/** X coordinate of the bottom-left corner of the circuits. */
 array[1..n] of var 0..w-w_min: coordsX;
 
 %%%%%%% SOLVING

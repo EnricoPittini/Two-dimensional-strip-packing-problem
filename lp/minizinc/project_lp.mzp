@@ -1,8 +1,6 @@
 {
     "openFiles": [
-        "models/model_0.mzn",
-        "data/data_dummy.dzn",
-        "data/data_3.dzn"
+        "models/model_0.mzn"
     ],
     "openTab": 0,
     "projectFiles": [

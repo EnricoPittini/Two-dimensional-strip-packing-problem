@@ -1,0 +1,162 @@
+{
+    "ins-1": {
+        "model_6F": 0.75,
+        "model_6G": 0.6
+    },
+    "ins-2": {
+        "model_6F": 0.59,
+        "model_6G": 0.63
+    },
+    "ins-3": {
+        "model_6F": 0.58,
+        "model_6G": 0.57
+    },
+    "ins-4": {
+        "model_6F": 0.55,
+        "model_6G": 0.63
+    },
+    "ins-5": {
+        "model_6F": 0.82,
+        "model_6G": 0.65
+    },
+    "ins-6": {
+        "model_6F": 0.68,
+        "model_6G": 0.75
+    },
+    "ins-7": {
+        "model_6F": 0.68,
+        "model_6G": 0.58
+    },
+    "ins-8": {
+        "model_6F": 0.66,
+        "model_6G": 0.65
+    },
+    "ins-9": {
+        "model_6F": 0.72,
+        "model_6G": 0.64
+    },
+    "ins-10": {
+        "model_6F": 0.6,
+        "model_6G": 0.53
+    },
+    "ins-11": {
+        "model_6F": 8.99,
+        "model_6G": 0.53
+    },
+    "ins-12": {
+        "model_6F": 0.58,
+        "model_6G": 0.52
+    },
+    "ins-13": {
+        "model_6F": 1.38,
+        "model_6G": 0.54
+    },
+    "ins-14": {
+        "model_6F": 0.65,
+        "model_6G": 0.51
+    },
+    "ins-15": {
+        "model_6F": 0.74,
+        "model_6G": "UNKNOWN"
+    },
+    "ins-16": {
+        "model_6F": 202.72,
+        "model_6G": "UNKNOWN"
+    },
+    "ins-17": {
+        "model_6F": 4.0,
+        "model_6G": 0.61
+    },
+    "ins-18": {
+        "model_6F": 12.0,
+        "model_6G": "UNKNOWN"
+    },
+    "ins-19": {
+        "model_6F": "UNKNOWN",
+        "model_6G": "UNKNOWN"
+    },
+    "ins-20": {
+        "model_6F": "UNKNOWN",
+        "model_6G": "UNKNOWN"
+    },
+    "ins-21": {
+        "model_6F": "UNKNOWN",
+        "model_6G": "UNKNOWN"
+    },
+    "ins-22": {
+        "model_6F": "UNKNOWN",
+        "model_6G": "UNKNOWN"
+    },
+    "ins-23": {
+        "model_6F": "UNKNOWN",
+        "model_6G": "UNKNOWN"
+    },
+    "ins-24": {
+        "model_6F": "UNKNOWN",
+        "model_6G": "UNKNOWN"
+    },
+    "ins-25": {
+        "model_6F": "UNKNOWN",
+        "model_6G": "UNKNOWN"
+    },
+    "ins-26": {
+        "model_6F": "UNKNOWN",
+        "model_6G": "UNKNOWN"
+    },
+    "ins-27": {
+        "model_6F": "UNKNOWN",
+        "model_6G": "UNKNOWN"
+    },
+    "ins-28": {
+        "model_6F": "UNKNOWN",
+        "model_6G": "UNKNOWN"
+    },
+    "ins-29": {
+        "model_6F": "UNKNOWN",
+        "model_6G": "UNKNOWN"
+    },
+    "ins-30": {
+        "model_6F": "UNKNOWN",
+        "model_6G": "UNKNOWN"
+    },
+    "ins-31": {
+        "model_6F": "UNKNOWN",
+        "model_6G": "UNKNOWN"
+    },
+    "ins-32": {
+        "model_6F": "UNKNOWN",
+        "model_6G": "UNKNOWN"
+    },
+    "ins-33": {
+        "model_6F": "UNKNOWN",
+        "model_6G": "UNKNOWN"
+    },
+    "ins-34": {
+        "model_6F": "UNKNOWN",
+        "model_6G": "UNKNOWN"
+    },
+    "ins-35": {
+        "model_6F": "UNKNOWN",
+        "model_6G": "UNKNOWN"
+    },
+    "ins-36": {
+        "model_6F": "UNKNOWN",
+        "model_6G": "UNKNOWN"
+    },
+    "ins-37": {
+        "model_6F": "UNKNOWN",
+        "model_6G": "UNKNOWN"
+    },
+    "ins-38": {
+        "model_6F": "UNKNOWN",
+        "model_6G": "UNKNOWN"
+    },
+    "ins-39": {
+        "model_6F": "UNKNOWN",
+        "model_6G": "UNKNOWN"
+    },
+    "ins-40": {
+        "model_6F": "UNKNOWN",
+        "model_6G": "UNKNOWN"
+    }
+}

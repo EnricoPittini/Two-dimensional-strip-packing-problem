@@ -52,9 +52,9 @@ var l_min..l_max: l;
 /** Grid of coordinates of each circuit. */
 array[0..l_max, 0..w] of var 0..n: grid; 
 
-/** X coordinate of the bottom-left corner of the circuits. */
-array[1..n] of var 0..l_max-h_min: coordsY;
 /** Y coordinate of the bottom-left corner of the circuits. */
+array[1..n] of var 0..l_max-h_min: coordsY;
+/** X coordinate of the bottom-left corner of the circuits. */
 array[1..n] of var 0..w-w_min: coordsX;
 
 %%%%%%% SOLVING
