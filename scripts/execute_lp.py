@@ -133,7 +133,20 @@ def main() -> None:
             visualize_script_path = os.path.join(scripts_folder,'visualize.py')
             os.system(f'python {visualize_script_path} "{output_file}"')
 
-def _read_dat_file(w, n, dims, ampl):         
+def _read_dat_file(w, n, dims, ampl):
+    """Create and read `.dat` file of an instance and read it in order to execute the `AMPL` model on it.
+
+    Parameters
+    ----------
+    w : int
+        The width of the plate
+    n : int
+        The number of circuits
+    dims : list of tuple of int
+        Dims X and Y (i.e. width and height) of the circuits
+    ampl : AMPL
+        An AMPL translator
+    """
     data_file_path = 'data.dat'
     
     # Create `.dat` data file with `AMPL` required format.

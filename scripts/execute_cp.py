@@ -101,7 +101,6 @@ def main() -> None:
 
         output_folder_path = vars(arguments)['output-folder-path']
 
-        # instance_file_name = os.path.basename(instance_file.name)
         output_name = vars(arguments)['output-name']
         if output_name is None:
             output_file = os.path.join(output_folder_path, f'solution-{instance}')
@@ -119,6 +118,23 @@ def main() -> None:
             os.system(f'python "{visualize_script_path}" "{output_file}"')
 
 def _create_cmdline_data(w, n, dims):
+    """Create command line data string containing the parameters that are going to be given to the MiniZinc model.
+
+    Parameters
+    ----------
+    w : int
+        The width of the plate
+    n : int
+        The number of circuits
+    dims : list of tuple of int
+        Dims X and Y (i.e. width and height) of the circuits
+    
+    Returns
+    -------
+    command_line_string: str
+        Command line data string containing the parameters that are going to be given to the MiniZinc model
+
+    """
     # Format `dims` as a MiniZinc 2-dimensional array
     formatted_dims = f'[|{"|".join([",".join(d) for d in dims])}|]'
     
@@ -128,11 +144,7 @@ def _create_cmdline_data(w, n, dims):
     parsed_dims = f'{PREFIX} "dims = {formatted_dims}"'
     
     command_line_string = f'{parsed_w} {parsed_n} {parsed_dims}'
-    
-    # symmetry_breaking_option = arguments.symmetry_breaking_option
-    #if symmetry_breaking_option is not None:
-    #    command_line_string += f' {PREFIX} "symmetry_breaking_option = {symmetry_breaking_option}"'
-    
+
     return command_line_string
 
 if __name__ == '__main__':
