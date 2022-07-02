@@ -119,7 +119,7 @@ def main() -> None:
 
         output_name = vars(arguments)['output-name']
         if output_name is None:
-            output_file = os.path.join(output_folder_path, f'solution-{instance}')
+            output_file = os.path.join(output_folder_path, f'solution-{instance}.txt')
         else:
             output_file = os.path.join(output_folder_path, f'{output_name}.txt')
 
