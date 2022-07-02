@@ -62,7 +62,7 @@ def main() -> None:
 
         available_instances = [f'ins-{i}' for i in range(instances_lower_bound, instances_upper_bound + 1)]
         
-        instances_list = [k for k in comparison_list if k in available_instances] # TODO: add eventual filter
+        instances_list = [k for k in comparison_list if k in available_instances]
     else:
         instances_list = [f'ins-{i}' for i in instances_list]
     

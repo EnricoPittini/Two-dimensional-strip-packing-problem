@@ -9,7 +9,7 @@ from kiwisolver import BadRequiredStrength
 from utils import INSTANCES, AMPL_MODEL_CHOICES, AMPL_SOLVER_CHOICES, create_output_file, parse_instance_txt
 
 
-#python scripts\execute_ampl.py model_1 ins-1 cplex
+#python scripts\execute_lp.py model_1 ins-1 cplex
 def main() -> None:
     parser = argparse.ArgumentParser(description='Script for executing a VLSI AMPL model.')
 
@@ -80,7 +80,7 @@ def main() -> None:
                          f"(choose from {', '.join([f'{s}' for s in AMPL_SOLVER_CHOICES])})")
 
         # Read model and data files.
-        ampl.read(os.path.join(os.path.dirname(os.path.dirname(__file__)), f'AMPL/{model}.mod'))
+        ampl.read(os.path.join(os.path.dirname(os.path.dirname(__file__)), f'lp/{model}.mod'))
         _read_dat_file(w, n, dims, ampl)
         
         start_time = time.time()

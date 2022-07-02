@@ -8,7 +8,7 @@ from utils import AMPL_SOLVER_CHOICES, AMPL_MODEL_CHOICES
 
 
 # SOLVER_CHOICES = [f'solver_{i}' for i in range(3)]
-#python scripts/compare_ampl_models.py --models-list model_prova2 --solvers-list cplex -lb 1 -ub 10
+#python scripts/compare_lp_encodings.py --models-list model_prova2 --solvers-list cplex -lb 1 -ub 10
 def main() -> None:
     parser = argparse.ArgumentParser(description='Script comparing the execution time of MiniZinc models on a VLSI problem.')
 
@@ -25,9 +25,8 @@ def main() -> None:
                         type=str, 
                         choices=AMPL_MODEL_CHOICES,
                         default=AMPL_MODEL_CHOICES,
-                        # TODO: correct description
                         help='List of models to compare (default all models). ' +\
-                        'Example of usage: --models-list model_0 model_2 model_3',
+                        'Example of usage: --models-list model_0 model_1 model_2A',
                         nargs='*')
     
     parser.add_argument('--solvers-list', '-s',
@@ -73,18 +72,17 @@ def main() -> None:
                      f'(must be lower or equal than --instances-upper-bound/-ub: {instances_upper_bound})')
     instances_range = range(instances_lower_bound, instances_upper_bound + 1) 
     
-    execute_ampl_script_path = os.path.join(os.path.dirname(__file__), 'execute_ampl.py')
+    execute_lp_script_path = os.path.join(os.path.dirname(__file__), 'execute_lp.py')
 
     result_dict = dict()
 
-    # TODO: handling of error solutions
     for instance in instances_range:
         instance_dict = dict()
         for model in models_list:
             for solver in solvers_list:
                 print(f'Executing instance {instance} with model {model} with solver {solver}...')
                 
-                command = f'python "{execute_ampl_script_path}" {model} ins-{instance} {solver} --no-create-output'
+                command = f'python "{execute_lp_script_path}" {model} ins-{instance} {solver} --no-create-output'
                 
                 result = subprocess.run(command, capture_output=True)
                 

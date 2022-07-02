@@ -1,7 +1,0 @@
-{
-    "intermediate-solutions": false,
-    "output-mode": "json",
-    "output-time": true,
-    "solver": "org.minizinc.mip.scip@7.0.0.0",
-    "time-limit": 300000
-}
