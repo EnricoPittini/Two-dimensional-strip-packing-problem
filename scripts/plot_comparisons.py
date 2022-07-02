@@ -1,7 +1,7 @@
 import argparse
 import json
 import matplotlib.pyplot as plt
-import matplotlib.lines as mlines
+from matplotlib.patches import Patch
 import numpy as np
 import os
 
@@ -46,11 +46,12 @@ def main() -> None:
 
     arguments = parser.parse_args()
 
+    # Get JSON comparison file.
     json_path = os.path.normpath(vars(arguments)['json-path'])
-
     with open(json_path, 'r') as j:
-        comparison_list = json.load(j)
+        comparison_dictionary = json.load(j)
 
+    # Get instances list.
     instances_list = arguments.instances_list
 
     if instances_list is None:
@@ -62,73 +63,57 @@ def main() -> None:
 
         available_instances = [f'ins-{i}' for i in range(instances_lower_bound, instances_upper_bound + 1)]
         
-        instances_list = [k for k in comparison_list if k in available_instances]
+        instances_list = [k for k in comparison_dictionary if k in available_instances]
     else:
         instances_list = [f'ins-{i}' for i in instances_list]
     
-    models_list = arguments.models_list
-
-    if models_list is None:
-        models_dictionary = {
-            m: {'time': [],  'non_optimal': [], 'not_solved': []} for c in instances_list for m in comparison_list[c]
-        }
-    else:
-        models_dictionary = {
-            m: {'time': [],  'non_optimal': [], 'not_solved': []} for m in models_list
-        }
-    for ins in instances_list:
-        for m in models_dictionary:
-            _add_model_results(comparison_list[ins], models_dictionary, m)
+    # Get models dictionary.
+    models_dictionary = _get_models_dictionary(arguments.models_list, instances_list, comparison_dictionary)
 
     fig = plt.figure(figsize=(15,6))
     ax = fig.add_subplot(111)
 
-    ax = plt.subplot(111)
-
+    # Get increasing ordinal values for each instance.
     x_axis = [i for i in range(len(instances_list))]
 
+    # Set offset of bars of the chart.
     if len(models_dictionary) == 1:
         offsets = np.array([0.])
     else:
         offsets = np.linspace(-0.2, 0.2, len(models_dictionary), dtype=float)
 
+    # Draw times of models that found optimal solutions for each instance.
     for i, m in enumerate(models_dictionary):
-        ax.bar(x_axis + offsets[i], models_dictionary[m]['time'], 
-               width=0.4 / (len(models_dictionary) - 1), align='center', label=m)
+        ax.bar(x_axis + offsets[i], models_dictionary[m]['time'], color=f'C{i}',
+               width=0.4 / max(1, (len(models_dictionary) - 1)), align='center', label=m)
+    # Draw times of models that found non-optimal solutions for each instance.
+    for i, m in enumerate(models_dictionary):
+        ax.bar(x_axis + offsets[i], models_dictionary[m]['non_optimal'], hatch='//', alpha=0.3, color=f'C{i}',
+               width=0.4 / max(1, (len(models_dictionary) - 1)), align='center')
 
+    # Set "time limit" horizontal line.
     plt.axline((0, 300), slope=0, color="r", linestyle='dashed')
 
-    for i, m in enumerate(models_dictionary):
-        for j, b in enumerate(models_dictionary[m]['not_solved']):
-            if b:
-                ax.plot(x_axis[j] + offsets[i],  5, marker="X", linestyle=None, color="r", markeredgewidth=0.5, 
-                        markeredgecolor='black', markersize=10)
-        for j, b in enumerate(models_dictionary[m]['non_optimal']):
-            if b:
-                ax.plot(x_axis[j] + offsets[i], models_dictionary[m]['time'][j], marker="^", linestyle=None, color="orange", 
-                        markeredgewidth=0.5, markeredgecolor='black', markersize=10)
-
+    # Set x-ticks as the instances names.
     ax.set_xticks(range(len(instances_list)))
     ax.set_xticklabels(instances_list, rotation = 45, va="center", position=(0,-0.03))
 
+    # Set chart visible ranges on the x and y axes.
+    ax.set_xlim(-.5, len(instances_list) - .5)
     ax.set_ylim(0, 310)
 
+    # Set axes labels
     ax.set_xlabel('instances')
     ax.set_ylabel('time (s)')
 
+    # Set legend
     legend = ax.legend(loc='upper left')
-
     ax = legend.axes
 
     handles, labels = ax.get_legend_handles_labels()
-
-    if True in {b for m in models_dictionary for b in models_dictionary[m]['not_solved']}:
-        handles.append(mlines.Line2D([], [], color='r', marker='X', linestyle='None', markersize=10))
-        labels.append("Not solved")
-
-    if True in {b for m in models_dictionary for b in models_dictionary[m]['non_optimal']}:
-        handles.append(mlines.Line2D([], [], color='orange', marker='^', linestyle='None', markersize=10))
-        labels.append("Non optimal")
+    
+    handles.append(Patch(facecolor='#DCDCDC', hatch='//'))
+    labels.append('Non optimal')
 
     legend._legend_box = None
     legend._init_legend_box(handles, labels)
@@ -137,24 +122,28 @@ def main() -> None:
 
     plt.show()
 
-def _add_model_results(comparison: dict, model_dictionary: dict, model: str) -> dict:
-    time_value = comparison[model]
-
-    if type(time_value) == float:
-        time_value = min(time_value, 300)
-        non_optimal = False
-        not_solved = False
-    elif time_value == 'NaN':
-        time_value = 300
-        non_optimal = True
-        not_solved = False
+def _get_models_dictionary(models_list: list, instances_list: list, comparison_dictionary: dict) -> None:
+    if models_list is None:
+        models_dictionary = { m: {'time': [],  'non_optimal': []} for c in instances_list for m in comparison_dictionary[c] }
     else:
-        time_value = 0
-        non_optimal = False
-        not_solved = True 
+        models_dictionary = { m: {'time': [],  'non_optimal': []} for m in models_list }
+    
+    for ins in instances_list:
+        for m in models_dictionary:
+            time_value = comparison_dictionary[ins][m]
 
-    for k, v in list(zip(['time', 'non_optimal', 'not_solved'], [time_value, non_optimal, not_solved])):
-        model_dictionary[model][k].append(v)
+            if type(time_value) == float:
+                time_value = min(time_value, 300)
+                non_optimal = 0
+
+            else:
+                time_value = 0
+                non_optimal = 300
+
+            for k, v in list(zip(['time', 'non_optimal'], [time_value, non_optimal])):
+                models_dictionary[m][k].append(v)
+
+    return models_dictionary
 
 if __name__ == '__main__':
     main()
