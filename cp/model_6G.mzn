@@ -1,13 +1,14 @@
 %---------------------------------------------------------------------------------------------------------------------------%
-%                                                    MODEL FINAL 1                                                          %
+%                                                        MODEL 6G                                                           %
 %                                                                                                                           %
 % Model that uses the following symmetry breaking constraints:                                                              %
-% - Lexicographic order on the coordinates of rectangles having the same dimension;                                         %
+% - The area of the rectangles on the right half of the plate is less or equal than half the total area of the rectangles;  %
 % - The area of the rectangles on the top half of the plate is less or equal than half the total area of the rectangles;    %
 %---------------------------------------------------------------------------------------------------------------------------%
 
 include "cumulative.mzn";
 include "diffn.mzn";
+include "gecode.mzn";
 
 
 %%%%%%% PARAMETERS
@@ -59,17 +60,26 @@ constraint l = max(i in 1..n)(coordsY[i]+dimsY[i]);
 
 
 %%%%%%% SYMMETRY BREAKING
-% Symmetry breaking constraint in which for all pairs of rectangles i, j having the same dimension a lexicographic order is
-% imposed between the coordinates of i and j:
-%    - the array that has to be lexicographically less than the other is the one containing the coordinates of i
-%    - the array that has to be lexicographically greater or equal than the other is the one containing the coordinates of j
-constraint forall(i,j in 1..n where i < j /\ dimsX[i] = dimsX[j] /\ dimsY[i] = dimsY[j])(
-  lex_lesseq([coordsX[i], coordsY[i]], [coordsX[j], coordsY[j]])
-);
-  
+% Symmetry breaking constraint that imposes that the area of the rectangles on the right half of the plate should be less
+% or equal than half of the total area of the rectangles.
+constraint let{int: w_half = ceil(w/2)} in (sum([areas[i] | i in 1..n where coordsX[i] >= w_half]) <= A_tot / 2);
+
 % Symmetry breaking constraint that imposes that the area of the rectangles on the top half of the plate should be less
 % or equal than half of the total area of the rectangles.
 constraint sum([areas[i] | i in 1..n where coordsY[i] > l div 2]) <= A_tot / 2;
 
+
+
 %%%%%%% SOLVING
-solve minimize l;
+
+ann: search_ann_l_from_min = int_search([l], input_order, indomain_min, complete);
+% Variables selection heuristic: it is based on the rectangles widths; it interleaves coordX and coordY.
+% Variables order: coordX of the rectangle with max width; coordY of the rectangle with max width; coordX of the rectangle 
+% with second max width; coordY of the rectangle with second max width; ... .
+array[1..n] of var int: sorted_coordsX = reverse(sort_by(coordsX, dimsX));
+array[1..n] of var int: sorted_coordsY = reverse(sort_by(coordsY, dimsX));
+array[1..2*n] of var int: variables = [if (i mod 2 = 0) then sorted_coordsY[i div 2] else sorted_coordsX[(i+1) div 2] endif
+  | i in 1..2*n];
+ann: search_ann_dec_height = int_search(variables, input_order, indomain_min);
+
+solve :: seq_search([search_ann_l_from_min, search_ann_dec_height]) :: restart_luby(100) minimize l;

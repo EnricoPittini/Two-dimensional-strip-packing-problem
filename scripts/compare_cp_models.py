@@ -23,8 +23,7 @@ def main() -> None:
                         metavar='model',
                         type=str, 
                         choices=MINIZINC_MODELS,
-                        # TODO: add all possible model choices
-                        default=['model_final'], #'model_4_gecode'
+                        default=['model_6D1'],
                         help='List of models to compare (default all models). ' +\
                         'Example of usage: --models-list model_0 model_2 model_3',
                         nargs='*')
@@ -62,7 +61,6 @@ def main() -> None:
     instances_range = range(instances_lower_bound, instances_upper_bound + 1) 
     
     execute_cp_script_path = os.path.join(os.path.dirname(__file__), 'execute_cp.py')
-    solve_vlsi_cp_script_path = os.path.join(os.path.dirname(__file__), 'solve_vlsi_cp.py')
 
     result_dict = dict()
 
@@ -70,12 +68,9 @@ def main() -> None:
     for instance in instances_range:
         instance_dict = dict()
         for model in models_list:
-            print(f'Executing instance {instance} with model {model}...')
-            if model == 'model_final':
-                command = f'python "{solve_vlsi_cp_script_path}" "ins-{instance}" --no-create-output'
-            else:    
-                command = f'python "{execute_cp_script_path}" "{model}" "ins-{instance}" ' +\
-                        '--time-limit 300 --no-create-output'
+            print(f'Executing instance {instance} with model {model}...')    
+            command = f'python "{execute_cp_script_path}" "{model}" "ins-{instance}" ' +\
+                    '--time-limit 300 --no-create-output'
 
             try:
                 result = subprocess.run(command, capture_output=True)

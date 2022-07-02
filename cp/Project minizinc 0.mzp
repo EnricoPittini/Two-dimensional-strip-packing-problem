@@ -4,9 +4,14 @@
         "model_6D1.mzn",
         "model_6E0.mzn",
         "model_6F.mzn",
-        "model_0.mzn"
+        "model_0.mzn",
+        "model_6D0.mzn",
+        "model_6C.mzn",
+        "model_6B.mzn",
+        "model_6A.mzn",
+        "model_6G.mzn"
     ],
-    "openTab": 4,
+    "openTab": 9,
     "projectFiles": [
         "Data 13.dzn",
         "Data 3.dzn",
@@ -43,9 +48,7 @@
         "model_6E0.mzn",
         "model_6E1.mzn",
         "model_6F.mzn",
-        "model_final0.mzn",
-        "model_final1.mzn",
-        "model_final2.mzn",
+        "model_6G.mzn",
         "solver_0.mpc",
         "solver_1.mpc"
     ],

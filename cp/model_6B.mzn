@@ -1,5 +1,5 @@
 %---------------------------------------------------------------------------------------------------------------------------%
-%                                                      MODEL 4A4 ☑                                                         %
+%                                                         MODEL 6B                                                          %
 %                                                                                                                           %
 % Model that uses the following symmetry breaking constraints:                                                              %
 % - The area of the rectangles on the right half of the plate is less or equal than half the total area of the rectangles;  %
