@@ -1,4 +1,5 @@
 {
+    "free-search": true,
     "intermediate-solutions": false,
     "output-mode": "json",
     "output-time": true,

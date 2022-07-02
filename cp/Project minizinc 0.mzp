@@ -1,22 +1,12 @@
 {
     "openFiles": [
-        "model_final0.mzn",
-        "model_4A3.mzn",
-        "model_final1.mzn",
-        "model_6A.mzn",
-        "model_4A4.mzn",
-        "model_final2.mzn",
-        "model_6B0.mzn",
-        "model_6B1.mzn",
-        "model_6C0.mzn",
-        "model_6C1.mzn",
-        "model_6D0.mzn",
+        "model_6E1.mzn",
         "model_6D1.mzn",
         "model_6E0.mzn",
-        "model_6E1.mzn",
-        "model_6F.mzn"
+        "model_6F.mzn",
+        "model_0.mzn"
     ],
-    "openTab": 5,
+    "openTab": 4,
     "projectFiles": [
         "Data 13.dzn",
         "Data 3.dzn",
@@ -46,10 +36,8 @@
         "model_4C2.mzn",
         "model_5.mzn",
         "model_6A.mzn",
-        "model_6B0.mzn",
-        "model_6B1.mzn",
-        "model_6C0.mzn",
-        "model_6C1.mzn",
+        "model_6B.mzn",
+        "model_6C.mzn",
         "model_6D0.mzn",
         "model_6D1.mzn",
         "model_6E0.mzn",
@@ -59,10 +47,8 @@
         "model_final1.mzn",
         "model_final2.mzn",
         "solver_0.mpc",
-        "solver_1.mpc",
-        "solver_2.mpc",
-        "solver_3.mpc"
+        "solver_1.mpc"
     ],
-    "selectedSolverConfigFile": "solver_3.mpc",
+    "selectedSolverConfigFile": "solver_1.mpc",
     "version": 106
 }

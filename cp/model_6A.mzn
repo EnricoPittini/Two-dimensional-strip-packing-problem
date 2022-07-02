@@ -43,31 +43,29 @@ array[1..n] of var 0..w-w_min: coordsX;  % Coords Y of the left-bottom corner of
 
 %%%%%%% CONSTRAINTS 
 % The rectangles, given by their left-bottom corners `coordsX,coordsY` and sizes `dimsX,dimsY`, must be non-overlapping
-constraint diffn(coordsX, coordsY, dimsX, dimsY);
+constraint diffn(coordsX, coordsY, dimsX, dimsY) :: domain;
 
 % Cumulative constraint in which:
 %    - the starting times of the tasks are coordsX
 %    - the durations of the tasks are dimsX
 %    - the resource recquirements of the tasks are dimsY
 %    - the maximum resource bound is l
-constraint cumulative(coordsX, dimsX, dimsY, l);
+constraint cumulative(coordsX, dimsX, dimsY, l) :: domain;
 
 % Each rectangle must not exceed the width of the plate (IT IS AN IMPLIED CONSTRAINT)
-constraint forall(i in 1..n) (coordsX[i]+dimsX[i]<=w);
+constraint forall(i in 1..n) (coordsX[i]+dimsX[i]<=w) :: domain;
 % The length of the plate is the maximum height reached (IT IS AN IMPLIED CONSTRAINT)
-constraint l = max(i in 1..n)(coordsY[i]+dimsY[i]);
+constraint l = max(i in 1..n)(coordsY[i]+dimsY[i]) :: domain;
 
 
 %%%%%%% SYMMETRY BREAKING
 % Symmetry breaking constraint that imposes that the area of the rectangles on the right half of the plate should be less
 % or equal than half of the total area of the rectangles.
-constraint let{int: w_half = ceil(w/2)} in (sum([areas[i] | i in 1..n where coordsX[i] >= w_half]) <= A_tot / 2);
+constraint let{int: w_half = ceil(w/2)} in (sum([areas[i] | i in 1..n where coordsX[i] >= w_half]) <= A_tot / 2) :: domain;
 
 % Symmetry breaking constraint that imposes that the area of the rectangles on the top half of the plate should be less
 % or equal than half of the total area of the rectangles.
-constraint sum([areas[i] | i in 1..n where coordsY[i] > l div 2]) <= A_tot / 2;
+constraint sum([areas[i] | i in 1..n where coordsY[i] > l div 2]) <= A_tot / 2 :: domain;
 
 %%%%%%% SOLVING
-
-ann: search_ann_l_from_min = int_search([l], input_order, indomain_min, complete);
-solve :: search_ann_l_from_min minimize l;
+solve minimize l;

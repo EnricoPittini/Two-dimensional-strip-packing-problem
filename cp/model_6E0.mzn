@@ -8,6 +8,7 @@
 
 include "cumulative.mzn";
 include "diffn.mzn";
+include "gecode.mzn";
 
 
 %%%%%%% PARAMETERS
@@ -69,13 +70,8 @@ constraint sum([areas[i] | i in 1..n where coordsY[i] > l div 2]) <= A_tot / 2;
 
 
 %%%%%%% SOLVING
-
 ann: search_ann_l_from_min = int_search([l], input_order, indomain_min, complete);
-% Variables selection heuristic: first the coordsX, then the coordsY; the coordsX are sorted by rectangles width, the coordsX are 
-% sorted by rectangles height.
-% Variables order: coordX of the rectangle with max width; coordX of the rectangle with second max width; ... ; coordY of the rectangle
-% with max height; coordY of the rectangle with second max height; ... . 
-ann: search_ann_y_by_height = int_search(reverse(sort_by(coordsY, dimsY)), input_order, indomain_min);
-ann: search_ann_x_by_width = int_search(reverse(sort_by(coordsX, dimsX)), input_order, indomain_min);
+ann: search_ann_y_by_heigth = int_search(reverse(sort_by(coordsY, dimsY)), input_order, indomain_min);
+ann: search_ann_x_by_heigth = int_search(reverse(sort_by(coordsX, dimsY)), input_order, indomain_min);
 
-solve :: seq_search([search_ann_x_by_width, search_ann_y_by_height, search_ann_l_from_min]) minimize l;
+solve :: seq_search([search_ann_x_by_heigth, search_ann_y_by_heigth, search_ann_l_from_min]) minimize l;

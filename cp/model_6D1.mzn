@@ -8,7 +8,6 @@
 
 include "cumulative.mzn";
 include "diffn.mzn";
-include "gecode.mzn";
 
 
 %%%%%%% PARAMETERS
@@ -69,6 +68,7 @@ constraint let{int: w_half = ceil(w/2)} in (sum([areas[i] | i in 1..n where coor
 constraint sum([areas[i] | i in 1..n where coordsY[i] > l div 2]) <= A_tot / 2;
 
 
+
 %%%%%%% SOLVING
 
 ann: search_ann_l_from_min = int_search([l], input_order, indomain_min, complete);
@@ -79,7 +79,6 @@ array[1..n] of var int: sorted_coordsX = reverse(sort_by(coordsX, dimsX));
 array[1..n] of var int: sorted_coordsY = reverse(sort_by(coordsY, dimsX));
 array[1..2*n] of var int: variables = [if (i mod 2 = 0) then sorted_coordsY[i div 2] else sorted_coordsX[(i+1) div 2] endif
   | i in 1..2*n];
+ann: search_ann_dec_height = int_search(variables, input_order, indomain_min);
 
-ann: search_ann_x_by_dec_width = int_search(coordsX, input_order, indomain_random);
-ann: search_ann_y_by_dec_width = int_search(coordsY, input_order, indomain_random);
-solve :: seq_search([search_ann_y_by_dec_width, search_ann_x_by_dec_width, search_ann_l_from_min]) :: restart_luby(100) minimize l;
+solve :: seq_search([search_ann_l_from_min, search_ann_dec_height]) minimize l;
