@@ -9,7 +9,7 @@ CHUFFED_MODELS = [f'model_{i}' for i in range(3)] + [f'model_3{i}' for i in 'ABC
     [f'model_4{i}{j}' for i in 'BC' for j in range(3)] + ['model_5', 'model_6A'] + [f'model_6{i}0' for i in 'BCDE']
 MINIZINC_MODELS = GECODE_MODELS + CHUFFED_MODELS + ['model_final']
 AMPL_SOLVER_CHOICES = ['cbc','cplex','gurobi']
-AMPL_MODEL_CHOICES = ['model_0','model_1', 'model_2A', 'model_2B','model_dual','propedeuticoalduale']
+AMPL_MODEL_CHOICES = ['model_0','model_1', 'model_2A', 'model_2B','model_dual']
 INSTANCES = [f'ins-{i}' for i in range(1,41)] + ['ins-unsat']
 
 def parse_instance_txt(instance_txt_file: io.TextIOWrapper):

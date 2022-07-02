@@ -40,7 +40,7 @@ def main() -> None:
     arguments = parser.parse_args()
     model = vars(arguments)['model']
     if model == 'model_dual':
-        model = 'model_2B'#TODO best model here
+        model = 'model_2B'
         use_dual = True
     else:
         use_dual = False
@@ -99,20 +99,16 @@ def main() -> None:
             sys.exit('error = UNKOWN')
 
         # Parse variables results.
-        if model == 'dual_model':
-            #print(ampl.get_constraint('l').dual())
-            print('CIAO')
-        else:
-            l = int(ampl.get_value('l'))
-            
-            coordsX = ampl.get_data('coordsX').to_pandas().coordsX.values
-            coordsY = ampl.get_data('coordsY').to_pandas().coordsY.values
-            coordsX = coordsX.astype(int)
-            coordsY = coordsY.astype(int)
+        l = int(ampl.get_value('l'))
+        
+        coordsX = ampl.get_data('coordsX').to_pandas().coordsX.values
+        coordsY = ampl.get_data('coordsY').to_pandas().coordsY.values
+        coordsX = coordsX.astype(int)
+        coordsY = coordsY.astype(int)
 
-            print(f'l = {l}')
-            print(f'CoordsX = {coordsX}')
-            print(f'CoordsY = {coordsY}')
+        print(f'l = {l}')
+        print(f'CoordsX = {coordsX}')
+        print(f'CoordsY = {coordsY}')
     except AMPLException:
         sys.exit('error = UNKOWN')
 
@@ -121,7 +117,6 @@ def main() -> None:
         
         output_folder_path = vars(arguments)['output-folder-path']
 
-        # instance_file_name = os.path.basename(instance_file.name)
         output_name = vars(arguments)['output-name']
         if output_name is None:
             output_file = os.path.join(output_folder_path, f'solution-{instance}')
