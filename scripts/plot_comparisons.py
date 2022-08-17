@@ -44,7 +44,27 @@ def main() -> None:
                     help='List of models to show (default None). Example of usage: --models-list model_0 model_1',
                     nargs='*')
 
+    parser.add_argument('--model-renames', '-mr',
+                    metavar='models...',
+                    type=str,
+                    default=None,
+                    help='List of models to rename. Example of usage: -mr "model 1" "model 2" (The renaming is positional ' +
+                    'and it must be the same length of the used models. Furthermore, the list of models ' +
+                    '(--models-list/-m) must be provided)',
+                    nargs='*')
+
     arguments = parser.parse_args()
+    
+    models_list = arguments.models_list
+    model_renames = arguments.model_renames
+    
+    if model_renames is not None:
+        if models_list is None:
+            parser.error(f'argument --models-list/-m: not provided ' 
+                        f'(must be explicitally provided when --model-renames/-mr is specified)')
+        if len(models_list) != len(model_renames):
+            parser.error(f'argument --model-renames/-mr: invalid choices: {model_renames} ' 
+                        f'(must be equivalent in length to the models that will be used from the json)')
 
     # Get JSON comparison file.
     json_path = os.path.normpath(vars(arguments)['json-path'])
@@ -68,7 +88,14 @@ def main() -> None:
         instances_list = [f'ins-{i}' for i in instances_list]
     
     # Get models dictionary.
-    models_dictionary = _get_models_dictionary(arguments.models_list, instances_list, comparison_dictionary)
+    models_dictionary = _get_models_dictionary(models_list, instances_list, comparison_dictionary, model_renames)
+
+    # Rename models list.
+    model_renames = arguments.model_renames
+    if model_renames is not None:
+        if len(models_dictionary) != len(model_renames):
+            parser.error(f'argument --model-renames/-mr: invalid choices: {model_renames} ' 
+                        f'(must be equivalent in length to the models that will be used from the json)')
 
     fig = plt.figure(figsize=(15,6))
     ax = fig.add_subplot(111)
@@ -122,15 +149,15 @@ def main() -> None:
 
     plt.show()
 
-def _get_models_dictionary(models_list: list, instances_list: list, comparison_dictionary: dict) -> None:
+def _get_models_dictionary(models_list: list, instances_list: list, comparison_dict: dict, model_renames: list) -> None:
     if models_list is None:
-        models_dictionary = { m: {'time': [],  'non_optimal': []} for c in instances_list for m in comparison_dictionary[c] }
+        models_dictionary = { m: {'time': [],  'non_optimal': []} for c in instances_list for m in comparison_dict[c] }
     else:
         models_dictionary = { m: {'time': [],  'non_optimal': []} for m in models_list }
     
     for ins in instances_list:
         for m in models_dictionary:
-            time_value = comparison_dictionary[ins][m]
+            time_value = comparison_dict[ins][m]
 
             if type(time_value) == float:
                 time_value = min(time_value, 300)
@@ -142,6 +169,11 @@ def _get_models_dictionary(models_list: list, instances_list: list, comparison_d
 
             for k, v in list(zip(['time', 'non_optimal'], [time_value, non_optimal])):
                 models_dictionary[m][k].append(v)
+
+    if model_renames is not None:
+        for i, m in enumerate(models_list):
+            models_dictionary[model_renames[i]] = models_dictionary[m]
+            del models_dictionary[m]
 
     return models_dictionary
 
