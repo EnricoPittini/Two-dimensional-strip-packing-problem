@@ -8,7 +8,8 @@ GECODE_MODELS = [f'model_6{i}' for i in 'FG']
 CHUFFED_MODELS = [f'model_{i}' for i in range(3)] + [f'model_3{i}' for i in 'ABC'] + [f'model_4A{i}' for i in range(8)] +\
     [f'model_4{i}{j}' for i in 'BC' for j in range(3)] + ['model_5'] + [f'model_6{i}' for i in 'ABC'] +\
     [f'model_6{i}{j}' for i in 'DE' for j in range(2)]
-MINIZINC_MODELS = GECODE_MODELS + CHUFFED_MODELS
+CHUFFED_ROTATION_MODELS = ['model_r_0', 'model_r_1A', 'model_r_1B', 'model_r_1C', 'model_r_1D']
+MINIZINC_MODELS = GECODE_MODELS + CHUFFED_MODELS + CHUFFED_ROTATION_MODELS
 
 AMPL_SOLVER_CHOICES = ['cbc','cplex','gurobi']
 AMPL_MODEL_CHOICES = ['model_0','model_1', 'model_2A', 'model_2B','model_dual']

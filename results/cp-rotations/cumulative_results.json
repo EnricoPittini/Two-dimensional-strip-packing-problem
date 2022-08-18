@@ -1,0 +1,182 @@
+{
+    "ins-1": {
+        "model_r_1A": 3.25,
+        "model_r_1B": 0.89,
+        "model_r_1C": 0.89,
+        "model_r_1D": 0.87
+    },
+    "ins-2": {
+        "model_r_1A": 0.88,
+        "model_r_1B": 0.95,
+        "model_r_1C": 0.77,
+        "model_r_1D": 0.84
+    },
+    "ins-3": {
+        "model_r_1A": 0.8,
+        "model_r_1B": 0.74,
+        "model_r_1C": 0.79,
+        "model_r_1D": 0.76
+    },
+    "ins-4": {
+        "model_r_1A": 0.78,
+        "model_r_1B": 0.85,
+        "model_r_1C": 0.86,
+        "model_r_1D": 1.06
+    },
+    "ins-5": {
+        "model_r_1A": 0.93,
+        "model_r_1B": 0.86,
+        "model_r_1C": 0.84,
+        "model_r_1D": 0.85
+    },
+    "ins-6": {
+        "model_r_1A": 1.01,
+        "model_r_1B": 1.05,
+        "model_r_1C": 0.68,
+        "model_r_1D": 1.35
+    },
+    "ins-7": {
+        "model_r_1A": 0.98,
+        "model_r_1B": 1.41,
+        "model_r_1C": 0.96,
+        "model_r_1D": 1.35
+    },
+    "ins-8": {
+        "model_r_1A": 0.93,
+        "model_r_1B": 0.92,
+        "model_r_1C": 0.84,
+        "model_r_1D": 0.87
+    },
+    "ins-9": {
+        "model_r_1A": 0.89,
+        "model_r_1B": 0.83,
+        "model_r_1C": 1.05,
+        "model_r_1D": 0.85
+    },
+    "ins-10": {
+        "model_r_1A": 1.39,
+        "model_r_1B": 1.01,
+        "model_r_1C": 1.15,
+        "model_r_1D": 0.95
+    },
+    "ins-11": {
+        "model_r_1A": 29.25,
+        "model_r_1B": 6.21,
+        "model_r_1C": 9.89,
+        "model_r_1D": "NaN"
+    },
+    "ins-12": {
+        "model_r_1A": 0.92,
+        "model_r_1B": 1.33,
+        "model_r_1C": 0.89,
+        "model_r_1D": 3.76
+    },
+    "ins-13": {
+        "model_r_1A": 0.61,
+        "model_r_1B": 0.94,
+        "model_r_1C": 0.89,
+        "model_r_1D": 12.05
+    },
+    "ins-14": {
+        "model_r_1A": 1.13,
+        "model_r_1B": 0.58,
+        "model_r_1C": 0.46,
+        "model_r_1D": 91.9
+    },
+    "ins-15": {
+        "model_r_1A": 5.07,
+        "model_r_1B": 4.24,
+        "model_r_1C": 0.72,
+        "model_r_1D": 93.04
+    },
+    "ins-16": {
+        "model_r_1A": 39.53,
+        "model_r_1B": 46.28,
+        "model_r_1C": 58.43,
+        "model_r_1D": "NaN"
+    },
+    "ins-17": {
+        "model_r_1A": 9.11,
+        "model_r_1B": 7.55,
+        "model_r_1C": 95.01,
+        "model_r_1D": "NaN"
+    },
+    "ins-18": {
+        "model_r_1A": 8.58,
+        "model_r_1B": 50.65,
+        "model_r_1C": 98.62,
+        "model_r_1D": "NaN"
+    },
+    "ins-19": {
+        "model_r_1A": "NaN",
+        "model_r_1B": "NaN",
+        "model_r_1C": "NaN",
+        "model_r_1D": "NaN"
+    },
+    "ins-20": {
+        "model_r_1A": 80.3,
+        "model_r_1B": 50.37,
+        "model_r_1C": "NaN",
+        "model_r_1D": "NaN"
+    },
+    "ins-21": {
+        "model_r_1A": "NaN",
+        "model_r_1B": "NaN",
+        "model_r_1C": "NaN",
+        "model_r_1D": "NaN"
+    },
+    "ins-22": {
+        "model_r_1A": "NaN",
+        "model_r_1B": "NaN",
+        "model_r_1C": "NaN",
+        "model_r_1D": "NaN"
+    },
+    "ins-23": {
+        "model_r_1A": 141.73,
+        "model_r_1B": 109.73,
+        "model_r_1C": "NaN",
+        "model_r_1D": "NaN"
+    },
+    "ins-24": {
+        "model_r_1A": 2.95,
+        "model_r_1B": 20.74,
+        "model_r_1C": 14.59,
+        "model_r_1D": 125.78
+    },
+    "ins-25": {
+        "model_r_1A": "NaN",
+        "model_r_1B": "NaN",
+        "model_r_1C": "NaN",
+        "model_r_1D": "NaN"
+    },
+    "ins-26": {
+        "model_r_1A": "NaN",
+        "model_r_1B": "NaN",
+        "model_r_1C": 14.05,
+        "model_r_1D": "NaN"
+    },
+    "ins-27": {
+        "model_r_1A": 28.37,
+        "model_r_1B": 51.27,
+        "model_r_1C": 45.48,
+        "model_r_1D": 18.21
+    },
+    "ins-28": {
+        "model_r_1A": 180.83,
+        "model_r_1B": "NaN",
+        "model_r_1C": "NaN",
+        "model_r_1D": "NaN"
+    },
+    "ins-29": {
+        "model_r_1A": 6.78,
+        "model_r_1B": 54.59,
+        "model_r_1C": 3.22,
+        "model_r_1D": "NaN"
+    },
+    "ins-30": {
+        "model_r_1A": "NaN",
+        "model_r_1B": "NaN",
+        "model_r_1C": "NaN",
+        "model_r_1D": "NaN"
+    }
+}

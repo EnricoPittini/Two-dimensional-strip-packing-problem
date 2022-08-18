@@ -1,6 +1,10 @@
 {
     "openFiles": [
-        "models/model_6D1.mzn"
+        "rotation_models/model_r_0.mzn",
+        "rotation_models/model_r_1A.mzn",
+        "rotation_models/model_r_1B.mzn",
+        "rotation_models/model_r_1C.mzn",
+        "rotation_models/model_r_1D.mzn"
     ],
     "openTab": 0,
     "projectFiles": [
@@ -41,9 +45,15 @@
         "models/model_6E1.mzn",
         "models/model_6F.mzn",
         "models/model_6G.mzn",
+        "rotation_models/model_r_0.mzn",
+        "rotation_models/model_r_1A.mzn",
+        "rotation_models/model_r_1B.mzn",
+        "rotation_models/model_r_1C.mzn",
+        "rotation_models/model_r_1D.mzn",
         "solvers/solver_0.mpc",
         "solvers/solver_1.mpc"
     ],
-    "selectedSolverConfigFile": "solvers/solver_1.mpc",
+    "selectedBuiltinConfigId": "org.ortools.ortools",
+    "selectedBuiltinConfigVersion": "9.3.0",
     "version": 106
 }
