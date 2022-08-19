@@ -1,0 +1,42 @@
+{
+    "ins-31": {
+        "model_r_1A": 11.84,
+        "model_r_1B": 128.62
+    },
+    "ins-32": {
+        "model_r_1A": "NaN",
+        "model_r_1B": "NaN"
+    },
+    "ins-33": {
+        "model_r_1A": 97.14,
+        "model_r_1B": 21.12
+    },
+    "ins-34": {
+        "model_r_1A": 30.04,
+        "model_r_1B": 3.79
+    },
+    "ins-35": {
+        "model_r_1A": 2.92,
+        "model_r_1B": 36.61
+    },
+    "ins-36": {
+        "model_r_1A": 16.02,
+        "model_r_1B": 10.58
+    },
+    "ins-37": {
+        "model_r_1A": "NaN",
+        "model_r_1B": "NaN"
+    },
+    "ins-38": {
+        "model_r_1A": "NaN",
+        "model_r_1B": "NaN"
+    },
+    "ins-39": {
+        "model_r_1A": "NaN",
+        "model_r_1B": "NaN"
+    },
+    "ins-40": {
+        "model_r_1A": "NaN",
+        "model_r_1B": "UNKNOWN"
+    }
+}

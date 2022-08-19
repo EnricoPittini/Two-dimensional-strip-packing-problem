@@ -16,42 +16,28 @@ array[1..n] of int: dimsY = col(dims,2);
 
 array [1..n] of int: areas = [dimsX[i]*dimsY[i] | i in 1..n];  % The areas of the rectangles
 int: A_tot = sum(areas);  % The overall area of all the given rectangles
-int: h_min = min(dimsY);  % The minimum height of a rectangle
-int: h_max = max(dimsY);  % The maximum height of a rectangle
-int: w_min = min(dimsX);  % The minimum width of a rectangle
-int: w_max = max(dimsX);  % The maximum width of a rectangle
 
 int: l_min = A_tot div w; % The lower bound for the length
 
-int: min_rects_per_row = w div w_max; % Minimum number of rectangles per row without rotation
-int: max_rects_per_col = ceil(n / max([1, min_rects_per_row])); % Maximum number of rectangles per column without rotation
-% The upper bound for the length without rotation
-int: l_max_normal = if min_rects_per_row < 2 
-  then sum(dimsY) 
-  else let{array [1..n] of int: sorted_dimsY = reverse(sort(dimsY))} in 
-    sum([sorted_dimsY[k] | k in 1..n where k mod min_rects_per_row = 1]) 
-endif;
-
-int: min_rects_per_row_r = w div h_max; % Minimum number of rectangles per row with rotation
-int: max_rects_per_col_r = ceil(n / max([1, min_rects_per_row_r])); % Maximum number of rectangles per column with rotation
-% The upper bound for the length with rotation
-int: l_max_r = if min_rects_per_row_r < 2 
-  then sum(dimsX) 
-  else let{array [1..n] of int: sorted_dimsX = reverse(sort(dimsX))} in 
-    sum([sorted_dimsX[k] | k in 1..n where k mod min_rects_per_row_r = 1]) 
-endif;
-
-% The actual upper bound for the length
-int: l_max = min([l_max_normal, l_max_r]);
-
 int: maxDim = max(dimsX ++ dimsY);
+int: minDim = min(dimsX ++ dimsY);
+
+int: min_rects_per_row = w div maxDim; % Minimum number of rectangles per row
+int: max_rects_per_col = ceil(n / max([1, min_rects_per_row])); % Maximum number of rectangles per column
+% The upper bound for the length.
+int: l_max = if min_rects_per_row < 2 
+  then sum([max([dimsX[i], dimsY[i]]) | i in 1..n])
+  else let{array [1..n] of int: sorted_dims = reverse(sort([max([dimsX[i], dimsY[i]]) | i in 1..n ]))} in 
+    sum([sorted_dims[k] | k in 1..n where k mod min_rects_per_row = 1]) 
+endif;
+
 
 %%%%%%% VARIABLES
 % The length of the plate
 var l_min..l_max: l;
 
-array[1..n] of var 0..l_max-h_min: coordsY;  % Coords X of the left-bottom corner of the rectangles
-array[1..n] of var 0..w-w_min: coordsX;  % Coords Y of the left-bottom corner of the rectangles
+array[1..n] of var 0..l_max-minDim: coordsY;  % Coords X of the left-bottom corner of the rectangles
+array[1..n] of var 0..w-minDim: coordsX;  % Coords Y of the left-bottom corner of the rectangles
 
 array[1..n] of var bool: rotations;
 

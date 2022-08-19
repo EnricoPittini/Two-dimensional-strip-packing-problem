@@ -1,6 +1,8 @@
 %---------------------------------------------------------------------------------------------------------------------------%
-%                                                        MODEL R 1B ☑                                                      %
-% New model with updated bounds and the cumulative constraint regarding just the length;                                    %
+%                                                         MODEL R 2B ☑                                                     %
+% New model with:                                                                                                           %
+% - domain restriction for the actual dimension arrays of the circuits;                                                     %
+% - new constraint regarding the relation between the orientation and the actual dimensions of the circuits.                %
 %---------------------------------------------------------------------------------------------------------------------------%
 
 include "cumulative.mzn";
@@ -43,10 +45,7 @@ array[1..n] of var 0..w-minDim: coordsX;  % Coords Y of the left-bottom corner o
 array[1..n] of var bool: rotations;
 
 array[1..n] of var 1..maxDim: actualDimsX;
-actualDimsX = [if rotations[i] then dimsY[i] else dimsX[i] endif | i in 1..n];
-
-array[1..n] of var 1..maxDim: actualDimsY; 
-actualDimsY = [if rotations[i] then dimsX[i] else dimsY[i] endif | i in 1..n];
+array[1..n] of var 1..maxDim: actualDimsY;
 
 %%%%%%% CONSTRAINTS 
 % The rectangles, given by their left-bottom corners `coordsX,coordsY` and sizes `dimsX,dimsY`, must be non-overlapping
@@ -64,6 +63,13 @@ constraint forall(i in 1..n) (coordsX[i]+actualDimsX[i]<=w);
 % The length of the plate is the maximum height reached (IT IS AN IMPLIED CONSTRAINT)
 constraint l = max(i in 1..n)(coordsY[i]+actualDimsY[i]);
 
+constraint forall(i in 1..n)(actualDimsX[i] = dimsX[i] \/ actualDimsX[i] = dimsY[i]); 
+constraint forall(i in 1..n)(actualDimsY[i] = dimsX[i] \/ actualDimsY[i] = dimsY[i]);
+
+constraint forall(i in 1..n)(rotations[i] = false <-> (actualDimsX[i] = dimsX[i] /\ actualDimsY[i] = dimsY[i]));
+constraint forall(i in 1..n)(rotations[i] = true -> (actualDimsX[i] = dimsY[i] /\ actualDimsY[i] = dimsX[i]));
+
+
 
 %%%%%%% SYMMETRY BREAKING
 % Symmetry breaking constraint that imposes that the area of the rectangles on the right half of the plate should be less
@@ -74,6 +80,12 @@ constraint let{int: w_half = ceil(w/2)} in (sum([areas[i] | i in 1..n where coor
 % or equal than half of the total area of the rectangles.
 constraint sum([areas[i] | i in 1..n where coordsY[i] > l div 2]) <= A_tot / 2;
 
+% Squared circuits should not be rotated.
+%constraint forall(i in 1..n)(dimsX[i] = dimsY[i] -> rotations[i] = false);
+
+% Circuits with the same actual respective dimensions are lexicogrphically ordered.
+%constraint forall(i,j in 1..n where i < j /\ actualDimsX[i] = actualDimsX[j] /\ actualDimsY[i] = actualDimsY[j])
+%  (lex_lesseq([coordsX[i],coordsY[i]],[coordsX[j],coordsY[j]]));
 
 
 %%%%%%% SOLVING
