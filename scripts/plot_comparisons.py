@@ -7,6 +7,7 @@ import os
 
 from utils import INSTANCES
 
+#python scripts/plot_comparisons.py results/sat/results_comparison_encodings_10A_10B_10C.json
 
 def main() -> None:
     parser = argparse.ArgumentParser(description='Script for plotting a comparison between models.')
@@ -132,6 +133,8 @@ def main() -> None:
     # Set axes labels
     ax.set_xlabel('instances')
     ax.set_ylabel('time (s)')
+
+    ax.grid()
 
     # Set legend
     legend = ax.legend(loc='upper left')
