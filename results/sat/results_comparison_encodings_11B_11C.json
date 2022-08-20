@@ -1,0 +1,86 @@
+{
+    "ins-20": {
+        "encoding_11B": 95.90827965736389,
+        "encoding_11C": 141.8081877231598
+    },
+    "ins-21": {
+        "encoding_11B": 156.59000420570374,
+        "encoding_11C": 203.3361313343048
+    },
+    "ins-22": {
+        "encoding_11B": "NaN",
+        "encoding_11C": "NaN"
+    },
+    "ins-23": {
+        "encoding_11B": 91.89387202262878,
+        "encoding_11C": 68.41167640686035
+    },
+    "ins-24": {
+        "encoding_11B": 62.70606207847595,
+        "encoding_11C": 64.33609366416931
+    },
+    "ins-25": {
+        "encoding_11B": "NaN",
+        "encoding_11C": "NaN"
+    },
+    "ins-26": {
+        "encoding_11B": 215.79512810707092,
+        "encoding_11C": 139.98506808280945
+    },
+    "ins-27": {
+        "encoding_11B": 113.63886070251465,
+        "encoding_11C": 111.82489395141602
+    },
+    "ins-28": {
+        "encoding_11B": 116.54618573188782,
+        "encoding_11C": 143.2599368095398
+    },
+    "ins-29": {
+        "encoding_11B": 137.55848097801208,
+        "encoding_11C": 254.28890109062195
+    },
+    "ins-30": {
+        "encoding_11B": "NaN",
+        "encoding_11C": "NaN"
+    },
+    "ins-31": {
+        "encoding_11B": 67.99174618721008,
+        "encoding_11C": 69.771005153656
+    },
+    "ins-32": {
+        "encoding_11B": "NaN",
+        "encoding_11C": "NaN"
+    },
+    "ins-33": {
+        "encoding_11B": 88.23606252670288,
+        "encoding_11C": 111.0326726436615
+    },
+    "ins-34": {
+        "encoding_11B": 291.0542140007019,
+        "encoding_11C": 265.52916407585144
+    },
+    "ins-35": {
+        "encoding_11B": 103.76525211334229,
+        "encoding_11C": 155.02608561515808
+    },
+    "ins-36": {
+        "encoding_11B": 125.82069563865662,
+        "encoding_11C": 164.32043552398682
+    },
+    "ins-37": {
+        "encoding_11B": "NaN",
+        "encoding_11C": "NaN"
+    },
+    "ins-38": {
+        "encoding_11B": "NaN",
+        "encoding_11C": "NaN"
+    },
+    "ins-39": {
+        "encoding_11B": "NaN",
+        "encoding_11C": "NaN"
+    },
+    "ins-40": {
+        "encoding_11B": "NaN",
+        "encoding_11C": "NaN"
+    }
+}
