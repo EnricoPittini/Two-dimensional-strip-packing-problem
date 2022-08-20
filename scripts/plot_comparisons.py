@@ -7,7 +7,7 @@ import os
 
 from utils import INSTANCES
 
-#python scripts/plot_comparisons.py results/sat/results_comparison_encodings_10A_10B_10C.json
+#python scripts/plot_comparisons.py results/smt/results_comparison_encodings_2B_2C_2D_solvers_z3.json --models-list encoding_2B_z3 encoding_2C_z3 encoding_2D_z3 -mr 'BinarySearch' 'FromTop' 'BinarySearch1'
 
 def main() -> None:
     parser = argparse.ArgumentParser(description='Script for plotting a comparison between models.')
@@ -53,6 +53,11 @@ def main() -> None:
                     'and it must be the same length of the used models. Furthermore, the list of models ' +
                     '(--models-list/-m) must be provided)',
                     nargs='*')
+
+    parser.add_argument('--title', '-t', type=str,
+                        default='Models comparison',
+                        help='Plot title', 
+                        nargs='?')
 
     arguments = parser.parse_args()
     
@@ -111,12 +116,13 @@ def main() -> None:
         offsets = np.linspace(-0.2, 0.2, len(models_dictionary), dtype=float)
 
     # Draw times of models that found optimal solutions for each instance.
+    bar_colors = [f"C{i}" for i in range(len(models_dictionary))]
     for i, m in enumerate(models_dictionary):
-        ax.bar(x_axis + offsets[i], models_dictionary[m]['time'], color=f'C{i}',
-               width=0.4 / max(1, (len(models_dictionary) - 1)), align='center', label=m)
+        ax.bar(x_axis + offsets[i], models_dictionary[m]['time'], color=bar_colors[i],#color=f'C{i}',
+               width=0.4 / max(1, (len(models_dictionary) - 1)), align='center')#, label=m)
     # Draw times of models that found non-optimal solutions for each instance.
     for i, m in enumerate(models_dictionary):
-        ax.bar(x_axis + offsets[i], models_dictionary[m]['non_optimal'], hatch='//', alpha=0.3, color=f'C{i}',
+        ax.bar(x_axis + offsets[i], models_dictionary[m]['non_optimal'], hatch='//', alpha=0.3, color=bar_colors[i],#color=f'C{i}',
                width=0.4 / max(1, (len(models_dictionary) - 1)), align='center')
 
     # Set "time limit" horizontal line.
@@ -134,6 +140,8 @@ def main() -> None:
     ax.set_xlabel('instances')
     ax.set_ylabel('time (s)')
 
+    ax.set_title(arguments.title)
+
     ax.grid()
 
     # Set legend
@@ -142,13 +150,32 @@ def main() -> None:
 
     handles, labels = ax.get_legend_handles_labels()
     
+    handles.append(Patch(facecolor='#808080'))
+    labels.append('Optimal')
     handles.append(Patch(facecolor='#DCDCDC', hatch='//'))
     labels.append('Non optimal')
 
     legend._legend_box = None
     legend._init_legend_box(handles, labels)
-    legend._set_loc(legend._loc)
+    #legend._set_loc(legend._loc+1)
+    bbox_to_anchor=(0.01, 0.85)
+    legend._set_loc(bbox_to_anchor)
     legend.set_title(legend.get_title().get_text())
+
+    statistics_dictionary = _compute_statistics(models_dictionary)
+    #print(statistics_dictionary)
+
+    #baseline_times = execution_time_data[0]
+    spaces = 3
+    rows = [' ' * spaces for i in range(len(statistics_dictionary))]
+    cols = ('Name', 'Solved \ninstances', 'Mean \nruntime')
+
+    #stats = [get_timing_stats(execution_times, baseline_times) for execution_times in execution_time_data]
+    t = [[s, f"{statistics_dictionary[s]['n_solved_instances']}/{len(instances_list)}", 
+          f"{statistics_dictionary[s]['mean_time']:.2f} s"] for s in statistics_dictionary]
+    #bar_colors = [f"C{(i+starting_color)%10}" for i in range(n_approaches)]
+    table = ax.table(t, rowLabels=rows, alpha = 1, rowColours=bar_colors, colLabels=cols, cellLoc = 'center',  bbox=(0.02, 0.5, 0.3, 0.3))
+    table.set_zorder(200)
 
     plt.show()
 
@@ -179,6 +206,14 @@ def _get_models_dictionary(models_list: list, instances_list: list, comparison_d
             del models_dictionary[m]
 
     return models_dictionary
+
+
+def _compute_statistics(models_dictionary):
+    statistics_dictionary = {m:{} for m in models_dictionary}
+    for m in models_dictionary:
+        statistics_dictionary[m]['n_solved_instances'] = sum([not flag for flag in models_dictionary[m]['non_optimal']])
+        statistics_dictionary[m]['mean_time'] = sum(models_dictionary[m]['time'])/statistics_dictionary[m]['n_solved_instances']
+    return statistics_dictionary
 
 if __name__ == '__main__':
     main()
