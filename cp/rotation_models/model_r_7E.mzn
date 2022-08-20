@@ -1,8 +1,6 @@
 %---------------------------------------------------------------------------------------------------------------------------%
-%                                                         MODEL R 3B                                                        %
-% New model with:                                                                                                           %
-% - domain restriction for the actual dimension arrays of the circuits;                                                     %
-% - new constraint regarding the relation between the orientation and the actual dimensions of the circuits.                %
+%                                                         MODEL R 7A                                                        %
+% Added the same heuristics as the best model without rotations.                                                            %
 %---------------------------------------------------------------------------------------------------------------------------%
 
 include "cumulative.mzn";
@@ -21,15 +19,17 @@ int: A_tot = sum(areas);  % The overall area of all the given rectangles
 
 int: l_min = A_tot div w; % The lower bound for the length
 
-int: maxDim = max(dimsX ++ dimsY);
+array [1..n] of int: maxDims = [max([dimsX[i], dimsY[i]]) | i in 1..n];
+
+int: maxDim = max(maxDims);
 int: minDim = min(dimsX ++ dimsY);
 
 int: min_rects_per_row = w div maxDim; % Minimum number of rectangles per row
 int: max_rects_per_col = ceil(n / max([1, min_rects_per_row])); % Maximum number of rectangles per column
 % The upper bound for the length.
 int: l_max = if min_rects_per_row < 2 
-  then sum([max([dimsX[i], dimsY[i]]) | i in 1..n])
-  else let{array [1..n] of int: sorted_dims = reverse(sort([max([dimsX[i], dimsY[i]]) | i in 1..n ]))} in 
+  then sum(maxDims)
+  else let{array [1..n] of int: sorted_dims = reverse(sort(maxDims))} in 
     sum([sorted_dims[k] | k in 1..n where k mod min_rects_per_row = 1]) 
 endif;
 
@@ -69,15 +69,6 @@ constraint forall(i in 1..n)(actualDimsY[i] = dimsX[i] \/ actualDimsY[i] = dimsY
 constraint forall(i in 1..n)(rotations[i] = false <-> (actualDimsX[i] = dimsX[i] /\ actualDimsY[i] = dimsY[i]));
 constraint forall(i in 1..n)(rotations[i] = true -> (actualDimsX[i] = dimsY[i] /\ actualDimsY[i] = dimsX[i]));
 
-% Circuits which can't stay one of the side of the other are up or down
-constraint forall(i,j in 1..n where i < j)
-  (actualDimsX[i] + actualDimsX[j] > w -> ((coordsY[i] < coordsY[j] -> coordsY[i] + actualDimsY[i] <= coordsY[j]) /\ 
-  (coordsY[j] < coordsY[i] -> coordsY[j] + actualDimsY[j] <= coordsY[i])));
-  
-% Circuits which can't stay one on top of the other are one to the side of the other
-constraint forall(i,j in 1..n where i < j)
-  (actualDimsY[i] + actualDimsY[j] > l -> ((coordsX[i] < coordsX[j] -> coordsX[i] + actualDimsX[i] <= coordsX[j]) /\
-  (coordsX[j] < coordsX[i] -> coordsX[j] + actualDimsX[j] <= coordsX[i])));
 
 
 %%%%%%% SYMMETRY BREAKING
@@ -89,13 +80,20 @@ constraint let{int: w_half = ceil(w/2)} in (sum([areas[i] | i in 1..n where coor
 % or equal than half of the total area of the rectangles.
 constraint sum([areas[i] | i in 1..n where coordsY[i] > l div 2]) <= A_tot / 2;
 
-% Squared circuits should not be rotated.
-%constraint forall(i in 1..n)(dimsX[i] = dimsY[i] -> rotations[i] = false);
-
-% Circuits with the same actual respective dimensions are lexicogrphically ordered.
-%constraint forall(i,j in 1..n where i < j /\ actualDimsX[i] = actualDimsX[j] /\ actualDimsY[i] = actualDimsY[j])
-%  (lex_lesseq([coordsX[i],coordsY[i]],[coordsX[j],coordsY[j]]));
 
 
 %%%%%%% SOLVING
-solve minimize l;
+ann: search_ann_l_from_min = int_search([l], input_order, indomain_min, complete);
+% Variables selection heuristic: it is based on the rectangles max dimension; it interleaves coordX and coordY.
+% Variables order: coordX of the rectangle with max dimension; coordY of the rectangle with max dimension; coordX of the rectangle 
+% with second max dimension; coordY of the rectangle with second max dimension; ... .
+array[1..n] of var int: sorted_coordsX = reverse(sort_by(coordsX, maxDims));
+array[1..n] of var int: sorted_coordsY = reverse(sort_by(coordsY, maxDims));
+array[1..n] of var bool: sorted_rotations = reverse(sort_by(rotations, maxDims));
+
+array[1..3*n] of var int: variables = [if (i mod 3 = 0) then sorted_coordsY[i div 3] elseif (i mod 3 = 2) then 
+  sorted_coordsX[(i + 1) div 3] else sorted_rotations[(i+2) div 3] endif | i in 1..3*n];
+  
+ann: search_ann_dec_width = int_search(variables, input_order, indomain_min);
+
+solve :: seq_search([search_ann_l_from_min, search_ann_dec_width]) minimize l;

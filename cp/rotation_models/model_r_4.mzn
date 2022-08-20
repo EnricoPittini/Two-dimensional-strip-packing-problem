@@ -1,5 +1,5 @@
 %---------------------------------------------------------------------------------------------------------------------------%
-%                                                         MODEL R 2                                                         %
+%                                                         MODEL R 2B ☑                                                     %
 % New model with:                                                                                                           %
 % - domain restriction for the actual dimension arrays of the circuits;                                                     %
 % - new constraint regarding the relation between the orientation and the actual dimensions of the circuits.                %
@@ -9,7 +9,6 @@ include "cumulative.mzn";
 include "diffn.mzn";
 
 
-%%%%%%% PARAMETERS
 %%%%%%% PARAMETERS
 int: w;  % The width of the plate
 int: n;  % Number of the rectangles
@@ -70,9 +69,6 @@ constraint forall(i in 1..n)(actualDimsY[i] = dimsX[i] \/ actualDimsY[i] = dimsY
 constraint forall(i in 1..n)(rotations[i] = false <-> (actualDimsX[i] = dimsX[i] /\ actualDimsY[i] = dimsY[i]));
 constraint forall(i in 1..n)(rotations[i] = true -> (actualDimsX[i] = dimsY[i] /\ actualDimsY[i] = dimsX[i]));
 
-% If a circuit does not fit in an orientation it should be rotated to the other.
-constraint forall(i in 1..n where dimsX[i] > l)(rotations[i] = false);
-constraint forall(i in 1..n where dimsY[i] > w)(rotations[i] = false);
 
 
 %%%%%%% SYMMETRY BREAKING
@@ -84,12 +80,23 @@ constraint let{int: w_half = ceil(w/2)} in (sum([areas[i] | i in 1..n where coor
 % or equal than half of the total area of the rectangles.
 constraint sum([areas[i] | i in 1..n where coordsY[i] > l div 2]) <= A_tot / 2;
 
+
 % Squared circuits should not be rotated.
 constraint forall(i in 1..n)(dimsX[i] = dimsY[i] -> rotations[i] = false);
 
 % Circuits with the same actual respective dimensions are lexicogrphically ordered.
 constraint forall(i,j in 1..n where i < j /\ actualDimsX[i] = actualDimsX[j] /\ actualDimsY[i] = actualDimsY[j])
   (lex_lesseq([coordsX[i],coordsY[i]],[coordsX[j],coordsY[j]]));
+  
+% Symmetry breaking constraint imposing that rectangles on the same column should follow just one of the possible permutations.
+constraint forall(i, j in 1..n where i < j /\ coordsX[i] = coordsX[j] /\ actualDimsX[i] = actualDimsX[j])
+  (coordsY[i] + actualDimsY[i] <= coordsY[j]);
+
+% Symmetry breaking constraint imposing that rectangles on the same row should follow just one of the possible permutations.
+constraint forall(i, j in 1..n where i < j /\ coordsY[i] = coordsY[j] /\ actualDimsY[i] = actualDimsY[j])
+  (coordsX[i] + actualDimsX[i] <= coordsX[j]);
+
+
 
 
 %%%%%%% SOLVING

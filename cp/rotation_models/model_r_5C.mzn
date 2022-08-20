@@ -1,5 +1,5 @@
 %---------------------------------------------------------------------------------------------------------------------------%
-%                                                         MODEL R 3B                                                        %
+%                                                         MODEL R 4A                                                        %
 % New model with:                                                                                                           %
 % - domain restriction for the actual dimension arrays of the circuits;                                                     %
 % - new constraint regarding the relation between the orientation and the actual dimensions of the circuits.                %
@@ -69,32 +69,20 @@ constraint forall(i in 1..n)(actualDimsY[i] = dimsX[i] \/ actualDimsY[i] = dimsY
 constraint forall(i in 1..n)(rotations[i] = false <-> (actualDimsX[i] = dimsX[i] /\ actualDimsY[i] = dimsY[i]));
 constraint forall(i in 1..n)(rotations[i] = true -> (actualDimsX[i] = dimsY[i] /\ actualDimsY[i] = dimsX[i]));
 
-% Circuits which can't stay one of the side of the other are up or down
-constraint forall(i,j in 1..n where i < j)
-  (actualDimsX[i] + actualDimsX[j] > w -> ((coordsY[i] < coordsY[j] -> coordsY[i] + actualDimsY[i] <= coordsY[j]) /\ 
-  (coordsY[j] < coordsY[i] -> coordsY[j] + actualDimsY[j] <= coordsY[i])));
-  
-% Circuits which can't stay one on top of the other are one to the side of the other
-constraint forall(i,j in 1..n where i < j)
-  (actualDimsY[i] + actualDimsY[j] > l -> ((coordsX[i] < coordsX[j] -> coordsX[i] + actualDimsX[i] <= coordsX[j]) /\
-  (coordsX[j] < coordsX[i] -> coordsX[j] + actualDimsX[j] <= coordsX[i])));
 
 
 %%%%%%% SYMMETRY BREAKING
-% Symmetry breaking constraint that imposes that the area of the rectangles on the right half of the plate should be less
-% or equal than half of the total area of the rectangles.
-constraint let{int: w_half = ceil(w/2)} in (sum([areas[i] | i in 1..n where coordsX[i] >= w_half]) <= A_tot / 2);
-
-% Symmetry breaking constraint that imposes that the area of the rectangles on the top half of the plate should be less
-% or equal than half of the total area of the rectangles.
-constraint sum([areas[i] | i in 1..n where coordsY[i] > l div 2]) <= A_tot / 2;
-
 % Squared circuits should not be rotated.
-%constraint forall(i in 1..n)(dimsX[i] = dimsY[i] -> rotations[i] = false);
+constraint forall(i in 1..n)(dimsX[i] = dimsY[i] -> rotations[i] = false);
 
 % Circuits with the same actual respective dimensions are lexicogrphically ordered.
-%constraint forall(i,j in 1..n where i < j /\ actualDimsX[i] = actualDimsX[j] /\ actualDimsY[i] = actualDimsY[j])
-%  (lex_lesseq([coordsX[i],coordsY[i]],[coordsX[j],coordsY[j]]));
+constraint forall(i,j in 1..n where i < j /\ actualDimsX[i] = actualDimsX[j] /\ actualDimsY[i] = actualDimsY[j])
+  (lex_lesseq([coordsX[i],coordsY[i]],[coordsX[j],coordsY[j]]));
+
+% Symmetry breaking constraint imposing that rectangles on the same row should follow just one of the possible permutations.
+constraint forall(i, j in 1..n where i < j /\ coordsY[i] = coordsY[j] /\ actualDimsY[i] = actualDimsY[j])
+  (coordsX[i] + actualDimsX[i] <= coordsX[j]);
+
 
 
 %%%%%%% SOLVING
