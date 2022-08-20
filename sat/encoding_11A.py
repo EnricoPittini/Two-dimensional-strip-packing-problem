@@ -3,236 +3,68 @@ from sat_utils import UnsatError, Vlsi_sat_abstract
 
 
 class Vlsi_sat(Vlsi_sat_abstract):
-    """Class for solving the VLSI problem in SAT, using the encoding 10.
+    """Class for solving the VLSI problem in SAT, using the encoding 10A.
 
     It inherits from the class `Vlsi_sat_abstract`.
 
-    This is a completely different encodings from the previous ones.
-    This encoding has been taken from the paper *'A SAT-based Method for Solving the Two-dimensional Strip Packing Problem'*.
+    The solving procedure is the same of the encoding 10. SAT variables 'px_i_e', 'py_i_f, 'lr_i_j' and 'ud_i_j'.
+    In addition, there are also the SAT variables 'ph_o': they are introduced for improving the optimization procedure.
+    See the `__solve` method.
 
-    The main idea is the following.
-    The basic CP model is considered. Namely, the one in which the non-overlapping of each couple of rectangles i-j is 
-    ensured by means of a disjunction of four constraints: 
-                        (xi + wi ≤ xj ) \/ (xj + wj ≤ xi) \/ (yi + hi ≤ yj ) \/ (yj + hj ≤ yi).
-    (Scheduling-like constraints).
-    Then, these constraints are encoded into SAT using the ORDER ENCODING.
-    See the description below.
-
-    A basic optimization procedure has been used.
-    Cycle in which at each iteration the solver is created and run from scratch, with the current best length of the plate 
-    (i.e. `l`) given to the solver as upper bound for the length of the plate (i.e. `l_max`). (Actually, `l-1` is given as 
-    `l_max`). 
-    In this way, at each iteration is found a better solution with respect to the current one.
+    The optimization procedure has been improved, thanks to the variables 'ph_o'.
+    In addition, the binary search is now used instead of the linear search. 
+    Cycle. At each iteration we have a certain lower bound (i.e. lb) and a certain upper bound (i.e. ub) for the length of 
+    the plate. We try to solve the problem, by running the solver from scratch, and by fixing the actual length of the plate 
+    as smaller or equal than 'l', where 'l' is computed as ceil((lb+ub)/2). If SAT, we update ub<-l, if UNSAT we update 
+    lb<-l+1. Then we repeat. 
+    At the beginning, lb<-l_min (minimum length of the plate) and ub<-l_max (maximum length of the plate) 
     No incremental solving: at each iteration, the solver is created and run from scratch. 
     See the `__optimize` method.
 
-
-    --- NOTATION ---
-    The notation used in the following description follows the notation of the paper, and it may differ from the notation 
-    used for the previous encodings.
-
-    n : number of circuits.
-    w : width of the plate.
-    l_max : max length of the plate.
-    wi : width of the i-th circuit.
-    hi : height of the i-th circuit.
-    xi : x coordinate of the left-bottom corner of the i-th circuit.
-    yi : y coordinate of the left-bottom corner of the i-th circuit. 
+    This improving of the optimization procedure, by means of the variables 'ph_o' and by means of the binary search, is 
+    again taken from the paper *'A SAT-based Method for Solving the Two-dimensional Strip Packing Problem'*.
 
 
-    --- ORDER ENCODING ---
-    Order encoding consists in two steps.
-    First of all, the constraints are reduced to combinations of constraints of the form  xi ≤ c  (where xi is a variable and
-    c a constant).
-    Then, each constraint   xi ≤ c  is encoded as a SAT variable  px_i_c.     px_i_c  <->  xi ≤ c                   
+    --- VARIABLES ph_o ---
+    These variables are again inspired by the order encoding, presented in the previous encoding class 10.
 
-    Example.
-    Constraint  x1 + 1 ≤ x2 , where x1 and x2 are two variables in {0,1,2,3}.
-        - Step 1.
-          The given constraint is equivalent to the following ones:
-                (x2>0) /\ (x2≤1 -> x1≤0) /\ (x2≤2 -> x1≤1) /\ x1≤2
-          Which are equivalent to:
-                ¬(x2≤0) /\ (¬(x2≤1) \/ x1≤0) /\ (¬(x2≤2) \/ x1≤1) /\ x1≤2
-        - Step 2.
-          Encoding using SAT variables.
-                ¬px_2,0 /\ (px_1,0 \/ ¬px_2,1) /\ (px_1,1 \/ ¬px_2,2) /\ px_1,2
+    ph_o, where 'o' represents a length.
+    o in [0,l_max-l_min].
+    'o' does not represent an actual length, but an index (on [l_min,l_max]). The corresponding actual length is l_o=o+l_min.
+    So:
+        from actual length 'l_o' to index 'o' ==> o=l_o-l_min;
+        from index 'o' to actual length 'l_o' ==> l_o=o+l_min.
+    ph_o is True IFF each circuit is below or at the same level of the length 'o'. 
+    More precisely, ph_o is True IFF each circuit is below or at the same level of the length l_o=o+l_min.
+    Formally:  ph_o is True IFF ∀i yi+hi<=l_o (where l_o=o+l_min)
 
-    Actually, these constraints are not enough. We have to specify other constraints about the variables px_ic.
-    We have to encode the fact that, if px_ic is True, then all px_id with d>c are True.
-            ∀c (px_ic -> px_i{c+1})
-    Which is equivalent to:
-            ∀c (¬px_ic \/ px_i{c+1})
 
-    In the example, we have also the constraints:
-        (px_10 -> px_11) /\ (px_11 -> px_12) /\ (px_20 -> px_21) /\ (px_21 -> px_22)
-    Which are equivalent to:
-        (¬px_10 \/ px_11) /\ (¬px_11 \/ px_12) /\ (¬px_20 \/ px_21) /\ (¬px_21 \/ px_22)
+    --- CONSTRAINTS ON ph_o ---
+    For each circuit 'i' and for each 'o' in [0,l_max-l_min], we impose:
+                ph_o -> py_i_{o+l_min-dimsY[i]}
+    which is equivalent to:
+                ¬ph_o \/ py_i_{o+l_min-dimsY[i]}
+    Basically, this means that if ph_o is True then the circuit 'i' is below or at most the same level of the length l_o=o+l_min.
+    Formally, yi+hi<=l_o, where l_o=o+l_min.
+    On the whole, we have:
+                ∀i∈[0,n-1] ∀o∈[0,l_mix-l_min] ¬ph_o \/ py_i_{o+l_min-dimsY[i]}
 
-    Given a model for our problem, consisting in an assignement of truth values to the boolean variables px_ic, how can we 
-    deduce the value assigned to each variable xi?
-    For each variable xi, we take all the associated boolean variables px_ic, we scan them from the smallest c to the 
-    biggest c, and we stop when we find the first True boolean variable px_id : d is the value associated to the variable 
-    xi.
-    (Why? Because we have that all px_ic with c<d are False, and all px_ic with c>=d are True).
+    Then, we put the usual constraint for the order encoding.
+    Namely, for each 'o', we have to put:
+                (¬ph_o \/ ph_{o+1})    (which is equivalent to ∀e (¬ph_o -> ph_{o+1}))
 
-    In the example, if in the model we have:
-        px_10=False, px_11=True, px_12=True
-    then the value assigned to x1 is 1.
-    
-
-    --- APPLICATION OF THE ORDER ENCODING IN OUR PROBLEM ---
-    The following boolean variables are used.
-        1) px_i_e, where 'i' represents a circuit and 'e' represents a value in [0,w].
-           i in [0,n], e in [0,w].
-           px_i_e is True IFF xi≤e. Which means that the x coordinate of the left-bottom corner of circuit 'i' has been placed
-           less or equal than 'e'.
-        2) py_i_f, where 'i' represents a circuit and 'f' represents a value in [0,l_max].
-           i in [0,n], f in [0,l_max].
-           py_i_f is True IFF yi≤f. Which means that the y coordinate of the left-bottom corner of circuit 'i' has been placed
-           less or equal than 'f'.
-        3) lr_i_j, where 'i' and 'j' are two circuits.
-           i,j in [0,1].
-           lr_i_j is True IFF the circuit 'i' has been placed on the left of the circuit 'j'. 
-           Namely, xi+wi≤xj.
-        3) ud_i_j, where 'i' and 'j' are two circuits.
-           i,j in [0,1].
-           ud_i_j is True IFF the circuit 'i' has been placed at the downward to the circuit 'j'. 
-           Namely, yi+hi≤yj.
-
-    We encode the fact that two circuits can't overlap in the following way.
-    For each pair of circuits 'i' and 'j' (i<j), at least one among {lr_i_j, lr_j_i, ud_i_j, ud_j_i}.
-    ('i' is at the left to 'j' or 'j' is at the left to 'i' or 'i' is at the downward to 'j' or 'j' is at the downward to 'i').
-    So, we have the constraint:
-                           lr_i_j \/ lr_j_i \/ ud_i_j \/ ud_j_i
-
-    Now, for each pair of circuits 'i' and 'j' (i<j), we have to encode the "meaning" of each variable lr_i_j, lr_j_i, 
-    ud_i_j, ud_j_i.
-    1) If lr_i_j is True, then we have that:
-                    xj≤e+wi -> xi≤e,  for each possible 'e'
-       which is equivalent to:
-                    px_j{e+wi} ->  px_ie,  for each possible 'e'
-       which is equivalent to:
-                    ¬px_j{e+wi} \/  px_ie,  for each possible 'e'.
-       On the whole, we have to add the following constraint:
-                ∀e (lr_i_j -> (¬px_j{e+wi} \/  px_ie)).
-       Which is equivalent to: 
-                ∀e (¬lr_i_j \/ ¬px_j{e+wi} \/  px_ie)
-    The same reasoning is applied to lr_j_i, ud_i_j, ud_j_i.
-    2) For the variable lr_j_i, we add the constraint
-                ∀e (¬lr_j_i \/ ¬px_i{e+wj} \/  px_je).
-    3) For the variable ud_i_j, we add the constraint
-                ∀f (ud_i_j \/ ¬py_j{f+wi} \/  px_if).
-    4) For the variable ud_j_i, we add the constraint
-                ∀f (ud_j_i \/ ¬py_i{f+wj} \/  px_jf).
-
-    Finally, we have to put the other constraints about px_ie and py_if for the ordering encoding.
-    For each circuit 'i', we have to put:
-            ∀e (¬px_ie \/ px_i{e+1})    (which is equivalent to ∀e (px_ie -> px_i{e+1}))
-    and
-            ∀f (¬py_if \/ py_i{f+1})    (which is equivalent to ∀f (py_if -> py_i{f+1}))
+    Finally, we have to ensure that the actual length of the plate is smaller or equal the given 'l'.
+    We simply add the constraint that ph_{l-l_min} is True.  (o=l-l_min is the index corresponding to the actual length 'l').
         
 
     --- SUM UP ---
     The constraints are the following.
-    1)  ∀i,j∈[0,n-1]  lr_i_j \/ lr_j_i \/ ud_i_j \/ ud_j_i
-    2)  ∀i,j∈[0,n-1] ∀e∈[0,w-1] (¬lr_i_j \/ ¬px_j{e+wi} \/  px_ie)
-    3)  ∀i,j∈[0,n-1] ∀e∈[0,w-1] (¬lr_j_i \/ ¬px_i{e+wj} \/  px_je)
-    4)  ∀i,j∈[0,n-1] ∀f∈[0,l_max-1] (ud_i_j \/ ¬py_j{f+wi} \/  px_if)
-    5)  ∀i,j∈[0,n-1] ∀f∈[0,l_max-1] (ud_j_i \/ ¬py_i{f+wj} \/  px_jf)
-    6)  ∀i∈[0,n-1] ∀e∈[0,w-1] (¬px_ie \/ px_i{e+1})
-    7)  ∀i∈[0,n-1] ∀f∈[0,l_max-1] (¬py_if \/ py_i{f+1})
-    In all these constraints, we consider i!=j.
-        
-
-    --- REMARKS ---
-    For making this work in our specific context, we have to make the following adjustements.
-
-    A. Constraints 2) and 3).
-       If w-wi-wj<0, this means that the circuits 'i'-'j' can't be placed one on the left of the other (the sum of their 
-       widths exceed the total width, they don't fit into the plate). In this case, we don't put the constraints 2) and 3), 
-       but we simply put: 
-                                ¬lr_i_j /\ ¬lr_j_i.
-       So, we have:
-                                ∀i,j  ,if w-wi-wj<0,  ¬lr_i_j /\ ¬lr_j_i        
-       If w-wi-wj>=0, we put the constraints 2) and 3). But we put them only for e∈[0,w-wi-wj]:
-                                    2)  ∀i,j ∀e∈[0,w-wi-wj] (¬lr_i_j \/ ¬px_j{e+wi} \/  px_ie)
-                                    3)  ∀i,j ∀e∈[0,w-wi-wj] (¬lr_j_i \/ ¬px_i{e+wj} \/  px_je) 
-       This because, from w-wi-wj+1 up to w, the circuits 'i'-'j' can't be placed one on the left of the other: they don't 
-       fit into the plate.
-
-       If w-wi-wj>=0, we have also other additional constraints.
-   
-       For the constraint 2) (i.e. for lr_i_j), we have also to explicitely ensure that, if e<wi, then we have
-                                    lr_i_j  ->   ¬px_j_e
-       which is equivalent to:
-                                    ¬lr_i_j \/ ¬px_j_e.
-       (The meaning is: when e<wi, if 'i' is placed on the left of 'j', then xj>e).
-       So, we add the constraint:
-                                    ∀i,j ∀e∈[0,wi] (¬lr_i_j \/ ¬px_j_e)
-
-       This same reasoning is applied for the constraint 3) (i.e. for lr_j_i):
-                                    ∀i,j ∀e∈[0,wj] (¬lr_j_i \/ ¬px_i_e)
-
-       To sum up, the constraints 2) and 3) becomes:
-            A1) ∀i,j∈[0,n-1] ,if w-wi-wj<0, ¬lr_i_j /\ ¬lr_j_i
-            A2) ∀i,j∈[0,n-1] ,if w-wi-wj>=0, ∀e∈[0,w-wi-wj] (¬lr_i_j \/ ¬px_j{e+wi} \/  px_ie)
-            A3) ∀i,j∈[0,n-1] ,if w-wi-wj>=0, ∀e∈[0,w-wi-wj] (¬lr_j_i \/ ¬px_i{e+wj} \/  px_je)
-            A4) ∀i,j∈[0,n-1] ,if w-wi-wj>=0, ∀e∈[0,wi] (¬lr_i_j \/ ¬px_j_e)
-            A5) ∀i,j∈[0,n-1] ,if w-wi-wj>=0, ∀e∈[0,wj] (¬lr_j_i \/ ¬px_i_e)
-       Group A of constraints.
-       In all these constraints, we consider i!=j.
-
-    B. Constraints 4) and 5).
-       The exact same reasoning is applied. 
-       We obtain the following constraints (group B):
-            B1) ∀i,j∈[0,n-1] ,if l_max-hi-hj<0, ¬ud_i_j /\ ¬ud_j_i
-            B2) ∀i,j∈[0,n-1] ,if l_max-hi-hj<0, ∀f∈[0,l_max-hi-hj] (¬ud_i_j \/ ¬py_j{f+hi} \/  py_if)
-            B3) ∀i,j∈[0,n-1] ,if l_max-hi-hj<0, ∀f∈[0,l_max-hi-hj] (¬ud_j_i \/ ¬py_i{h+hj} \/  py_jf)
-            B4) ∀i,j∈[0,n-1] ,if l_max-hi-hj<0, ∀f∈[0,hi] (¬ud_i_j \/ ¬py_j_f)
-            B5) ∀i,j∈[0,n-1] ,if l_max-hi-hj<0, ∀f∈[0,hj] (¬ud_j_i \/ ¬py_i_f)
-       In all these constraints, we consider i!=j.
-
-    C. Constraints 6) and 7).
-       Regarding the constraint 6), if e∈[w-wi,w-1], we know for sure that xi<e (i.e. px_ie), because that circuit 'i' is 
-       for sure placed before 'e'.
-       Therefore, we put the constraint:
-                                       ∀i ∀e∈[w-wi,w-1] px_ie
-       At the same time, we ensure the constraint 6) only for e∈[w-wi-1]:
-                                       ∀i ∀e∈[w-wi-1] (¬px_ie \/ px_i{e+1}) 
-
-       We apply the exact same reasoning to the constraint 7).
-                                       ∀i ∀f∈[l_max-hi,w-1] py_if
-                                       ∀i ∀f∈[l_max-hi-1] (¬py_if \/ py_i{f+1})
-
-       To sum up, the group C of constraints is the following:
-            C1) ∀i∈[0,n-1] ∀e∈[w-wi,w-1] px_ie
-            C2) ∀i∈[0,n-1] ∀e∈[w-wi-1] (¬px_ie \/ px_i{e+1}) 
-            C3) ∀i∈[0,n-1] ∀f∈[l_max-hi,w-1] py_ifs
-            C4) ∀i∈[0,n-1] ∀f∈[l_max-hi-1] (¬py_if \/ py_i{f+1}) 
-       In all these constraints, we consider i!=j.    
-        
-
-    --- FINAL SUM UP ---
-    The constraints are the following.
-    1)  ∀i,j∈[0,n-1]  lr_i_j \/ lr_j_i \/ ud_i_j \/ ud_j_i
-    A1) ∀i,j∈[0,n-1] ,if w-wi-wj<0, ¬lr_i_j /\ ¬lr_j_i
-    A2) ∀i,j∈[0,n-1] ,if w-wi-wj>=0, ∀e∈[0,w-wi-wj] (¬lr_i_j \/ ¬px_j{e+wi} \/  px_ie)
-    A3) ∀i,j∈[0,n-1] ,if w-wi-wj>=0, ∀e∈[0,w-wi-wj] (¬lr_j_i \/ ¬px_i{e+wj} \/  px_je)
-    A4) ∀i,j∈[0,n-1] ,if w-wi-wj>=0, ∀e∈[0,wi] (¬lr_i_j \/ ¬px_j_e)
-    A5) ∀i,j∈[0,n-1] ,if w-wi-wj>=0, ∀e∈[0,wj] (¬lr_j_i \/ ¬px_i_e)
-    B1) ∀i,j∈[0,n-1] ,if l_max-hi-hj<0, ¬ud_i_j /\ ¬ud_j_i
-    B2) ∀i,j∈[0,n-1] ,if l_max-hi-hj<0, ∀f∈[0,l_max-hi-hj] (¬ud_i_j \/ ¬py_j{f+hi} \/  py_if)
-    B3) ∀i,j∈[0,n-1] ,if l_max-hi-hj<0, ∀f∈[0,l_max-hi-hj] (¬ud_j_i \/ ¬py_i{h+hj} \/  py_jf)
-    B4) ∀i,j∈[0,n-1] ,if l_max-hi-hj<0, ∀f∈[0,hi] (¬ud_i_j \/ ¬py_j_f)
-    B5) ∀i,j∈[0,n-1] ,if l_max-hi-hj<0, ∀f∈[0,hj] (¬ud_j_i \/ ¬py_i_f)
-    C1) ∀i∈[0,n-1] ∀e∈[w-wi,w-1] px_ie
-    C2) ∀i∈[0,n-1] ∀e∈[w-wi-1] (¬px_ie \/ px_i{e+1}) 
-    C3) ∀i∈[0,n-1] ∀f∈[l_max-hi,w-1] py_ifs
-    C4) ∀i∈[0,n-1] ∀f∈[l_max-hi-1] (¬py_if \/ py_i{f+1}) 
-    In all these constraints, we consider i!=j.
+    O1) ∀i∈[0,n-1] ∀o∈[0,l_mix-l_min] ¬ph_o \/ py_i_{o+l_min-dimsY[i]}
+    O2) ∀o∈[0,l_mix-l_min-1] (¬ph_o \/ ph_{o+1})
+    O3) ph_{l-l_min}
 
     """
-    def __solve(self, l_max):
+    def __solve(self, l, l_min, l_max):
         """Solves the given VLSI instance, using the SAT encoding 10.
 
         It is an auxiliary method. Its aim is to solve the VLSI instance without performing optimization: any solution is 
@@ -278,6 +110,9 @@ class Vlsi_sat(Vlsi_sat_abstract):
         """
         w, n, dimsX, dimsY = self.w, self.n, self.dimsX, self.dimsY
 
+        if l<l_min:
+            raise UnsatError('UNSAT')
+
         s = Solver()  # Solver instance
 
         r = [Bool(f'r_{i}') for i in range(n)]
@@ -290,6 +125,12 @@ class Vlsi_sat(Vlsi_sat_abstract):
         lr = [[Bool(f'lr_{i}_{j}') for j in range(n)] for i in range(n)]
         # List of lists, containing the 'ud' boolean variables: variables 'ud_i_j'
         ud = [[Bool(f'ud_{i}_{j}') for j in range(n)] for i in range(n)]
+
+        # List, containing the 'ph' boolean variables: variables 'ph_o'
+        ph = [Bool(f'ph_{o}') for o in range(l_max-l_min+1)]
+        
+        # The constraint O3 is ensured right away
+        s.add( ph[l-l_min] )
                 
         # Ensure the constraint 1) and the constraints of the group A and B
         for i in range(n):
@@ -480,6 +321,15 @@ class Vlsi_sat(Vlsi_sat_abstract):
             # Constraint C4)
             for f in range(l_max-1):
                 s.add( Or(Not(py[i][f]),py[i][f+1]) ) 
+
+        # Ensure the constraint O1        
+        for i in range(n):
+            for o in range(l_max-l_min+1):
+                s.add( Or(Not(ph[o]), r[i], py[i][o+l_min-dimsY[i]]) )
+                s.add( Or(Not(ph[o]), Not(r[i]), py[i][o+l_min-dimsX[i]]) )
+        # Ensure the constraint O2
+        for o in range(l_max-l_min):
+            s.add( Or(Not(ph[o]),ph[o+1]) )
                     
         if s.check() != sat:
             raise UnsatError('UNSAT')
@@ -536,17 +386,21 @@ class Vlsi_sat(Vlsi_sat_abstract):
 
 
     def __optimize(self):
-        """Solves the given VLSI instance, using the SAT encoding 10.
+        """Solves the given VLSI instance, using the SAT encoding 10A.
 
         It performs optimization: the best solution is found (if any).
         (If this class is used as a parallel process with a time limit, there is not gurantee of founding the optimal 
         solution, but only the best solution found so far).
 
         The implementation is based on the usage of the `__solve` method.
-        Basically, a loop iterating over all the possible solutions is performed, searching for the best possible solution.
-        At each iteration, the solver is created and run from scratch, with the current best length of the plate (i.e. `l`) 
-        as upper bound for the length of the plate (i.e. `l_max`). (Actually, `l-1` is given as `l_max`).
-        In this way, at each iteration a better solution is found.
+        It is based on the binary search approach.
+        Cycle. At each iteration we have a certain lower bound (i.e. lb) and a certain upper bound (i.e. ub) for the length of 
+        the plate. We try to solve the problem, by running the solver from scratch using the `__solve` method, and by 
+        fixing the actual length of the plate as smaller or equal than 'l', where 'l' is computed as ceil((lb+ub)/2). If SAT,
+        we update ub<-l, if UNSAT we update lb<-l+1. Then we repeat. 
+        At the beginning, lb<-l_min (minimum length of the plate) and ub<-l_max (maximum length of the plate) 
+        No incremental solving: at each iteration, the solver is created and run from scratch. 
+        See the `__optimize` method.
 
         No incremental solving: at each iteration, the solver is created and run from scratch.
 
@@ -564,16 +418,9 @@ class Vlsi_sat(Vlsi_sat_abstract):
         """
         w, n, dimsX, dimsY = self.w, self.n, self.dimsX, self.dimsY
 
-        """w_max = max(dimsX)  # The maximum width of a circuit
-        min_rects_per_row = w // w_max  # Minimum number of circuits per row
-        if min_rects_per_row==0:
-            raise UnsatError('UNSAT')
-        sorted_dimsY = sorted(dimsY, reverse=True)  
-        if min_rects_per_row==0:
-            l_max = sum(dimsY)
-        else:
-            l_max = sum([sorted_dimsY[i] for i in range(n) if i % min_rects_per_row == 0])  # The upper bound for the length"""
-
+        areas = [dimsX[i]*dimsY[i] for i in range(n)]  # The areas of the circuits
+        A_tot = sum(areas)  # The overall area of all the given circuits
+        l_min =  A_tot // w  # The lower bound for the length
         max_dim = max(dimsX + dimsY)
         #min_dim = min(dimsX + dimsY)
         min_rects_per_row = w // max_dim 
@@ -587,35 +434,44 @@ class Vlsi_sat(Vlsi_sat_abstract):
         # Boolean flag reprenting if a first solution has already been found
         first_solution = False
 
-        while True:
-            try:
-                # Search for a solution, given the maximum l
-                s, px, py, r = self.__solve(l_max)
+        # Upper and lower bounds for the length of the plate
+        ub = l_max 
+        lb = l_min 
 
-                # A solution has been found
-                first_solution = True
+        while lb<ub:
+            # Modification which is necessary in the last iteration (where lb and ub differ only by 1)
+            if lb+1==ub:
+                ub = lb  
 
-                # Compute the coords (x and y) of the rectangles in the current solution
+            # Current length of the plate of interest (in the middle of [lb,ub])  
+            l = math.ceil((ub+lb)/2)
+            #print(lb,ub,l)
+
+            try:    
+                # Search for a solution, given the current length of interest 'l' and given l_min<-lb and l_max<-ub
+                s, px, py, r = self.__solve(l, lb, ub)
+
+                # SAT: a solution has been found
+
+                # Compute coords of the current solution
                 coords, actual_dimsX, actual_dimsY = self.__compute_coords(s, px, py, r, l_max)
 
-                # Store the current solution into `self.results`
+                # Save the new best solution
+                first_solution = True
                 self.results['best_coords'] = coords
-                self.results['best_l'] = l_max
+                self.results['best_l'] = l
                 self.results['actual_dimsX'] = actual_dimsX
                 self.results['actual_dimsY'] = actual_dimsY
-                print(l_max)
+                print(l)
 
-                # Update `l_max`
-                l_max = l_max-1
+                # Update ub<-l
+                ub = l
 
-            except UnsatError:  # Found UNSAT: leave the cycle
-                break
+            except UnsatError:
+                # UNSAT: no new best solution
 
-        print(coords)
-        print(dimsX)
-        print(actual_dimsX)
-        print(dimsY)
-        print(actual_dimsY)
+                # Update lb<-l+1
+                lb = l+1
 
         # The computation is finished
         self.results['finish'] = True

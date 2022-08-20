@@ -331,7 +331,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
                 first_solution = True
                 self.results['best_coords'] = coords
                 self.results['best_l'] = l
-                #print(l)
+                print(l)
 
                 # Update ub<-l
                 ub = l
