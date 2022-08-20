@@ -11,7 +11,7 @@ import utils
 #python scripts/execute_smt.py encoding_0 ins-3 z3 300
 
 
-def vlsi_smt(instance_name, solver_name, time_limit, w, n, dims, encoding_module):
+def vlsi_smt(instance_name, solver_name, time_limit, w, n, dims, encoding_module, rotation=False):
     """Solves the given VLSI instance, using the specified SMT encoding
 
     It runs the solving process in parallel, within the specified time limit.
@@ -71,8 +71,11 @@ def vlsi_smt(instance_name, solver_name, time_limit, w, n, dims, encoding_module
         p.join()   
 
     # print(results)
-    return results['best_coords'], results['best_l'], results['finish'], results['unsat']
-      
+    if not rotation:
+        return results['best_coords'], results['best_l'], results['finish'], results['unsat']
+    else:
+        return results['best_coords'], results['best_l'], results['finish'], results['unsat'], results['actual_dims']
+             
 
 def main():
     parser = argparse.ArgumentParser(description='Script for executing a VLSI SMT encoding.')
@@ -98,6 +101,9 @@ def main():
                         help='Skip the visualization of the output solution (defaults as true if `--no-create-output` ' + \
                         'is passed).')
 
+    parser.add_argument('--rotation', action='store_true', 
+                        help='Allow the circuits rotation.')
+
     arguments = parser.parse_args()
 
     encoding = vars(arguments)['encoding']
@@ -122,7 +128,13 @@ def main():
     encoding_module = importlib.import_module(module_name)
 
     start_time = time.time()
-    coords, l, finish, unsat = vlsi_smt(instance_name, solver_name, time_limit, w, n, dims, encoding_module=encoding_module)        
+    rotation = arguments.rotation
+    if not rotation:
+        coords, l, finish, unsat = vlsi_smt(instance_name, solver_name, time_limit, w, n, dims, encoding_module=encoding_module)      
+    else:
+        coords, l, finish, unsat, actual_dims = vlsi_smt(instance_name, solver_name, time_limit, w, n, dims, 
+                                                                        encoding_module=encoding_module, rotation=True)      
+        dims = actual_dims       
     solving_time = time.time() - start_time
 
     print('Time:', solving_time)
