@@ -11,7 +11,7 @@ import utils
 #python scripts\execute_sat.py encoding_2 ins-3 300
 
 
-def vlsi_sat(w, n, dims, encoding_module, timeout=300):
+def vlsi_sat(w, n, dims, encoding_module, timeout=300, rotation=False):
     """Solves the given VLSI instance, using the specified SAT encoding
 
     It runs the solving process in parallel, within the specified time limit.
@@ -65,7 +65,10 @@ def vlsi_sat(w, n, dims, encoding_module, timeout=300):
         p.join()   
 
     # print(results)
-    return results['best_coords'], results['best_l'], results['finish'], results['unsat']
+    if not rotation:
+        return results['best_coords'], results['best_l'], results['finish'], results['unsat']
+    else:
+        return results['best_coords'], results['best_l'], results['finish'], results['unsat'], results['actual_dimsX'], results['actual_dimsY']
       
 
 def main():
@@ -89,6 +92,9 @@ def main():
     parser.add_argument('--no-visualize-output', action='store_true', 
                         help='Skip the visualization of the output solution (defaults as true if `--no-create-output` ' + \
                         'is passed).')
+
+    parser.add_argument('--rotation', action='store_true', 
+                        help='Allow the circuits rotation.')
 
     arguments = parser.parse_args()
 
@@ -125,7 +131,14 @@ def main():
 
     #try:
     start_time = time.time()
-    coords, l, finish, unsat = vlsi_sat(w, n, dims, encoding_module=encoding_module, timeout=time_limit)        
+    rotation = arguments.rotation
+    if not rotation:
+        coords, l, finish, unsat = vlsi_sat(w, n, dims, encoding_module=encoding_module, timeout=time_limit)        
+    else:
+        coords, l, finish, unsat, actual_dimsX, actual_dimsY = vlsi_sat(w, n, dims, encoding_module=encoding_module, 
+                                                                        timeout=time_limit, rotation=True)       
+        dims = [[actual_dimsX[i],actual_dimsY[i]] for i in range(n)]
+
     solving_time = time.time() - start_time
 
     print('Time:', solving_time)

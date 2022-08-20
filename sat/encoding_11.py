@@ -280,6 +280,8 @@ class Vlsi_sat(Vlsi_sat_abstract):
 
         s = Solver()  # Solver instance
 
+        r = [Bool(f'r_{i}') for i in range(n)]
+
         # List of lists, containing the 'px' boolean variables: variables 'px_i_e'
         px = [[Bool(f'px_{i}_{e}') for e in range(w)] for i in range(n)]
         # List of lists, containing the 'py' boolean variables: variables 'py_i_f'
@@ -297,60 +299,195 @@ class Vlsi_sat(Vlsi_sat_abstract):
 
                 # Group A
                 # Constraint A1)
-                if w-dimsX[i]-dimsX[j] < 0:
-                    s.add( Not(lr[i][j]) )
-                    s.add( Not(lr[j][i]) )
-                else:
-                    # Constraints A2) and A3)
-                    for e in range(w-dimsX[i]-dimsX[j]+1):
-                        s.add( Or(Not(lr[i][j]), px[i][e], Not(px[j][e+dimsX[i]])) )
-                        s.add( Or(Not(lr[j][i]), px[j][e], Not(px[i][e+dimsX[j]])) )
-                    # Constraint A4)
-                    for e in range(dimsX[i]):
-                        s.add( Or(Not(lr[i][j]),Not(px[j][e])) )
-                    # Constraint A5)
-                    for e in range(dimsX[j]):
-                        s.add( Or(Not(lr[j][i]),Not(px[i][e])) )
+                if w-dimsX[i]-dimsX[j]<0:
+                    s.add( Or(r[i], r[j], Not(lr[i][j])) )
+                    s.add( Or(r[i], r[j], Not(lr[j][i])) )
+                if w-dimsX[i]-dimsY[j]<0:
+                    s.add( Or(r[i], Not(r[j]), Not(lr[i][j])) )
+                    s.add( Or(r[i], Not(r[j]), Not(lr[j][i])) )
+                if w-dimsY[i]-dimsX[j]<0:
+                    s.add( Or(Not(r[i]), r[j], Not(lr[i][j])) )
+                    s.add( Or(Not(r[i]), r[j], Not(lr[j][i])) )
+                if w-dimsY[i]-dimsY[j]<0:
+                    s.add( Or(Not(r[i]), Not(r[j]), Not(lr[i][j])) )
+                    s.add( Or(Not(r[i]), Not(r[j]), Not(lr[j][i])) )
+
+                # Constraints A2)
+                """for e in range(w-dimsX[i]-min([dimsX[j],dimsY[j]])+1):
+                    s.add( Or(Not(lr[i][j]), r[i], px[i][e], Not(px[j][e+dimsX[i]])) )
+                for e in range(w-dimsY[i]-min([dimsX[j],dimsY[j]])+1):
+                    s.add( Or(Not(lr[i][j]), Not(r[i]), px[i][e], Not(px[j][e+dimsY[i]])) )"""
+                for e in range(w-dimsX[i]+1):
+                    if e < w-dimsX[i]-dimsX[j]+1:
+                        s.add( Or(Not(lr[i][j]), r[i], r[j], px[i][e], Not(px[j][e+dimsX[i]])) )
+                    if e < w-dimsX[i]-dimsY[j]+1:
+                        s.add( Or(Not(lr[i][j]), r[i], Not(r[j]), px[i][e], Not(px[j][e+dimsX[i]])) )
+                for e in range(w-dimsY[i]+1):
+                    if e < w-dimsY[i]-dimsX[j]+1:
+                        s.add( Or(Not(lr[i][j]), Not(r[i]), r[j], px[i][e], Not(px[j][e+dimsY[i]])) )
+                    if e < w-dimsY[i]-dimsY[j]+1:
+                        s.add( Or(Not(lr[i][j]), Not(r[i]), Not(r[j]), px[i][e], Not(px[j][e+dimsY[i]])) )
+                # Constraints A3)
+                """for e in range(w-dimsX[j]-min([dimsX[i],dimsY[i]])+1):
+                    s.add( Or(Not(lr[j][i]), r[j], px[j][e], Not(px[i][e+dimsX[j]])) )
+                for e in range(w-dimsY[j]-min([dimsX[i],dimsY[i]])+1):
+                    s.add( Or(Not(lr[j][i]), Not(r[j]), px[j][e], Not(px[i][e+dimsY[j]])) )"""
+                for e in range(w-dimsX[j]+1):
+                    if e < w-dimsX[j]-dimsX[i]+1:
+                        s.add( Or(Not(lr[j][i]), r[j], r[i], px[j][e], Not(px[i][e+dimsX[j]])) )
+                    if e < w-dimsX[j]-dimsY[i]+1:
+                        s.add( Or(Not(lr[j][i]), r[j], Not(r[i]), px[j][e], Not(px[i][e+dimsX[j]])) )
+                for e in range(w-dimsY[j]+1):
+                    if e < w-dimsY[j]-dimsX[i]+1:
+                        s.add( Or(Not(lr[j][i]), Not(r[j]), r[i], px[j][e], Not(px[i][e+dimsY[j]])) )
+                    if e < w-dimsY[j]-dimsY[i]+1:
+                        s.add( Or(Not(lr[j][i]), Not(r[j]), Not(r[i]), px[j][e], Not(px[i][e+dimsY[j]])) )
+
+                # Constraint A4)
+                for e in range(min([dimsX[i],w])):
+                    s.add( Or(r[i], Not(lr[i][j]), Not(px[j][e])) )
+                for e in range(min([dimsY[i],w])):
+                    s.add( Or(Not(r[i]), Not(lr[i][j]), Not(px[j][e])) )
+                # Constraint A5)
+                for e in range(min([dimsX[j],w])):
+                    s.add( Or(r[j], Not(lr[j][i]), Not(px[i][e])) )
+                for e in range(min([dimsY[j],w])):
+                    s.add( Or(Not(r[j]), Not(lr[j][i]), Not(px[i][e])) )
+
+                """# Group B
+                # Constraint B1)
+                if l_max-dimsY[i]-dimsY[j]<0:
+                    s.add( Or(r[i], r[j], Not(ud[i][j])) )
+                    s.add( Or(r[i], r[j], Not(ud[j][i])) )
+                if l_max-dimsY[i]-dimsX[j]<0:
+                    s.add( Or(r[i], Not(r[j]), Not(ud[i][j])) )
+                    s.add( Or(r[i], Not(r[j]), Not(ud[j][i])) )
+                if l_max-dimsX[i]-dimsY[j]<0:
+                    s.add( Or(Not(r[i]), r[j], Not(ud[i][j])) )
+                    s.add( Or(Not(r[i]), r[j], Not(ud[j][i])) )
+                if l_max-dimsX[i]-dimsX[j]<0:
+                    s.add( Or(Not(r[i]), Not(r[j]), Not(ud[i][j])) )
+                    s.add( Or(Not(r[i]), Not(r[j]), Not(ud[j][i])) )
                     
+                # Constraints B2)
+                for f in range(l_max-dimsY[i]-min([dimsY[j],dimsX[j]])+1):
+                    s.add( Or(Not(ud[i][j]), r[i], py[i][f], Not(py[j][f+dimsY[i]])) )
+                for f in range(l_max-dimsX[i]-min([dimsY[j],dimsX[j]])+1):
+                    s.add( Or(Not(ud[i][j]), Not(r[i]), py[i][f], Not(py[j][f+dimsX[i]])) )
+                # Constraints B3)
+                for f in range(l_max-dimsY[j]-min([dimsY[i],dimsX[i]])+1):
+                    s.add( Or(Not(ud[j][i]), r[j], py[j][f], Not(py[i][f+dimsY[j]])) )
+                for f in range(l_max-dimsX[j]-min([dimsY[i],dimsX[i]])+1):
+                    s.add( Or(Not(ud[j][i]), Not(r[j]), py[j][f], Not(py[i][f+dimsX[j]])) )
+
+                # Constraint B4)
+                for f in range(dimsY[i]):
+                    s.add( Or(r[i], Not(ud[i][j]), Not(py[j][f])) )
+                for f in range(dimsX[i]):
+                    s.add( Or(Not(r[i]), Not(ud[i][j]), Not(py[j][f])) )
+                # Constraint B5)
+                for f in range(dimsY[j]):
+                    s.add( Or(r[j], Not(ud[j][i]), Not(py[i][f])) )
+                for f in range(dimsX[j]):
+                    s.add( Or(Not(r[j]), Not(ud[j][i]), Not(py[i][f])) )"""
                 # Group B
                 # Constraint B1)
-                if l_max-dimsY[i]-dimsY[j] < 0:
-                    s.add( Not(ud[i][j]) )
-                    s.add( Not(ud[j][i]) )
-                else:
-                    # Constraints B2) and B3)
-                    for f in range(l_max-dimsY[i]-dimsY[j]+1):
-                        s.add( Or(Not(ud[i][j]), py[i][f], Not(py[j][f+dimsY[i]])) )
-                        s.add( Or(Not(ud[j][i]), py[j][f], Not(py[i][f+dimsY[j]])) )
-                    # Constraint B4)
-                    for f in range(dimsY[i]):
-                        s.add( Or(Not(ud[i][j]),Not(py[j][f])) )
-                    # Constraint B5)
-                    for f in range(dimsY[j]):
-                        s.add( Or(Not(ud[j][i]),Not(py[i][f])) )
+                if l_max-dimsY[i]-dimsY[j]<0:
+                    s.add( Or(r[i], r[j], Not(ud[i][j])) )
+                    s.add( Or(r[i], r[j], Not(ud[j][i])) )
+                if l_max-dimsY[i]-dimsX[j]<0:
+                    s.add( Or(r[i], Not(r[j]), Not(ud[i][j])) )
+                    s.add( Or(r[i], Not(r[j]), Not(ud[j][i])) )
+                if l_max-dimsX[i]-dimsY[j]<0:
+                    s.add( Or(Not(r[i]), r[j], Not(ud[i][j])) )
+                    s.add( Or(Not(r[i]), r[j], Not(ud[j][i])) )
+                if l_max-dimsX[i]-dimsX[j]<0:
+                    s.add( Or(Not(r[i]), Not(r[j]), Not(ud[i][j])) )
+                    s.add( Or(Not(r[i]), Not(r[j]), Not(ud[j][i])) )
+
+                # Constraints B2)
+                """for f in range(l_max-dimsY[i]-min([dimsY[j],dimsX[j]])+1):
+                    s.add( Or(Not(ud[i][j]), r[i], py[i][f], Not(py[j][f+dimsY[i]])) )
+                for f in range(l_max-dimsX[i]-min([dimsY[j],dimsX[j]])+1):
+                    s.add( Or(Not(ud[i][j]), Not(r[i]), py[i][f], Not(py[j][f+dimsX[i]])) )"""
+                for f in range(l_max-dimsY[i]+1):
+                    if f < l_max-dimsY[i]-dimsY[j]+1:
+                        s.add( Or(Not(ud[i][j]), r[i], r[j], py[i][f], Not(py[j][f+dimsY[i]])) )
+                    if f < l_max-dimsY[i]-dimsX[j]+1:
+                        s.add( Or(Not(ud[i][j]), r[i], Not(r[j]), py[i][f], Not(py[j][f+dimsY[i]])) )
+                for f in range(l_max-dimsX[i]+1):
+                    if f < l_max-dimsX[i]-dimsY[j]+1:
+                        s.add( Or(Not(ud[i][j]), Not(r[i]), r[j], py[i][f], Not(py[j][f+dimsX[i]])) )
+                    if f < l_max-dimsX[i]-dimsX[j]+1:
+                        s.add( Or(Not(ud[i][j]), Not(r[i]), Not(r[j]), py[i][f], Not(py[j][f+dimsX[i]])) )
+                # Constraints B3)
+                """for f in range(l_max-dimsY[j]-min([dimsY[i],dimsX[i]])+1):
+                    s.add( Or(Not(ud[j][i]), r[j], py[j][f], Not(py[i][f+dimsY[j]])) )
+                for f in range(l_max-dimsX[j]-min([dimsY[i],dimsX[i]])+1):
+                    s.add( Or(Not(ud[j][i]), Not(r[j]), py[j][f], Not(py[i][f+dimsX[j]])) )"""
+                for f in range(l_max-dimsY[j]+1):
+                    if f < l_max-dimsY[j]-dimsY[i]+1:
+                        s.add( Or(Not(ud[j][i]), r[j], r[i], py[j][f], Not(py[i][f+dimsY[j]])) )
+                    if f < l_max-dimsY[j]-dimsX[i]+1:
+                        s.add( Or(Not(ud[j][i]), r[j], Not(r[i]), py[j][f], Not(py[i][f+dimsY[j]])) )
+                for f in range(l_max-dimsX[j]+1):
+                    if f < l_max-dimsX[j]-dimsY[i]+1:
+                        s.add( Or(Not(ud[j][i]), Not(r[j]), r[i], py[j][f], Not(py[i][f+dimsX[j]])) )
+                    if f < l_max-dimsX[j]-dimsX[i]+1:
+                        s.add( Or(Not(ud[j][i]), Not(r[j]), Not(r[i]), py[j][f], Not(py[i][f+dimsX[j]])) )
+
+                # Constraint B4)
+                for f in range(min([dimsY[i],l_max])):
+                    s.add( Or(r[i], Not(ud[i][j]), Not(py[j][f])) )
+                for f in range(min([dimsX[i],l_max])):
+                    s.add( Or(Not(r[i]), Not(ud[i][j]), Not(py[j][f])) )
+                # Constraint B5)
+                for f in range(min([dimsY[j],l_max])):
+                    s.add( Or(r[j], Not(ud[j][i]), Not(py[i][f])) )
+                for f in range(min([dimsX[j],l_max])):
+                    s.add( Or(Not(r[j]), Not(ud[j][i]), Not(py[i][f])) )
 
         # Ensure the constraints of the group C)
-        for i in range(n):
+        """for i in range(n):
             # Constraint C1)
-            for e in range(w-dimsX[i],w):
+            for e in range(w-min([dimsX[i],dimsY[i]]),w):
                 s.add(px[i][e])
             # Constraint C2)
-            for e in range(w-dimsX[i]):
+            for e in range(w-min([dimsX[i],dimsY[i]])):
                 s.add( Or(Not(px[i][e]),px[i][e+1]) )           
             # Constraint C3)
-            for f in range(l_max-dimsY[i],l_max):
+            for f in range(l_max-min([dimsY[i],dimsX[i]]),l_max):
                 s.add(py[i][f])
             # Constraint C4)
-            for f in range(l_max-dimsY[i]):
-                s.add( Or(Not(py[i][f]),py[i][f+1]) )
+            for f in range(l_max-min([dimsY[i],dimsX[i]])):
+                s.add( Or(Not(py[i][f]),py[i][f+1]) )"""
+        for i in range(n):
+            # Constraint C1)
+            for e in range(w):
+                if e>=w-dimsX[i]:
+                    s.add(Or(r[i], px[i][e]))
+                if e>=w-dimsY[i]:
+                    s.add(Or(Not(r[i]), px[i][e]))
+            # Constraint C2)
+            for e in range(w-1):
+                s.add( Or(Not(px[i][e]),px[i][e+1]) )           
+            # Constraint C3)
+            for f in range(l_max):
+                if f>=l_max-dimsY[i]:
+                    s.add(Or(r[i], py[i][f]))
+                if f>=l_max-dimsX[i]:
+                    s.add(Or(Not(r[i]), py[i][f]))
+            # Constraint C4)
+            for f in range(l_max-1):
+                s.add( Or(Not(py[i][f]),py[i][f+1]) ) 
                     
         if s.check() != sat:
             raise UnsatError('UNSAT')
         
-        return s, px, py
+        return s, px, py, r
 
 
-    def __compute_coords(self, s, px, py, l_max):
+    def __compute_coords(self, s, px, py, r, l_max):
         """Computes the coords of the rectangles, namely the coordinates of the lower-left verteces of the circuits.
 
         In the notation used above, coords correspond to the variables {xi,yi}_i.
@@ -392,7 +529,10 @@ class Vlsi_sat(Vlsi_sat_abstract):
                     break
             coords.append((coordX,coordY))
 
-        return coords
+        actual_dimsX = [self.dimsY[i] if m.evaluate(r[i]) else self.dimsX[i] for i in range(n)]
+        actual_dimsY = [self.dimsX[i] if m.evaluate(r[i]) else self.dimsY[i] for i in range(n)]
+
+        return coords, actual_dimsX, actual_dimsY
 
 
     def __optimize(self):
@@ -424,7 +564,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
         """
         w, n, dimsX, dimsY = self.w, self.n, self.dimsX, self.dimsY
 
-        w_max = max(dimsX)  # The maximum width of a circuit
+        """w_max = max(dimsX)  # The maximum width of a circuit
         min_rects_per_row = w // w_max  # Minimum number of circuits per row
         if min_rects_per_row==0:
             raise UnsatError('UNSAT')
@@ -432,7 +572,8 @@ class Vlsi_sat(Vlsi_sat_abstract):
         if min_rects_per_row==0:
             l_max = sum(dimsY)
         else:
-            l_max = sum([sorted_dimsY[i] for i in range(n) if i % min_rects_per_row == 0])  # The upper bound for the length
+            l_max = sum([sorted_dimsY[i] for i in range(n) if i % min_rects_per_row == 0])  # The upper bound for the length"""
+        l_max = sum([dimsX[i] if dimsX[i]>dimsY[i] else dimsY[i] for i in range(n)])
 
         # Boolean flag reprenting if a first solution has already been found
         first_solution = False
@@ -440,24 +581,32 @@ class Vlsi_sat(Vlsi_sat_abstract):
         while True:
             try:
                 # Search for a solution, given the maximum l
-                s, px, py = self.__solve(l_max)
+                s, px, py, r = self.__solve(l_max)
 
                 # A solution has been found
                 first_solution = True
 
                 # Compute the coords (x and y) of the rectangles in the current solution
-                coords = self.__compute_coords(s, px, py, l_max)
+                coords, actual_dimsX, actual_dimsY = self.__compute_coords(s, px, py, r, l_max)
 
                 # Store the current solution into `self.results`
                 self.results['best_coords'] = coords
                 self.results['best_l'] = l_max
-                #print(l_max)
+                self.results['actual_dimsX'] = actual_dimsX
+                self.results['actual_dimsY'] = actual_dimsY
+                print(l_max)
 
                 # Update `l_max`
                 l_max = l_max-1
 
             except UnsatError:  # Found UNSAT: leave the cycle
                 break
+
+        print(coords)
+        print(dimsX)
+        print(actual_dimsX)
+        print(dimsY)
+        print(actual_dimsY)
 
         # The computation is finished
         self.results['finish'] = True
