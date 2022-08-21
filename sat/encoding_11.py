@@ -3,20 +3,17 @@ from sat_utils import UnsatError, Vlsi_sat_abstract
 
 
 class Vlsi_sat(Vlsi_sat_abstract):
-    """Class for solving the VLSI problem in SAT, using the encoding 10.
+    """Class for solving the VLSI problem in SAT, using the encoding 11.
 
     It inherits from the class `Vlsi_sat_abstract`.
 
-    This is a completely different encodings from the previous ones.
-    This encoding has been taken from the paper *'A SAT-based Method for Solving the Two-dimensional Strip Packing Problem'*.
+    This encodings solves a different variant of the VLSI problem: variant in which rotation is allowed. Each circuit can be 
+    rotated by 90°, swapping the width (i.e. dimsX) with the height (i.e. dimsY) of the circuit.
 
-    The main idea is the following.
-    The basic CP model is considered. Namely, the one in which the non-overlapping of each couple of rectangles i-j is 
-    ensured by means of a disjunction of four constraints: 
-                        (xi + wi ≤ xj ) \/ (xj + wj ≤ xi) \/ (yi + hi ≤ yj ) \/ (yj + hj ≤ yi).
-    (Scheduling-like constraints).
-    Then, these constraints are encoded into SAT using the ORDER ENCODING.
-    See the description below.
+    For making this encoding, the encoding 10 has been taken and then modified: basically, this encoding is a modification
+    of the encoding found in the paper *'A SAT-based Method for Solving the Two-dimensional Strip Packing Problem'* (i.e. 
+    order encoding).
+    Below the encoding is described.
 
     A basic optimization procedure has been used.
     Cycle in which at each iteration the solver is created and run from scratch, with the current best length of the plate 
@@ -40,195 +37,187 @@ class Vlsi_sat(Vlsi_sat_abstract):
     yi : y coordinate of the left-bottom corner of the i-th circuit. 
 
 
-    --- ORDER ENCODING ---
-    Order encoding consists in two steps.
-    First of all, the constraints are reduced to combinations of constraints of the form  xi ≤ c  (where xi is a variable and
-    c a constant).
-    Then, each constraint   xi ≤ c  is encoded as a SAT variable  px_i_c.     px_i_c  <->  xi ≤ c                   
+    --- MODIFICATION OF THE ENCODING 10 (I.E. ORDER ENCODING) ---
+    First of all, a new set of variables is defined.
+    r_i, where 'i' represents a circuit. i in [0,n].
+    r_i is True IFF the 'i'-th rectangle has been rotated, meaning that wi and hi have been swapped.
 
-    Example.
-    Constraint  x1 + 1 ≤ x2 , where x1 and x2 are two variables in {0,1,2,3}.
-        - Step 1.
-          The given constraint is equivalent to the following ones:
-                (x2>0) /\ (x2≤1 -> x1≤0) /\ (x2≤2 -> x1≤1) /\ x1≤2
-          Which are equivalent to:
-                ¬(x2≤0) /\ (¬(x2≤1) \/ x1≤0) /\ (¬(x2≤2) \/ x1≤1) /\ x1≤2
-        - Step 2.
-          Encoding using SAT variables.
-                ¬px_2,0 /\ (px_1,0 \/ ¬px_2,1) /\ (px_1,1 \/ ¬px_2,2) /\ px_1,2
-
-    Actually, these constraints are not enough. We have to specify other constraints about the variables px_ic.
-    We have to encode the fact that, if px_ic is True, then all px_id with d>c are True.
-            ∀c (px_ic -> px_i{c+1})
-    Which is equivalent to:
-            ∀c (¬px_ic \/ px_i{c+1})
-
-    In the example, we have also the constraints:
-        (px_10 -> px_11) /\ (px_11 -> px_12) /\ (px_20 -> px_21) /\ (px_21 -> px_22)
-    Which are equivalent to:
-        (¬px_10 \/ px_11) /\ (¬px_11 \/ px_12) /\ (¬px_20 \/ px_21) /\ (¬px_21 \/ px_22)
-
-    Given a model for our problem, consisting in an assignement of truth values to the boolean variables px_ic, how can we 
-    deduce the value assigned to each variable xi?
-    For each variable xi, we take all the associated boolean variables px_ic, we scan them from the smallest c to the 
-    biggest c, and we stop when we find the first True boolean variable px_id : d is the value associated to the variable 
-    xi.
-    (Why? Because we have that all px_ic with c<d are False, and all px_ic with c>=d are True).
-
-    In the example, if in the model we have:
-        px_10=False, px_11=True, px_12=True
-    then the value assigned to x1 is 1.
-    
-
-    --- APPLICATION OF THE ORDER ENCODING IN OUR PROBLEM ---
-    The following boolean variables are used.
-        1) px_i_e, where 'i' represents a circuit and 'e' represents a value in [0,w].
-           i in [0,n], e in [0,w].
-           px_i_e is True IFF xi≤e. Which means that the x coordinate of the left-bottom corner of circuit 'i' has been placed
-           less or equal than 'e'.
-        2) py_i_f, where 'i' represents a circuit and 'f' represents a value in [0,l_max].
-           i in [0,n], f in [0,l_max].
-           py_i_f is True IFF yi≤f. Which means that the y coordinate of the left-bottom corner of circuit 'i' has been placed
-           less or equal than 'f'.
-        3) lr_i_j, where 'i' and 'j' are two circuits.
-           i,j in [0,1].
-           lr_i_j is True IFF the circuit 'i' has been placed on the left of the circuit 'j'. 
-           Namely, xi+wi≤xj.
-        3) ud_i_j, where 'i' and 'j' are two circuits.
-           i,j in [0,1].
-           ud_i_j is True IFF the circuit 'i' has been placed at the downward to the circuit 'j'. 
-           Namely, yi+hi≤yj.
-
-    We encode the fact that two circuits can't overlap in the following way.
-    For each pair of circuits 'i' and 'j' (i<j), at least one among {lr_i_j, lr_j_i, ud_i_j, ud_j_i}.
-    ('i' is at the left to 'j' or 'j' is at the left to 'i' or 'i' is at the downward to 'j' or 'j' is at the downward to 'i').
-    So, we have the constraint:
-                           lr_i_j \/ lr_j_i \/ ud_i_j \/ ud_j_i
-
-    Now, for each pair of circuits 'i' and 'j' (i<j), we have to encode the "meaning" of each variable lr_i_j, lr_j_i, 
-    ud_i_j, ud_j_i.
-    1) If lr_i_j is True, then we have that:
-                    xj≤e+wi -> xi≤e,  for each possible 'e'
-       which is equivalent to:
-                    px_j{e+wi} ->  px_ie,  for each possible 'e'
-       which is equivalent to:
-                    ¬px_j{e+wi} \/  px_ie,  for each possible 'e'.
-       On the whole, we have to add the following constraint:
-                ∀e (lr_i_j -> (¬px_j{e+wi} \/  px_ie)).
-       Which is equivalent to: 
-                ∀e (¬lr_i_j \/ ¬px_j{e+wi} \/  px_ie)
-    The same reasoning is applied to lr_j_i, ud_i_j, ud_j_i.
-    2) For the variable lr_j_i, we add the constraint
-                ∀e (¬lr_j_i \/ ¬px_i{e+wj} \/  px_je).
-    3) For the variable ud_i_j, we add the constraint
-                ∀f (ud_i_j \/ ¬py_j{f+wi} \/  px_if).
-    4) For the variable ud_j_i, we add the constraint
-                ∀f (ud_j_i \/ ¬py_i{f+wj} \/  px_jf).
-
-    Finally, we have to put the other constraints about px_ie and py_if for the ordering encoding.
-    For each circuit 'i', we have to put:
-            ∀e (¬px_ie \/ px_i{e+1})    (which is equivalent to ∀e (px_ie -> px_i{e+1}))
-    and
-            ∀f (¬py_if \/ py_i{f+1})    (which is equivalent to ∀f (py_if -> py_i{f+1}))
+    Using these new variables, the constraints are modified, taking into account the possibility of rotating the circuits.
         
-
-    --- SUM UP ---
-    The constraints are the following.
     1)  ∀i,j∈[0,n-1]  lr_i_j \/ lr_j_i \/ ud_i_j \/ ud_j_i
-    2)  ∀i,j∈[0,n-1] ∀e∈[0,w-1] (¬lr_i_j \/ ¬px_j{e+wi} \/  px_ie)
-    3)  ∀i,j∈[0,n-1] ∀e∈[0,w-1] (¬lr_j_i \/ ¬px_i{e+wj} \/  px_je)
-    4)  ∀i,j∈[0,n-1] ∀f∈[0,l_max-1] (ud_i_j \/ ¬py_j{f+wi} \/  px_if)
-    5)  ∀i,j∈[0,n-1] ∀f∈[0,l_max-1] (ud_j_i \/ ¬py_i{f+wj} \/  px_jf)
-    6)  ∀i∈[0,n-1] ∀e∈[0,w-1] (¬px_ie \/ px_i{e+1})
-    7)  ∀i∈[0,n-1] ∀f∈[0,l_max-1] (¬py_if \/ py_i{f+1})
-    In all these constraints, we consider i!=j.
-        
+        This contraint reamins the same.
 
-    --- REMARKS ---
-    For making this work in our specific context, we have to make the following adjustements.
+    First of all, group A) of constraints.
 
-    A. Constraints 2) and 3).
-       If w-wi-wj<0, this means that the circuits 'i'-'j' can't be placed one on the left of the other (the sum of their 
-       widths exceed the total width, they don't fit into the plate). In this case, we don't put the constraints 2) and 3), 
-       but we simply put: 
-                                ¬lr_i_j /\ ¬lr_j_i.
-       So, we have:
-                                ∀i,j  ,if w-wi-wj<0,  ¬lr_i_j /\ ¬lr_j_i        
-       If w-wi-wj>=0, we put the constraints 2) and 3). But we put them only for e∈[0,w-wi-wj]:
-                                    2)  ∀i,j ∀e∈[0,w-wi-wj] (¬lr_i_j \/ ¬px_j{e+wi} \/  px_ie)
-                                    3)  ∀i,j ∀e∈[0,w-wi-wj] (¬lr_j_i \/ ¬px_i{e+wj} \/  px_je) 
-       This because, from w-wi-wj+1 up to w, the circuits 'i'-'j' can't be placed one on the left of the other: they don't 
-       fit into the plate.
+    A1) ∀i,j∈[0,n-1] ,if w-wi-wj<0, ¬lr_i_j /\ ¬lr_j_i
+        We have to modify the constraint '¬lr_i_j /\ ¬lr_j_i', by imposing that this is True only if both rectangles have not
+        been rotated. We have:
+                            (¬r_i /\ ¬r_j -> ¬lr_i_j) /\ (¬r_i /\ ¬r_j -> ¬lr_j_i)
+        Which is equivalent to:
+                            (r_i \/ r_j \/ ¬lr_i_j) /\ (r_i \/ r_j \/ ¬lr_j_i)
+        On the whole: ∀i,j∈[0,n-1] ,if w-wi-wj<0, (r_i \/ r_j \/ ¬lr_i_j) /\ (r_i \/ r_j \/ ¬lr_j_i)
+        This is only about a single possibility: both the circuits 'i' and 'j' are not rotated. We have three other 
+        combinations.
+            - 'j' is rotated, while 'i' not.
+               ∀i,j∈[0,n-1] ,if w-wi-hj<0, (r_i \/ ¬r_j \/ ¬lr_i_j) /\ (r_i \/ ¬r_j \/ ¬lr_j_i)
+            - 'i' is rotated, while 'j' not.
+               ∀i,j∈[0,n-1] ,if w-hi-wj<0, (¬r_i \/ r_j \/ ¬lr_i_j) /\ (¬r_i \/ r_j \/ ¬lr_j_i)
+            - 'i' and 'j' are both rotated.
+               ∀i,j∈[0,n-1] ,if w-hi-wj<0, (¬r_i \/ ¬r_j \/ ¬lr_i_j) /\ (¬r_i \/ ¬r_j \/ ¬lr_j_i)
 
-       If w-wi-wj>=0, we have also other additional constraints.
-   
-       For the constraint 2) (i.e. for lr_i_j), we have also to explicitely ensure that, if e<wi, then we have
-                                    lr_i_j  ->   ¬px_j_e
-       which is equivalent to:
-                                    ¬lr_i_j \/ ¬px_j_e.
-       (The meaning is: when e<wi, if 'i' is placed on the left of 'j', then xj>e).
-       So, we add the constraint:
-                                    ∀i,j ∀e∈[0,wi] (¬lr_i_j \/ ¬px_j_e)
+    A2) ∀i,j∈[0,n-1] ,if w-wi-wj>=0, ∀e∈[0,w-wi-wj] (¬lr_i_j \/ ¬px_j{e+wi} \/  px_ie)
+        We have to modify the constraint (¬lr_i_j \/ ¬px_j{e+wi} \/  px_ie), by imposing that this is True only if both 
+        rectangles have not been rotated. We have:
+                           (r_i \/ r_j \/ ¬lr_i_j \/ ¬px_j{e+wi} \/  px_ie)
+        (this is obtained from the implication (¬r_i /\ ¬r_j -> ...) , as seen before).
+        So:  ∀i,j∈[0,n-1] ,if w-wi-wj>=0, ∀e∈[0,w-wi-wj] (r_i \/ r_j \/ ¬lr_i_j \/ ¬px_j{e+wi} \/  px_ie)
+        This is only about a single possibility: both the circuits 'i' and 'j' are not rotated. We have three other 
+        combinations.
+            - 'j' is rotated, while 'i' not.
+               ∀i,j∈[0,n-1] ,if w-wi-hj>=0, ∀e∈[0,w-wi-hj] (r_i \/ ¬r_j \/ ¬lr_i_j \/ ¬px_j{e+wi} \/  px_ie)
+            - 'i' is rotated, while 'j' not.
+               ∀i,j∈[0,n-1] ,if w-hi-wj>=0, ∀e∈[0,w-hi-wj] (¬r_i \/ r_j \/ ¬lr_i_j \/ ¬px_j{e+hi} \/  px_ie)
+            - 'i' and 'j' are both rotated.
+               ∀i,j∈[0,n-1] ,if w-hi-hj>=0, ∀e∈[0,w-hi-hj] (¬r_i \/ ¬r_j \/ ¬lr_i_j \/ ¬px_j{e+hi} \/  px_ie)
 
-       This same reasoning is applied for the constraint 3) (i.e. for lr_j_i):
-                                    ∀i,j ∀e∈[0,wj] (¬lr_j_i \/ ¬px_i_e)
+    A3) ∀i,j∈[0,n-1] ,if w-wi-wj>=0, ∀e∈[0,w-wi-wj] (¬lr_j_i \/ ¬px_i{e+wj} \/  px_je)
+        Same modification of A2, but in which 'i' and 'j' are swapped.
+            - 'i' and 'j' are both not rotated.
+               ∀i,j∈[0,n-1] ,if w-wi-hj>=0, ∀e∈[0,w-wi-wj] (r_i \/ r_j \/ ¬lr_j_i \/ ¬px_i{e+wj} \/  px_je)
+            - 'j' is rotated, while 'i' not.
+               ∀i,j∈[0,n-1] ,if w-wi-hj>=0, ∀e∈[0,w-wi-hj] (r_i \/ ¬r_j \/ ¬lr_j_i \/ ¬px_i{e+hj} \/  px_je)
+            - 'i' is rotated, while 'j' not.
+               ∀i,j∈[0,n-1] ,if w-hi-wj>=0, ∀e∈[0,w-hi-wj] (¬r_i \/ r_j \/ ¬lr_j_i \/ ¬px_i{e+wj} \/  px_je)
+            - 'i' and 'j' are both rotated.
+               ∀i,j∈[0,n-1] ,if w-hi-hj>=0, ∀e∈[0,w-hi-hj] (¬r_i \/ ¬r_j \/ ¬lr_j_i \/ ¬px_i{e+hj} \/  px_je)
 
-       To sum up, the constraints 2) and 3) becomes:
-            A1) ∀i,j∈[0,n-1] ,if w-wi-wj<0, ¬lr_i_j /\ ¬lr_j_i
-            A2) ∀i,j∈[0,n-1] ,if w-wi-wj>=0, ∀e∈[0,w-wi-wj] (¬lr_i_j \/ ¬px_j{e+wi} \/  px_ie)
-            A3) ∀i,j∈[0,n-1] ,if w-wi-wj>=0, ∀e∈[0,w-wi-wj] (¬lr_j_i \/ ¬px_i{e+wj} \/  px_je)
-            A4) ∀i,j∈[0,n-1] ,if w-wi-wj>=0, ∀e∈[0,wi] (¬lr_i_j \/ ¬px_j_e)
-            A5) ∀i,j∈[0,n-1] ,if w-wi-wj>=0, ∀e∈[0,wj] (¬lr_j_i \/ ¬px_i_e)
-       Group A of constraints.
-       In all these constraints, we consider i!=j.
+    A4) ∀i,j∈[0,n-1] ∀e∈[0,wi] (¬lr_i_j \/ ¬px_j_e)
+        This remains True only if the circuit 'i' has not been rotated. Therefore, we need to modify the constraint as 
+        follows:
+                        ∀i,j∈[0,n-1] ∀e∈[0,wi] (r_i \/ ¬lr_i_j \/ ¬px_j_e)
+        (Same reasoning of before, from the implication)
+        We add this same constraint also for the case in which the circuit 'i' has been rotated.
+                        ∀i,j∈[0,n-1] ∀e∈[0,hi] (¬r_i \/ ¬lr_i_j \/ ¬px_j_e)
 
-    B. Constraints 4) and 5).
-       The exact same reasoning is applied. 
-       We obtain the following constraints (group B):
-            B1) ∀i,j∈[0,n-1] ,if l_max-hi-hj<0, ¬ud_i_j /\ ¬ud_j_i
-            B2) ∀i,j∈[0,n-1] ,if l_max-hi-hj<0, ∀f∈[0,l_max-hi-hj] (¬ud_i_j \/ ¬py_j{f+hi} \/  py_if)
-            B3) ∀i,j∈[0,n-1] ,if l_max-hi-hj<0, ∀f∈[0,l_max-hi-hj] (¬ud_j_i \/ ¬py_i{h+hj} \/  py_jf)
-            B4) ∀i,j∈[0,n-1] ,if l_max-hi-hj<0, ∀f∈[0,hi] (¬ud_i_j \/ ¬py_j_f)
-            B5) ∀i,j∈[0,n-1] ,if l_max-hi-hj<0, ∀f∈[0,hj] (¬ud_j_i \/ ¬py_i_f)
-       In all these constraints, we consider i!=j.
+    A5) ∀i,j∈[0,n-1] ,if w-wi-wj>=0, ∀e∈[0,wj] (¬lr_j_i \/ ¬px_i_e)
+        Same modification seen in A4, but in which 'i' and 'j' are swapped.
+            - ∀i,j∈[0,n-1] ∀e∈[0,wj] (r_j \/ ¬lr_j_i \/ ¬px_i_e)
+            - ∀i,j∈[0,n-1] ∀e∈[0,hj] (¬r_i \/¬lr_j_i \/ ¬px_i_e)
 
-    C. Constraints 6) and 7).
-       Regarding the constraint 6), if e∈[w-wi,w-1], we know for sure that xi<e (i.e. px_ie), because that circuit 'i' is 
-       for sure placed before 'e'.
-       Therefore, we put the constraint:
-                                       ∀i ∀e∈[w-wi,w-1] px_ie
-       At the same time, we ensure the constraint 6) only for e∈[w-wi-1]:
-                                       ∀i ∀e∈[w-wi-1] (¬px_ie \/ px_i{e+1}) 
+    Regarding the constraints of the group B), we apply the same modifications, but working along the vertical axis instead of
+    the horizontal one. 
 
-       We apply the exact same reasoning to the constraint 7).
-                                       ∀i ∀f∈[l_max-hi,w-1] py_if
-                                       ∀i ∀f∈[l_max-hi-1] (¬py_if \/ py_i{f+1})
+    B1) ∀i,j∈[0,n-1] ,if l_max-hi-hj<0, ¬ud_i_j /\ ¬ud_j_i
+        It becomes the following four constraints:
+            - 'i' and 'j' are both not rotated.
+               ∀i,j∈[0,n-1] ,if l_max-hi-hj<0, (r_i \/ r_j \/ ¬ud_i_j) /\ (r_i \/ r_j \/ ¬ud_j_i)
+            - 'j' is rotated, while 'i' not.
+               ∀i,j∈[0,n-1] ,if l_max-hi-wj<0, (r_i \/ ¬r_j \/ ¬ud_i_j) /\ (r_i \/ ¬r_j \/ ¬ud_j_i)
+            - 'i' is rotated, while 'j' not.
+               ∀i,j∈[0,n-1] ,if l_max-wi-hj<0, (¬r_i \/ r_j \/ ¬ud_i_j) /\ (¬r_i \/ r_j \/ ¬ud_j_i)
+            - 'i' and 'j' are both rotated.
+               ∀i,j∈[0,n-1] ,if l_max-wi-wj<0, (¬r_i \/ ¬r_j \/ ¬ud_i_j) /\ (¬r_i \/ ¬r_j \/ ¬ud_j_i)
 
-       To sum up, the group C of constraints is the following:
-            C1) ∀i∈[0,n-1] ∀e∈[w-wi,w-1] px_ie
-            C2) ∀i∈[0,n-1] ∀e∈[w-wi-1] (¬px_ie \/ px_i{e+1}) 
-            C3) ∀i∈[0,n-1] ∀f∈[l_max-hi,w-1] py_ifs
-            C4) ∀i∈[0,n-1] ∀f∈[l_max-hi-1] (¬py_if \/ py_i{f+1}) 
-       In all these constraints, we consider i!=j.    
-        
+    B2) ∀i,j∈[0,n-1] ,if l_max-hi-hj<0, ∀f∈[0,l_max-hi-hj] (¬ud_i_j \/ ¬py_j{f+hi} \/  py_if)
+        It becomes the following four constraints:
+            - 'i' and 'j' are both not rotated.
+               ∀i,j∈[0,n-1] ,if l_max-hi-hj<0, ∀f∈[0,l_max-hi-hj] (r_i \/ r_j \/ ¬ud_i_j \/ ¬py_j{f+hi} \/  py_if)
+            - 'j' is rotated, while 'i' not.
+               ∀i,j∈[0,n-1] ,if l_max-hi-wj<0, ∀f∈[0,l_max-hi-wj] (r_i \/ ¬r_j \/ ¬ud_i_j \/ ¬py_j{f+hi} \/  py_if)
+            - 'i' is rotated, while 'j' not.
+               ∀i,j∈[0,n-1] ,if l_max-wi-hj<0, ∀f∈[0,l_max-wi-hj] (¬r_i \/ r_j \/ ¬ud_i_j \/ ¬py_j{f+wi} \/  py_if)
+            - 'i' and 'j' are both rotated.
+               ∀i,j∈[0,n-1] ,if l_max-wi-wj<0, ∀f∈[0,l_max-wi-wj] (¬r_i \/ ¬r_j \/ ¬ud_i_j \/ ¬py_j{f+wi} \/  py_if)
+
+    B3) ∀i,j∈[0,n-1] ,if l_max-hi-hj<0, ∀f∈[0,l_max-hi-hj] (¬ud_j_i \/ ¬py_i{h+hj} \/  py_jf)
+        It becomes the following four constraints:
+            - 'i' and 'j' are both not rotated.
+               ∀i,j∈[0,n-1] ,if l_max-hi-hj<0, ∀f∈[0,l_max-hi-hj] (r_i \/ r_j \/ ¬ud_j_i \/ ¬py_i{h+hj} \/  py_jf)
+            - 'j' is rotated, while 'i' not.
+               ∀i,j∈[0,n-1] ,if l_max-hi-wj<0, ∀f∈[0,l_max-hi-wj] (r_i \/ ¬r_j \/ ¬ud_j_i \/ ¬py_i{h+wj} \/  py_jf)
+            - 'i' is rotated, while 'j' not.
+               ∀i,j∈[0,n-1] ,if l_max-wi-hj<0, ∀f∈[0,l_max-wi-hj] (¬r_i \/ r_j \/ ¬ud_j_i \/ ¬py_i{h+hj} \/  py_jf)
+            - 'i' and 'j' are both rotated.
+               ∀i,j∈[0,n-1] ,if l_max-wi-wj<0, ∀f∈[0,l_max-wi-wj] (¬r_i \/ ¬r_j \/ ¬ud_j_i \/ ¬py_i{h+wj} \/  py_jf)
+
+    B4) ∀i,j∈[0,n-1] ∀f∈[0,hi] (¬ud_i_j \/ ¬py_j_f)
+        It becomes the following two contraints:
+            - The circuit 'i' has not been rotated.
+              ∀i,j∈[0,n-1] ∀f∈[0,hi] (r_i \/ ¬ud_i_j \/ ¬py_j_f)
+            - The circuit 'i' has been rotated.
+              ∀i,j∈[0,n-1] ∀f∈[0,wi] (¬r_i \/ ¬ud_i_j \/ ¬py_j_f)
+
+    B5) ∀i,j∈[0,n-1] ∀f∈[0,hj] (¬ud_j_i \/ ¬py_i_f)
+        It becomes the following two contraints:
+            - The circuit 'j' has not been rotated. 
+              ∀i,j∈[0,n-1] ∀f∈[0,hj] (r_j \/ ¬ud_j_i \/ ¬py_i_f)
+            - The circuit 'j' has not been rotated. 
+              ∀i,j∈[0,n-1] ∀f∈[0,wj] (¬r_j \/ ¬ud_j_i \/ ¬py_i_f)
+
+    Finally, group C) of constraints.
+
+    C1) ∀i∈[0,n-1] ∀e∈[w-wi,w-1] px_ie
+        This is True, but only if the circuit 'i' has not been rotated. Therefore, it becomes:
+                        ∀i∈[0,n-1] ∀e∈[w-wi,w-1] (r_i \/ px_ie)
+        We have also to add the case in which the circuit 'i' has been rotated.
+                        ∀i∈[0,n-1] ∀e∈[w-hi,w-1] (¬r_i \/ px_ie)
+
+    C2) ∀i∈[0,n-1] ∀e∈[w-wi-1] (¬px_ie \/ px_i{e+1}) 
+        It simply becomes: 
+                        ∀i∈[0,n-1] ∀e∈[w-1] (¬px_ie \/ px_i{e+1})
+
+    C3) ∀i∈[0,n-1] ∀f∈[l_max-hi,w-1] py_if
+        Same modification of C1. It becomes the following two constraints:
+                - The circuit 'i' has not been rotated.
+                  ∀i∈[0,n-1] ∀f∈[l_max-hi,w-1] (r_i \/ py_if)
+                - The circuit 'i' has been rotated.
+                  ∀i∈[0,n-1] ∀f∈[l_max-wi,w-1] (¬r_i \/ py_if)
+
+    C4) ∀i∈[0,n-1] ∀f∈[l_max-hi-1] (¬py_if \/ py_i{f+1})
+        It simply becomes:  
+                        ∀i∈[0,n-1] ∀f∈[l_max-1] (¬py_if \/ py_i{f+1})
 
     --- FINAL SUM UP ---
     The constraints are the following.
     1)  ∀i,j∈[0,n-1]  lr_i_j \/ lr_j_i \/ ud_i_j \/ ud_j_i
-    A1) ∀i,j∈[0,n-1] ,if w-wi-wj<0, ¬lr_i_j /\ ¬lr_j_i
-    A2) ∀i,j∈[0,n-1] ,if w-wi-wj>=0, ∀e∈[0,w-wi-wj] (¬lr_i_j \/ ¬px_j{e+wi} \/  px_ie)
-    A3) ∀i,j∈[0,n-1] ,if w-wi-wj>=0, ∀e∈[0,w-wi-wj] (¬lr_j_i \/ ¬px_i{e+wj} \/  px_je)
-    A4) ∀i,j∈[0,n-1] ,if w-wi-wj>=0, ∀e∈[0,wi] (¬lr_i_j \/ ¬px_j_e)
-    A5) ∀i,j∈[0,n-1] ,if w-wi-wj>=0, ∀e∈[0,wj] (¬lr_j_i \/ ¬px_i_e)
-    B1) ∀i,j∈[0,n-1] ,if l_max-hi-hj<0, ¬ud_i_j /\ ¬ud_j_i
-    B2) ∀i,j∈[0,n-1] ,if l_max-hi-hj<0, ∀f∈[0,l_max-hi-hj] (¬ud_i_j \/ ¬py_j{f+hi} \/  py_if)
-    B3) ∀i,j∈[0,n-1] ,if l_max-hi-hj<0, ∀f∈[0,l_max-hi-hj] (¬ud_j_i \/ ¬py_i{h+hj} \/  py_jf)
-    B4) ∀i,j∈[0,n-1] ,if l_max-hi-hj<0, ∀f∈[0,hi] (¬ud_i_j \/ ¬py_j_f)
-    B5) ∀i,j∈[0,n-1] ,if l_max-hi-hj<0, ∀f∈[0,hj] (¬ud_j_i \/ ¬py_i_f)
-    C1) ∀i∈[0,n-1] ∀e∈[w-wi,w-1] px_ie
-    C2) ∀i∈[0,n-1] ∀e∈[w-wi-1] (¬px_ie \/ px_i{e+1}) 
-    C3) ∀i∈[0,n-1] ∀f∈[l_max-hi,w-1] py_ifs
-    C4) ∀i∈[0,n-1] ∀f∈[l_max-hi-1] (¬py_if \/ py_i{f+1}) 
+    A1) ∀i,j∈[0,n-1] ,if w-wi-wj<0, (r_i \/ r_j \/ ¬lr_i_j) /\ (r_i \/ r_j \/ ¬lr_j_i)
+        ∀i,j∈[0,n-1] ,if w-wi-hj<0, (r_i \/ ¬r_j \/ ¬lr_i_j) /\ (r_i \/ ¬r_j \/ ¬lr_j_i)
+        ∀i,j∈[0,n-1] ,if w-hi-wj<0, (¬r_i \/ r_j \/ ¬lr_i_j) /\ (¬r_i \/ r_j \/ ¬lr_j_i)
+        ∀i,j∈[0,n-1] ,if w-hi-wj<0, (¬r_i \/ ¬r_j \/ ¬lr_i_j) /\ (¬r_i \/ ¬r_j \/ ¬lr_j_i)
+    A2) ∀i,j∈[0,n-1] ,if w-wi-wj>=0, ∀e∈[0,w-wi-wj] (r_i \/ r_j \/ ¬lr_i_j \/ ¬px_j{e+wi} \/  px_ie)
+        ∀i,j∈[0,n-1] ,if w-wi-hj>=0, ∀e∈[0,w-wi-hj] (r_i \/ ¬r_j \/ ¬lr_i_j \/ ¬px_j{e+wi} \/  px_ie)
+        ∀i,j∈[0,n-1] ,if w-hi-wj>=0, ∀e∈[0,w-hi-wj] (¬r_i \/ r_j \/ ¬lr_i_j \/ ¬px_j{e+hi} \/  px_ie)
+        ∀i,j∈[0,n-1] ,if w-hi-hj>=0, ∀e∈[0,w-hi-hj] (¬r_i \/ ¬r_j \/ ¬lr_i_j \/ ¬px_j{e+hi} \/  px_ie)
+    A3) ∀i,j∈[0,n-1] ,if w-wi-hj>=0, ∀e∈[0,w-wi-wj] (r_i \/ r_j \/ ¬lr_j_i \/ ¬px_i{e+wj} \/  px_je)
+        ∀i,j∈[0,n-1] ,if w-wi-hj>=0, ∀e∈[0,w-wi-hj] (r_i \/ ¬r_j \/ ¬lr_j_i \/ ¬px_i{e+hj} \/  px_je)
+        ∀i,j∈[0,n-1] ,if w-hi-wj>=0, ∀e∈[0,w-hi-wj] (¬r_i \/ r_j \/ ¬lr_j_i \/ ¬px_i{e+wj} \/  px_je)
+        ∀i,j∈[0,n-1] ,if w-hi-hj>=0, ∀e∈[0,w-hi-hj] (¬r_i \/ ¬r_j \/ ¬lr_j_i \/ ¬px_i{e+hj} \/  px_je)
+    A4) ∀i,j∈[0,n-1] ∀e∈[0,wi] (r_i \/ ¬lr_i_j \/ ¬px_j_e)
+        ∀i,j∈[0,n-1] ∀e∈[0,hi] (¬r_i \/ ¬lr_i_j \/ ¬px_j_e)
+    A5) ∀i,j∈[0,n-1] ∀e∈[0,wj] (r_j \/ ¬lr_j_i \/ ¬px_i_e)
+        ∀i,j∈[0,n-1] ∀e∈[0,hj] (¬r_i \/¬lr_j_i \/ ¬px_i_e)
+    B1) ∀i,j∈[0,n-1] ,if l_max-hi-hj<0, (r_i \/ r_j \/ ¬ud_i_j) /\ (r_i \/ r_j \/ ¬ud_j_i)
+        ∀i,j∈[0,n-1] ,if l_max-hi-wj<0, (r_i \/ ¬r_j \/ ¬ud_i_j) /\ (r_i \/ ¬r_j \/ ¬ud_j_i)
+        ∀i,j∈[0,n-1] ,if l_max-wi-hj<0, (¬r_i \/ r_j \/ ¬ud_i_j) /\ (¬r_i \/ r_j \/ ¬ud_j_i)
+        ∀i,j∈[0,n-1] ,if l_max-wi-wj<0, (¬r_i \/ ¬r_j \/ ¬ud_i_j) /\ (¬r_i \/ ¬r_j \/ ¬ud_j_i)
+    B2) ∀i,j∈[0,n-1] ,if l_max-hi-hj<0, ∀f∈[0,l_max-hi-hj] (r_i \/ r_j \/ ¬ud_i_j \/ ¬py_j{f+hi} \/  py_if)
+        ∀i,j∈[0,n-1] ,if l_max-hi-wj<0, ∀f∈[0,l_max-hi-wj] (r_i \/ ¬r_j \/ ¬ud_i_j \/ ¬py_j{f+hi} \/  py_if)
+        ∀i,j∈[0,n-1] ,if l_max-wi-hj<0, ∀f∈[0,l_max-wi-hj] (¬r_i \/ r_j \/ ¬ud_i_j \/ ¬py_j{f+wi} \/  py_if)
+        ∀i,j∈[0,n-1] ,if l_max-wi-wj<0, ∀f∈[0,l_max-wi-wj] (¬r_i \/ ¬r_j \/ ¬ud_i_j \/ ¬py_j{f+wi} \/  py_if)
+    B3) ∀i,j∈[0,n-1] ,if l_max-hi-hj<0, ∀f∈[0,l_max-hi-hj] (r_i \/ r_j \/ ¬ud_j_i \/ ¬py_i{h+hj} \/  py_jf)
+        ∀i,j∈[0,n-1] ,if l_max-hi-wj<0, ∀f∈[0,l_max-hi-wj] (r_i \/ ¬r_j \/ ¬ud_j_i \/ ¬py_i{h+wj} \/  py_jf)
+        ∀i,j∈[0,n-1] ,if l_max-wi-hj<0, ∀f∈[0,l_max-wi-hj] (¬r_i \/ r_j \/ ¬ud_j_i \/ ¬py_i{h+hj} \/  py_jf)
+        ∀i,j∈[0,n-1] ,if l_max-wi-wj<0, ∀f∈[0,l_max-wi-wj] (¬r_i \/ ¬r_j \/ ¬ud_j_i \/ ¬py_i{h+wj} \/  py_jf)
+    B4) ∀i,j∈[0,n-1] ∀f∈[0,hi] (r_i \/ ¬ud_i_j \/ ¬py_j_f)
+        ∀i,j∈[0,n-1] ∀f∈[0,wi] (¬r_i \/ ¬ud_i_j \/ ¬py_j_f)
+    B5) ∀i,j∈[0,n-1] ∀f∈[0,hj] (r_j \/ ¬ud_j_i \/ ¬py_i_f)
+        ∀i,j∈[0,n-1] ∀f∈[0,wj] (¬r_j \/ ¬ud_j_i \/ ¬py_i_f)
+    C1) ∀i∈[0,n-1] ∀e∈[w-wi,w-1] (r_i \/ px_ie)
+        ∀i∈[0,n-1] ∀e∈[w-hi,w-1] (¬r_i \/ px_ie)
+    C2) ∀i∈[0,n-1] ∀e∈[w-1] (¬px_ie \/ px_i{e+1})
+    C3) ∀i∈[0,n-1] ∀f∈[l_max-hi,w-1] (r_i \/ py_if)
+        ∀i∈[0,n-1] ∀f∈[l_max-wi,w-1] (¬r_i \/ py_if)
+    C4) ∀i∈[0,n-1] ∀f∈[l_max-1] (¬py_if \/ py_i{f+1})
     In all these constraints, we consider i!=j.
 
     """
@@ -253,6 +242,9 @@ class Vlsi_sat(Vlsi_sat_abstract):
         py : list of list of z3.z3.BoolRef
             Boolean variables 'py_i_f'.
             See `Notes`.
+        r : list of z3.z3.BoolRef
+            Boolean variables 'r_i'.
+            See `Notes`.
 
         Raises
         ------
@@ -274,13 +266,13 @@ class Vlsi_sat(Vlsi_sat_abstract):
         - ud_i_j, where 'i' and 'j' are in [0,n-1].
           'i' and 'j' represent two circuits.
           ud_i_j is True IIF the circuit 'i' is placed at the downward to 'j'.  
+        - r_i, where 'i' represents a circuit. i in [0,n].
+          r_i is True IFF the 'i'-th rectangle has been rotated, meaning that wi and hi have been swapped.
 
         """
         w, n, dimsX, dimsY = self.w, self.n, self.dimsX, self.dimsY
 
         s = Solver()  # Solver instance
-
-        r = [Bool(f'r_{i}') for i in range(n)]
 
         # List of lists, containing the 'px' boolean variables: variables 'px_i_e'
         px = [[Bool(f'px_{i}_{e}') for e in range(w)] for i in range(n)]
@@ -290,6 +282,8 @@ class Vlsi_sat(Vlsi_sat_abstract):
         lr = [[Bool(f'lr_{i}_{j}') for j in range(n)] for i in range(n)]
         # List of lists, containing the 'ud' boolean variables: variables 'ud_i_j'
         ud = [[Bool(f'ud_{i}_{j}') for j in range(n)] for i in range(n)]
+        # List containing the 'r' boolean variables: variables 'r_i'
+        r = [Bool(f'r_{i}') for i in range(n)]
                 
         # Ensure the constraint 1) and the constraints of the group A and B
         for i in range(n):
@@ -313,10 +307,6 @@ class Vlsi_sat(Vlsi_sat_abstract):
                     s.add( Or(Not(r[i]), Not(r[j]), Not(lr[j][i])) )
 
                 # Constraints A2)
-                """for e in range(w-dimsX[i]-min([dimsX[j],dimsY[j]])+1):
-                    s.add( Or(Not(lr[i][j]), r[i], px[i][e], Not(px[j][e+dimsX[i]])) )
-                for e in range(w-dimsY[i]-min([dimsX[j],dimsY[j]])+1):
-                    s.add( Or(Not(lr[i][j]), Not(r[i]), px[i][e], Not(px[j][e+dimsY[i]])) )"""
                 for e in range(w-dimsX[i]+1):
                     if e < w-dimsX[i]-dimsX[j]+1:
                         s.add( Or(Not(lr[i][j]), r[i], r[j], px[i][e], Not(px[j][e+dimsX[i]])) )
@@ -328,10 +318,6 @@ class Vlsi_sat(Vlsi_sat_abstract):
                     if e < w-dimsY[i]-dimsY[j]+1:
                         s.add( Or(Not(lr[i][j]), Not(r[i]), Not(r[j]), px[i][e], Not(px[j][e+dimsY[i]])) )
                 # Constraints A3)
-                """for e in range(w-dimsX[j]-min([dimsX[i],dimsY[i]])+1):
-                    s.add( Or(Not(lr[j][i]), r[j], px[j][e], Not(px[i][e+dimsX[j]])) )
-                for e in range(w-dimsY[j]-min([dimsX[i],dimsY[i]])+1):
-                    s.add( Or(Not(lr[j][i]), Not(r[j]), px[j][e], Not(px[i][e+dimsY[j]])) )"""
                 for e in range(w-dimsX[j]+1):
                     if e < w-dimsX[j]-dimsX[i]+1:
                         s.add( Or(Not(lr[j][i]), r[j], r[i], px[j][e], Not(px[i][e+dimsX[j]])) )
@@ -354,42 +340,6 @@ class Vlsi_sat(Vlsi_sat_abstract):
                 for e in range(min([dimsY[j],w])):
                     s.add( Or(Not(r[j]), Not(lr[j][i]), Not(px[i][e])) )
 
-                """# Group B
-                # Constraint B1)
-                if l_max-dimsY[i]-dimsY[j]<0:
-                    s.add( Or(r[i], r[j], Not(ud[i][j])) )
-                    s.add( Or(r[i], r[j], Not(ud[j][i])) )
-                if l_max-dimsY[i]-dimsX[j]<0:
-                    s.add( Or(r[i], Not(r[j]), Not(ud[i][j])) )
-                    s.add( Or(r[i], Not(r[j]), Not(ud[j][i])) )
-                if l_max-dimsX[i]-dimsY[j]<0:
-                    s.add( Or(Not(r[i]), r[j], Not(ud[i][j])) )
-                    s.add( Or(Not(r[i]), r[j], Not(ud[j][i])) )
-                if l_max-dimsX[i]-dimsX[j]<0:
-                    s.add( Or(Not(r[i]), Not(r[j]), Not(ud[i][j])) )
-                    s.add( Or(Not(r[i]), Not(r[j]), Not(ud[j][i])) )
-                    
-                # Constraints B2)
-                for f in range(l_max-dimsY[i]-min([dimsY[j],dimsX[j]])+1):
-                    s.add( Or(Not(ud[i][j]), r[i], py[i][f], Not(py[j][f+dimsY[i]])) )
-                for f in range(l_max-dimsX[i]-min([dimsY[j],dimsX[j]])+1):
-                    s.add( Or(Not(ud[i][j]), Not(r[i]), py[i][f], Not(py[j][f+dimsX[i]])) )
-                # Constraints B3)
-                for f in range(l_max-dimsY[j]-min([dimsY[i],dimsX[i]])+1):
-                    s.add( Or(Not(ud[j][i]), r[j], py[j][f], Not(py[i][f+dimsY[j]])) )
-                for f in range(l_max-dimsX[j]-min([dimsY[i],dimsX[i]])+1):
-                    s.add( Or(Not(ud[j][i]), Not(r[j]), py[j][f], Not(py[i][f+dimsX[j]])) )
-
-                # Constraint B4)
-                for f in range(dimsY[i]):
-                    s.add( Or(r[i], Not(ud[i][j]), Not(py[j][f])) )
-                for f in range(dimsX[i]):
-                    s.add( Or(Not(r[i]), Not(ud[i][j]), Not(py[j][f])) )
-                # Constraint B5)
-                for f in range(dimsY[j]):
-                    s.add( Or(r[j], Not(ud[j][i]), Not(py[i][f])) )
-                for f in range(dimsX[j]):
-                    s.add( Or(Not(r[j]), Not(ud[j][i]), Not(py[i][f])) )"""
                 # Group B
                 # Constraint B1)
                 if l_max-dimsY[i]-dimsY[j]<0:
@@ -406,10 +356,6 @@ class Vlsi_sat(Vlsi_sat_abstract):
                     s.add( Or(Not(r[i]), Not(r[j]), Not(ud[j][i])) )
 
                 # Constraints B2)
-                """for f in range(l_max-dimsY[i]-min([dimsY[j],dimsX[j]])+1):
-                    s.add( Or(Not(ud[i][j]), r[i], py[i][f], Not(py[j][f+dimsY[i]])) )
-                for f in range(l_max-dimsX[i]-min([dimsY[j],dimsX[j]])+1):
-                    s.add( Or(Not(ud[i][j]), Not(r[i]), py[i][f], Not(py[j][f+dimsX[i]])) )"""
                 for f in range(l_max-dimsY[i]+1):
                     if f < l_max-dimsY[i]-dimsY[j]+1:
                         s.add( Or(Not(ud[i][j]), r[i], r[j], py[i][f], Not(py[j][f+dimsY[i]])) )
@@ -421,10 +367,6 @@ class Vlsi_sat(Vlsi_sat_abstract):
                     if f < l_max-dimsX[i]-dimsX[j]+1:
                         s.add( Or(Not(ud[i][j]), Not(r[i]), Not(r[j]), py[i][f], Not(py[j][f+dimsX[i]])) )
                 # Constraints B3)
-                """for f in range(l_max-dimsY[j]-min([dimsY[i],dimsX[i]])+1):
-                    s.add( Or(Not(ud[j][i]), r[j], py[j][f], Not(py[i][f+dimsY[j]])) )
-                for f in range(l_max-dimsX[j]-min([dimsY[i],dimsX[i]])+1):
-                    s.add( Or(Not(ud[j][i]), Not(r[j]), py[j][f], Not(py[i][f+dimsX[j]])) )"""
                 for f in range(l_max-dimsY[j]+1):
                     if f < l_max-dimsY[j]-dimsY[i]+1:
                         s.add( Or(Not(ud[j][i]), r[j], r[i], py[j][f], Not(py[i][f+dimsY[j]])) )
@@ -448,19 +390,6 @@ class Vlsi_sat(Vlsi_sat_abstract):
                     s.add( Or(Not(r[j]), Not(ud[j][i]), Not(py[i][f])) )
 
         # Ensure the constraints of the group C)
-        """for i in range(n):
-            # Constraint C1)
-            for e in range(w-min([dimsX[i],dimsY[i]]),w):
-                s.add(px[i][e])
-            # Constraint C2)
-            for e in range(w-min([dimsX[i],dimsY[i]])):
-                s.add( Or(Not(px[i][e]),px[i][e+1]) )           
-            # Constraint C3)
-            for f in range(l_max-min([dimsY[i],dimsX[i]]),l_max):
-                s.add(py[i][f])
-            # Constraint C4)
-            for f in range(l_max-min([dimsY[i],dimsX[i]])):
-                s.add( Or(Not(py[i][f]),py[i][f+1]) )"""
         for i in range(n):
             # Constraint C1)
             for e in range(w):
@@ -487,10 +416,15 @@ class Vlsi_sat(Vlsi_sat_abstract):
         return s, px, py, r
 
 
-    def __compute_coords(self, s, px, py, r, l_max):
-        """Computes the coords of the rectangles, namely the coordinates of the lower-left verteces of the circuits.
-
-        In the notation used above, coords correspond to the variables {xi,yi}_i.
+    def __compute_coords_actualDims(self, s, px, py, r, l_max):
+        """Computes the coords of the rectangles and the actual dimensions of the rectangles.
+            - coords : coordinates of the lower-left verteces of the circuits.
+              In the notation used above, coords correspond to the variables {xi,yi}_i.
+            - actual dims : actual dimensions of the circuits, after their possible rotation.
+              If a circuit has not been rotated, then its actual_dimsX is equal to its dimsX (i.e. w_i), and also its 
+              actual_dimsY is equal to its dimsY (i.e. h_i).
+              Instead, if a circuit has been rotated, then its actual_dimsX is equal to its dimsY, and its actual_dimsY is 
+              equal to its dimsX.
 
         Parameters
         ----------
@@ -500,6 +434,8 @@ class Vlsi_sat(Vlsi_sat_abstract):
             Boolean variables 'px_i_e'.
         py : list of list of z3.z3.BoolRef
             Boolean variables 'py_i_f'.
+        r : list of z3.z3.BoolRef
+            Boolean variables 'r_i'.
         l_max : int
             Maximum length of the plate.
 
@@ -507,6 +443,10 @@ class Vlsi_sat(Vlsi_sat_abstract):
         -------
         coords : list of tuple of int
             Coordinates of the left-bottom corner of the circuits.
+        actual_dimsX : list of int
+            Actual horizontal dimensions of the circuits, after their possible rotation.
+        actual_dimsY : list of int
+            Actual vertical dimensions of the circuits, after thei possible rotation.
 
         """
         w, n = self.w, self.n
@@ -529,6 +469,8 @@ class Vlsi_sat(Vlsi_sat_abstract):
                     break
             coords.append((coordX,coordY))
 
+        # If a circuit has not been rotated, then its actual_dimsX is equal to its dimsX, otherwise is equal to its dimsY.
+        # The same for actual_dimsY.
         actual_dimsX = [self.dimsY[i] if m.evaluate(r[i]) else self.dimsX[i] for i in range(n)]
         actual_dimsY = [self.dimsX[i] if m.evaluate(r[i]) else self.dimsY[i] for i in range(n)]
 
@@ -564,20 +506,9 @@ class Vlsi_sat(Vlsi_sat_abstract):
         """
         w, n, dimsX, dimsY = self.w, self.n, self.dimsX, self.dimsY
 
-        """w_max = max(dimsX)  # The maximum width of a circuit
-        min_rects_per_row = w // w_max  # Minimum number of circuits per row
-        if min_rects_per_row==0:
-            raise UnsatError('UNSAT')
-        sorted_dimsY = sorted(dimsY, reverse=True)  
-        if min_rects_per_row==0:
-            l_max = sum(dimsY)
-        else:
-            l_max = sum([sorted_dimsY[i] for i in range(n) if i % min_rects_per_row == 0])  # The upper bound for the length"""
-
+        # Compute the upper bound for the length of the plate
         max_dim = max(dimsX + dimsY)
-        #min_dim = min(dimsX + dimsY)
         min_rects_per_row = w // max_dim 
-        #max_rects_per_col = math.ceil(n / max([1,min_rects_per_row]))
         if min_rects_per_row<2:
             l_max = sum([max([dimsX[i],dimsY[i]]) for i in range(n)])
         else:
@@ -595,7 +526,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
                 # A solution has been found
                 first_solution = True
 
-                # Compute the coords (x and y) of the rectangles in the current solution
+                # Compute the coords (x and y) and the actual dimensions of the rectangles in the current solution
                 coords, actual_dimsX, actual_dimsY = self.__compute_coords(s, px, py, r, l_max)
 
                 # Store the current solution into `self.results`
