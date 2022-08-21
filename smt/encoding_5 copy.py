@@ -1,4 +1,3 @@
-from time import sleep
 from smt_utils import Vlsi_smt_abstract
 import subprocess
 
@@ -31,16 +30,7 @@ class Vlsi_smt(Vlsi_smt_abstract):
         - actual_dimsY[i], where 'i' in [0,n-1].
           actual_dimsY[i] is the actual vertical dimension (i.e. heigth) of the i-th circuit.
 
-    For each circuit 'i', the following constraints are ensured, putting into relation the variable 'r[i]' with the variables
-    'actual_dimsX[i]' and 'actual_dimsY[i]'.
-                (¬r[i] -> actual_dimsX[i]=dimsX[i] /\ actual_dimsY[i]=dimsY[i]) /\ 
-                (r[i] -> actual_dimsX[i]=dimsY[i] /\ actual_dimsY[i]=dimsX[i])
-    Which are equivalent to:
-                (r[i] \/ (actual_dimsX[i]=dimsX[i] /\ actual_dimsY[i]=dimsY[i])) /\ 
-                (¬r[i] \/ (actual_dimsX[i]=dimsY[i] /\ actual_dimsY[i]=dimsX[i]))
-
-    Then, the rest of the encoding is the same of the encoding 2C. The only difference is that we use the variables 
-    'actual_dimsX[i]','actual_dimsY[i]' instead of the values 'dimsX[i],dimsY[i]'.
+    
 
     """
     def __generate_encoding(self, l_max):
@@ -71,12 +61,6 @@ class Vlsi_smt(Vlsi_smt_abstract):
           coordY[i] is the y coordinate of the bottom-left vertex of the 'i'-th circuit.
         - l
           It represents the length of the plate.
-        - r[i], where 'i' represents a circuit. i in [0,n].
-          r[i] is True IFF the 'i'-th rectangle has been rotated, meaning that dimsX[i] and dimsY[i] have been swapped.
-        - actual_dimsX[i], where 'i' in [0,n-1].
-          actual_dimsX[i] is the actual horizontal dimension (i.e. width) of the i-th circuit.
-        - actual_dimsY[i], where 'i' in [0,n-1].
-          actual_dimsY[i] is the actual vertical dimension (i.e. heigth) of the i-th circuit.
           
         """
         w, n, dimsX, dimsY = self.w, self.n, self.dimsX, self.dimsY
@@ -91,41 +75,46 @@ class Vlsi_smt(Vlsi_smt_abstract):
         lines.append('(declare-fun coordX (Int) Int)')
         # We are defining the function "coordY": we are declaring n variables "coordY[i]".
         lines.append('(declare-fun coordY (Int) Int)')
-        # We are defining the function "r": we are declaring n variables "r[i]".
         lines.append('(declare-fun r (Int) Bool)')
-        # We are defining the function "actual_dimsX": we are declaring n variables "actual_dimsX[i]".
+        # We are defining the function "coordX": we are declaring n variables "coordX[i]".
         lines.append('(declare-fun actual_dimsX (Int) Int)')
-        # We are defining the function "actual_dimsY": we are declaring n variables "actual_dimsY[i]".
+        # We are defining the function "coordY": we are declaring n variables "coordY[i]".
         lines.append('(declare-fun actual_dimsY (Int) Int)')
         # We are defining the variable "l".
         lines.append('(declare-fun l () Int)')
 
         # CONSTRAINTS
 
-        # 1- Actual dimensions
-        lines += [f'(assert (or (r {i}) (and (= (actual_dimsX {i}) {dimsX[i]}) (= (actual_dimsY {i}) {dimsY[i]}))))' for i in range(n)]
-        lines += [f'(assert (or (not (r {i})) (and (= (actual_dimsX {i}) {dimsY[i]}) (= (actual_dimsY {i}) {dimsX[i]}))))' for i in range(n)]
-
-        # 2- Domains
+        # 1- Domains
         # We add a single string, stating that l<=l_max
         lines.append(f'(assert (<= l {l_max}))')
 
         # We create a list of strings, one for each variable "coordX[i]".
-        # For each "coordX[i]", we say that 0<="coordX[i]"<=w-actual_dimsX[i]:
-        #                        "(assert (and (>= (coordX {i}) 0) (<= (coordX {i}) (- {w} {actual_dimsX[i]}))))".
-        # The same for "coordY[i]".
-        lines += [f'(assert (and (>= (coordX {i}) 0) (<= (coordX {i}) (- {w} (actual_dimsX {i})))))' for i in range(n)]
-        lines += [f'(assert (and (>= (coordY {i}) 0) (<= (coordY {i}) (- {l_max} (actual_dimsY {i})))))' for i in range(n)]
+        # For each "coordX[i]", we say that 0<="coordX[i]"<=w-dimsX[i]:
+        #                        "(assert (and (>= (coordX {i}) 0) (<= (coordX {i}) (- {w} {dimsX[i]}))))".
+        #lines += [f'(assert (and (>= (coordX {i}) 0) (<= (coordX {i}) (- {w} {dimsX[i]}))))' for i in range(n)]
+        #lines += [f'(assert (and (>= (coordY {i}) 0) (<= (coordY {i}) (- {l_max} {dimsY[i]}))))' for i in range(n)]
+        lines += [f'(assert (>= (coordX {i}) 0))' for i in range(n)]
+        lines += [f'(assert (or (r {i}) (<= (coordX {i}) (- {w} {dimsX[i]}))))' for i in range(n)]
+        lines += [f'(assert (or (not (r {i})) (<= (coordX {i}) (- {w} {dimsY[i]}))))' for i in range(n)]
+
+        lines += [f'(assert (>= (coordY {i}) 0))' for i in range(n)]
+        lines += [f'(assert (or (r {i}) (<= (coordY {i}) (- {l_max} {dimsY[i]}))))' for i in range(n)]
+        lines += [f'(assert (or (not (r {i})) (<= (coordY {i}) (- {l_max} {dimsX[i]}))))' for i in range(n)]
+
+        # 2- Actual dimensions
+        lines += [f'(assert (or (r {i}) (and (= (actual_dimsX {i}) {dimsX[i]}) (= (actual_dimsY {i}) {dimsY[i]}))))' for i in range(n)]
+        lines += [f'(assert (or (not (r {i})) (and (= (actual_dimsX {i}) {dimsY[i]}) (= (actual_dimsY {i}) {dimsX[i]}))))' for i in range(n)]
 
         # 3- Non-overlapping
         # For each pair of circuits (i,j), where i<j, we impose the non-overlapping constraint: 
-        #            coordX[i]+actual_dimsX[i]<=coordX[j] \/ coordX[j]+actual_dimsX[j]<=coordX[i] \/ 
-        #            coordY[i]+actual_dimsY[i]<=coordY[j] \/ coordY[j]+actual_dimsY[j]<=coordY[i]
+        #            coordX[i]+dimsX[i]<=coordX[j] \/ coordX[j]+dimsX[j]<=coordX[i] \/ coordY[i]+dimsY[i]<=coordY[j] \/ 
+        #                                             coordY[j]+dimsY[j]<=coordY[i]
         lines += [f'(assert (or (<= (+ (coordX {i}) (actual_dimsX {i})) (coordX {j})) (<= (+ (coordX {j}) (actual_dimsX {j})) (coordX {i})) (<= (+ (coordY {i}) (actual_dimsY {i})) (coordY {j})) (<= (+ (coordY {j}) (actual_dimsY {j})) (coordY {i}))))' 
                 for i in range(n) for j in range(n) if i<j]
         
         # 3- Length of the plate
-        # For each circuit 'i', we impose that coordY[i]+actual_dimsY[i]<=l
+        # For each circuit 'i', we impose that coordY[i]+dimsY[i]<=l
         lines += [f'(assert (<= (+ (coordY {i}) (actual_dimsY {i})) l))' for i in range(n)]
 
         # FINAL REFINEMENTS
@@ -174,9 +163,9 @@ class Vlsi_smt(Vlsi_smt_abstract):
 
         # Check satisfiability and get the model
         lines.append('(check-sat)')
-        # String "(get-value ((coordX 0) (coordY 0) ... (coordX N) (coordY N)))"
+        # String "(get-value ((coordX 0) (coordX 1) ... (coordX N) (coordY 0) (coordY 1) ... (coordY N)))"
         lines.append(f'(get-value ({" ".join([f"(coordX {i}) (coordY {i}) " for i in range(self.n)])}))')
-        # String "(get-value ((actual_dimsX 0) (actual_dimsY 0) ... (actual_dimsX N) (actual_dimsY N)))"
+        # String "(get-value ((coordX 0) (coordX 1) ... (coordX N) (coordY 0) (coordY 1) ... (coordY N)))"
         lines.append(f'(get-value ({" ".join([f"(actual_dimsX {i}) (actual_dimsY {i}) " for i in range(self.n)])}))')
 
         # Join all these strings, by means of the new line '\n'. Now we have a single string.
@@ -188,7 +177,7 @@ class Vlsi_smt(Vlsi_smt_abstract):
 
 
     def __optimize(self):
-        """Solves the given VLSI instance, using the SAT encoding 5.
+        """Solves the given VLSI instance, using the SAT encoding 2C.
 
         It performs optimization: the best solution is found (if any).
         (If this class is used as a parallel process with a time limit, there is not gurantee of founding the optimal 
@@ -240,8 +229,6 @@ class Vlsi_smt(Vlsi_smt_abstract):
             command = f'z3 -in -T:{self.time_limit}'
         elif solver_name=='cvc5':
             command = f'cvc5 --incremental --tlimit={self.time_limit*1000}'
-        elif solver_name=='yices-smt2':
-            command = f'yices-smt2 --incremental --timeout={self.time_limit}'
         
         # Start the solver process on the terminal.
         # We use pipes for the stdin and the stdout of the solver process, for communicating with it.
@@ -268,22 +255,22 @@ class Vlsi_smt(Vlsi_smt_abstract):
             # Get the solver response
             output = process.stdout.read1().decode('utf-8') # String sat/unsat
             model = process.stdout.read1().decode('utf-8') # String containing the model (if any)
-            actual_dims = process.stdout.read1().decode('utf-8') # String containing the actual dims (if any)
+            actual_dims = process.stdout.read1().decode('utf-8') # String containing the model (if any)
 
             # Check if SAT
             if 'sat' in output and 'unsat' not in output:
                 # SAT: we have found the best solution
 
-                # Parse the model of the solver into the list of coords, i.e. `coords`
-                if solver_name=='z3' or solver_name=='yices-smt2':
+                # Parse the output model of the solver into the list of coords, i.e. `coords`
+                if solver_name=='z3':
                     coords = [int(s.split(')')[1]) for s in model.split('\n')[:-1]]
                 elif solver_name=='cvc5':
                     coords = [int(s.split(')')[1]) for s in model.split('\n')[:-1][0].split(' (')]
                 # List of coords, for each circuit 'i'. For each circuit 'i', we have the list of two elements [coordX_i, coordY_i]
                 coords = [[coords[2*i], coords[2*i+1]] for i in range((len(coords))//2)]
 
-                # Parse the actual_dims of the solver into the list of actual dims, i.e. `actual_dims`
-                if solver_name=='z3' or solver_name=='yices-smt2':
+                # Parse the output model of the solver into the list of coords, i.e. `coords`
+                if solver_name=='z3':
                     actual_dims = [int(s.split(')')[1]) for s in actual_dims.split('\n')[:-1]]
                 elif solver_name=='cvc5':
                     actual_dims = [int(s.split(')')[1]) for s in actual_dims.split('\n')[:-1][0].split(' (')]
