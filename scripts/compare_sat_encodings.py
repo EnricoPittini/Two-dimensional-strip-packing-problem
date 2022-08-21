@@ -4,15 +4,19 @@ import os
 import re
 import subprocess
 
+import utils
 
-ENCODING_CHOICES = [f'encoding_{i}' for i in range(4)] + [f'encoding_{4}{i}' for i in ['A', 'B', 'C', 'D', 'E', 'F']] +\
-    ['encoding_5'] + ['encoding_6A', 'encoding_6B'] + [f'encoding_{7}{i}' for i in ['A', 'B', 'C', 'D']] +\
-        [f'encoding_{8}{i}' for i in ['A', 'B', 'C', 'D', 'E']] +  [f'encoding_{9}{i}' for i in ['A', 'B', 'AA', 'AD', 'BA', 'BD']] +\
-             ['encoding_10A', 'encoding_10B', 'encoding_10C'] + ['encoding_11A', 'encoding_11B', 'encoding_11C']
-
-#python scripts/compare_sat_encodings.py --encodings-list encoding_3 encoding_4A encoding_4B encoding_4C encoding_4D -lb 1 -ub 15
 
 def main() -> None:
+    """Compare the specified SAT encodings in solving the specified VLSI problem instances.
+
+    Example of usage: python scripts/compare_sat_encodings.py --encodings-list encoding_3 encoding_4A encoding_4B encoding_4C encoding_4D -lb 1 -ub 15
+
+    Help: python scripts\compare_sat_encodings.py -h
+
+    Full list of available SAT encodings: see `ENCODINGS RECAP.md` inside the `sat` folder.
+    
+    """
     parser = argparse.ArgumentParser(description='Script for comparing VLSI SAT encodings.')
 
     parser.add_argument('output-name', type=str, default='results', nargs='?', 
@@ -23,7 +27,7 @@ def main() -> None:
                         nargs='?', 
                         help='The path in which the output file is stored.')
 
-    parser.add_argument('--encodings-list', '-m', metavar='encoding', type=str, choices=ENCODING_CHOICES,
+    parser.add_argument('--encodings-list', '-m', metavar='encoding', type=str, choices=utils.SAT_ENCODINGS,
                         # TODO: correct description
                         help='List of SAT encodings to compare.',
                         nargs='*')
@@ -31,7 +35,7 @@ def main() -> None:
     parser.add_argument('--instances-lower-bound', '-lb',
                         metavar='1..40',
                         type=int,
-                        choices=range(1, 42),
+                        choices=utils.INSTANCES,
                         default=1,
                         help='Lower bound of instances to solve (default 1).',
                         nargs='?')
@@ -39,7 +43,7 @@ def main() -> None:
     parser.add_argument('--instances-upper-bound', '-ub', 
                         metavar='1..40',
                         type=int,
-                        choices=range(1, 42),  # TODO change
+                        choices=utils.INSTANCES, 
                         default=40,
                         help='Upper bound of instances to solve (default 40).', 
                         nargs='?')

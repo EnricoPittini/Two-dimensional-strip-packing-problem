@@ -254,7 +254,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
         if min_rects_per_row==0:
             raise UnsatError('UNSAT')
         sorted_dimsY = sorted(dimsY, reverse=True)  
-        if min_rects_per_row==0:
+        if min_rects_per_row==1:
             l_max = sum(dimsY)
         else:
             l_max = sum([sorted_dimsY[i] for i in range(n) if i % min_rects_per_row == 0])  # The upper bound for the length
