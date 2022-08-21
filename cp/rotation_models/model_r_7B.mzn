@@ -1,6 +1,6 @@
 %---------------------------------------------------------------------------------------------------------------------------%
-%                                                         MODEL R 7A                                                        %
-% Added the same heuristics as the best model without rotations.                                                            %
+%                                                         MODEL R 7B ☑                                                     %
+% Model that extends `MODEL R 2B` and adds the same heuristics as the best model without rotations.                         %
 %---------------------------------------------------------------------------------------------------------------------------%
 
 include "cumulative.mzn";

@@ -1,6 +1,5 @@
 {
     "openFiles": [
-        "rotation_models/model_r_6A.mzn",
         "models/model_6A.mzn",
         "models/model_6B.mzn",
         "models/model_6C.mzn",
@@ -14,9 +13,18 @@
         "rotation_models/model_r_7F.mzn",
         "models/model_6F.mzn",
         "models/model_6G.mzn",
-        "rotation_models/model_r_7G.mzn"
+        "rotation_models/model_r_7G.mzn",
+        "rotation_models/model_r_2B.mzn",
+        "rotation_models/model_r_3A.mzn",
+        "rotation_models/model_r_3B.mzn",
+        "rotation_models/model_r_4A.mzn",
+        "rotation_models/model_r_0.mzn",
+        "rotation_models/model_r_1A.mzn",
+        "rotation_models/model_r_1B.mzn",
+        "rotation_models/model_r_1D.mzn",
+        "rotation_models/model_r_1C.mzn"
     ],
-    "openTab": 14,
+    "openTab": 6,
     "projectFiles": [
         "data/data_13.dzn",
         "data/data_21.dzn",
@@ -62,7 +70,6 @@
         "rotation_models/model_r_1D.mzn",
         "rotation_models/model_r_2A.mzn",
         "rotation_models/model_r_2B.mzn",
-        "rotation_models/model_r_2C.mzn",
         "rotation_models/model_r_3A.mzn",
         "rotation_models/model_r_3B.mzn",
         "rotation_models/model_r_4A.mzn",
@@ -76,7 +83,7 @@
         "rotation_models/model_r_5C.mzn",
         "rotation_models/model_r_5E.mzn",
         "rotation_models/model_r_5H.mzn",
-        "rotation_models/model_r_6A.mzn",
+        "rotation_models/model_r_6.mzn",
         "rotation_models/model_r_7A.mzn",
         "rotation_models/model_r_7B.mzn",
         "rotation_models/model_r_7C.mzn",
