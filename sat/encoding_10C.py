@@ -3,7 +3,7 @@ from sat_utils import UnsatError, Vlsi_sat_abstract
 
 
 class Vlsi_sat(Vlsi_sat_abstract):
-    """Class for solving the VLSI problem in SAT, using the encoding 10B.
+    """Class for solving the VLSI problem in SAT, using the encoding 10C.
 
     It inherits from the class `Vlsi_sat_abstract`.
 
@@ -36,7 +36,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
 
     """
     def __solve(self, l_min, l_max):
-        """Solves the given VLSI instance, using the SAT encoding 10B.
+        """Solves the given VLSI instance, using the SAT encoding 10C.
 
         It is an auxiliary method. Its aim is to solve the VLSI instance without performing optimization: any solution is 
         good.
@@ -229,7 +229,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
 
 
     def __optimize(self):
-        """Solves the given VLSI instance, using the SAT encoding 10B.
+        """Solves the given VLSI instance, using the SAT encoding 10C.
 
         It performs optimization: the best solution is found (if any).
         (If this class is used as a parallel process with a time limit, there is not gurantee of founding the optimal 

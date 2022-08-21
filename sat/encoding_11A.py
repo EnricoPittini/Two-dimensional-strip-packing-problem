@@ -3,11 +3,13 @@ from sat_utils import UnsatError, Vlsi_sat_abstract
 
 
 class Vlsi_sat(Vlsi_sat_abstract):
-    """Class for solving the VLSI problem in SAT, using the encoding 10A.
+    """Class for solving the VLSI problem in SAT, using the encoding 11A.
 
     It inherits from the class `Vlsi_sat_abstract`.
 
-    The solving procedure is the same of the encoding 10. SAT variables 'px_i_e', 'py_i_f, 'lr_i_j' and 'ud_i_j'.
+    Like the encoding 11, also this encoding solves the rotation variant of the VLSI problem.
+
+    The solving procedure is the same of the encoding 11. SAT variables 'px_i_e', 'py_i_f, 'lr_i_j', 'ud_i_j' and 'r_i'.
     In addition, there are also the SAT variables 'ph_o': they are introduced for improving the optimization procedure.
     See the `__solve` method.
 
@@ -38,16 +40,24 @@ class Vlsi_sat(Vlsi_sat_abstract):
     More precisely, ph_o is True IFF each circuit is below or at the same level of the length l_o=o+l_min.
     Formally:  ph_o is True IFF ∀i yi+hi<=l_o (where l_o=o+l_min)
 
+    Actually, we have to take into account the possibility of having rotations.
+    The constraint becomes:
+                ph_o is True IFF ∀i (¬r_i -> yi+hi<=l_o) /\ (r_i -> yi+wi<=l_o)
+    Which is equivalent to:
+                ph_o is True IFF ∀i (r_i \/ yi+hi<=l_o) /\ (¬r_i \/ yi+wi<=l_o)
+
 
     --- CONSTRAINTS ON ph_o ---
-    For each circuit 'i' and for each 'o' in [0,l_max-l_min], we impose:
-                ph_o -> py_i_{o+l_min-dimsY[i]}
-    which is equivalent to:
-                ¬ph_o \/ py_i_{o+l_min-dimsY[i]}
-    Basically, this means that if ph_o is True then the circuit 'i' is below or at most the same level of the length l_o=o+l_min.
-    Formally, yi+hi<=l_o, where l_o=o+l_min.
+    We have to ensure that, if ph_o is True, then the circuit 'i' is below or at most the same level of the length l_o=o+l_min.
+    For each circuit 'i' and for each 'o' in [0,l_max-l_min], we impose two constraints:
+                - ph_o /\ ¬r_i -> py_i_{o+l_min-dimsY[i]}   NO ROTATION
+                - ph_o /\ r_i -> py_i_{o+l_min-dimsX[i]}   ROTATION
+    which are equivalent to:
+                - ¬ph_o \/ r_i \/ py_i_{o+l_min-dimsY[i]}  NO ROTATION
+                - ¬ph_o \/ ¬r_i \/ py_i_{o+l_min-dimsX[i]}  ROTATION
     On the whole, we have:
-                ∀i∈[0,n-1] ∀o∈[0,l_mix-l_min] ¬ph_o \/ py_i_{o+l_min-dimsY[i]}
+                - ∀i∈[0,n-1] ∀o∈[0,l_mix-l_min] ¬ph_o \/ r_i \/ py_i_{o+l_min-dimsY[i]}
+                - ∀i∈[0,n-1] ∀o∈[0,l_mix-l_min] ¬ph_o \/ ¬r_i \/ py_i_{o+l_min-dimsX[i]}
 
     Then, we put the usual constraint for the order encoding.
     Namely, for each 'o', we have to put:
@@ -59,7 +69,8 @@ class Vlsi_sat(Vlsi_sat_abstract):
 
     --- SUM UP ---
     The constraints are the following.
-    O1) ∀i∈[0,n-1] ∀o∈[0,l_mix-l_min] ¬ph_o \/ py_i_{o+l_min-dimsY[i]}
+    O1) ∀i∈[0,n-1] ∀o∈[0,l_mix-l_min] ¬ph_o \/ r_i \/ py_i_{o+l_min-dimsY[i]}
+        ∀i∈[0,n-1] ∀o∈[0,l_mix-l_min] ¬ph_o \/ ¬r_i \/ py_i_{o+l_min-dimsX[i]}
     O2) ∀o∈[0,l_mix-l_min-1] (¬ph_o \/ ph_{o+1})
     O3) ph_{l-l_min}
 
@@ -85,6 +96,9 @@ class Vlsi_sat(Vlsi_sat_abstract):
         py : list of list of z3.z3.BoolRef
             Boolean variables 'py_i_f'.
             See `Notes`.
+        r : list of z3.z3.BoolRef
+            Boolean variables 'r_i'.
+            See `Notes`.
 
         Raises
         ------
@@ -105,7 +119,13 @@ class Vlsi_sat(Vlsi_sat_abstract):
           lr_i_j is True IIF the circuit 'i' is placed at the left to 'j'.
         - ud_i_j, where 'i' and 'j' are in [0,n-1].
           'i' and 'j' represent two circuits.
-          ud_i_j is True IIF the circuit 'i' is placed at the downward to 'j'.  
+          ud_i_j is True IIF the circuit 'i' is placed at the downward to 'j'.
+        - r_i, where 'i' represents a circuit. i in [0,n].
+          r_i is True IFF the 'i'-th rectangle has been rotated, meaning that wi and hi have been swapped. 
+        - ph_o, where 'o' represents a length.
+          o in [0,l_max-l_min].
+          'o' does not represent an actual length, but an index (on [l_min,l_max]). The corresponding actual length is l_o=o+l_min.
+          ph_o is True IFF each circuit is below or at the same level of the length 'o' (i.e. l_o=o+l_min).  
 
         """
         w, n, dimsX, dimsY = self.w, self.n, self.dimsX, self.dimsY
@@ -115,8 +135,6 @@ class Vlsi_sat(Vlsi_sat_abstract):
 
         s = Solver()  # Solver instance
 
-        r = [Bool(f'r_{i}') for i in range(n)]
-
         # List of lists, containing the 'px' boolean variables: variables 'px_i_e'
         px = [[Bool(f'px_{i}_{e}') for e in range(w)] for i in range(n)]
         # List of lists, containing the 'py' boolean variables: variables 'py_i_f'
@@ -125,6 +143,8 @@ class Vlsi_sat(Vlsi_sat_abstract):
         lr = [[Bool(f'lr_{i}_{j}') for j in range(n)] for i in range(n)]
         # List of lists, containing the 'ud' boolean variables: variables 'ud_i_j'
         ud = [[Bool(f'ud_{i}_{j}') for j in range(n)] for i in range(n)]
+        # List containing the 'r' boolean variables: variables 'r_i'
+        r = [Bool(f'r_{i}') for i in range(n)]
 
         # List, containing the 'ph' boolean variables: variables 'ph_o'
         ph = [Bool(f'ph_{o}') for o in range(l_max-l_min+1)]
@@ -154,10 +174,6 @@ class Vlsi_sat(Vlsi_sat_abstract):
                     s.add( Or(Not(r[i]), Not(r[j]), Not(lr[j][i])) )
 
                 # Constraints A2)
-                """for e in range(w-dimsX[i]-min([dimsX[j],dimsY[j]])+1):
-                    s.add( Or(Not(lr[i][j]), r[i], px[i][e], Not(px[j][e+dimsX[i]])) )
-                for e in range(w-dimsY[i]-min([dimsX[j],dimsY[j]])+1):
-                    s.add( Or(Not(lr[i][j]), Not(r[i]), px[i][e], Not(px[j][e+dimsY[i]])) )"""
                 for e in range(w-dimsX[i]+1):
                     if e < w-dimsX[i]-dimsX[j]+1:
                         s.add( Or(Not(lr[i][j]), r[i], r[j], px[i][e], Not(px[j][e+dimsX[i]])) )
@@ -169,10 +185,6 @@ class Vlsi_sat(Vlsi_sat_abstract):
                     if e < w-dimsY[i]-dimsY[j]+1:
                         s.add( Or(Not(lr[i][j]), Not(r[i]), Not(r[j]), px[i][e], Not(px[j][e+dimsY[i]])) )
                 # Constraints A3)
-                """for e in range(w-dimsX[j]-min([dimsX[i],dimsY[i]])+1):
-                    s.add( Or(Not(lr[j][i]), r[j], px[j][e], Not(px[i][e+dimsX[j]])) )
-                for e in range(w-dimsY[j]-min([dimsX[i],dimsY[i]])+1):
-                    s.add( Or(Not(lr[j][i]), Not(r[j]), px[j][e], Not(px[i][e+dimsY[j]])) )"""
                 for e in range(w-dimsX[j]+1):
                     if e < w-dimsX[j]-dimsX[i]+1:
                         s.add( Or(Not(lr[j][i]), r[j], r[i], px[j][e], Not(px[i][e+dimsX[j]])) )
@@ -195,42 +207,6 @@ class Vlsi_sat(Vlsi_sat_abstract):
                 for e in range(min([dimsY[j],w])):
                     s.add( Or(Not(r[j]), Not(lr[j][i]), Not(px[i][e])) )
 
-                """# Group B
-                # Constraint B1)
-                if l_max-dimsY[i]-dimsY[j]<0:
-                    s.add( Or(r[i], r[j], Not(ud[i][j])) )
-                    s.add( Or(r[i], r[j], Not(ud[j][i])) )
-                if l_max-dimsY[i]-dimsX[j]<0:
-                    s.add( Or(r[i], Not(r[j]), Not(ud[i][j])) )
-                    s.add( Or(r[i], Not(r[j]), Not(ud[j][i])) )
-                if l_max-dimsX[i]-dimsY[j]<0:
-                    s.add( Or(Not(r[i]), r[j], Not(ud[i][j])) )
-                    s.add( Or(Not(r[i]), r[j], Not(ud[j][i])) )
-                if l_max-dimsX[i]-dimsX[j]<0:
-                    s.add( Or(Not(r[i]), Not(r[j]), Not(ud[i][j])) )
-                    s.add( Or(Not(r[i]), Not(r[j]), Not(ud[j][i])) )
-                    
-                # Constraints B2)
-                for f in range(l_max-dimsY[i]-min([dimsY[j],dimsX[j]])+1):
-                    s.add( Or(Not(ud[i][j]), r[i], py[i][f], Not(py[j][f+dimsY[i]])) )
-                for f in range(l_max-dimsX[i]-min([dimsY[j],dimsX[j]])+1):
-                    s.add( Or(Not(ud[i][j]), Not(r[i]), py[i][f], Not(py[j][f+dimsX[i]])) )
-                # Constraints B3)
-                for f in range(l_max-dimsY[j]-min([dimsY[i],dimsX[i]])+1):
-                    s.add( Or(Not(ud[j][i]), r[j], py[j][f], Not(py[i][f+dimsY[j]])) )
-                for f in range(l_max-dimsX[j]-min([dimsY[i],dimsX[i]])+1):
-                    s.add( Or(Not(ud[j][i]), Not(r[j]), py[j][f], Not(py[i][f+dimsX[j]])) )
-
-                # Constraint B4)
-                for f in range(dimsY[i]):
-                    s.add( Or(r[i], Not(ud[i][j]), Not(py[j][f])) )
-                for f in range(dimsX[i]):
-                    s.add( Or(Not(r[i]), Not(ud[i][j]), Not(py[j][f])) )
-                # Constraint B5)
-                for f in range(dimsY[j]):
-                    s.add( Or(r[j], Not(ud[j][i]), Not(py[i][f])) )
-                for f in range(dimsX[j]):
-                    s.add( Or(Not(r[j]), Not(ud[j][i]), Not(py[i][f])) )"""
                 # Group B
                 # Constraint B1)
                 if l_max-dimsY[i]-dimsY[j]<0:
@@ -247,10 +223,6 @@ class Vlsi_sat(Vlsi_sat_abstract):
                     s.add( Or(Not(r[i]), Not(r[j]), Not(ud[j][i])) )
 
                 # Constraints B2)
-                """for f in range(l_max-dimsY[i]-min([dimsY[j],dimsX[j]])+1):
-                    s.add( Or(Not(ud[i][j]), r[i], py[i][f], Not(py[j][f+dimsY[i]])) )
-                for f in range(l_max-dimsX[i]-min([dimsY[j],dimsX[j]])+1):
-                    s.add( Or(Not(ud[i][j]), Not(r[i]), py[i][f], Not(py[j][f+dimsX[i]])) )"""
                 for f in range(l_max-dimsY[i]+1):
                     if f < l_max-dimsY[i]-dimsY[j]+1:
                         s.add( Or(Not(ud[i][j]), r[i], r[j], py[i][f], Not(py[j][f+dimsY[i]])) )
@@ -262,10 +234,6 @@ class Vlsi_sat(Vlsi_sat_abstract):
                     if f < l_max-dimsX[i]-dimsX[j]+1:
                         s.add( Or(Not(ud[i][j]), Not(r[i]), Not(r[j]), py[i][f], Not(py[j][f+dimsX[i]])) )
                 # Constraints B3)
-                """for f in range(l_max-dimsY[j]-min([dimsY[i],dimsX[i]])+1):
-                    s.add( Or(Not(ud[j][i]), r[j], py[j][f], Not(py[i][f+dimsY[j]])) )
-                for f in range(l_max-dimsX[j]-min([dimsY[i],dimsX[i]])+1):
-                    s.add( Or(Not(ud[j][i]), Not(r[j]), py[j][f], Not(py[i][f+dimsX[j]])) )"""
                 for f in range(l_max-dimsY[j]+1):
                     if f < l_max-dimsY[j]-dimsY[i]+1:
                         s.add( Or(Not(ud[j][i]), r[j], r[i], py[j][f], Not(py[i][f+dimsY[j]])) )
@@ -289,19 +257,6 @@ class Vlsi_sat(Vlsi_sat_abstract):
                     s.add( Or(Not(r[j]), Not(ud[j][i]), Not(py[i][f])) )
 
         # Ensure the constraints of the group C)
-        """for i in range(n):
-            # Constraint C1)
-            for e in range(w-min([dimsX[i],dimsY[i]]),w):
-                s.add(px[i][e])
-            # Constraint C2)
-            for e in range(w-min([dimsX[i],dimsY[i]])):
-                s.add( Or(Not(px[i][e]),px[i][e+1]) )           
-            # Constraint C3)
-            for f in range(l_max-min([dimsY[i],dimsX[i]]),l_max):
-                s.add(py[i][f])
-            # Constraint C4)
-            for f in range(l_max-min([dimsY[i],dimsX[i]])):
-                s.add( Or(Not(py[i][f]),py[i][f+1]) )"""
         for i in range(n):
             # Constraint C1)
             for e in range(w):
@@ -337,10 +292,15 @@ class Vlsi_sat(Vlsi_sat_abstract):
         return s, px, py, r
 
 
-    def __compute_coords(self, s, px, py, r, l_max):
-        """Computes the coords of the rectangles, namely the coordinates of the lower-left verteces of the circuits.
-
-        In the notation used above, coords correspond to the variables {xi,yi}_i.
+    def __compute_coords_actualDims(self, s, px, py, r, l_max):
+        """Computes the coords of the rectangles and the actual dimensions of the rectangles.
+            - coords : coordinates of the lower-left verteces of the circuits.
+              In the notation used above, coords correspond to the variables {xi,yi}_i.
+            - actual dims : actual dimensions of the circuits, after their possible rotation.
+              If a circuit has not been rotated, then its actual_dimsX is equal to its dimsX (i.e. w_i), and also its 
+              actual_dimsY is equal to its dimsY (i.e. h_i).
+              Instead, if a circuit has been rotated, then its actual_dimsX is equal to its dimsY, and its actual_dimsY is 
+              equal to its dimsX.
 
         Parameters
         ----------
@@ -350,6 +310,8 @@ class Vlsi_sat(Vlsi_sat_abstract):
             Boolean variables 'px_i_e'.
         py : list of list of z3.z3.BoolRef
             Boolean variables 'py_i_f'.
+        r : list of z3.z3.BoolRef
+            Boolean variables 'r_i'.
         l_max : int
             Maximum length of the plate.
 
@@ -357,6 +319,10 @@ class Vlsi_sat(Vlsi_sat_abstract):
         -------
         coords : list of tuple of int
             Coordinates of the left-bottom corner of the circuits.
+        actual_dimsX : list of int
+            Actual horizontal dimensions of the circuits, after their possible rotation.
+        actual_dimsY : list of int
+            Actual vertical dimensions of the circuits, after thei possible rotation.
 
         """
         w, n = self.w, self.n
@@ -379,6 +345,8 @@ class Vlsi_sat(Vlsi_sat_abstract):
                     break
             coords.append((coordX,coordY))
 
+        # If a circuit has not been rotated, then its actual_dimsX is equal to its dimsX, otherwise is equal to its dimsY.
+        # The same for actual_dimsY.
         actual_dimsX = [self.dimsY[i] if m.evaluate(r[i]) else self.dimsX[i] for i in range(n)]
         actual_dimsY = [self.dimsX[i] if m.evaluate(r[i]) else self.dimsY[i] for i in range(n)]
 
@@ -422,14 +390,12 @@ class Vlsi_sat(Vlsi_sat_abstract):
         A_tot = sum(areas)  # The overall area of all the given circuits
         l_min =  A_tot // w  # The lower bound for the length
         max_dim = max(dimsX + dimsY)
-        #min_dim = min(dimsX + dimsY)
         min_rects_per_row = w // max_dim 
-        #max_rects_per_col = math.ceil(n / max([1,min_rects_per_row]))
         if min_rects_per_row<2:
             l_max = sum([max([dimsX[i],dimsY[i]]) for i in range(n)])
         else:
             sorted_dims = sorted([max([dimsX[i],dimsY[i]]) for i in range(n)], reverse=True)
-            l_max = sum([sorted_dims[i] for i in range(n) if i % min_rects_per_row == 0])
+            l_max = sum([sorted_dims[i] for i in range(n) if i % min_rects_per_row == 0])  # The upper bound for the length
 
         # Boolean flag reprenting if a first solution has already been found
         first_solution = False
@@ -454,7 +420,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
                 # SAT: a solution has been found
 
                 # Compute coords of the current solution
-                coords, actual_dimsX, actual_dimsY = self.__compute_coords(s, px, py, r, l_max)
+                coords, actual_dimsX, actual_dimsY = self.__compute_coords_actualDims(s, px, py, r, l_max)
 
                 # Save the new best solution
                 first_solution = True

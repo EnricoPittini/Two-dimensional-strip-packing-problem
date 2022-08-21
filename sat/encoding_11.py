@@ -527,7 +527,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
                 first_solution = True
 
                 # Compute the coords (x and y) and the actual dimensions of the rectangles in the current solution
-                coords, actual_dimsX, actual_dimsY = self.__compute_coords(s, px, py, r, l_max)
+                coords, actual_dimsX, actual_dimsY = self.__compute_coords_actualDims(s, px, py, r, l_max)
 
                 # Store the current solution into `self.results`
                 self.results['best_coords'] = coords

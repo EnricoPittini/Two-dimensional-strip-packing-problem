@@ -144,10 +144,11 @@ class Vlsi_sat(Vlsi_sat_abstract):
     In all these constraints, we consider i!=j.
         
 
-    --- REMARKS ---
-    For making this work in our specific context, we have to make the following adjustements.
+    --- REDUCTIONS AND SYMMETRIES BREAKING ---
+    Additional constraints, for reducing the domains and breaking some simmetries.
 
-    A. Constraints 2) and 3).
+    A. Group of constraints about the horizontal overlapping: overlapping along the width.
+       Constraints 2) and 3).
        If w-wi-wj<0, this means that the circuits 'i'-'j' can't be placed one on the left of the other (the sum of their 
        widths exceed the total width, they don't fit into the plate). In this case, we don't put the constraints 2) and 3), 
        but we simply put: 
@@ -182,7 +183,8 @@ class Vlsi_sat(Vlsi_sat_abstract):
        Group A of constraints.
        In all these constraints, we consider i!=j.
 
-    B. Constraints 4) and 5).
+    B. Group of constraints about the vertical overlapping: overlapping along the heigth.
+       Constraints 4) and 5).
        The exact same reasoning is applied. 
        We obtain the following constraints (group B):
             B1) ∀i,j∈[0,n-1] ,if l_max-hi-hj<0, ¬ud_i_j /\ ¬ud_j_i
@@ -192,7 +194,8 @@ class Vlsi_sat(Vlsi_sat_abstract):
             B5) ∀i,j∈[0,n-1] ,if l_max-hi-hj<0, ∀f∈[0,hj] (¬ud_j_i \/ ¬py_i_f)
        In all these constraints, we consider i!=j.
 
-    C. Constraints 6) and 7).
+    C. Group of general constraints about the semantic of the variables.
+       Constraints 6) and 7).
        Regarding the constraint 6), if e∈[w-wi,w-1], we know for sure that xi<e (i.e. px_ie), because that circuit 'i' is 
        for sure placed before 'e'.
        Therefore, we put the constraint:
