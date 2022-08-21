@@ -32,6 +32,8 @@ def vlsi_sat(w, n, dims, encoding_module, timeout=300, rotation=False):
         (The encoding is contained in the `Vlsi_sat` class)
     timeout : int, optional.
         Time limit in seconds for executing the SAT solver, by default 300 (i.e. 5 minutes)
+    rotation : bool, optional
+        Flag saying whether to consider the rotation variant of the VLSIproblem or not, by default False.
 
     Returns
     -------
@@ -44,6 +46,12 @@ def vlsi_sat(w, n, dims, encoding_module, timeout=300, rotation=False):
         (This is useful in particular for understanding whether the time has elapsed or not)
     unsat : bool
         Boolean flay saying whether the specific instance is UNSAT or not.
+
+    If `rotation` is True, it returns also the following variables.
+    actual_dimsX : list of int
+        Actual horizontal dimensions of the circuits, after their possible rotation. 
+    actual_dimsY : list of int
+        Actual vertical dimensions of the circuits, after their possible rotation.
 
     Notes
     ------
@@ -74,9 +82,10 @@ def vlsi_sat(w, n, dims, encoding_module, timeout=300, rotation=False):
 def main():
     parser = argparse.ArgumentParser(description='Script for executing a VLSI SAT encoding.')
 
-    parser.add_argument('encoding', type=str, help='The encoding to execute.')
+    parser.add_argument('encoding', type=str, choices=utils.SAT_ENCODINGS, help='The encoding to execute.')
 
-    parser.add_argument('instance', metavar='ins-1..ins-40; ins-unsat', type=str, help='The instance to solve.')
+    parser.add_argument('instance', metavar='ins-1..ins-40; ins-unsat', type=str, choices=utils.INSTANCES, 
+                        help='The instance to solve.')
 
     parser.add_argument('time-limit', type=int, default=300, nargs='?', help='Time limit, in seconds')
 
@@ -102,11 +111,11 @@ def main():
     instance = vars(arguments)['instance']
     time_limit = vars(arguments)['time-limit']
 
-    """instance_file = vars(arguments)['instance-path']
-    w, n, dims = utils.parse_instance_txt(instance_file)
-    w = int(w)
-    n = int(n)
-    dims = [(int(dims[i][0]),int(dims[i][1])) for i in range(n)]"""
+    if not arguments.rotation and encoding in ['encoding_11', 'encoding_11A', 'encoding_11B', 'encoding_11C']:
+        raise ValueError('You must specify a valid non-rotation encoding')
+    if arguments.rotation and encoding not in ['encoding_11', 'encoding_11A', 'encoding_11B', 'encoding_11C']:
+        raise ValueError('You must specify a valid rotation encoding')
+
     # Open instance file 
     abs_path_source_folder = os.path.split(os.path.dirname(os.path.abspath(__file__)))[0]
     instance_path = os.path.join(abs_path_source_folder, 'instances', f'{instance}.txt')
@@ -117,11 +126,6 @@ def main():
     n = int(n)
     dims = [(int(dims[i][0]),int(dims[i][1])) for i in range(n)]
 
-    """encoding_path = vars(arguments)['encoding-path']
-    encoding_abspath = os.path.abspath(encoding_path)
-    module_name = os.path.basename(encoding_path).split('.')[0]
-    sys.path.insert(1, os.path.join(os.path.dirname(__file__), os.path.dirname(encoding_abspath)))
-    encoding_module = importlib.import_module(module_name)"""
     encoding_abspath = os.path.join(os.path.dirname(os.path.dirname(__file__)), f'sat/{encoding}.py')
     module_name = encoding
     sys.path.insert(1, os.path.join(os.path.dirname(__file__), os.path.dirname(encoding_abspath)))

@@ -446,7 +446,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
         actual_dimsX : list of int
             Actual horizontal dimensions of the circuits, after their possible rotation.
         actual_dimsY : list of int
-            Actual vertical dimensions of the circuits, after thei possible rotation.
+            Actual vertical dimensions of the circuits, after their possible rotation.
 
         """
         w, n = self.w, self.n
