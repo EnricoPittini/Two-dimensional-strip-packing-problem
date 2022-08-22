@@ -1,0 +1,402 @@
+{
+    "ins-1": {
+        "model_r_4A": 0.34,
+        "model_r_4B": 0.18,
+        "model_r_4C": 0.35,
+        "model_r_4D": 0.18,
+        "model_r_4E": 0.35,
+        "model_r_4F": 0.33,
+        "model_r_4G": 0.18,
+        "model_r_4H": 0.17
+    },
+    "ins-2": {
+        "model_r_4A": 0.18,
+        "model_r_4B": 0.35,
+        "model_r_4C": 0.19,
+        "model_r_4D": 0.2,
+        "model_r_4E": 0.36,
+        "model_r_4F": 0.34,
+        "model_r_4G": 0.34,
+        "model_r_4H": 0.33
+    },
+    "ins-3": {
+        "model_r_4A": 0.19,
+        "model_r_4B": 0.36,
+        "model_r_4C": 0.37,
+        "model_r_4D": 0.35,
+        "model_r_4E": 0.19,
+        "model_r_4F": 0.18,
+        "model_r_4G": 0.18,
+        "model_r_4H": 0.34
+    },
+    "ins-4": {
+        "model_r_4A": 0.22,
+        "model_r_4B": 0.36,
+        "model_r_4C": 0.22,
+        "model_r_4D": 0.39,
+        "model_r_4E": 0.2,
+        "model_r_4F": 0.2,
+        "model_r_4G": 0.36,
+        "model_r_4H": 0.36
+    },
+    "ins-5": {
+        "model_r_4A": 0.23,
+        "model_r_4B": 0.23,
+        "model_r_4C": 0.22,
+        "model_r_4D": 0.2,
+        "model_r_4E": 0.38,
+        "model_r_4F": 0.31,
+        "model_r_4G": 0.41,
+        "model_r_4H": 0.21
+    },
+    "ins-6": {
+        "model_r_4A": 0.54,
+        "model_r_4B": 0.44,
+        "model_r_4C": 0.23,
+        "model_r_4D": 0.61,
+        "model_r_4E": 0.42,
+        "model_r_4F": 0.38,
+        "model_r_4G": 0.4,
+        "model_r_4H": 0.26
+    },
+    "ins-7": {
+        "model_r_4A": 0.91,
+        "model_r_4B": 0.59,
+        "model_r_4C": 0.54,
+        "model_r_4D": 0.4,
+        "model_r_4E": 0.41,
+        "model_r_4F": 0.49,
+        "model_r_4G": 0.59,
+        "model_r_4H": 0.39
+    },
+    "ins-8": {
+        "model_r_4A": 0.33,
+        "model_r_4B": 0.46,
+        "model_r_4C": 0.55,
+        "model_r_4D": 0.97,
+        "model_r_4E": 0.48,
+        "model_r_4F": 0.43,
+        "model_r_4G": 0.25,
+        "model_r_4H": 0.28
+    },
+    "ins-9": {
+        "model_r_4A": 0.32,
+        "model_r_4B": 0.46,
+        "model_r_4C": 0.35,
+        "model_r_4D": 1.13,
+        "model_r_4E": 0.41,
+        "model_r_4F": 0.62,
+        "model_r_4G": 0.47,
+        "model_r_4H": 0.27
+    },
+    "ins-10": {
+        "model_r_4A": 7.49,
+        "model_r_4B": 0.39,
+        "model_r_4C": 0.68,
+        "model_r_4D": 2.99,
+        "model_r_4E": 2.57,
+        "model_r_4F": 0.48,
+        "model_r_4G": 0.7,
+        "model_r_4H": 0.48
+    },
+    "ins-11": {
+        "model_r_4A": 1.39,
+        "model_r_4B": 132.97,
+        "model_r_4C": 241.02,
+        "model_r_4D": "NaN",
+        "model_r_4E": 12.52,
+        "model_r_4F": 5.17,
+        "model_r_4G": 35.03,
+        "model_r_4H": 32.63
+    },
+    "ins-12": {
+        "model_r_4A": 16.87,
+        "model_r_4B": 0.87,
+        "model_r_4C": 1.62,
+        "model_r_4D": 4.73,
+        "model_r_4E": 2.6,
+        "model_r_4F": 0.72,
+        "model_r_4G": 6.07,
+        "model_r_4H": 1.97
+    },
+    "ins-13": {
+        "model_r_4A": 7.2,
+        "model_r_4B": 1.3,
+        "model_r_4C": 7.8,
+        "model_r_4D": 2.21,
+        "model_r_4E": 1.09,
+        "model_r_4F": 0.56,
+        "model_r_4G": 31.92,
+        "model_r_4H": 0.57
+    },
+    "ins-14": {
+        "model_r_4A": 17.63,
+        "model_r_4B": 26.04,
+        "model_r_4C": 19.85,
+        "model_r_4D": 1.46,
+        "model_r_4E": 0.79,
+        "model_r_4F": 12.72,
+        "model_r_4G": 0.77,
+        "model_r_4H": 1.71
+    },
+    "ins-15": {
+        "model_r_4A": 19.78,
+        "model_r_4B": 1.5,
+        "model_r_4C": 6.27,
+        "model_r_4D": 7.31,
+        "model_r_4E": 5.82,
+        "model_r_4F": 2.12,
+        "model_r_4G": 103.6,
+        "model_r_4H": 5.3
+    },
+    "ins-16": {
+        "model_r_4A": "NaN",
+        "model_r_4B": 34.68,
+        "model_r_4C": "NaN",
+        "model_r_4D": "NaN",
+        "model_r_4E": "NaN",
+        "model_r_4F": 32.12,
+        "model_r_4G": "NaN",
+        "model_r_4H": 21.14
+    },
+    "ins-17": {
+        "model_r_4A": "NaN",
+        "model_r_4B": 19.94,
+        "model_r_4C": "NaN",
+        "model_r_4D": "NaN",
+        "model_r_4E": 6.0,
+        "model_r_4F": 17.52,
+        "model_r_4G": "NaN",
+        "model_r_4H": 20.55
+    },
+    "ins-18": {
+        "model_r_4A": "NaN",
+        "model_r_4B": 72.3,
+        "model_r_4C": "NaN",
+        "model_r_4D": "NaN",
+        "model_r_4E": 3.62,
+        "model_r_4F": 131.7,
+        "model_r_4G": "NaN",
+        "model_r_4H": 55.24
+    },
+    "ins-19": {
+        "model_r_4A": "NaN",
+        "model_r_4B": "NaN",
+        "model_r_4C": "NaN",
+        "model_r_4D": "NaN",
+        "model_r_4E": "NaN",
+        "model_r_4F": "NaN",
+        "model_r_4G": "NaN",
+        "model_r_4H": "NaN"
+    },
+    "ins-20": {
+        "model_r_4A": "NaN",
+        "model_r_4B": 39.5,
+        "model_r_4C": 230.18,
+        "model_r_4D": "NaN",
+        "model_r_4E": 93.02,
+        "model_r_4F": 17.66,
+        "model_r_4G": "NaN",
+        "model_r_4H": 92.07
+    },
+    "ins-21": {
+        "model_r_4A": "NaN",
+        "model_r_4B": "NaN",
+        "model_r_4C": "NaN",
+        "model_r_4D": "NaN",
+        "model_r_4E": "NaN",
+        "model_r_4F": "NaN",
+        "model_r_4G": "NaN",
+        "model_r_4H": "NaN"
+    },
+    "ins-22": {
+        "model_r_4A": "NaN",
+        "model_r_4B": "NaN",
+        "model_r_4C": "NaN",
+        "model_r_4D": "NaN",
+        "model_r_4E": "NaN",
+        "model_r_4F": "NaN",
+        "model_r_4G": "NaN",
+        "model_r_4H": "NaN"
+    },
+    "ins-23": {
+        "model_r_4A": "NaN",
+        "model_r_4B": "NaN",
+        "model_r_4C": "NaN",
+        "model_r_4D": "NaN",
+        "model_r_4E": "NaN",
+        "model_r_4F": "NaN",
+        "model_r_4G": "NaN",
+        "model_r_4H": 6.92
+    },
+    "ins-24": {
+        "model_r_4A": "NaN",
+        "model_r_4B": 54.91,
+        "model_r_4C": 3.49,
+        "model_r_4D": "NaN",
+        "model_r_4E": 1.95,
+        "model_r_4F": 3.11,
+        "model_r_4G": 160.21,
+        "model_r_4H": 57.34
+    },
+    "ins-25": {
+        "model_r_4A": "NaN",
+        "model_r_4B": "NaN",
+        "model_r_4C": "NaN",
+        "model_r_4D": "NaN",
+        "model_r_4E": "NaN",
+        "model_r_4F": "NaN",
+        "model_r_4G": "NaN",
+        "model_r_4H": "NaN"
+    },
+    "ins-26": {
+        "model_r_4A": "NaN",
+        "model_r_4B": "NaN",
+        "model_r_4C": "NaN",
+        "model_r_4D": "NaN",
+        "model_r_4E": 4.18,
+        "model_r_4F": "NaN",
+        "model_r_4G": "NaN",
+        "model_r_4H": "NaN"
+    },
+    "ins-27": {
+        "model_r_4A": "NaN",
+        "model_r_4B": "NaN",
+        "model_r_4C": 7.94,
+        "model_r_4D": 88.11,
+        "model_r_4E": 131.18,
+        "model_r_4F": 132.99,
+        "model_r_4G": 9.47,
+        "model_r_4H": 7.28
+    },
+    "ins-28": {
+        "model_r_4A": "NaN",
+        "model_r_4B": "NaN",
+        "model_r_4C": "NaN",
+        "model_r_4D": "NaN",
+        "model_r_4E": "NaN",
+        "model_r_4F": "NaN",
+        "model_r_4G": 285.8,
+        "model_r_4H": "NaN"
+    },
+    "ins-29": {
+        "model_r_4A": "NaN",
+        "model_r_4B": "NaN",
+        "model_r_4C": 283.18,
+        "model_r_4D": "NaN",
+        "model_r_4E": 182.37,
+        "model_r_4F": 222.47,
+        "model_r_4G": "NaN",
+        "model_r_4H": "NaN"
+    },
+    "ins-30": {
+        "model_r_4A": "NaN",
+        "model_r_4B": "NaN",
+        "model_r_4C": "NaN",
+        "model_r_4D": "NaN",
+        "model_r_4E": "NaN",
+        "model_r_4F": "NaN",
+        "model_r_4G": "NaN",
+        "model_r_4H": "NaN"
+    },
+    "ins-31": {
+        "model_r_4A": 28.76,
+        "model_r_4B": 40.68,
+        "model_r_4C": 159.41,
+        "model_r_4D": "NaN",
+        "model_r_4E": 1.68,
+        "model_r_4F": 2.71,
+        "model_r_4G": 49.94,
+        "model_r_4H": 94.98
+    },
+    "ins-32": {
+        "model_r_4A": "NaN",
+        "model_r_4B": "NaN",
+        "model_r_4C": "NaN",
+        "model_r_4D": "NaN",
+        "model_r_4E": "NaN",
+        "model_r_4F": "NaN",
+        "model_r_4G": "NaN",
+        "model_r_4H": "NaN"
+    },
+    "ins-33": {
+        "model_r_4A": "NaN",
+        "model_r_4B": 253.85,
+        "model_r_4C": 64.58,
+        "model_r_4D": 96.43,
+        "model_r_4E": 16.68,
+        "model_r_4F": 245.69,
+        "model_r_4G": 20.54,
+        "model_r_4H": 64.38
+    },
+    "ins-34": {
+        "model_r_4A": "NaN",
+        "model_r_4B": 186.02,
+        "model_r_4C": 128.88,
+        "model_r_4D": "NaN",
+        "model_r_4E": 32.0,
+        "model_r_4F": "NaN",
+        "model_r_4G": 188.06,
+        "model_r_4H": 4.11
+    },
+    "ins-35": {
+        "model_r_4A": 9.71,
+        "model_r_4B": 58.37,
+        "model_r_4C": 82.63,
+        "model_r_4D": 36.35,
+        "model_r_4E": 2.54,
+        "model_r_4F": 47.29,
+        "model_r_4G": 17.9,
+        "model_r_4H": 5.33
+    },
+    "ins-36": {
+        "model_r_4A": 37.91,
+        "model_r_4B": 15.61,
+        "model_r_4C": 26.42,
+        "model_r_4D": 31.46,
+        "model_r_4E": 8.68,
+        "model_r_4F": 9.25,
+        "model_r_4G": 17.87,
+        "model_r_4H": 2.95
+    },
+    "ins-37": {
+        "model_r_4A": "NaN",
+        "model_r_4B": "NaN",
+        "model_r_4C": "NaN",
+        "model_r_4D": "NaN",
+        "model_r_4E": "NaN",
+        "model_r_4F": "NaN",
+        "model_r_4G": "NaN",
+        "model_r_4H": "NaN"
+    },
+    "ins-38": {
+        "model_r_4A": "NaN",
+        "model_r_4B": "NaN",
+        "model_r_4C": "NaN",
+        "model_r_4D": "NaN",
+        "model_r_4E": "NaN",
+        "model_r_4F": "NaN",
+        "model_r_4G": "NaN",
+        "model_r_4H": "NaN"
+    },
+    "ins-39": {
+        "model_r_4A": "NaN",
+        "model_r_4B": "NaN",
+        "model_r_4C": "NaN",
+        "model_r_4D": "NaN",
+        "model_r_4E": "NaN",
+        "model_r_4F": "NaN",
+        "model_r_4G": "NaN",
+        "model_r_4H": "NaN"
+    },
+    "ins-40": {
+        "model_r_4A": "NaN",
+        "model_r_4B": "NaN",
+        "model_r_4C": "NaN",
+        "model_r_4D": "NaN",
+        "model_r_4E": "NaN",
+        "model_r_4F": "NaN",
+        "model_r_4G": "NaN",
+        "model_r_4H": "NaN"
+    }
+}

@@ -8,7 +8,10 @@ GECODE_MODELS = [f'model_6{i}' for i in 'FG']
 CHUFFED_MODELS = [f'model_{i}' for i in range(3)] + [f'model_3{i}' for i in 'ABC'] + [f'model_4A{i}' for i in range(8)] +\
     [f'model_4{i}{j}' for i in 'BC' for j in range(3)] + ['model_5'] + [f'model_6{i}' for i in 'ABC'] +\
     [f'model_6{i}{j}' for i in 'DE' for j in range(2)]
-MINIZINC_MODELS = GECODE_MODELS + CHUFFED_MODELS
+CHUFFED_ROTATION_MODELS = ['model_r_0'] + [f'model_r_1{i}' for i in 'ABCD'] +\
+    [f'model_r_{i}{j}' for i in [2, 3] for j in 'AB'] + [f'model_r_4{i}' for i in 'ABCDEFGH'] +\
+    [f'model_r_5{i}' for i in 'CEH'] + [f'model_r_7{i}' for i in 'ABCDEFG']
+MINIZINC_MODELS = GECODE_MODELS + CHUFFED_MODELS + CHUFFED_ROTATION_MODELS
 
 SAT_ENCODINGS = [f'encoding_{i}' for i in range(4)] + [f'encoding_{4}{i}' for i in ['A', 'B', 'C', 'D', 'E', 'F']] +\
     ['encoding_5'] + ['encoding_6A', 'encoding_6B'] + [f'encoding_{7}{i}' for i in ['A', 'B', 'C', 'D']] +\

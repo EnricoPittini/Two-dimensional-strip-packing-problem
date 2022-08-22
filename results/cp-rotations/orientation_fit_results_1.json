@@ -1,0 +1,122 @@
+{
+    "ins-1": {
+        "model_r_3B": 0.39
+    },
+    "ins-2": {
+        "model_r_3B": 0.4
+    },
+    "ins-3": {
+        "model_r_3B": 0.41
+    },
+    "ins-4": {
+        "model_r_3B": 0.46
+    },
+    "ins-5": {
+        "model_r_3B": 0.5
+    },
+    "ins-6": {
+        "model_r_3B": 0.47
+    },
+    "ins-7": {
+        "model_r_3B": 0.74
+    },
+    "ins-8": {
+        "model_r_3B": 0.56
+    },
+    "ins-9": {
+        "model_r_3B": 0.62
+    },
+    "ins-10": {
+        "model_r_3B": 1.47
+    },
+    "ins-11": {
+        "model_r_3B": 41.29
+    },
+    "ins-12": {
+        "model_r_3B": 6.58
+    },
+    "ins-13": {
+        "model_r_3B": 0.92
+    },
+    "ins-14": {
+        "model_r_3B": 3.42
+    },
+    "ins-15": {
+        "model_r_3B": 3.75
+    },
+    "ins-16": {
+        "model_r_3B": 162.12
+    },
+    "ins-17": {
+        "model_r_3B": 15.45
+    },
+    "ins-18": {
+        "model_r_3B": 23.22
+    },
+    "ins-19": {
+        "model_r_3B": "NaN"
+    },
+    "ins-20": {
+        "model_r_3B": "NaN"
+    },
+    "ins-21": {
+        "model_r_3B": "NaN"
+    },
+    "ins-22": {
+        "model_r_3B": "NaN"
+    },
+    "ins-23": {
+        "model_r_3B": "NaN"
+    },
+    "ins-24": {
+        "model_r_3B": 67.97
+    },
+    "ins-25": {
+        "model_r_3B": "NaN"
+    },
+    "ins-26": {
+        "model_r_3B": 299.26
+    },
+    "ins-27": {
+        "model_r_3B": 5.56
+    },
+    "ins-28": {
+        "model_r_3B": "NaN"
+    },
+    "ins-29": {
+        "model_r_3B": 101.58
+    },
+    "ins-30": {
+        "model_r_3B": "NaN"
+    },
+    "ins-31": {
+        "model_r_3B": 63.23
+    },
+    "ins-32": {
+        "model_r_3B": "NaN"
+    },
+    "ins-33": {
+        "model_r_3B": 4.86
+    },
+    "ins-34": {
+        "model_r_3B": 49.9
+    },
+    "ins-35": {
+        "model_r_3B": 48.45
+    },
+    "ins-36": {
+        "model_r_3B": 4.69
+    },
+    "ins-37": {
+        "model_r_3B": "NaN"
+    },
+    "ins-38": {
+        "model_r_3B": "NaN"
+    },
+    "ins-39": {
+        "model_r_3B": "NaN"
+    },
+    "ins-40": {
+        "model_r_3B": "UNKNOWN"
+    }
+}

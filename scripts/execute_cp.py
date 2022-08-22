@@ -5,7 +5,8 @@ import re
 import subprocess
 import sys
 
-from utils import INSTANCES, MINIZINC_ERRORS, MINIZINC_MODELS, GECODE_MODELS, create_output_file, parse_instance_txt
+from utils import INSTANCES, MINIZINC_ERRORS, MINIZINC_MODELS, GECODE_MODELS, CHUFFED_ROTATION_MODELS
+from utils import create_output_file, parse_instance_txt
 
 
 # python scripts\execute_cp.py model_1 ins-13
@@ -46,7 +47,8 @@ def main() -> None:
         w, n, dims = parse_instance_txt(f)
 
     parsed_cmdline_data = _create_cmdline_data(w, n, dims)
-    model_file_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), f'cp/models/{model}.mzn')
+    model_file_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), 
+                                   f'cp/{"rotation_" if model in CHUFFED_ROTATION_MODELS else ""}models/{model}.mzn')
     
     if model in GECODE_MODELS:
         solver = 'solver_0'
@@ -98,6 +100,10 @@ def main() -> None:
         l = json_result['l']
         coordsX = json_result['coordsX']
         coordsY = json_result['coordsY']
+        if model in CHUFFED_ROTATION_MODELS:
+            dimsX = json_result['actualDimsX']
+            dimsY = json_result['actualDimsY']
+            dims = list(zip(dimsX, dimsY))
 
         output_folder_path = vars(arguments)['output-folder-path']
 

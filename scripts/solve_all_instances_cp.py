@@ -13,13 +13,20 @@ def main() -> None:
                         default=os.path.normpath('solutions/cp/'), 
                         nargs='?', 
                         help='The path in which the output files are stored.')
+    
+    parser.add_argument('--use-rotations', action='store_true', 
+                        help='Solve with rotations.')
 
     arguments = parser.parse_args()
     
     output_folder_path = vars(arguments)['output-folder-path']
+    use_rotations = arguments.use_rotations
     os.makedirs(output_folder_path, exist_ok=True)
     
-    MODEL = 'model_6D1'
+    if use_rotations:
+        MODEL = 'model_r_7B'
+    else:
+        MODEL = 'model_6D1'
     INSTANCES.remove('ins-unsat')
     
     execute_cp_script_path = os.path.join(os.path.dirname(__file__), 'execute_cp.py')
