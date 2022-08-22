@@ -308,7 +308,7 @@ def lex_lesseq(Xs, Ys):
     first True in Ys.
 
     Basically:
-                (For all i<j (Xs[i] /\ Ys[i]))  AND   (not Xs[i])
+                (For all i<j (not Xs[i] /\ not Ys[i]))  AND   (Xs[j])
     Where 'j' is a certain index in [0,n] (n is the length of Xs and Ys).
 
     Parameters
