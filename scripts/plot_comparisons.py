@@ -7,9 +7,15 @@ import os
 
 from utils import INSTANCES
 
-#python scripts/plot_comparisons.py results/smt/results_comparison_encodings_2B_2C_2D_solvers_z3.json --models-list encoding_2B_z3 encoding_2C_z3 encoding_2D_z3 -mr 'BinarySearch' 'FromTop' 'BinarySearch1'
 
 def main() -> None:
+    """Plot the specified comparison results file, about different models solving the same VLSI instances.
+
+    Example of usage: python scripts/plot_comparisons.py results/smt/results_comparison_encodings_2B_2C_2D_solvers_z3.json --models-list encoding_2B_z3 encoding_2C_z3 encoding_2D_z3 -mr 'BinarySearch' 'FromTop' 'BinarySearch1'
+
+    Help: python scripts\plot_comparisons.py -h
+
+    """
     parser = argparse.ArgumentParser(description='Script for plotting a comparison between models.')
 
     parser.add_argument('json-path', type=str, help='The json file containing the comparisons.')

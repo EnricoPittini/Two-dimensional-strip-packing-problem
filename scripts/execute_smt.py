@@ -181,7 +181,7 @@ def main():
     if not arguments.no_create_output:
         output_folder_path = vars(arguments)['output-folder-path']
 
-        output_file = os.path.join(output_folder_path,f'solution-{instance_name}')#f'{output_folder_path}\\solution-{instance_file.name.split("/")[-1]}'
+        output_file = os.path.join(output_folder_path,f'solution-{instance_name}.txt')#f'{output_folder_path}\\solution-{instance_file.name.split("/")[-1]}'
 
         try:
             utils.create_output_file(output_file, w, n, dims, l, coordsX, coordsY)

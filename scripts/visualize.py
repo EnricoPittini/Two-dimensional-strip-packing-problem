@@ -9,8 +9,14 @@ import os
 import utils
 
 
-#python scripts\visualize.py solution-ins-12.txt
 def main() -> None:
+    """Visualize the specified VLSI problem instance solution.
+
+    Example of usage: python scripts\visualize.py solution-ins-12.txt
+
+    Help: python scripts\visualize.py -h
+
+    """
     parser = argparse.ArgumentParser(description='Script for visualizing a VLSI output solution.')
 
     parser.add_argument('output-path', type=str, help='The output solution to visualize.')

@@ -4,12 +4,22 @@ import os
 import re
 import subprocess
 
+import utils
+
 ENCODING_CHOICES = [f'encoding_{i}' for i in range(2)] + [f'encoding_{2}{i}' for i in ['A', 'B', 'C']] +\
      [f'encoding_{3}{i}' for i in ['A', 'B', 'C', 'D', 'E', 'F']] + [f'encoding_{4}{i}' for i in ['A', 'B', 'C', 'D', 'E', 'F']] +\
         ['encoding_5A', 'encoding_5B']
 
-#python scripts/compare_smt_encodings.py --encodings-list encoding_1 encoding_2A encoding_2B encoding_2C encoding_2D --solvers-list z3 -lb 1 -ub 20
 def main() -> None:
+    """Compare the specified SMT encodings in solving the specified VLSI problem instances.
+
+    Example of usage: python scripts/compare_smt_encodings.py --encodings-list encoding_1 encoding_2A encoding_2B encoding_2C encoding_2D --solvers-list z3 -lb 1 -ub 20
+
+    Help: python scripts\compare_smt_encodings.py -h
+
+    Full list of available SMT encodings: see `ENCODINGS RECAP.md` inside the `smt` folder.
+    
+    """
     parser = argparse.ArgumentParser(description='Script comparing the execution time of SMT encodings on a VLSI problem.')
 
     parser.add_argument('output-name', type=str, default='results', nargs='?', 
@@ -20,12 +30,11 @@ def main() -> None:
                         nargs='?', 
                         help='The path in which the output file is stored.')
 
-    parser.add_argument('--encodings-list', '-m',  metavar='encoding', type=str, choices=ENCODING_CHOICES,
-                        # TODO: correct description
+    parser.add_argument('--encodings-list', '-m',  metavar='encoding', type=str, choices=utils.SMT_ENCODINGS,
                         help='List of SMT encodings to compare.',
                         nargs='*')
     
-    parser.add_argument('--solvers-list', '-s',
+    parser.add_argument('--solvers-list', '-s', choices=utils.SMT_SOLVERS,
                         metavar='solver',
                         type=str, 
                         help='List of SMT solvers to use for comparison.',
@@ -34,7 +43,7 @@ def main() -> None:
     parser.add_argument('--instances-lower-bound', '-lb',
                         metavar='1..40',
                         type=int,
-                        choices=range(1, 41),
+                        choices=utils.INSTANCES,
                         default=1,
                         help='Lower bound of instances to solve (default 1).',
                         nargs='?')
@@ -42,7 +51,7 @@ def main() -> None:
     parser.add_argument('--instances-upper-bound', '-ub', 
                         metavar='1..40',
                         type=int,
-                        choices=range(1, 41),
+                        choices=utils.INSTANCES,
                         default=40,
                         help='Upper bound of instances to solve (default 40).', 
                         nargs='?')
