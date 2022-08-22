@@ -1,0 +1,202 @@
+{
+    "ins-1": {
+        "model_r_5C": 0.35,
+        "model_r_5E": 0.34,
+        "model_r_5H": 0.34
+    },
+    "ins-2": {
+        "model_r_5C": 0.35,
+        "model_r_5E": 0.37,
+        "model_r_5H": 0.37
+    },
+    "ins-3": {
+        "model_r_5C": 0.4,
+        "model_r_5E": 0.48,
+        "model_r_5H": 0.43
+    },
+    "ins-4": {
+        "model_r_5C": 0.41,
+        "model_r_5E": 0.37,
+        "model_r_5H": 0.2
+    },
+    "ins-5": {
+        "model_r_5C": 0.39,
+        "model_r_5E": 0.44,
+        "model_r_5H": 0.41
+    },
+    "ins-6": {
+        "model_r_5C": 0.4,
+        "model_r_5E": 0.4,
+        "model_r_5H": 0.37
+    },
+    "ins-7": {
+        "model_r_5C": 0.47,
+        "model_r_5E": 0.4,
+        "model_r_5H": 0.4
+    },
+    "ins-8": {
+        "model_r_5C": 0.48,
+        "model_r_5E": 0.42,
+        "model_r_5H": 0.24
+    },
+    "ins-9": {
+        "model_r_5C": 0.91,
+        "model_r_5E": 0.46,
+        "model_r_5H": 0.27
+    },
+    "ins-10": {
+        "model_r_5C": 1.27,
+        "model_r_5E": 0.7,
+        "model_r_5H": 0.82
+    },
+    "ins-11": {
+        "model_r_5C": 6.36,
+        "model_r_5E": 33.3,
+        "model_r_5H": 2.13
+    },
+    "ins-12": {
+        "model_r_5C": 2.18,
+        "model_r_5E": 1.58,
+        "model_r_5H": 0.95
+    },
+    "ins-13": {
+        "model_r_5C": 2.57,
+        "model_r_5E": 2.85,
+        "model_r_5H": 0.97
+    },
+    "ins-14": {
+        "model_r_5C": 55.54,
+        "model_r_5E": 22.78,
+        "model_r_5H": 1.01
+    },
+    "ins-15": {
+        "model_r_5C": 8.15,
+        "model_r_5E": 2.88,
+        "model_r_5H": 2.71
+    },
+    "ins-16": {
+        "model_r_5C": "NaN",
+        "model_r_5E": 191.19,
+        "model_r_5H": 44.38
+    },
+    "ins-17": {
+        "model_r_5C": "NaN",
+        "model_r_5E": 2.64,
+        "model_r_5H": 2.03
+    },
+    "ins-18": {
+        "model_r_5C": "NaN",
+        "model_r_5E": 8.19,
+        "model_r_5H": 7.15
+    },
+    "ins-19": {
+        "model_r_5C": "NaN",
+        "model_r_5E": "NaN",
+        "model_r_5H": "NaN"
+    },
+    "ins-20": {
+        "model_r_5C": "NaN",
+        "model_r_5E": "NaN",
+        "model_r_5H": "NaN"
+    },
+    "ins-21": {
+        "model_r_5C": "NaN",
+        "model_r_5E": "NaN",
+        "model_r_5H": "NaN"
+    },
+    "ins-22": {
+        "model_r_5C": "NaN",
+        "model_r_5E": "NaN",
+        "model_r_5H": "NaN"
+    },
+    "ins-23": {
+        "model_r_5C": "NaN",
+        "model_r_5E": 117.07,
+        "model_r_5H": 85.39
+    },
+    "ins-24": {
+        "model_r_5C": 79.36,
+        "model_r_5E": 24.09,
+        "model_r_5H": 38.92
+    },
+    "ins-25": {
+        "model_r_5C": "NaN",
+        "model_r_5E": "NaN",
+        "model_r_5H": "NaN"
+    },
+    "ins-26": {
+        "model_r_5C": "NaN",
+        "model_r_5E": 61.72,
+        "model_r_5H": "NaN"
+    },
+    "ins-27": {
+        "model_r_5C": "NaN",
+        "model_r_5E": 57.43,
+        "model_r_5H": 43.64
+    },
+    "ins-28": {
+        "model_r_5C": 118.9,
+        "model_r_5E": "NaN",
+        "model_r_5H": 68.08
+    },
+    "ins-29": {
+        "model_r_5C": 78.53,
+        "model_r_5E": "NaN",
+        "model_r_5H": 6.15
+    },
+    "ins-30": {
+        "model_r_5C": "NaN",
+        "model_r_5E": "NaN",
+        "model_r_5H": "NaN"
+    },
+    "ins-31": {
+        "model_r_5C": "NaN",
+        "model_r_5E": 24.3,
+        "model_r_5H": 138.16
+    },
+    "ins-32": {
+        "model_r_5C": "NaN",
+        "model_r_5E": "NaN",
+        "model_r_5H": "NaN"
+    },
+    "ins-33": {
+        "model_r_5C": "NaN",
+        "model_r_5E": 46.16,
+        "model_r_5H": "NaN"
+    },
+    "ins-34": {
+        "model_r_5C": "NaN",
+        "model_r_5E": 29.63,
+        "model_r_5H": 23.29
+    },
+    "ins-35": {
+        "model_r_5C": 32.61,
+        "model_r_5E": 6.04,
+        "model_r_5H": 14.14
+    },
+    "ins-36": {
+        "model_r_5C": 18.4,
+        "model_r_5E": 15.06,
+        "model_r_5H": 5.08
+    },
+    "ins-37": {
+        "model_r_5C": "NaN",
+        "model_r_5E": "NaN",
+        "model_r_5H": "NaN"
+    },
+    "ins-38": {
+        "model_r_5C": "NaN",
+        "model_r_5E": "NaN",
+        "model_r_5H": "NaN"
+    },
+    "ins-39": {
+        "model_r_5C": "NaN",
+        "model_r_5E": "NaN",
+        "model_r_5H": "NaN"
+    },
+    "ins-40": {
+        "model_r_5C": "UNKNOWN",
+        "model_r_5E": "UNKNOWN",
+        "model_r_5H": "NaN"
+    }
+}
