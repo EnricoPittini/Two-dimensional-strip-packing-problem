@@ -8,7 +8,6 @@ import importlib
 import time
 
 import utils
-#python scripts/execute_smt.py encoding_0 ins-3 z3 300
 
 
 def vlsi_smt(instance_name, solver_name, time_limit, w, n, dims, encoding_module, rotation=False):
@@ -36,8 +35,8 @@ def vlsi_smt(instance_name, solver_name, time_limit, w, n, dims, encoding_module
     encoding_module : module
         Python module object containing the specified SMT encoding.
         (The encoding is contained in the `Vlsi_smt` class)
-    timeout : int, optional.
-        Time limit in seconds for executing the SMT solver, by default 300 (i.e. 5 minutes)
+    rotation : bool, optional
+        Flag saying whether to consider the rotation variant of the VLSI problem or not, by default False.
 
     Returns
     -------
@@ -50,6 +49,10 @@ def vlsi_smt(instance_name, solver_name, time_limit, w, n, dims, encoding_module
         (This is useful in particular for understanding whether the time has elapsed or not)
     unsat : bool
         Boolean flay saying whether the specific instance is UNSAT or not.
+
+    If `rotation` is True, it returns also the following variables.
+    actual_dims : list of list of int
+        Actual horizontal (i.e. dimsX) and vertical (i.e. dimsY) dimensions of the circuits, after their possible rotation. 
 
     Notes
     ------
@@ -78,13 +81,23 @@ def vlsi_smt(instance_name, solver_name, time_limit, w, n, dims, encoding_module
              
 
 def main():
+    """Runs the specified SMT encoding for solving the specified VLSI problem instance.
+
+    Example of usage: python scripts/execute_smt.py encoding_0 ins-3 z3 300
+
+    Help: python scripts\execute_smt.py -h
+
+    Full list of available SMT encodings: see `ENCODINGS RECAP.md` inside the `smt` folder.
+
+    """
     parser = argparse.ArgumentParser(description='Script for executing a VLSI SMT encoding.')
 
-    parser.add_argument('encoding', type=str, help='The encoding to execute.')
+    parser.add_argument('encoding', type=str, choices=utils.SMT_ENCODINGS, help='The encoding to execute.')
 
-    parser.add_argument('instance', metavar='ins-1..ins-40; ins-unsat', type=str, help='The instance to solve.')
+    parser.add_argument('instance', metavar='ins-1..ins-40; ins-unsat', choices=utils.INSTANCES, type=str, 
+                        help='The instance to solve.')
 
-    parser.add_argument('solver', type=str, help='The name of the SMT solver.')
+    parser.add_argument('solver', type=str, choices=utils.SMT_SOLVERS, help='The name of the SMT solver.')
 
     parser.add_argument('time-limit', type=int, default=300, nargs='?', help='Time limit, in seconds')
 
@@ -110,6 +123,14 @@ def main():
     instance_name = vars(arguments)['instance']
     solver_name = vars(arguments)['solver']
     time_limit = vars(arguments)['time-limit']
+
+    if not arguments.rotation and encoding in utils.SMT_ROTATION_ENCODINGS:
+        raise ValueError('You must specify a valid non-rotation encoding')
+    if arguments.rotation and encoding not in utils.SMT_ROTATION_ENCODINGS:
+        raise ValueError('You must specify a valid rotation encoding')
+
+    if solver_name=='yices-smt2' and encoding not in utils.SMT_IMPOSED_LOGIC_ENCODINGS:
+        raise ValueError('With the \'yices-smt2\' solver, you must specify an encoding in which a specific logic has been imposed')
     
     # Open instance file 
     abs_path_source_folder = os.path.split(os.path.dirname(os.path.abspath(__file__)))[0]

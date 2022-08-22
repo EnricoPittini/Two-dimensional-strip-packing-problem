@@ -14,10 +14,14 @@ SAT_ENCODINGS = [f'encoding_{i}' for i in range(4)] + [f'encoding_{4}{i}' for i 
     ['encoding_5'] + ['encoding_6A', 'encoding_6B'] + [f'encoding_{7}{i}' for i in ['A', 'B', 'C', 'D']] +\
         [f'encoding_{8}{i}' for i in ['A', 'B', 'C', 'D', 'E']] +  [f'encoding_{9}{i}' for i in ['A', 'B', 'AA', 'AD', 'BA', 'BD']] +\
              ['encoding_10A', 'encoding_10B', 'encoding_10C'] + ['encoding_11', 'encoding_11A', 'encoding_11B', 'encoding_11C']
+SAT_ROTATION_ENCODINGS = ['encoding_11', 'encoding_11A', 'encoding_11B', 'encoding_11C']
 
 SMT_ENCODINGS = [f'encoding_{i}' for i in range(2)] + [f'encoding_{2}{i}' for i in ['A', 'B', 'C']] +\
      [f'encoding_{3}{i}' for i in ['A', 'B', 'C', 'D', 'E', 'F']] + [f'encoding_{4}{i}' for i in ['A', 'B', 'C', 'D', 'E', 'F']] +\
-        ['encoding_5']
+        ['encoding_5A', 'encoding_5B']
+SMT_ROTATION_ENCODINGS = ['encoding_5A', 'encoding_5B']
+SMT_IMPOSED_LOGIC_ENCODINGS = [f'encoding_{3}{i}' for i in ['A', 'B', 'C', 'D', 'E', 'F']] + [f'encoding_{4}{i}' for i in ['A', 'B', 'C', 'D', 'E', 'F']]
+SMT_SOLVERS = ['z3', 'cvc5', 'yices-smt2']
 
 AMPL_SOLVER_CHOICES = ['cbc','cplex','gurobi']
 AMPL_MODEL_CHOICES = ['model_0','model_1', 'model_2A', 'model_2B','model_dual']

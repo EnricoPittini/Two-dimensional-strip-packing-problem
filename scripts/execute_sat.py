@@ -32,7 +32,7 @@ def vlsi_sat(w, n, dims, encoding_module, timeout=300, rotation=False):
     timeout : int, optional.
         Time limit in seconds for executing the SAT solver, by default 300 (i.e. 5 minutes)
     rotation : bool, optional
-        Flag saying whether to consider the rotation variant of the VLSIproblem or not, by default False.
+        Flag saying whether to consider the rotation variant of the VLSI problem or not, by default False.
 
     Returns
     -------
@@ -119,9 +119,9 @@ def main():
     instance = vars(arguments)['instance']
     time_limit = vars(arguments)['time-limit']
 
-    if not arguments.rotation and encoding in ['encoding_11', 'encoding_11A', 'encoding_11B', 'encoding_11C']:
+    if not arguments.rotation and encoding in utils.SAT_ROTATION_ENCODINGS:
         raise ValueError('You must specify a valid non-rotation encoding')
-    if arguments.rotation and encoding not in ['encoding_11', 'encoding_11A', 'encoding_11B', 'encoding_11C']:
+    if arguments.rotation and encoding not in utils.SAT_ROTATION_ENCODINGS:
         raise ValueError('You must specify a valid rotation encoding')
 
     # Open instance file 

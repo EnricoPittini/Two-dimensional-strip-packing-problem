@@ -6,7 +6,7 @@ import subprocess
 
 ENCODING_CHOICES = [f'encoding_{i}' for i in range(2)] + [f'encoding_{2}{i}' for i in ['A', 'B', 'C']] +\
      [f'encoding_{3}{i}' for i in ['A', 'B', 'C', 'D', 'E', 'F']] + [f'encoding_{4}{i}' for i in ['A', 'B', 'C', 'D', 'E', 'F']] +\
-        ['encoding_5']
+        ['encoding_5A', 'encoding_5B']
 
 #python scripts/compare_smt_encodings.py --encodings-list encoding_1 encoding_2A encoding_2B encoding_2C encoding_2D --solvers-list z3 -lb 1 -ub 20
 def main() -> None:
