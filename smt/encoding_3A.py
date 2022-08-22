@@ -16,6 +16,10 @@ class Vlsi_smt(Vlsi_smt_abstract):
     Basically, we have only Quantifier-Free formulas, with Linear Integer Arithmetic, and with the possibility of 
     Uninterpreted Functions.
 
+
+    --- SUPPORTED SOLVERS ---
+    All solvers 'z3', 'cvc5' and 'yices-smt2' are supported.
+
     """
     def __generate_encoding(self, l_max):
         """Generates the SMT encoding for the specific instance of the VLSI problem, according to the encoding 3A.

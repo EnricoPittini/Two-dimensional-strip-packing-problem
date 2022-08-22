@@ -1,0 +1,162 @@
+{
+    "ins-1": {
+        "encoding_5A_z3": 0.39895033836364746,
+        "encoding_5B_z3": 0.24560761451721191
+    },
+    "ins-2": {
+        "encoding_5A_z3": 0.34337544441223145,
+        "encoding_5B_z3": 0.2624967098236084
+    },
+    "ins-3": {
+        "encoding_5A_z3": 0.330233097076416,
+        "encoding_5B_z3": 0.24388408660888672
+    },
+    "ins-4": {
+        "encoding_5A_z3": 0.3498194217681885,
+        "encoding_5B_z3": 0.30846548080444336
+    },
+    "ins-5": {
+        "encoding_5A_z3": 1.5878701210021973,
+        "encoding_5B_z3": 1.161210298538208
+    },
+    "ins-6": {
+        "encoding_5A_z3": 0.5282871723175049,
+        "encoding_5B_z3": 0.4722440242767334
+    },
+    "ins-7": {
+        "encoding_5A_z3": 0.5799353122711182,
+        "encoding_5B_z3": 0.7463316917419434
+    },
+    "ins-8": {
+        "encoding_5A_z3": 0.731536865234375,
+        "encoding_5B_z3": 0.5454068183898926
+    },
+    "ins-9": {
+        "encoding_5A_z3": 1.3903603553771973,
+        "encoding_5B_z3": 0.5706079006195068
+    },
+    "ins-10": {
+        "encoding_5A_z3": 0.6107020378112793,
+        "encoding_5B_z3": 1.2457306385040283
+    },
+    "ins-11": {
+        "encoding_5A_z3": 26.793851852416992,
+        "encoding_5B_z3": 24.177143812179565
+    },
+    "ins-12": {
+        "encoding_5A_z3": 12.012620449066162,
+        "encoding_5B_z3": 11.397156953811646
+    },
+    "ins-13": {
+        "encoding_5A_z3": 3.5514628887176514,
+        "encoding_5B_z3": 0.8035862445831299
+    },
+    "ins-14": {
+        "encoding_5A_z3": 20.100079774856567,
+        "encoding_5B_z3": 2.315324306488037
+    },
+    "ins-15": {
+        "encoding_5A_z3": 21.321279525756836,
+        "encoding_5B_z3": 24.528650045394897
+    },
+    "ins-16": {
+        "encoding_5A_z3": 23.20014214515686,
+        "encoding_5B_z3": "NaN"
+    },
+    "ins-17": {
+        "encoding_5A_z3": 110.27393674850464,
+        "encoding_5B_z3": 257.4722137451172
+    },
+    "ins-18": {
+        "encoding_5A_z3": 164.57038235664368,
+        "encoding_5B_z3": 83.29866766929626
+    },
+    "ins-19": {
+        "encoding_5A_z3": "NaN",
+        "encoding_5B_z3": "NaN"
+    },
+    "ins-20": {
+        "encoding_5A_z3": "NaN",
+        "encoding_5B_z3": 153.41074395179749
+    },
+    "ins-21": {
+        "encoding_5A_z3": "NaN",
+        "encoding_5B_z3": "NaN"
+    },
+    "ins-22": {
+        "encoding_5A_z3": "NaN",
+        "encoding_5B_z3": "NaN"
+    },
+    "ins-23": {
+        "encoding_5A_z3": "NaN",
+        "encoding_5B_z3": 30.857487201690674
+    },
+    "ins-24": {
+        "encoding_5A_z3": 52.299450397491455,
+        "encoding_5B_z3": 26.51067876815796
+    },
+    "ins-25": {
+        "encoding_5A_z3": "NaN",
+        "encoding_5B_z3": "NaN"
+    },
+    "ins-26": {
+        "encoding_5A_z3": 112.62719297409058,
+        "encoding_5B_z3": "NaN"
+    },
+    "ins-27": {
+        "encoding_5A_z3": 60.36342787742615,
+        "encoding_5B_z3": 292.21256828308105
+    },
+    "ins-28": {
+        "encoding_5A_z3": 263.61766028404236,
+        "encoding_5B_z3": 116.07301449775696
+    },
+    "ins-29": {
+        "encoding_5A_z3": "NaN",
+        "encoding_5B_z3": 187.58517932891846
+    },
+    "ins-30": {
+        "encoding_5A_z3": "NaN",
+        "encoding_5B_z3": "NaN"
+    },
+    "ins-31": {
+        "encoding_5A_z3": 45.75758743286133,
+        "encoding_5B_z3": 46.14154243469238
+    },
+    "ins-32": {
+        "encoding_5A_z3": "NaN",
+        "encoding_5B_z3": "NaN"
+    },
+    "ins-33": {
+        "encoding_5A_z3": 55.97576427459717,
+        "encoding_5B_z3": 51.82429242134094
+    },
+    "ins-34": {
+        "encoding_5A_z3": 114.13738250732422,
+        "encoding_5B_z3": 161.92945384979248
+    },
+    "ins-35": {
+        "encoding_5A_z3": "NaN",
+        "encoding_5B_z3": 200.77510261535645
+    },
+    "ins-36": {
+        "encoding_5A_z3": 151.9626488685608,
+        "encoding_5B_z3": 164.97786378860474
+    },
+    "ins-37": {
+        "encoding_5A_z3": "NaN",
+        "encoding_5B_z3": "NaN"
+    },
+    "ins-38": {
+        "encoding_5A_z3": "NaN",
+        "encoding_5B_z3": "NaN"
+    },
+    "ins-39": {
+        "encoding_5A_z3": "NaN",
+        "encoding_5B_z3": "NaN"
+    },
+    "ins-40": {
+        "encoding_5A_z3": "NaN",
+        "encoding_5B_z3": "NaN"
+    }
+}

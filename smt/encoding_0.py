@@ -20,6 +20,10 @@ class Vlsi_smt(Vlsi_smt_abstract):
     No incremental solving: at each iteration, the solver is created and run from scratch. 
     See the `__optimize` method.
 
+
+    --- SUPPORTED SOLVERS ---
+    Only solvers 'z3' and 'cvc5' are supported. No 'yices-smt2' ('yices-smt2' recquires that a specific logic is specified).
+
     """
     def __generate_encoding(self, l_max):
         """Generates the SMT encoding for the specific instance of the VLSI problem, according to the encoding 0.

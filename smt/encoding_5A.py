@@ -3,7 +3,7 @@ from smt_utils import Vlsi_smt_abstract
 import subprocess
 
 class Vlsi_smt(Vlsi_smt_abstract):
-    """Class for solving the VLSI problem in SMT, using the encoding 5.
+    """Class for solving the VLSI problem in SMT, using the encoding 5A.
 
     It inherits from the class `Vlsi_smt_abstract`.
 
@@ -16,6 +16,10 @@ class Vlsi_smt(Vlsi_smt_abstract):
 
     The optimization procedure is exactly the same of the encoding 2C: incremental solving and linear search from the bottom.
     See the `__optimize` method.
+
+
+    --- SUPPORTED SOLVERS ---
+    Only solvers 'z3' and 'cvc5' are supported. No 'yices-smt2' ('yices-smt2' recquires that a specific logic is specified).
 
 
     --- MODIFICATION OF THE ENCODING 2C ---
@@ -44,7 +48,7 @@ class Vlsi_smt(Vlsi_smt_abstract):
 
     """
     def __generate_encoding(self, l_max):
-        """Generates the SMT encoding for the specific instance of the VLSI problem, according to the encoding 5.
+        """Generates the SMT encoding for the specific instance of the VLSI problem, according to the encoding 5A.
 
         The SMT encoding is generated as a single string, containing the SMT-LIB code, which will be passed to the solver.
 
@@ -188,7 +192,7 @@ class Vlsi_smt(Vlsi_smt_abstract):
 
 
     def __optimize(self):
-        """Solves the given VLSI instance, using the SAT encoding 5.
+        """Solves the given VLSI instance, using the SMT encoding 5A.
 
         It performs optimization: the best solution is found (if any).
         (If this class is used as a parallel process with a time limit, there is not gurantee of founding the optimal 
@@ -240,8 +244,6 @@ class Vlsi_smt(Vlsi_smt_abstract):
             command = f'z3 -in -T:{self.time_limit}'
         elif solver_name=='cvc5':
             command = f'cvc5 --incremental --tlimit={self.time_limit*1000}'
-        elif solver_name=='yices-smt2':
-            command = f'yices-smt2 --incremental --timeout={self.time_limit}'
         
         # Start the solver process on the terminal.
         # We use pipes for the stdin and the stdout of the solver process, for communicating with it.
@@ -275,7 +277,7 @@ class Vlsi_smt(Vlsi_smt_abstract):
                 # SAT: we have found the best solution
 
                 # Parse the model of the solver into the list of coords, i.e. `coords`
-                if solver_name=='z3' or solver_name=='yices-smt2':
+                if solver_name=='z3':
                     coords = [int(s.split(')')[1]) for s in model.split('\n')[:-1]]
                 elif solver_name=='cvc5':
                     coords = [int(s.split(')')[1]) for s in model.split('\n')[:-1][0].split(' (')]
@@ -283,11 +285,12 @@ class Vlsi_smt(Vlsi_smt_abstract):
                 coords = [[coords[2*i], coords[2*i+1]] for i in range((len(coords))//2)]
 
                 # Parse the actual_dims of the solver into the list of actual dims, i.e. `actual_dims`
-                if solver_name=='z3' or solver_name=='yices-smt2':
+                if solver_name=='z3':
                     actual_dims = [int(s.split(')')[1]) for s in actual_dims.split('\n')[:-1]]
                 elif solver_name=='cvc5':
                     actual_dims = [int(s.split(')')[1]) for s in actual_dims.split('\n')[:-1][0].split(' (')]
-                # List of coords, for each circuit 'i'. For each circuit 'i', we have the list of two elements [coordX_i, coordY_i]
+                # List of actual dims, for each circuit 'i'. For each circuit 'i', we have the list of two elements 
+                # [actualDimsX_i, actualDimsY_i]
                 actual_dims = [[actual_dims[2*i], actual_dims[2*i+1]] for i in range((len(actual_dims))//2)]
     
                 # TODO: remove

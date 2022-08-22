@@ -10,6 +10,10 @@ class Vlsi_smt(Vlsi_smt_abstract):
     Same solving and optimization of the encoding 0. SMT variables 'coordX[i]' and 'coordY[i]'.
     The only difference is that a better initial upper bound for the length of the plate (i.e. `l_max`) has been used.
 
+
+    --- SUPPORTED SOLVERS ---
+    Only solvers 'z3' and 'cvc5' are supported. No 'yices-smt2' ('yices-smt2' recquires that a specific logic is specified).
+
     """
     def __generate_encoding(self, l_max):
         """Generates the SMT encoding for the specific instance of the VLSI problem, according to the encoding 1.

@@ -22,6 +22,10 @@ class Vlsi_smt(Vlsi_smt_abstract):
     - n is a numeral. 
     See the `__generate_encoding` method.
 
+
+    --- SUPPORTED SOLVERS ---
+    All solvers 'z3', 'cvc5' and 'yices-smt2' are supported.
+
     """
     def __generate_encoding(self, l_max):
         """Generates the SMT encoding for the specific instance of the VLSI problem, according to the encoding 4C.
