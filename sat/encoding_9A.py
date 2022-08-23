@@ -262,7 +262,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
             l = math.ceil((ub+lb)/2)
 
             # We add the additional constraint ensuring that the actual length of the plate must be smaller or equal than 'l'.
-            # More precisely, this constraints is about putting to False all variables 'length_k_ll' with 'll' from 'l'+1 to
+            # More precisely, this constraint is about putting to False all variables 'length_k_ll' with 'll' from 'l'+1 to
             # the upper bound 'ub'.
             # Be careful in transforming 'l' and 'ub' from actual lengths to indeces before ensuring the constraint: l_index 
             # is l-l_min and ub_index is ub-l_min.

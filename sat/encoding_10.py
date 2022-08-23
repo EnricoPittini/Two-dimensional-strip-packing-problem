@@ -7,7 +7,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
 
     It inherits from the class `Vlsi_sat_abstract`.
 
-    This is a completely different encodings from the previous ones.
+    This is a completely different encoding from the previous ones.
     This encoding has been taken from the paper *'A SAT-based Method for Solving the Two-dimensional Strip Packing Problem'*.
 
     The main idea is the following.
