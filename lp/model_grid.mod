@@ -19,9 +19,9 @@ param nPos integer > 0;
 /** The number of cells in the plate. */
 param nCells integer > 0;
 /** Minimum position id for each circuit. */
-param minV {1..n} integer >=0 <=nPos;
+param minV {N} integer >=0 <=nPos;
 /** Maximum position id for each circuit. */
-param maxV {1..n} integer >=0 <=nPos;
+param maxV {N} integer >=0 <=nPos;
 /** Array of valid positions. */
 param C {1..nPos, 1..nCells} integer >=0 <=1;
 
