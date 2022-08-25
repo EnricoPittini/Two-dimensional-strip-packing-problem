@@ -18,8 +18,10 @@ param l integer >=0;
 param nPos integer > 0;
 /** The number of cells in the plate. */
 param nCells integer > 0;
-/** Position ids for each circuit. */
-param V {0..n} integer >=0 <=nPos;
+/** Minimum position id for each circuit. */
+param minV {1..n} integer >=0 <=nPos;
+/** Maximum position id for each circuit. */
+param maxV {1..n} integer >=0 <=nPos;
 /** Array of valid positions. */
 param C {1..nPos, 1..nCells} integer >=0 <=1;
 
@@ -33,17 +35,17 @@ minimize result: 0;
 ####### SUCH THAT:
 # Constrain guaranteeing at most one item is assigned in each cell of the plate.
 subject to noOverlap {i in 1..nCells}:
-    sum {c in N, j in V[c-1]+1..V[c]} C[j,i]*x[c,j] <= 1;
+    sum {c in N, j in minV[c]..maxV[c]} C[j,i]*x[c,j] <= 1;
 
 # Constrain guaranteeing all circuits will be inserted in the plate exactly one time.
 subject to insertAll {c in N}:
-    sum {j in V[c-1]+1..V[c]} x[c,j] = 1;
+    sum {j in minV[c]..maxV[c]} x[c,j] = 1;
 # Constrain guaranteeing a circuits will not be inserted in an invalid position.
 subject to notValidBefore {c in N}:
-    sum {j in 1..V[c-1]} x[c,j] = 0;
+    sum {j in 1..minV[c]-1} x[c,j] = 0;
 subject to notValidAfter {c in N}:
-    sum {j in V[c]+1..V[n]} x[c,j] = 0;
+    sum {j in maxV[c]+1..maxV[n]} x[c,j] = 0;
 
 # Constrain guaranteeing the capacity of the strip will not be exceeded.
 subject to notExceed:
-    sum {c in N, j in V[c-1]+1..V[c], i in 1..nCells} C[j,i]*x[c,j] <= w * l;
+    sum {c in N, j in minV[c]..maxV[c], i in 1..nCells} C[j,i]*x[c,j] <= w * l;

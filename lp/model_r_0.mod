@@ -50,9 +50,9 @@ subject to boundY {i in N}:
 
 # Constraints deciding the actual dimensions of the circuits according to their orientation in o
 subject to orientedDimsX {i in N}:
-	(1 - o[i]) * w[i] + o[i] * h[i] = actualDimsX[i];
-subject to orientedDimsX {i in N}:
-	(1 - o[i]) * h[i] + o[i] * w[i] = actualDimsY[i];
+	(1 - o[i]) * dimsX[i] + o[i] * dimsY[i] = actualDimsX[i];
+subject to orientedDimsY {i in N}:
+	(1 - o[i]) * dimsY[i] + o[i] * dimsX[i] = actualDimsY[i];
 
 # No-overlapping constraints:
 # If a constraint is active b[i,j,k] = 1 then the circuits must not overlap in the given dimension.

@@ -106,7 +106,7 @@ def main() -> None:
         _read_dat_file(w, n, dims, ampl, model)
         
         if 'grid' in model:
-            coordsX, coordsY, l, solving_time = apply_position_and_covering(w, n, dims, ampl, model, solver, time_limit, use_symmetries, use_dual, cplex_options, gurobi_options)
+            coordsX, coordsY, l, solving_time = apply_position_and_covering(w, n, dims, ampl, model, solver, time_limit, use_symmetry, use_dual, cplex_options, gurobi_options)
             result = ampl.get_value('solve_result')
             if result == 'infeasible':
                 sys.exit('error = UNSATISFIABLE')
@@ -134,6 +134,13 @@ def main() -> None:
 
             # Parse variables results.
             l = int(ampl.get_value('l'))
+            
+            if '_r_' in model:
+                dimsX = ampl.get_data('actualDimsX').to_pandas().actualDimsX.values
+                dimsY = ampl.get_data('actualDimsY').to_pandas().actualDimsY.values
+                dimsX = dimsX.astype(int)
+                dimsY = dimsY.astype(int)
+                dims = list(zip(dimsX, dimsY))
             
             coordsX = ampl.get_data('coordsX').to_pandas().coordsX.values
             coordsY = ampl.get_data('coordsY').to_pandas().coordsY.values
@@ -192,9 +199,9 @@ def _read_dat_file(w, n, dims, ampl, model):
         for i, dim in enumerate(dims):
             fp.write(f'{i+1}\t\t{dim[0]}\t\t{dim[1]}\n')
         fp.write(';')
-        #if model in ['model_2']:
-        #    fp.write(f'param maxAreaIndex := {np.argmax([int(d[0])*int(d[1]) for d in dims]) + 1}\n')
-        if model == 'model_1':
+        if model in ['model_2']:
+            fp.write(f'param maxAreaIndex := {np.argmax([int(d[0])*int(d[1]) for d in dims]) + 1};\n')
+        if model in ['model_1', 'model_2']:
             k = int(w) // max([int(d[0]) for d in dims])
             if k == 1:
                 l_max = sum([int(d[1]) for d in dims]) 

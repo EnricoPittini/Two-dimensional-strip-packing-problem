@@ -1,28 +1,39 @@
+import math
+import sys
 import numpy as np
 import os
+import pandas as pd
 from time import time
 from amplpy import AMPL
 
 
 def apply_position_and_covering(w, n, dims, ampl, model, solver, time_limit, use_symmetries, use_dual, cplex_options, gurobi_options):
     start_time = time()
-    current_l = max(max([int(d[1]) for d in dims]), sum([int(d[0])*int(d[1]) for d in dims]) // int(w))
-    # _read_dat_file(w, n, dims, ampl)
     
+    # Fail if the instance is unsatisfiable 
+    for d in dims:
+        if int(d[0]) > int(w):
+            sys.exit('error = UNSATISFIABLE')
+
+    # Compute minimum l of the plate 
+    current_l = max(max([int(d[1]) for d in dims]), sum([int(d[0])*int(d[1]) for d in dims]) // int(w))
+
     while time() - start_time <= time_limit:
         # Update parameter l for new run of the model
         ampl.param['l'] = current_l
-        
+
         V, C =_get_valid_positions(dims, n, w, current_l)
-        
-        print(C.shape)
         
         ampl.param['nPos'] = C.shape[0]
         ampl.param['nCells'] = C.shape[1]
-        ampl.param['C'] = [C[i,j] for i in range(C.shape[0]) for j in range(C.shape[1])]#C.tolist()
+        ampl.param['C'] = [C[i,j] for i in range(C.shape[0]) for j in range(C.shape[1])] #C.tolist()
+        pd.set_option("display.max_rows", None, "display.max_columns", None)
+        #print(ampl.get_data('C').to_pandas())
         
         new_v = [0 if i<0 else V[i][-1] for i in range(-1,int(n))]
-        ampl.param['V'] = new_v
+        ampl.param['minV'] = [v[0] for v in V]
+        ampl.param['maxV'] = [v[-1] for v in V]
+        #print(ampl.get_data('V').to_pandas())
         
         spent_time = time() - start_time 
         
@@ -38,18 +49,17 @@ def apply_position_and_covering(w, n, dims, ampl, model, solver, time_limit, use
         result = ampl.get_value('solve_result')
         if result == 'solved' or result == 'limit':
             x = ampl.get_data('x').to_pandas().x.values
+            
             final_positions = [x[c*C.shape[0] : (c+1)*C.shape[0]] for c in range(int(n))]
-            #print(final_positions)
             final_positions = [np.argmax(x)+1 for x in final_positions]
             
-            coordsX = [idx % ((int(w) - int(dims[c][0]))+1) for idx in final_positions for c in range(int(n))]
-            coordsY = [current_l - idx // ((int(w) - int(dims[c][0]))+1) - int(dims[c][1]) for idx in final_positions for c in range(int(n))]
-
-            #print(V)
-            #print(final_positions)
-            #print(ampl.get_data('x').to_pandas())
+            for i, p in enumerate(final_positions):
+                final_positions[i] -= new_v[i]
+            print(final_positions)
             
-                
+            coordsX = [(p-1) % ((int(w) - int(dims[i][0]))+1) for i, p in enumerate(final_positions)]
+            coordsY = [current_l - (p-1) // ((int(w) - int(dims[i][0]))+1) - int(dims[i][1]) for i, p in enumerate(final_positions)]            
+
             return coordsX, coordsY, current_l, time() - start_time
         
         current_l += 1
@@ -98,13 +108,15 @@ def _get_valid_positions(dims, n, w, current_l):
 
     C = np.zeros((position-1, int(w)*int(current_l)), dtype='b')
     
-    print(C.shape)
+    # print(C.shape)[[1, 2, 3, 4, 5, 6], [7, 8, 9]]
 
     for c in range(int(n)):
         for i, p in enumerate(V[c]):
             x = i // (int(w) - int(dims[c][0]) + 1)
             y = i % (int(w) - int(dims[c][0]) + 1)
             tiles = [(x+j)*int(w) + y + 1 + k for j in range(int(dims[c][1])) for k in range(int(dims[c][0]))]
+
+            #print(p, tiles)
 
             for tile in tiles:
                 C[p-1, tile-1] = 1
