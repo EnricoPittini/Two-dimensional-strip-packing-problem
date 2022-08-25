@@ -1,3 +1,4 @@
+import enum
 import math
 import sys
 import numpy as np
@@ -7,22 +8,25 @@ from time import time
 from amplpy import AMPL
 
 
-def apply_position_and_covering(w, n, dims, ampl, model, solver, time_limit, use_symmetries, use_dual, cplex_options, gurobi_options):
+def apply_position_and_covering(w, n, dims, ampl, solver, time_limit, use_rotations, cplex_options, gurobi_options):
     start_time = time()
     
     # Fail if the instance is unsatisfiable 
     for d in dims:
-        if int(d[0]) > int(w):
+        if d[0] > w:
             sys.exit('error = UNSATISFIABLE')
 
     # Compute minimum l of the plate 
-    current_l = max(max([int(d[1]) for d in dims]), sum([int(d[0])*int(d[1]) for d in dims]) // int(w))
+    if use_rotations:
+        current_l = sum([d[0]*d[1] for d in dims]) // w
+    else:
+        current_l = max(max([d[1] for d in dims]), sum([d[0]*d[1] for d in dims]) // w)
 
     while time() - start_time <= time_limit:
         # Update parameter l for new run of the model
         ampl.param['l'] = current_l
 
-        V, C =_get_valid_positions(dims, n, w, current_l)
+        V, C =_get_valid_positions(dims, n, w, current_l, use_rotations)
         
         ampl.param['nPos'] = C.shape[0]
         ampl.param['nCells'] = C.shape[1]
@@ -43,71 +47,78 @@ def apply_position_and_covering(w, n, dims, ampl, model, solver, time_limit, use
         ampl.solve()
 
         result = ampl.get_value('solve_result')
-        if result == 'solved' or result == 'limit':
+        if result == 'solved': #or result == 'limit':
             x = ampl.get_data('x').to_pandas().x.values
+            if use_rotations:
+                final_positions = [x[c*C.shape[0] : (c+1)*C.shape[0]] for c in range(n)]
+                final_positions = [np.argmax(x) + 1 - V[i][0] if 1 in x else None for i, x in enumerate(final_positions)]
+                
+                final_positions_r = [x[c*C.shape[0] : (c+1)*C.shape[0]] for c in range(n,2*n)]
+                final_positions_r = [np.argmax(x) + 1 - V[i+n][0] if 1 in x else None 
+                                     for i, x in enumerate(final_positions_r)]
 
-            final_positions = [x[c*C.shape[0] : (c+1)*C.shape[0]] for c in range(int(n))]
-            final_positions = [np.argmax(x) + 1 - V[i][0] for i, x in enumerate(final_positions)]
+                coordsX = []
+                coordsY = []
+                for i in range(n):
+                    r = final_positions[i] is None
+                    p = final_positions_r[i] if r else final_positions[i]
+                    w_i = dims[i][1] if r else dims[i][0]
+                    h_i = dims[i][0] if r else dims[i][1]
+                    coordsX.append(p % ((w - w_i)+1))
+                    coordsY.append(current_l - p // ((w - w_i) + 1) - h_i )
 
-            coordsX = [(p) % ((int(w) - int(dims[i][0]))+1) for i, p in enumerate(final_positions)]
-            coordsY = [current_l - (p) // ((int(w) - int(dims[i][0]))+1) - int(dims[i][1]) 
-                       for i, p in enumerate(final_positions)]            
+                dims = [(dims[i][0], dims[i][1]) if p is not None else (dims[i][1], dims[i][0]) 
+                        for i, p in enumerate(final_positions)]
 
-            return coordsX, coordsY, current_l, time() - start_time
+            else:
+                final_positions = [x[c*C.shape[0] : (c+1)*C.shape[0]] for c in range(n)]
+                final_positions = [np.argmax(x) + 1 - V[i][0] for i, x in enumerate(final_positions)]
 
+                coordsX = [p % ((w - dims[i][0])+1) for i, p in enumerate(final_positions)]
+                coordsY = [current_l - p // ((w - dims[i][0])+1) - dims[i][1] 
+                        for i, p in enumerate(final_positions)]     
+            solving_time =  time() - start_time      
+            if solving_time <= time_limit:
+                return dims, coordsX, coordsY, current_l, solving_time
+            else:
+                # If time has been exceeded cast the solution as UNKNOWN
+                return None, None, None, None, None
         current_l += 1
-    return None, None, None, None
+    # If no solution has been found the process finishes with an unknown result.
+    return None, None, None, None, None
 
-
-def _read_dat_file(w, n, dims, ampl):
-    """Create and read `.dat` file of an instance and read it in order to execute the `AMPL` model on it.
-
-    Parameters
-    ----------
-    w : int
-        The width of the plate
-    n : int
-        The number of circuits
-    dims : list of tuple of int
-        Dims X and Y (i.e. width and height) of the circuits
-    ampl : AMPL
-        An AMPL translator
-    """
-    data_file_path = 'data.dat'
-
-    # Create `.dat` data file with `AMPL` required format.
-    with open(data_file_path,'w') as fp:
-        fp.write('data;\n')
-        fp.write(f'param n := {n};\n')
-        fp.write(f'param w := {w};\n')
-        fp.write('param: dimsX dimsY :=\n')
-        for i, dim in enumerate(dims):
-            fp.write(f'{i+1}\t\t{dim[0]}\t\t{dim[1]}\n')
-        fp.write(';')
-    ampl.read_data(data_file_path)
-
-    # Delete `.dat` data file.
-    if os.path.exists(data_file_path):
-        os.remove(data_file_path)
-
-def _get_valid_positions(dims, n, w, current_l):
+def _get_valid_positions(dims, n, w, current_l, use_rotations):
     V = []
 
     position = 1
-    for c in range(int(n)):
-        num_positions = (int(w) - int(dims[c][0]) + 1)*(current_l - int(dims[c][1]) + 1)
+    for c in range(n):
+        num_positions = (w - dims[c][0] + 1)*(current_l - dims[c][1] + 1)
         V.append(np.arange(position, position + num_positions))
         position += num_positions
-
-    C = np.zeros((position-1, int(w)*int(current_l)), dtype='b')
+    if use_rotations:
+        for c in range(n):
+            num_positions = (w - dims[c][1] + 1)*(current_l - dims[c][0] + 1)
+            V.append(np.arange(position, position + num_positions))
+            position += num_positions
+        
+    C = np.zeros((position-1, w*current_l), dtype='b')
     
-    for c in range(int(n)):
+    for c in range(n):
         for i, p in enumerate(V[c]):
-            pX = i // (int(w) - int(dims[c][0]) + 1)
-            pY = i % (int(w) - int(dims[c][0]) + 1)
-            cells = [(pX+j)*int(w) + pY + 1 + k for j in range(int(dims[c][1])) for k in range(int(dims[c][0]))]
+            pX = i // (w - dims[c][0] + 1)
+            pY = i % (w - dims[c][0] + 1)
+            cells = [(pX+j)*w + pY + 1 + k for j in range(dims[c][1]) for k in range(dims[c][0])]
 
             for cell in cells:
                 C[p-1, cell-1] = 1
+    if use_rotations:
+        for c in range(n):
+            for i, p in enumerate(V[c+n]):
+                pX = i // (w - dims[c][1] + 1)
+                pY = i % (w - dims[c][1] + 1)
+                cells = [(pX+j)*w + pY + 1 + k for j in range(dims[c][0]) for k in range(dims[c][1])]
 
+                for cell in cells:
+                    C[p-1, cell-1] = 1
+            
     return V, C
