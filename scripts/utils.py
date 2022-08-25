@@ -27,7 +27,7 @@ SMT_IMPOSED_LOGIC_ENCODINGS = [f'encoding_{3}{i}' for i in ['A', 'B', 'C', 'D', 
 SMT_SOLVERS = ['z3', 'cvc5', 'yices-smt2']
 
 AMPL_SOLVER_CHOICES = ['cbc','cplex','gurobi']
-AMPL_MODEL_CHOICES = ['model_0','model_1', 'model_2A', 'model_2B','model_dual']
+AMPL_MODEL_CHOICES = ['model_0','model_1', 'model_2', 'model_r_0', 'model_grid', 'model_r_grid']
 
 INSTANCES = [f'ins-{i}' for i in range(1,41)] + ['ins-unsat']
 

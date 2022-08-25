@@ -1,5 +1,5 @@
-# MODEL 2B:
-# Second simmetry breaking approach. 
+# MODEL 1:
+# Improvement of the base model, optimization on the dimension of the variables and bounds for the length of the plate. 
 
 
 ####### INPUT PARAMETERS
@@ -13,6 +13,8 @@ param w integer > 0;
 param dimsX {N} integer >0 <=w;
 /** Heights of the circuits. */
 param dimsY {N} integer >0;
+/** Index of the circuit with the greatest area */
+param maxAreaIndex integer >0;
 
 ####### DERIVED PARAMETERS
 /** Upper bound for the length of the plate. */
@@ -44,19 +46,22 @@ subject to boundY {i in N}:
 # technique and the overlapping in the given dimension will be ignored.	
 subject to noOverlapX1 {i in N, j in 1..i-1}:
 	coordsX[i]+dimsX[i]<= coordsX[j]+ w*(1 - b[i,j,1]);
+subject to noOverlapX2 {i in N, j in 1..i-1}:
+	coordsX[j]+dimsX[j]<= coordsX[i]+ w*(1 - b[j,i,1]);
 subject to noOverlapY1 {i in N, j in 1..i-1}:
 	coordsY[i]+dimsY[i]<= coordsY[j]+ lMax*(1 - b[i,j,2]);
 subject to noOverlapY2 {i in N, j in 1..i-1}:
 	coordsY[j]+dimsY[j]<= coordsY[i]+ lMax*(1 - b[j,i,2]);
 
-# At most one vertical relation should be implied.
-
+# At most one vertical or horizontal relation should be implied.	
+subject to oneOnlyX {i in N, j in 1..i-1}:
+	b[i,j,1] + b[j,i,1] <= 1;
 subject to oneOnlyY {i in N, j in 1..i-1}:
 	b[i,j,2] + b[j,i,2] <= 1;
 
 # At least one of the above constraint must be active (not relaxed) for all the coordinates i,j.
 subject to overlapActivation {i in N, j in 1..i-1}:
-	b[i,j,1] + b[i,j,2] + b[j,i,2] >= 1;
+	b[i,j,1] + b[i,j,2] + b[j,i,1] + b[j,i,2] >= 1;
 
 # First lower bound guaranteeing that all the circuits fit in the plate.
 subject to lowerBoundl1:
@@ -65,6 +70,12 @@ subject to lowerBoundl1:
 # Second lower bound guaranteeing that the highest circuit fits in the plate.
 subject to lowerBoundl2:
 	l >= max {i in N} dimsY[i];
+
+# Greatest circuit in bottom left corner
+subject to greatestOnBottom:
+	coordsY[maxAreaIndex] = 0;
+subject to greatestOnTheLeft:
+	coordsX[maxAreaIndex] = 0;
 
 # Upper bound for the length of the plate.
 subject to upperBoundl:

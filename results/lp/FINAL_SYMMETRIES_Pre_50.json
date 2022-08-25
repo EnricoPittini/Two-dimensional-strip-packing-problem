@@ -1,0 +1,158 @@
+{
+    "ins-1": {
+        "model_symmetry_cplex": 0.07961630821228027,
+        "model_symmetry_gurobi": 0.06607413291931152
+    },
+    "ins-2": {
+        "model_symmetry_cplex": 0.10630106925964355,
+        "model_symmetry_gurobi": 0.09000444412231445
+    },
+    "ins-3": {
+        "model_symmetry_cplex": 0.09836769104003906,
+        "model_symmetry_gurobi": 0.06857633590698242
+    },
+    "ins-4": {
+        "model_symmetry_cplex": 0.11572957038879395,
+        "model_symmetry_gurobi": 0.0713653564453125
+    },
+    "ins-5": {
+        "model_symmetry_cplex": 0.12460756301879883,
+        "model_symmetry_gurobi": 0.11285042762756348
+    },
+    "ins-6": {
+        "model_symmetry_cplex": 0.17501044273376465,
+        "model_symmetry_gurobi": 0.10073137283325195
+    },
+    "ins-7": {
+        "model_symmetry_cplex": 0.12026572227478027,
+        "model_symmetry_gurobi": 0.08071422576904297
+    },
+    "ins-8": {
+        "model_symmetry_cplex": 0.23745512962341309,
+        "model_symmetry_gurobi": 0.08818984031677246
+    },
+    "ins-9": {
+        "model_symmetry_cplex": 0.19694876670837402,
+        "model_symmetry_gurobi": 0.1010279655456543
+    },
+    "ins-10": {
+        "model_symmetry_cplex": 0.3615074157714844,
+        "model_symmetry_gurobi": 0.40038609504699707
+    },
+    "ins-11": {
+        "model_symmetry_cplex": 9.74021601676941,
+        "model_symmetry_gurobi": 1.921790361404419
+    },
+    "ins-12": {
+        "model_symmetry_cplex": 0.25893378257751465,
+        "model_symmetry_gurobi": 0.4001481533050537
+    },
+    "ins-13": {
+        "model_symmetry_cplex": 8.012230396270752,
+        "model_symmetry_gurobi": 0.670891523361206
+    },
+    "ins-14": {
+        "model_symmetry_cplex": 27.80794930458069,
+        "model_symmetry_gurobi": 0.59063720703125
+    },
+    "ins-15": {
+        "model_symmetry_cplex": 1.0698177814483643,
+        "model_symmetry_gurobi": 0.8126568794250488
+    },
+    "ins-16": {
+        "model_symmetry_cplex": 7.930761098861694,
+        "model_symmetry_gurobi": 0.6495273113250732
+    },
+    "ins-17": {
+        "model_symmetry_cplex": 7.285585880279541,
+        "model_symmetry_gurobi": 3.5372278690338135
+    },
+    "ins-18": {
+        "model_symmetry_cplex": 2.6174392700195312,
+        "model_symmetry_gurobi": 1.5916643142700195
+    },
+    "ins-19": {
+        "model_symmetry_cplex": "NaN",
+        "model_symmetry_gurobi": "NaN"
+    },
+    "ins-20": {
+        "model_symmetry_cplex": "NaN",
+        "model_symmetry_gurobi": 22.727746725082397
+    },
+    "ins-21": {
+        "model_symmetry_cplex": 25.713715314865112,
+        "model_symmetry_gurobi": 31.169399976730347
+    },
+    "ins-22": {
+        "model_symmetry_cplex": "NaN",
+        "model_symmetry_gurobi": 30.2659432888031
+    },
+    "ins-23": {
+        "model_symmetry_cplex": 5.905443429946899,
+        "model_symmetry_gurobi": 4.84195351600647
+    },
+    "ins-24": {
+        "model_symmetry_cplex": 15.995224714279175,
+        "model_symmetry_gurobi": 2.5850327014923096
+    },
+    "ins-25": {
+        "model_symmetry_cplex": "NaN",
+        "model_symmetry_gurobi": "NaN"
+    },
+    "ins-26": {
+        "model_symmetry_cplex": 105.50199437141418,
+        "model_symmetry_gurobi": 59.51220679283142
+    },
+    "ins-27": {
+        "model_symmetry_cplex": 34.44551634788513,
+        "model_symmetry_gurobi": 2.6394548416137695
+    },
+    "ins-28": {
+        "model_symmetry_cplex": 50.28134536743164,
+        "model_symmetry_gurobi": 3.2331528663635254
+    },
+    "ins-29": {
+        "model_symmetry_cplex": 100.07880783081055,
+        "model_symmetry_gurobi": 3.896110773086548
+    },
+    "ins-30": {
+        "model_symmetry_cplex": "NaN",
+        "model_symmetry_gurobi": "NaN"
+    },
+    "ins-31": {
+        "model_symmetry_cplex": 3.110276222229004,
+        "model_symmetry_gurobi": 6.770929336547852
+    },
+    "ins-32": {
+        "model_symmetry_cplex": "NaN",
+        "model_symmetry_gurobi": "NaN"
+    },
+    "ins-33": {
+        "model_symmetry_cplex": 4.860397577285767,
+        "model_symmetry_gurobi": 0.24779582023620605
+    },
+    "ins-34": {
+        "model_symmetry_cplex": "NaN",
+        "model_symmetry_gurobi": "NaN"
+    },
+    "ins-35": {
+        "model_symmetry_cplex": "NaN",
+        "model_symmetry_gurobi": 229.23983883857727
+    },
+    "ins-36": {
+        "model_symmetry_cplex": "NaN",
+        "model_symmetry_gurobi": "NaN"
+    },
+    "ins-37": {
+        "model_symmetry_cplex": "NaN",
+        "model_symmetry_gurobi": "NaN"
+    },
+    "ins-38": {
+        "model_symmetry_cplex": "NaN",
+        "model_symmetry_gurobi": "NaN"
+    },
+    "ins-39": {
+        "model_symmetry_cplex": "NaN",
+        "model_symmetry_gurobi": "NaN"
+    }
+}

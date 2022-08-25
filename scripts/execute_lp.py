@@ -1,11 +1,11 @@
 from amplpy import AMPL, AMPLException
 import argparse
+import numpy as np
 import os
 import sys
 import time
 
-from kiwisolver import BadRequiredStrength
-
+from position_and_covering import apply_position_and_covering
 from utils import INSTANCES, AMPL_MODEL_CHOICES, AMPL_SOLVER_CHOICES, create_output_file, parse_instance_txt
 
 
@@ -36,14 +36,20 @@ def main() -> None:
     parser.add_argument('--no-visualize-output', action='store_true', 
                         help='Skip the visualization of the output solution (defaults as true if --no-create-output ' + \
                         'is passed).')
+    parser.add_argument('--use-symmetry', action='store_true', 
+                    help='Break symmetries in the presolve process.')
+    parser.add_argument('--use-dual', action='store_true', 
+                    help='Use the dual model.')
+    parser.add_argument('--use-no-presolve', action='store_true', 
+                    help='Avoid AMPL presolving process.')
 
     arguments = parser.parse_args()
     model = vars(arguments)['model']
-    if model == 'model_dual':
-        model = 'model_2B'
-        use_dual = True
-    else:
-        use_dual = False
+    
+    use_symmetry = arguments.use_symmetry
+    use_dual = arguments.use_dual
+    use_no_presolve = arguments.use_no_presolve
+        
     instance = vars(arguments)['instance']
     solver = vars(arguments)['solver']
     time_limit = arguments.time_limit
@@ -57,54 +63,82 @@ def main() -> None:
     try:
         ampl = AMPL()
         ampl.set_option('solver', solver)
+        
+        cplex_options = []
+        gurobi_options = []
+        
+        if use_symmetry:
+            if solver == 'cplex':
+                cplex_options.append('symmetry=5')
+            elif solver == 'gurobi':
+                gurobi_options.append('symmetry=2')
+            else:
+                print('Ignoring symmetry solving option.')
+                
+        if use_no_presolve:
+            ampl.set_option('presolve', 0)
 
         if use_dual:
             if solver == 'cplex':
-                ampl.set_option('cplex_options','dual')
+                cplex_options.append('dual')
             elif solver == 'gurobi':
-                ampl.set_option('gurobi_options','predual 1')
+                gurobi_options.append('predual=1')
             else:
                 print('Ignoring dual solving option, solving with primal best model.')
 
-
         # Set solver dependent time limit option.
         if solver == 'cplex':
-            ampl.set_option('cplex_options',f"timelimit={time_limit}")
-
+            ampl.set_option('cplex_options', ' '.join(cplex_options) + f" timelimit={time_limit}")
         elif solver == 'cbc':
-            ampl.set_option('cbc_options',f"sec={time_limit}")
+            ampl.set_option('cbc_options', f"sec={time_limit}")
         elif solver == 'gurobi':
-            ampl.set_option('gurobi_options',f"timelim={time_limit}")
+            ampl.set_option('gurobi_options', ' '.join(gurobi_options) + f" timelim={time_limit}")
         else:
             parser.error(f"argument solver-name: invalid choice: '{solver}' " + 
                          f"(choose from {', '.join([f'{s}' for s in AMPL_SOLVER_CHOICES])})")
-
-        # Read model and data files.
+        
+        # print(ampl.get_option('cplex_options'))
+        # print(ampl.get_option('gurobi_options'))
+        # print(ampl.get_option('presolve'))
         ampl.read(os.path.join(os.path.dirname(os.path.dirname(__file__)), f'lp/{model}.mod'))
-        _read_dat_file(w, n, dims, ampl)
         
-        start_time = time.time()
-        ampl.solve()
-        solving_time = time.time() - start_time
+        # Read model and data files.
+        _read_dat_file(w, n, dims, ampl, model)
         
-        # Parse optimization result status.
-        result = ampl.get_value('solve_result')
-        if result == 'infeasible':
-            sys.exit('error = UNSATISFIABLE')
-        elif result == 'limit':
-            print('time = exceeded')
-        elif result == 'solved':
-            print(f'time = {solving_time}')
+        if 'grid' in model:
+            coordsX, coordsY, l, solving_time = apply_position_and_covering(w, n, dims, ampl, model, solver, time_limit, use_symmetries, use_dual, cplex_options, gurobi_options)
+            result = ampl.get_value('solve_result')
+            if result == 'infeasible':
+                sys.exit('error = UNSATISFIABLE')
+            elif result == 'limit' or solving_time is None or solving_time > time_limit:
+                print('time = exceeded')
+            elif result == 'solved':
+                print(f'time = {solving_time}')
+            else:
+                sys.exit('error = UNKOWN')
         else:
-            sys.exit('error = UNKOWN')
-
-        # Parse variables results.
-        l = int(ampl.get_value('l'))
+            start_time = time.time()
+            ampl.solve()
+            solving_time = time.time() - start_time
         
-        coordsX = ampl.get_data('coordsX').to_pandas().coordsX.values
-        coordsY = ampl.get_data('coordsY').to_pandas().coordsY.values
-        coordsX = coordsX.astype(int)
-        coordsY = coordsY.astype(int)
+            # Parse optimization result status.
+            result = ampl.get_value('solve_result')
+            if result == 'infeasible':
+                sys.exit('error = UNSATISFIABLE')
+            elif result == 'limit':
+                print('time = exceeded')
+            elif result == 'solved':
+                print(f'time = {solving_time}')
+            else:
+                sys.exit('error = UNKOWN')
+
+            # Parse variables results.
+            l = int(ampl.get_value('l'))
+            
+            coordsX = ampl.get_data('coordsX').to_pandas().coordsX.values
+            coordsY = ampl.get_data('coordsY').to_pandas().coordsY.values
+            coordsX = coordsX.astype(int)
+            coordsY = coordsY.astype(int)
 
         print(f'l = {l}')
         print(f'CoordsX = {coordsX}')
@@ -133,7 +167,7 @@ def main() -> None:
             visualize_script_path = os.path.join(scripts_folder,'visualize.py')
             os.system(f'python {visualize_script_path} "{output_file}"')
 
-def _read_dat_file(w, n, dims, ampl):
+def _read_dat_file(w, n, dims, ampl, model):
     """Create and read `.dat` file of an instance and read it in order to execute the `AMPL` model on it.
 
     Parameters
@@ -158,6 +192,17 @@ def _read_dat_file(w, n, dims, ampl):
         for i, dim in enumerate(dims):
             fp.write(f'{i+1}\t\t{dim[0]}\t\t{dim[1]}\n')
         fp.write(';')
+        #if model in ['model_2']:
+        #    fp.write(f'param maxAreaIndex := {np.argmax([int(d[0])*int(d[1]) for d in dims]) + 1}\n')
+        if model == 'model_1':
+            k = int(w) // max([int(d[0]) for d in dims])
+            if k == 1:
+                l_max = sum([int(d[1]) for d in dims]) 
+            else: 
+                l_max = sum([d for i, d in enumerate(sorted([int(d[1]) for d in dims], reverse=True)) if i % k == 0]) 
+            fp.write(f'param lMax := {l_max};\n')
+            l_min = max(max([int(d[1]) for d in dims]), sum([int(d[0])*int(d[1]) for d in dims]) // int(w))
+            fp.write(f'param lMin := {l_min};\n')
     
     ampl.read_data(data_file_path)
     

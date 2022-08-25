@@ -53,6 +53,12 @@ def main() -> None:
                         default=40,
                         help='Upper bound of instances to solve (default 40).', 
                         nargs='?')
+    parser.add_argument('--use-symmetry', action='store_true', 
+                    help='Break symmetries in the presolve process.')
+    parser.add_argument('--use-dual', action='store_true', 
+                    help='Use the dual model.')
+    parser.add_argument('--use-no-presolve', action='store_true', 
+                    help='Avoid AMPL presolving process.')
 
     arguments = parser.parse_args()
     
@@ -64,6 +70,10 @@ def main() -> None:
     models_list = arguments.models_list
     
     solvers_list = arguments.solvers_list
+    
+    use_symmetry = arguments.use_symmetry
+    use_dual = arguments.use_dual
+    use_no_presolve = arguments.use_no_presolve
     
     instances_lower_bound = arguments.instances_lower_bound
     instances_upper_bound = arguments.instances_upper_bound
@@ -80,11 +90,19 @@ def main() -> None:
         instance_dict = dict()
         for model in models_list:
             for solver in solvers_list:
-                print(f'Executing instance {instance} with model {model} with solver {solver}...')
+                print(f'Executing instance {instance} with model {model} with solver {solver} ' + 
+                      f'{"with symmetries" if use_symmetry else ""} ' + 
+                      f'{"with dual" if use_dual else ""} ' +
+                      f'{"with no presolve" if use_no_presolve else ""}...')
                 
-                command = f'python "{execute_lp_script_path}" {model} ins-{instance} {solver} --no-create-output'
+                command = f'python "{execute_lp_script_path}" {model} ins-{instance} {solver} --no-create-output ' +\
+                    f'{"--use-symmetry" if use_symmetry else ""} {"--use-dual" if use_dual else ""} ' +\
+                    f'{"--use-no-presolve" if use_no_presolve else ""}'
                 
                 result = subprocess.run(command, capture_output=True)
+                
+                model_name = f'{model}_{solver}{"_symmetry" if use_symmetry else ""}{"_dual" if use_dual else ""}' +\
+                    f'{"_no_presolve" if use_no_presolve else ""}'
                 
                 try:
                     result.check_returncode()
@@ -94,10 +112,10 @@ def main() -> None:
                     if len(error_list):
                         error = error_list[0].split("= ")[-1]
                         print(f'\tERROR: {error}')
-                        instance_dict[f'{model}_{solver}'] = error
+                        instance_dict[model_name] = error
                     else:
                         print('\tERROR: UNKNOWN')
-                        instance_dict[f'{model}_{solver}'] = 'UNKNOWN'
+                        instance_dict[model_name] = 'UNKNOWN'
                     # Continue to the next iteration.
                     continue
             
@@ -106,13 +124,13 @@ def main() -> None:
                 if len(time_list):
                     elapsed_time = time_list[-1].split('= ')[-1]
                     print(f'\tSolved in {elapsed_time}s.')
-                    instance_dict[f'{model}_{solver}'] = float(elapsed_time)
+                    instance_dict[model_name] = float(elapsed_time)
                 elif 'time = exceeded' in stdout:
                     print('\tTime limit exceeded.')
-                    instance_dict[f'{model}_{solver}'] = 'NaN'
+                    instance_dict[model_name] = 'NaN'
                 else: 
                     print('\tERROR: UNKNOWN.')
-                    instance_dict[f'{model}_{solver}'] = 'UNKNOWN'
+                    instance_dict[model_name] = 'UNKNOWN'
                     
         result_dict[f'ins-{instance}'] = instance_dict
 
