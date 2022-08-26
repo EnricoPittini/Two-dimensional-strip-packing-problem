@@ -1,0 +1,82 @@
+{
+    "ins-1": {
+        "encoding_2C_cvc5": 0.26527953147888184,
+        "encoding_2C_z3": 0.3120765686035156
+    },
+    "ins-2": {
+        "encoding_2C_cvc5": 0.237839937210083,
+        "encoding_2C_z3": 0.2651350498199463
+    },
+    "ins-3": {
+        "encoding_2C_cvc5": 0.2667217254638672,
+        "encoding_2C_z3": 0.21282482147216797
+    },
+    "ins-4": {
+        "encoding_2C_cvc5": 0.3619704246520996,
+        "encoding_2C_z3": 0.2245473861694336
+    },
+    "ins-5": {
+        "encoding_2C_cvc5": 2.1149590015411377,
+        "encoding_2C_z3": 0.21194934844970703
+    },
+    "ins-6": {
+        "encoding_2C_cvc5": 2.235797166824341,
+        "encoding_2C_z3": 0.2190074920654297
+    },
+    "ins-7": {
+        "encoding_2C_cvc5": 5.36746883392334,
+        "encoding_2C_z3": 0.2130279541015625
+    },
+    "ins-8": {
+        "encoding_2C_cvc5": 8.828601837158203,
+        "encoding_2C_z3": 0.2234354019165039
+    },
+    "ins-9": {
+        "encoding_2C_cvc5": 23.581830739974976,
+        "encoding_2C_z3": 0.2215723991394043
+    },
+    "ins-10": {
+        "encoding_2C_cvc5": 32.39681887626648,
+        "encoding_2C_z3": 0.2755918502807617
+    },
+    "ins-11": {
+        "encoding_2C_cvc5": "NaN",
+        "encoding_2C_z3": 6.63118839263916
+    },
+    "ins-12": {
+        "encoding_2C_cvc5": "NaN",
+        "encoding_2C_z3": 0.6888883113861084
+    },
+    "ins-13": {
+        "encoding_2C_cvc5": "NaN",
+        "encoding_2C_z3": 0.7014360427856445
+    },
+    "ins-14": {
+        "encoding_2C_cvc5": "NaN",
+        "encoding_2C_z3": 0.8864898681640625
+    },
+    "ins-15": {
+        "encoding_2C_cvc5": "NaN",
+        "encoding_2C_z3": 1.0532679557800293
+    },
+    "ins-16": {
+        "encoding_2C_cvc5": "NaN",
+        "encoding_2C_z3": 17.161964893341064
+    },
+    "ins-17": {
+        "encoding_2C_cvc5": "NaN",
+        "encoding_2C_z3": 2.595616340637207
+    },
+    "ins-18": {
+        "encoding_2C_cvc5": "NaN",
+        "encoding_2C_z3": 5.074887752532959
+    },
+    "ins-19": {
+        "encoding_2C_cvc5": "NaN",
+        "encoding_2C_z3": 223.74301552772522
+    },
+    "ins-20": {
+        "encoding_2C_cvc5": "NaN",
+        "encoding_2C_z3": 54.74081873893738
+    }
+}

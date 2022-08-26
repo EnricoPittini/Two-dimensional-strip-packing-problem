@@ -35,7 +35,7 @@ def main() -> None:
     parser.add_argument('--instances-lower-bound', '-lb',
                         metavar='1..40',
                         type=int,
-                        choices=utils.INSTANCES,
+                        choices=range(1,41),
                         default=1,
                         help='Lower bound of instances to solve (default 1).',
                         nargs='?')
@@ -43,7 +43,7 @@ def main() -> None:
     parser.add_argument('--instances-upper-bound', '-ub', 
                         metavar='1..40',
                         type=int,
-                        choices=utils.INSTANCES, 
+                        choices=range(1,41), 
                         default=40,
                         help='Upper bound of instances to solve (default 40).', 
                         nargs='?')
