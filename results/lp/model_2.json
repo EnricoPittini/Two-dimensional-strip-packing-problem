@@ -1,0 +1,162 @@
+{
+    "ins-1": {
+        "model_2_cplex": 0.14065814018249512,
+        "model_2_gurobi": 0.04452371597290039
+    },
+    "ins-2": {
+        "model_2_cplex": 0.06252813339233398,
+        "model_2_gurobi": 0.0937652587890625
+    },
+    "ins-3": {
+        "model_2_cplex": 0.07571911811828613,
+        "model_2_gurobi": 0.04687380790710449
+    },
+    "ins-4": {
+        "model_2_cplex": 0.09375,
+        "model_2_gurobi": 0.06248188018798828
+    },
+    "ins-5": {
+        "model_2_cplex": 0.06250214576721191,
+        "model_2_gurobi": 0.06801557540893555
+    },
+    "ins-6": {
+        "model_2_cplex": 0.1093752384185791,
+        "model_2_gurobi": 0.0625002384185791
+    },
+    "ins-7": {
+        "model_2_cplex": 0.09671545028686523,
+        "model_2_gurobi": 0.0468754768371582
+    },
+    "ins-8": {
+        "model_2_cplex": 0.1250004768371582,
+        "model_2_gurobi": 0.08281183242797852
+    },
+    "ins-9": {
+        "model_2_cplex": 0.10937643051147461,
+        "model_2_gurobi": 0.07813692092895508
+    },
+    "ins-10": {
+        "model_2_cplex": 0.32799744606018066,
+        "model_2_gurobi": 0.0686798095703125
+    },
+    "ins-11": {
+        "model_2_cplex": 36.56807255744934,
+        "model_2_gurobi": 0.07812929153442383
+    },
+    "ins-12": {
+        "model_2_cplex": 1.8053309917449951,
+        "model_2_gurobi": 0.3100440502166748
+    },
+    "ins-13": {
+        "model_2_cplex": 0.21875452995300293,
+        "model_2_gurobi": 0.4218764305114746
+    },
+    "ins-14": {
+        "model_2_cplex": 2.1858794689178467,
+        "model_2_gurobi": 0.7318027019500732
+    },
+    "ins-15": {
+        "model_2_cplex": 0.4666483402252197,
+        "model_2_gurobi": 0.622112512588501
+    },
+    "ins-16": {
+        "model_2_cplex": 279.5943675041199,
+        "model_2_gurobi": 1.5530223846435547
+    },
+    "ins-17": {
+        "model_2_cplex": 232.73262429237366,
+        "model_2_gurobi": 1.4753258228302002
+    },
+    "ins-18": {
+        "model_2_cplex": 11.646324396133423,
+        "model_2_gurobi": 3.5566117763519287
+    },
+    "ins-19": {
+        "model_2_cplex": "NaN",
+        "model_2_gurobi": 41.784706115722656
+    },
+    "ins-20": {
+        "model_2_cplex": 39.75257849693298,
+        "model_2_gurobi": "NaN"
+    },
+    "ins-21": {
+        "model_2_cplex": 143.49266648292542,
+        "model_2_gurobi": 182.01291966438293
+    },
+    "ins-22": {
+        "model_2_cplex": 158.77140140533447,
+        "model_2_gurobi": "NaN"
+    },
+    "ins-23": {
+        "model_2_cplex": 175.4751980304718,
+        "model_2_gurobi": 16.2966365814209
+    },
+    "ins-24": {
+        "model_2_cplex": 11.186824560165405,
+        "model_2_gurobi": 0.6066579818725586
+    },
+    "ins-25": {
+        "model_2_cplex": "NaN",
+        "model_2_gurobi": "NaN"
+    },
+    "ins-26": {
+        "model_2_cplex": "NaN",
+        "model_2_gurobi": 42.74217391014099
+    },
+    "ins-27": {
+        "model_2_cplex": 11.455836296081543,
+        "model_2_gurobi": 5.146580696105957
+    },
+    "ins-28": {
+        "model_2_cplex": 4.143933296203613,
+        "model_2_gurobi": 1.1513595581054688
+    },
+    "ins-29": {
+        "model_2_cplex": 32.615750789642334,
+        "model_2_gurobi": 1.539180040359497
+    },
+    "ins-30": {
+        "model_2_cplex": "NaN",
+        "model_2_gurobi": "NaN"
+    },
+    "ins-31": {
+        "model_2_cplex": 42.84796500205994,
+        "model_2_gurobi": 1.6160671710968018
+    },
+    "ins-32": {
+        "model_2_cplex": "NaN",
+        "model_2_gurobi": "NaN"
+    },
+    "ins-33": {
+        "model_2_cplex": 11.368450403213501,
+        "model_2_gurobi": 1.1406254768371582
+    },
+    "ins-34": {
+        "model_2_cplex": "NaN",
+        "model_2_gurobi": "NaN"
+    },
+    "ins-35": {
+        "model_2_cplex": 260.6582953929901,
+        "model_2_gurobi": "NaN"
+    },
+    "ins-36": {
+        "model_2_cplex": "NaN",
+        "model_2_gurobi": "NaN"
+    },
+    "ins-37": {
+        "model_2_cplex": "NaN",
+        "model_2_gurobi": "NaN"
+    },
+    "ins-38": {
+        "model_2_cplex": "NaN",
+        "model_2_gurobi": "NaN"
+    },
+    "ins-39": {
+        "model_2_cplex": "NaN",
+        "model_2_gurobi": "NaN"
+    },
+    "ins-40": {
+        "model_2_cplex": "NaN",
+        "model_2_gurobi": "NaN"
+    }
+}

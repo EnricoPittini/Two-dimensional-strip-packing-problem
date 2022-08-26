@@ -1,0 +1,162 @@
+{
+    "ins-1": {
+        "model_1_cplex_symmetry": 0.0781259536743164,
+        "model_1_gurobi_symmetry": 0.07809829711914062
+    },
+    "ins-2": {
+        "model_1_cplex_symmetry": 0.10937690734863281,
+        "model_1_gurobi_symmetry": 0.07933568954467773
+    },
+    "ins-3": {
+        "model_1_cplex_symmetry": 0.10938000679016113,
+        "model_1_gurobi_symmetry": 0.09430980682373047
+    },
+    "ins-4": {
+        "model_1_cplex_symmetry": 0.12498760223388672,
+        "model_1_gurobi_symmetry": 0.08500146865844727
+    },
+    "ins-5": {
+        "model_1_cplex_symmetry": 0.15857172012329102,
+        "model_1_gurobi_symmetry": 0.10578346252441406
+    },
+    "ins-6": {
+        "model_1_cplex_symmetry": 0.17040681838989258,
+        "model_1_gurobi_symmetry": 0.11806488037109375
+    },
+    "ins-7": {
+        "model_1_cplex_symmetry": 0.13880419731140137,
+        "model_1_gurobi_symmetry": 0.09557771682739258
+    },
+    "ins-8": {
+        "model_1_cplex_symmetry": 0.3437209129333496,
+        "model_1_gurobi_symmetry": 0.09378409385681152
+    },
+    "ins-9": {
+        "model_1_cplex_symmetry": 0.20316076278686523,
+        "model_1_gurobi_symmetry": 0.12275528907775879
+    },
+    "ins-10": {
+        "model_1_cplex_symmetry": 0.4803905487060547,
+        "model_1_gurobi_symmetry": 0.4872584342956543
+    },
+    "ins-11": {
+        "model_1_cplex_symmetry": 13.462385177612305,
+        "model_1_gurobi_symmetry": 2.623558521270752
+    },
+    "ins-12": {
+        "model_1_cplex_symmetry": 0.519582986831665,
+        "model_1_gurobi_symmetry": 0.43567395210266113
+    },
+    "ins-13": {
+        "model_1_cplex_symmetry": 11.17844820022583,
+        "model_1_gurobi_symmetry": 0.8826403617858887
+    },
+    "ins-14": {
+        "model_1_cplex_symmetry": 37.51808047294617,
+        "model_1_gurobi_symmetry": 0.7632701396942139
+    },
+    "ins-15": {
+        "model_1_cplex_symmetry": 1.5684232711791992,
+        "model_1_gurobi_symmetry": 1.0612080097198486
+    },
+    "ins-16": {
+        "model_1_cplex_symmetry": 10.8389151096344,
+        "model_1_gurobi_symmetry": 0.808182954788208
+    },
+    "ins-17": {
+        "model_1_cplex_symmetry": 10.012351512908936,
+        "model_1_gurobi_symmetry": 4.721608400344849
+    },
+    "ins-18": {
+        "model_1_cplex_symmetry": 3.6373465061187744,
+        "model_1_gurobi_symmetry": 2.168881416320801
+    },
+    "ins-19": {
+        "model_1_cplex_symmetry": "NaN",
+        "model_1_gurobi_symmetry": "NaN"
+    },
+    "ins-20": {
+        "model_1_cplex_symmetry": 267.629341840744,
+        "model_1_gurobi_symmetry": 21.619906902313232
+    },
+    "ins-21": {
+        "model_1_cplex_symmetry": 25.22594666481018,
+        "model_1_gurobi_symmetry": 29.134039640426636
+    },
+    "ins-22": {
+        "model_1_cplex_symmetry": "NaN",
+        "model_1_gurobi_symmetry": 28.476694345474243
+    },
+    "ins-23": {
+        "model_1_cplex_symmetry": 5.838732957839966,
+        "model_1_gurobi_symmetry": 5.038528919219971
+    },
+    "ins-24": {
+        "model_1_cplex_symmetry": 16.269471645355225,
+        "model_1_gurobi_symmetry": 2.4223814010620117
+    },
+    "ins-25": {
+        "model_1_cplex_symmetry": "NaN",
+        "model_1_gurobi_symmetry": "NaN"
+    },
+    "ins-26": {
+        "model_1_cplex_symmetry": 106.06979894638062,
+        "model_1_gurobi_symmetry": 56.53844404220581
+    },
+    "ins-27": {
+        "model_1_cplex_symmetry": 35.15571975708008,
+        "model_1_gurobi_symmetry": 2.573730707168579
+    },
+    "ins-28": {
+        "model_1_cplex_symmetry": 52.92699933052063,
+        "model_1_gurobi_symmetry": 3.277470111846924
+    },
+    "ins-29": {
+        "model_1_cplex_symmetry": 103.91281867027283,
+        "model_1_gurobi_symmetry": 4.047084331512451
+    },
+    "ins-30": {
+        "model_1_cplex_symmetry": "NaN",
+        "model_1_gurobi_symmetry": "NaN"
+    },
+    "ins-31": {
+        "model_1_cplex_symmetry": 3.1331255435943604,
+        "model_1_gurobi_symmetry": 5.9785261154174805
+    },
+    "ins-32": {
+        "model_1_cplex_symmetry": "NaN",
+        "model_1_gurobi_symmetry": "NaN"
+    },
+    "ins-33": {
+        "model_1_cplex_symmetry": 5.136878967285156,
+        "model_1_gurobi_symmetry": 0.23232483863830566
+    },
+    "ins-34": {
+        "model_1_cplex_symmetry": "NaN",
+        "model_1_gurobi_symmetry": "NaN"
+    },
+    "ins-35": {
+        "model_1_cplex_symmetry": "NaN",
+        "model_1_gurobi_symmetry": 214.10384726524353
+    },
+    "ins-36": {
+        "model_1_cplex_symmetry": "NaN",
+        "model_1_gurobi_symmetry": "NaN"
+    },
+    "ins-37": {
+        "model_1_cplex_symmetry": "NaN",
+        "model_1_gurobi_symmetry": "NaN"
+    },
+    "ins-38": {
+        "model_1_cplex_symmetry": "NaN",
+        "model_1_gurobi_symmetry": "NaN"
+    },
+    "ins-39": {
+        "model_1_cplex_symmetry": "NaN",
+        "model_1_gurobi_symmetry": "NaN"
+    },
+    "ins-40": {
+        "model_1_cplex_symmetry": "NaN",
+        "model_1_gurobi_symmetry": "NaN"
+    }
+}

@@ -1,0 +1,162 @@
+{
+    "ins-1": {
+        "model_1_cplex_dual": 0.07617354393005371,
+        "model_1_gurobi_dual": 0.06250715255737305
+    },
+    "ins-2": {
+        "model_1_cplex_dual": 0.10640740394592285,
+        "model_1_gurobi_dual": 0.07400083541870117
+    },
+    "ins-3": {
+        "model_1_cplex_dual": 0.07812666893005371,
+        "model_1_gurobi_dual": 0.06252741813659668
+    },
+    "ins-4": {
+        "model_1_cplex_dual": 0.109344482421875,
+        "model_1_gurobi_dual": 0.0625302791595459
+    },
+    "ins-5": {
+        "model_1_cplex_dual": 0.0993490219116211,
+        "model_1_gurobi_dual": 0.04687619209289551
+    },
+    "ins-6": {
+        "model_1_cplex_dual": 0.19351649284362793,
+        "model_1_gurobi_dual": 0.0781259536743164
+    },
+    "ins-7": {
+        "model_1_cplex_dual": 0.10937070846557617,
+        "model_1_gurobi_dual": 0.1112668514251709
+    },
+    "ins-8": {
+        "model_1_cplex_dual": 0.1562502384185791,
+        "model_1_gurobi_dual": 0.09170794486999512
+    },
+    "ins-9": {
+        "model_1_cplex_dual": 0.17891502380371094,
+        "model_1_gurobi_dual": 0.062499284744262695
+    },
+    "ins-10": {
+        "model_1_cplex_dual": 0.3415415287017822,
+        "model_1_gurobi_dual": 0.1073298454284668
+    },
+    "ins-11": {
+        "model_1_cplex_dual": 9.562217712402344,
+        "model_1_gurobi_dual": 0.08975458145141602
+    },
+    "ins-12": {
+        "model_1_cplex_dual": 0.24999308586120605,
+        "model_1_gurobi_dual": 0.09664630889892578
+    },
+    "ins-13": {
+        "model_1_cplex_dual": 7.868060111999512,
+        "model_1_gurobi_dual": 0.43495726585388184
+    },
+    "ins-14": {
+        "model_1_cplex_dual": 27.083937644958496,
+        "model_1_gurobi_dual": 2.885307788848877
+    },
+    "ins-15": {
+        "model_1_cplex_dual": 1.0114083290100098,
+        "model_1_gurobi_dual": 0.6189849376678467
+    },
+    "ins-16": {
+        "model_1_cplex_dual": 7.756569862365723,
+        "model_1_gurobi_dual": 169.82850813865662
+    },
+    "ins-17": {
+        "model_1_cplex_dual": 7.180262565612793,
+        "model_1_gurobi_dual": 1.554893970489502
+    },
+    "ins-18": {
+        "model_1_cplex_dual": 2.542241096496582,
+        "model_1_gurobi_dual": 128.62176632881165
+    },
+    "ins-19": {
+        "model_1_cplex_dual": "NaN",
+        "model_1_gurobi_dual": 100.13550448417664
+    },
+    "ins-20": {
+        "model_1_cplex_dual": 265.4278483390808,
+        "model_1_gurobi_dual": "NaN"
+    },
+    "ins-21": {
+        "model_1_cplex_dual": 25.273946523666382,
+        "model_1_gurobi_dual": "NaN"
+    },
+    "ins-22": {
+        "model_1_cplex_dual": "NaN",
+        "model_1_gurobi_dual": "NaN"
+    },
+    "ins-23": {
+        "model_1_cplex_dual": 5.788650751113892,
+        "model_1_gurobi_dual": 42.41165852546692
+    },
+    "ins-24": {
+        "model_1_cplex_dual": 15.72323489189148,
+        "model_1_gurobi_dual": 3.4536454677581787
+    },
+    "ins-25": {
+        "model_1_cplex_dual": "NaN",
+        "model_1_gurobi_dual": "NaN"
+    },
+    "ins-26": {
+        "model_1_cplex_dual": 102.00295042991638,
+        "model_1_gurobi_dual": 83.76685237884521
+    },
+    "ins-27": {
+        "model_1_cplex_dual": 33.76793885231018,
+        "model_1_gurobi_dual": 2.93843674659729
+    },
+    "ins-28": {
+        "model_1_cplex_dual": 49.3816876411438,
+        "model_1_gurobi_dual": 4.703020334243774
+    },
+    "ins-29": {
+        "model_1_cplex_dual": 98.80299806594849,
+        "model_1_gurobi_dual": 2.1301801204681396
+    },
+    "ins-30": {
+        "model_1_cplex_dual": "NaN",
+        "model_1_gurobi_dual": 185.05286598205566
+    },
+    "ins-31": {
+        "model_1_cplex_dual": 3.052969217300415,
+        "model_1_gurobi_dual": 2.187612533569336
+    },
+    "ins-32": {
+        "model_1_cplex_dual": "NaN",
+        "model_1_gurobi_dual": "NaN"
+    },
+    "ins-33": {
+        "model_1_cplex_dual": 4.775585412979126,
+        "model_1_gurobi_dual": 1.9747788906097412
+    },
+    "ins-34": {
+        "model_1_cplex_dual": "NaN",
+        "model_1_gurobi_dual": "NaN"
+    },
+    "ins-35": {
+        "model_1_cplex_dual": "NaN",
+        "model_1_gurobi_dual": 267.75371503829956
+    },
+    "ins-36": {
+        "model_1_cplex_dual": "NaN",
+        "model_1_gurobi_dual": 18.3288676738739
+    },
+    "ins-37": {
+        "model_1_cplex_dual": "NaN",
+        "model_1_gurobi_dual": "NaN"
+    },
+    "ins-38": {
+        "model_1_cplex_dual": "NaN",
+        "model_1_gurobi_dual": "NaN"
+    },
+    "ins-39": {
+        "model_1_cplex_dual": "NaN",
+        "model_1_gurobi_dual": "NaN"
+    },
+    "ins-40": {
+        "model_1_cplex_dual": "NaN",
+        "model_1_gurobi_dual": "NaN"
+    }
+}

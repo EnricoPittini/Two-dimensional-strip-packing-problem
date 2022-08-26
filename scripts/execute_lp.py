@@ -186,7 +186,7 @@ def _set_model_main_params(w, n, dims, ampl, model):
     ampl.param['dimsX'] = [d[0] for d in dims]
     ampl.param['dimsY'] = [d[1] for d in dims]
     if model in ['model_2']:
-        ampl.param['maxAreaIndex'] = np.argmax([d[0]*d[1] for d in dims]) + 1
+        ampl.param['maxAreaIndex'] = int(np.argmax([d[0]*d[1] for d in dims]) + 1)
     if model in ['model_1', 'model_2']:
         k = w // max([d[0] for d in dims])
         if k == 1:
@@ -195,6 +195,16 @@ def _set_model_main_params(w, n, dims, ampl, model):
             l_max = sum([d for i, d in enumerate(sorted([d[1] for d in dims], reverse=True)) if i % k == 0]) 
         ampl.param['lMax'] = l_max
         l_min = max(max([d[1] for d in dims]), sum([d[0]*d[1] for d in dims]) // w)
+        ampl.param['lMin'] = l_min
+    if model == 'model_r_0':
+        maxDims = [max(d[0], d[1]) for d in dims]
+        k = w // max(maxDims)
+        if k < 2:
+            l_max = sum(maxDims) 
+        else: 
+            l_max = sum([d for i, d in enumerate(sorted(maxDims, reverse=True)) if i % k == 0]) 
+        ampl.param['lMax'] = l_max
+        l_min = sum([d[0]*d[1] for d in dims]) // w
         ampl.param['lMin'] = l_min
 
 if __name__ == '__main__':

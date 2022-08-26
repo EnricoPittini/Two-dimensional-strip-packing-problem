@@ -1,6 +1,78 @@
 {
+    "ins-21": {
+        "model_r_0_cplex": "NaN",
+        "model_r_0_gurobi": "NaN"
+    },
+    "ins-22": {
+        "model_r_0_cplex": "NaN",
+        "model_r_0_gurobi": "NaN"
+    },
+    "ins-23": {
+        "model_r_0_cplex": 6.969419479370117,
+        "model_r_0_gurobi": 45.37122058868408
+    },
+    "ins-24": {
+        "model_r_0_cplex": 2.421098470687866,
+        "model_r_0_gurobi": 3.3763723373413086
+    },
+    "ins-25": {
+        "model_r_0_cplex": "NaN",
+        "model_r_0_gurobi": "NaN"
+    },
+    "ins-26": {
+        "model_r_0_cplex": "NaN",
+        "model_r_0_gurobi": "NaN"
+    },
+    "ins-27": {
+        "model_r_0_cplex": "NaN",
+        "model_r_0_gurobi": 121.99800825119019
+    },
+    "ins-28": {
+        "model_r_0_cplex": "NaN",
+        "model_r_0_gurobi": 17.991262197494507
+    },
+    "ins-29": {
+        "model_r_0_cplex": 14.358781099319458,
+        "model_r_0_gurobi": 114.72601056098938
+    },
+    "ins-30": {
+        "model_r_0_cplex": "NaN",
+        "model_r_0_gurobi": "NaN"
+    },
+    "ins-31": {
+        "model_r_0_cplex": 9.279168367385864,
+        "model_r_0_gurobi": 1.9591953754425049
+    },
+    "ins-32": {
+        "model_r_0_cplex": "NaN",
+        "model_r_0_gurobi": "NaN"
+    },
+    "ins-33": {
+        "model_r_0_cplex": 4.586330413818359,
+        "model_r_0_gurobi": 8.361927032470703
+    },
+    "ins-34": {
+        "model_r_0_cplex": "NaN",
+        "model_r_0_gurobi": 221.6956651210785
+    },
+    "ins-35": {
+        "model_r_0_cplex": "NaN",
+        "model_r_0_gurobi": 248.2937548160553
+    },
+    "ins-36": {
+        "model_r_0_cplex": 213.25926446914673,
+        "model_r_0_gurobi": 174.08722352981567
+    },
+    "ins-37": {
+        "model_r_0_cplex": "NaN",
+        "model_r_0_gurobi": "NaN"
+    },
+    "ins-38": {
+        "model_r_0_cplex": "NaN",
+        "model_r_0_gurobi": "NaN"
+    },
     "ins-39": {
-        "model_grid_cplex": "UNKNOWN",
-        "model_grid_gurobi": "UNKNOWN"
+        "model_r_0_cplex": "NaN",
+        "model_r_0_gurobi": "NaN"
     }
 }
