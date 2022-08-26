@@ -13,12 +13,12 @@ param w integer > 0;
 param dimsX {N} integer >0 <=w;
 /** Heights of the circuits. */
 param dimsY {N} integer >0;
+/** Upper bound for the length of the plate. */
+param lMax integer > 0;
+/** Upper bound for the length of the plate. */
+param lMin integer > 0;
 /** Index of the circuit with the greatest area */
 param maxAreaIndex integer >0;
-
-####### DERIVED PARAMETERS
-/** Upper bound for the length of the plate. */
-param lMax = sum {i in N} dimsY[i];
 
 ####### VARIABLES
 /** X coordinate of the bottom-left corner of the circuits. */
@@ -28,7 +28,7 @@ var coordsY {N} integer >=0;
 /** Binary variables for each coordinate i,j related to the non-overlapping constraints. */
 var b {N,N,1..2} integer >=0 <=1;
 /** The length of the plate. */
-var l integer >= 0;
+var l integer >=lMin <=lMax;
 
 ####### SOLVE
 minimize result: l;
@@ -63,20 +63,8 @@ subject to oneOnlyY {i in N, j in 1..i-1}:
 subject to overlapActivation {i in N, j in 1..i-1}:
 	b[i,j,1] + b[i,j,2] + b[j,i,1] + b[j,i,2] >= 1;
 
-# First lower bound guaranteeing that all the circuits fit in the plate.
-subject to lowerBoundl1:
-	l * w >= sum {i in N} dimsX[i]*dimsY[i];
-
-# Second lower bound guaranteeing that the highest circuit fits in the plate.
-subject to lowerBoundl2:
-	l >= max {i in N} dimsY[i];
-
 # Greatest circuit in bottom left corner
 subject to greatestOnBottom:
 	coordsY[maxAreaIndex] = 0;
 subject to greatestOnTheLeft:
 	coordsX[maxAreaIndex] = 0;
-
-# Upper bound for the length of the plate.
-subject to upperBoundl:
-	l <= lMax;

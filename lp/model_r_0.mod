@@ -13,14 +13,10 @@ param w integer > 0;
 param dimsX {N} integer >0 <=w;
 /** Heights of the circuits. */
 param dimsY {N} integer >0;
-
-####### DERIVED PARAMETERS
 /** Upper bound for the length of the plate. */
-param lMax := sum {i in N} dimsY[i];
-/** MaxDims of the plate. */
-var maxDims {N} integer >= 0;
-subject to maxDimsValues {i in N}:
-	maxDims[i] = max(dimsY[i], dimsX[i]);
+param lMax integer > 0;
+/** Upper bound for the length of the plate. */
+param lMin integer > 0;
 
 ####### VARIABLES
 /** X coordinate of the bottom-left corner of the circuits. */
@@ -36,7 +32,7 @@ var actualDimsX {N} integer >=0 <=w;
 /** Actual height of the eventually rotated circuits. */
 var actualDimsY {N} integer >=0 <=lMax;
 /** The length of the plate. */
-var l integer >= 0 <=lMax;
+var l integer >=lMin <=lMax;
 
 ####### SOLVE
 minimize result: l;
@@ -50,9 +46,9 @@ subject to boundY {i in N}:
 
 # Constraints deciding the actual dimensions of the circuits according to their orientation in o
 subject to orientedDimsX {i in N}:
-	(1 - o[i]) * w[i] + o[i] * h[i] = actualDimsX[i];
-subject to orientedDimsX {i in N}:
-	(1 - o[i]) * h[i] + o[i] * w[i] = actualDimsY[i];
+	(1 - o[i]) * dimsX[i] + o[i] * dimsY[i] = actualDimsX[i];
+subject to orientedDimsY {i in N}:
+	(1 - o[i]) * dimsY[i] + o[i] * dimsX[i] = actualDimsY[i];
 
 # No-overlapping constraints:
 # If a constraint is active b[i,j,k] = 1 then the circuits must not overlap in the given dimension.
@@ -76,15 +72,3 @@ subject to oneOnlyY {i in N, j in 1..i-1}:
 # At least one of the above constraint must be active (not relaxed) for all the coordinates i,j.
 subject to overlapActivation {i in N, j in 1..i-1}:
 	b[i,j,1] + b[i,j,2] + b[j,i,1] + b[j,i,2] >= 1;
-
-# First lower bound guaranteeing that all the circuits fit in the plate.
-subject to lowerBoundl1:
-	l * w >= sum {i in N} dimsX[i]*dimsY[i];
-
-# Second lower bound guaranteeing that the highest circuit fits in the plate.
-subject to lowerBoundl2:
-	l >= max {i in N} maxDims[i];
-
-# Upper bound for the length of the plate.
-subject to upperBoundl:
-	l <= lMax;

@@ -49,6 +49,7 @@ def main() -> None:
     use_symmetry = arguments.use_symmetry
     use_dual = arguments.use_dual
     use_no_presolve = arguments.use_no_presolve
+    use_rotations = '_r_' in model
         
     instance = vars(arguments)['instance']
     solver = vars(arguments)['solver']
@@ -59,6 +60,8 @@ def main() -> None:
     
     with open(instance_path,'r') as f:
         w, n, dims = parse_instance_txt(f)
+    
+    w = int(w); n = int(n); dims = [(int(d[0]), int(d[1])) for d in dims]
     
     try:
         ampl = AMPL()
@@ -97,25 +100,17 @@ def main() -> None:
             parser.error(f"argument solver-name: invalid choice: '{solver}' " + 
                          f"(choose from {', '.join([f'{s}' for s in AMPL_SOLVER_CHOICES])})")
         
-        # print(ampl.get_option('cplex_options'))
-        # print(ampl.get_option('gurobi_options'))
-        # print(ampl.get_option('presolve'))
         ampl.read(os.path.join(os.path.dirname(os.path.dirname(__file__)), f'lp/{model}.mod'))
         
-        # Read model and data files.
-        _read_dat_file(w, n, dims, ampl, model)
+        _set_model_main_params(w, n, dims, ampl, model)
         
         if 'grid' in model:
-            coordsX, coordsY, l, solving_time = apply_position_and_covering(w, n, dims, ampl, model, solver, time_limit, use_symmetries, use_dual, cplex_options, gurobi_options)
-            result = ampl.get_value('solve_result')
-            if result == 'infeasible':
-                sys.exit('error = UNSATISFIABLE')
-            elif result == 'limit' or solving_time is None or solving_time > time_limit:
-                print('time = exceeded')
-            elif result == 'solved':
-                print(f'time = {solving_time}')
-            else:
+            dims, coordsX, coordsY, l, solving_time = apply_position_and_covering(
+                w, n, dims, ampl, solver, time_limit, use_rotations, cplex_options, gurobi_options)
+            if solving_time is None:
                 sys.exit('error = UNKOWN')
+            else:
+                print(f'time = {solving_time}')
         else:
             start_time = time.time()
             ampl.solve()
@@ -135,6 +130,13 @@ def main() -> None:
             # Parse variables results.
             l = int(ampl.get_value('l'))
             
+            if use_rotations:
+                dimsX = ampl.get_data('actualDimsX').to_pandas().actualDimsX.values
+                dimsY = ampl.get_data('actualDimsY').to_pandas().actualDimsY.values
+                dimsX = dimsX.astype(int)
+                dimsY = dimsY.astype(int)
+                dims = list(zip(dimsX, dimsY))
+            
             coordsX = ampl.get_data('coordsX').to_pandas().coordsX.values
             coordsY = ampl.get_data('coordsY').to_pandas().coordsY.values
             coordsX = coordsX.astype(int)
@@ -146,9 +148,7 @@ def main() -> None:
     except AMPLException:
         sys.exit('error = UNKOWN')
 
-    #TODO generalize
     if not arguments.no_create_output:
-        
         output_folder_path = vars(arguments)['output-folder-path']
 
         output_name = vars(arguments)['output-name']
@@ -167,8 +167,8 @@ def main() -> None:
             visualize_script_path = os.path.join(scripts_folder,'visualize.py')
             os.system(f'python {visualize_script_path} "{output_file}"')
 
-def _read_dat_file(w, n, dims, ampl, model):
-    """Create and read `.dat` file of an instance and read it in order to execute the `AMPL` model on it.
+def _set_model_main_params(w, n, dims, ampl, model):
+    """Set the main parameters of the `AMPL` model.
 
     Parameters
     ----------
@@ -181,34 +181,31 @@ def _read_dat_file(w, n, dims, ampl, model):
     ampl : AMPL
         An AMPL translator
     """
-    data_file_path = 'data.dat'
-    
-    # Create `.dat` data file with `AMPL` required format.
-    with open(data_file_path,'w') as fp:
-        fp.write('data;\n')
-        fp.write(f'param n := {n};\n')
-        fp.write(f'param w := {w};\n')
-        fp.write('param: dimsX dimsY :=\n')
-        for i, dim in enumerate(dims):
-            fp.write(f'{i+1}\t\t{dim[0]}\t\t{dim[1]}\n')
-        fp.write(';')
-        #if model in ['model_2']:
-        #    fp.write(f'param maxAreaIndex := {np.argmax([int(d[0])*int(d[1]) for d in dims]) + 1}\n')
-        if model == 'model_1':
-            k = int(w) // max([int(d[0]) for d in dims])
-            if k == 1:
-                l_max = sum([int(d[1]) for d in dims]) 
-            else: 
-                l_max = sum([d for i, d in enumerate(sorted([int(d[1]) for d in dims], reverse=True)) if i % k == 0]) 
-            fp.write(f'param lMax := {l_max};\n')
-            l_min = max(max([int(d[1]) for d in dims]), sum([int(d[0])*int(d[1]) for d in dims]) // int(w))
-            fp.write(f'param lMin := {l_min};\n')
-    
-    ampl.read_data(data_file_path)
-    
-    # Delete `.dat` data file.
-    if os.path.exists(data_file_path):
-        os.remove(data_file_path)
-    
+    ampl.param['n'] = n
+    ampl.param['w'] = w
+    ampl.param['dimsX'] = [d[0] for d in dims]
+    ampl.param['dimsY'] = [d[1] for d in dims]
+    if model in ['model_2']:
+        ampl.param['maxAreaIndex'] = int(np.argmax([d[0]*d[1] for d in dims]) + 1)
+    if model in ['model_1', 'model_2']:
+        k = w // max([d[0] for d in dims])
+        if k == 1:
+            l_max = sum([d[1] for d in dims]) 
+        else: 
+            l_max = sum([d for i, d in enumerate(sorted([d[1] for d in dims], reverse=True)) if i % k == 0]) 
+        ampl.param['lMax'] = l_max
+        l_min = max(max([d[1] for d in dims]), sum([d[0]*d[1] for d in dims]) // w)
+        ampl.param['lMin'] = l_min
+    if model == 'model_r_0':
+        maxDims = [max(d[0], d[1]) for d in dims]
+        k = w // max(maxDims)
+        if k < 2:
+            l_max = sum(maxDims) 
+        else: 
+            l_max = sum([d for i, d in enumerate(sorted(maxDims, reverse=True)) if i % k == 0]) 
+        ampl.param['lMax'] = l_max
+        l_min = sum([d[0]*d[1] for d in dims]) // w
+        ampl.param['lMin'] = l_min
+
 if __name__ == '__main__':
     main()
