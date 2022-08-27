@@ -1,0 +1,162 @@
+{
+    "ins-1": {
+        "model_r_grid_cplex": 0.1269989013671875,
+        "model_r_grid_gurobi": 0.1123664379119873
+    },
+    "ins-2": {
+        "model_r_grid_cplex": 0.18302631378173828,
+        "model_r_grid_gurobi": 0.18800783157348633
+    },
+    "ins-3": {
+        "model_r_grid_cplex": 0.29403233528137207,
+        "model_r_grid_gurobi": 0.4149918556213379
+    },
+    "ins-4": {
+        "model_r_grid_cplex": 0.6750011444091797,
+        "model_r_grid_gurobi": 0.4679996967315674
+    },
+    "ins-5": {
+        "model_r_grid_cplex": 0.6809990406036377,
+        "model_r_grid_gurobi": 0.7227394580841064
+    },
+    "ins-6": {
+        "model_r_grid_cplex": 1.261352300643921,
+        "model_r_grid_gurobi": 1.4171156883239746
+    },
+    "ins-7": {
+        "model_r_grid_cplex": 1.562222957611084,
+        "model_r_grid_gurobi": 1.614419937133789
+    },
+    "ins-8": {
+        "model_r_grid_cplex": 2.1794114112854004,
+        "model_r_grid_gurobi": 2.1352133750915527
+    },
+    "ins-9": {
+        "model_r_grid_cplex": 3.057764768600464,
+        "model_r_grid_gurobi": 3.0179200172424316
+    },
+    "ins-10": {
+        "model_r_grid_cplex": 6.08345365524292,
+        "model_r_grid_gurobi": 5.664144277572632
+    },
+    "ins-11": {
+        "model_r_grid_cplex": 12.924225330352783,
+        "model_r_grid_gurobi": 12.558233499526978
+    },
+    "ins-12": {
+        "model_r_grid_cplex": 10.856805324554443,
+        "model_r_grid_gurobi": 10.352489948272705
+    },
+    "ins-13": {
+        "model_r_grid_cplex": 14.377834796905518,
+        "model_r_grid_gurobi": 14.57044267654419
+    },
+    "ins-14": {
+        "model_r_grid_cplex": 20.05223059654236,
+        "model_r_grid_gurobi": 25.268311023712158
+    },
+    "ins-15": {
+        "model_r_grid_cplex": 28.268274068832397,
+        "model_r_grid_gurobi": 25.14829969406128
+    },
+    "ins-16": {
+        "model_r_grid_cplex": 42.41067337989807,
+        "model_r_grid_gurobi": 41.59550404548645
+    },
+    "ins-17": {
+        "model_r_grid_cplex": 33.139026165008545,
+        "model_r_grid_gurobi": 44.188220739364624
+    },
+    "ins-18": {
+        "model_r_grid_cplex": 50.568705797195435,
+        "model_r_grid_gurobi": 57.44217085838318
+    },
+    "ins-19": {
+        "model_r_grid_cplex": 79.24043130874634,
+        "model_r_grid_gurobi": 95.43255734443665
+    },
+    "ins-20": {
+        "model_r_grid_cplex": 83.68668675422668,
+        "model_r_grid_gurobi": 110.46991777420044
+    },
+    "ins-21": {
+        "model_r_grid_cplex": 101.60476112365723,
+        "model_r_grid_gurobi": 202.1245653629303
+    },
+    "ins-22": {
+        "model_r_grid_cplex": 128.10041880607605,
+        "model_r_grid_gurobi": 206.7117145061493
+    },
+    "ins-23": {
+        "model_r_grid_cplex": 132.65384578704834,
+        "model_r_grid_gurobi": 125.75684213638306
+    },
+    "ins-24": {
+        "model_r_grid_cplex": 135.40090012550354,
+        "model_r_grid_gurobi": 160.29548811912537
+    },
+    "ins-25": {
+        "model_r_grid_cplex": 278.3964273929596,
+        "model_r_grid_gurobi": "UNKNOWN"
+    },
+    "ins-26": {
+        "model_r_grid_cplex": 242.02902221679688,
+        "model_r_grid_gurobi": "UNKNOWN"
+    },
+    "ins-27": {
+        "model_r_grid_cplex": 254.739741563797,
+        "model_r_grid_gurobi": 290.9516544342041
+    },
+    "ins-28": {
+        "model_r_grid_cplex": "UNKNOWN",
+        "model_r_grid_gurobi": "UNKNOWN"
+    },
+    "ins-29": {
+        "model_r_grid_cplex": "UNKNOWN",
+        "model_r_grid_gurobi": "UNKNOWN"
+    },
+    "ins-30": {
+        "model_r_grid_cplex": "UNKNOWN",
+        "model_r_grid_gurobi": "UNKNOWN"
+    },
+    "ins-31": {
+        "model_r_grid_cplex": "UNKNOWN",
+        "model_r_grid_gurobi": "UNKNOWN"
+    },
+    "ins-32": {
+        "model_r_grid_cplex": "UNKNOWN",
+        "model_r_grid_gurobi": "UNKNOWN"
+    },
+    "ins-33": {
+        "model_r_grid_cplex": "UNKNOWN",
+        "model_r_grid_gurobi": "UNKNOWN"
+    },
+    "ins-34": {
+        "model_r_grid_cplex": 71.1793622970581,
+        "model_r_grid_gurobi": 175.2258448600769
+    },
+    "ins-35": {
+        "model_r_grid_cplex": "UNKNOWN",
+        "model_r_grid_gurobi": "UNKNOWN"
+    },
+    "ins-36": {
+        "model_r_grid_cplex": "UNKNOWN",
+        "model_r_grid_gurobi": "UNKNOWN"
+    },
+    "ins-37": {
+        "model_r_grid_cplex": "UNKNOWN",
+        "model_r_grid_gurobi": "UNKNOWN"
+    },
+    "ins-38": {
+        "model_r_grid_cplex": "UNKNOWN",
+        "model_r_grid_gurobi": "UNKNOWN"
+    },
+    "ins-39": {
+        "model_r_grid_cplex": "UNKNOWN",
+        "model_r_grid_gurobi": "UNKNOWN"
+    },
+    "ins-40": {
+        "model_r_grid_cplex": "UNKNOWN",
+        "model_r_grid_gurobi": "UNKNOWN"
+    }
+}

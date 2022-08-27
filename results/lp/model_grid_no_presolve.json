@@ -1,0 +1,162 @@
+{
+    "ins-1": {
+        "model_grid_cplex_no_presolve": 0.144911527633667,
+        "model_grid_gurobi_no_presolve": 0.08100104331970215
+    },
+    "ins-2": {
+        "model_grid_cplex_no_presolve": 0.11700201034545898,
+        "model_grid_gurobi_no_presolve": 0.127000093460083
+    },
+    "ins-3": {
+        "model_grid_cplex_no_presolve": 0.21100616455078125,
+        "model_grid_gurobi_no_presolve": 0.19597339630126953
+    },
+    "ins-4": {
+        "model_grid_cplex_no_presolve": 0.2480149269104004,
+        "model_grid_gurobi_no_presolve": 0.27747273445129395
+    },
+    "ins-5": {
+        "model_grid_cplex_no_presolve": 0.3779873847961426,
+        "model_grid_gurobi_no_presolve": 0.4440011978149414
+    },
+    "ins-6": {
+        "model_grid_cplex_no_presolve": 0.6010017395019531,
+        "model_grid_gurobi_no_presolve": 0.5597779750823975
+    },
+    "ins-7": {
+        "model_grid_cplex_no_presolve": 0.7093296051025391,
+        "model_grid_gurobi_no_presolve": 0.9310197830200195
+    },
+    "ins-8": {
+        "model_grid_cplex_no_presolve": 1.133469820022583,
+        "model_grid_gurobi_no_presolve": 1.0330348014831543
+    },
+    "ins-9": {
+        "model_grid_cplex_no_presolve": 1.4330058097839355,
+        "model_grid_gurobi_no_presolve": 1.4225692749023438
+    },
+    "ins-10": {
+        "model_grid_cplex_no_presolve": 2.287050724029541,
+        "model_grid_gurobi_no_presolve": 2.530031442642212
+    },
+    "ins-11": {
+        "model_grid_cplex_no_presolve": 5.1440136432647705,
+        "model_grid_gurobi_no_presolve": 4.715846538543701
+    },
+    "ins-12": {
+        "model_grid_cplex_no_presolve": 3.850029945373535,
+        "model_grid_gurobi_no_presolve": 4.215011358261108
+    },
+    "ins-13": {
+        "model_grid_cplex_no_presolve": 5.325998544692993,
+        "model_grid_gurobi_no_presolve": 5.284528970718384
+    },
+    "ins-14": {
+        "model_grid_cplex_no_presolve": 8.047063112258911,
+        "model_grid_gurobi_no_presolve": 7.923947334289551
+    },
+    "ins-15": {
+        "model_grid_cplex_no_presolve": 9.795793056488037,
+        "model_grid_gurobi_no_presolve": 9.202516078948975
+    },
+    "ins-16": {
+        "model_grid_cplex_no_presolve": 16.364134550094604,
+        "model_grid_gurobi_no_presolve": 14.349219799041748
+    },
+    "ins-17": {
+        "model_grid_cplex_no_presolve": 15.467002391815186,
+        "model_grid_gurobi_no_presolve": 15.068967580795288
+    },
+    "ins-18": {
+        "model_grid_cplex_no_presolve": 18.7300021648407,
+        "model_grid_gurobi_no_presolve": 18.7549889087677
+    },
+    "ins-19": {
+        "model_grid_cplex_no_presolve": 32.01849889755249,
+        "model_grid_gurobi_no_presolve": 31.513000965118408
+    },
+    "ins-20": {
+        "model_grid_cplex_no_presolve": 37.84634327888489,
+        "model_grid_gurobi_no_presolve": 36.22260499000549
+    },
+    "ins-21": {
+        "model_grid_cplex_no_presolve": 48.353041648864746,
+        "model_grid_gurobi_no_presolve": 42.9760000705719
+    },
+    "ins-22": {
+        "model_grid_cplex_no_presolve": 58.28200101852417,
+        "model_grid_gurobi_no_presolve": 84.37206673622131
+    },
+    "ins-23": {
+        "model_grid_cplex_no_presolve": 46.70358443260193,
+        "model_grid_gurobi_no_presolve": 47.49203133583069
+    },
+    "ins-24": {
+        "model_grid_cplex_no_presolve": 60.81329131126404,
+        "model_grid_gurobi_no_presolve": 50.58383107185364
+    },
+    "ins-25": {
+        "model_grid_cplex_no_presolve": 98.53121328353882,
+        "model_grid_gurobi_no_presolve": 90.20271754264832
+    },
+    "ins-26": {
+        "model_grid_cplex_no_presolve": 89.95348286628723,
+        "model_grid_gurobi_no_presolve": 86.88755059242249
+    },
+    "ins-27": {
+        "model_grid_cplex_no_presolve": 89.56957483291626,
+        "model_grid_gurobi_no_presolve": 86.55831980705261
+    },
+    "ins-28": {
+        "model_grid_cplex_no_presolve": 128.25559830665588,
+        "model_grid_gurobi_no_presolve": 133.86646962165833
+    },
+    "ins-29": {
+        "model_grid_cplex_no_presolve": 164.19848012924194,
+        "model_grid_gurobi_no_presolve": 183.82773804664612
+    },
+    "ins-30": {
+        "model_grid_cplex_no_presolve": 256.08741760253906,
+        "model_grid_gurobi_no_presolve": 291.4628863334656
+    },
+    "ins-31": {
+        "model_grid_cplex_no_presolve": 176.604572057724,
+        "model_grid_gurobi_no_presolve": 165.7978663444519
+    },
+    "ins-32": {
+        "model_grid_cplex_no_presolve": "UNKNOWN",
+        "model_grid_gurobi_no_presolve": "UNKNOWN"
+    },
+    "ins-33": {
+        "model_grid_cplex_no_presolve": 214.16087102890015,
+        "model_grid_gurobi_no_presolve": 200.17233300209045
+    },
+    "ins-34": {
+        "model_grid_cplex_no_presolve": 41.08319282531738,
+        "model_grid_gurobi_no_presolve": 73.21200656890869
+    },
+    "ins-35": {
+        "model_grid_cplex_no_presolve": 43.935003995895386,
+        "model_grid_gurobi_no_presolve": 129.7127959728241
+    },
+    "ins-36": {
+        "model_grid_cplex_no_presolve": 39.31101083755493,
+        "model_grid_gurobi_no_presolve": 49.962034940719604
+    },
+    "ins-37": {
+        "model_grid_cplex": "UNKNOWN",
+        "model_grid_gurobi": "UNKNOWN"
+    },
+    "ins-38": {
+        "model_grid_cplex": "UNKNOWN",
+        "model_grid_gurobi": "UNKNOWN"
+    },
+    "ins-39": {
+        "model_grid_cplex": "UNKNOWN",
+        "model_grid_gurobi": "UNKNOWN"
+    },
+    "ins-40": {
+        "model_grid_cplex": "UNKNOWN",
+        "model_grid_gurobi": "UNKNOWN"
+    }
+}
