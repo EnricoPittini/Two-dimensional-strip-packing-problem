@@ -218,7 +218,11 @@ def _compute_statistics(models_dictionary):
     statistics_dictionary = {m:{} for m in models_dictionary}
     for m in models_dictionary:
         statistics_dictionary[m]['n_solved_instances'] = sum([not flag for flag in models_dictionary[m]['non_optimal']])
-        statistics_dictionary[m]['mean_time'] = sum(models_dictionary[m]['time'])/statistics_dictionary[m]['n_solved_instances']
+        if statistics_dictionary[m]['n_solved_instances'] == 0:
+            statistics_dictionary[m]['mean_time'] = 0
+        else:
+            statistics_dictionary[m]['mean_time'] = sum(
+                models_dictionary[m]['time']) / statistics_dictionary[m]['n_solved_instances']
     return statistics_dictionary
 
 if __name__ == '__main__':

@@ -1,0 +1,162 @@
+{
+    "ins-1": {
+        "model_r_0_cplex_no_presolve": 0.06001019477844238,
+        "model_r_0_gurobi_no_presolve": 0.04760003089904785
+    },
+    "ins-2": {
+        "model_r_0_cplex_no_presolve": 0.06094002723693848,
+        "model_r_0_gurobi_no_presolve": 0.04599738121032715
+    },
+    "ins-3": {
+        "model_r_0_cplex_no_presolve": 0.06100034713745117,
+        "model_r_0_gurobi_no_presolve": 0.04974651336669922
+    },
+    "ins-4": {
+        "model_r_0_cplex_no_presolve": 0.045957326889038086,
+        "model_r_0_gurobi_no_presolve": 0.04567313194274902
+    },
+    "ins-5": {
+        "model_r_0_cplex_no_presolve": 0.12230134010314941,
+        "model_r_0_gurobi_no_presolve": 0.05687856674194336
+    },
+    "ins-6": {
+        "model_r_0_cplex_no_presolve": 0.08494019508361816,
+        "model_r_0_gurobi_no_presolve": 0.07186675071716309
+    },
+    "ins-7": {
+        "model_r_0_cplex_no_presolve": 0.11483597755432129,
+        "model_r_0_gurobi_no_presolve": 0.0820000171661377
+    },
+    "ins-8": {
+        "model_r_0_cplex_no_presolve": 0.10600137710571289,
+        "model_r_0_gurobi_no_presolve": 0.22928500175476074
+    },
+    "ins-9": {
+        "model_r_0_cplex_no_presolve": 0.5269496440887451,
+        "model_r_0_gurobi_no_presolve": 0.2500123977661133
+    },
+    "ins-10": {
+        "model_r_0_cplex_no_presolve": 0.6891050338745117,
+        "model_r_0_gurobi_no_presolve": 0.10951542854309082
+    },
+    "ins-11": {
+        "model_r_0_cplex_no_presolve": 0.5689375400543213,
+        "model_r_0_gurobi_no_presolve": 1.289172887802124
+    },
+    "ins-12": {
+        "model_r_0_cplex_no_presolve": 0.4609699249267578,
+        "model_r_0_gurobi_no_presolve": 0.08125567436218262
+    },
+    "ins-13": {
+        "model_r_0_cplex_no_presolve": 0.3732755184173584,
+        "model_r_0_gurobi_no_presolve": 0.8399696350097656
+    },
+    "ins-14": {
+        "model_r_0_cplex_no_presolve": 8.954763889312744,
+        "model_r_0_gurobi_no_presolve": 1.771543025970459
+    },
+    "ins-15": {
+        "model_r_0_cplex_no_presolve": "NaN",
+        "model_r_0_gurobi_no_presolve": 1.9319274425506592
+    },
+    "ins-16": {
+        "model_r_0_cplex_no_presolve": 6.96946907043457,
+        "model_r_0_gurobi_no_presolve": 11.440629482269287
+    },
+    "ins-17": {
+        "model_r_0_cplex_no_presolve": 76.69695854187012,
+        "model_r_0_gurobi_no_presolve": 0.46636509895324707
+    },
+    "ins-18": {
+        "model_r_0_cplex_no_presolve": "NaN",
+        "model_r_0_gurobi_no_presolve": 184.89973044395447
+    },
+    "ins-19": {
+        "model_r_0_cplex_no_presolve": "NaN",
+        "model_r_0_gurobi_no_presolve": 92.93925595283508
+    },
+    "ins-20": {
+        "model_r_0_cplex_no_presolve": "NaN",
+        "model_r_0_gurobi_no_presolve": "NaN"
+    },
+    "ins-21": {
+        "model_r_0_cplex_no_presolve": "NaN",
+        "model_r_0_gurobi_no_presolve": "NaN"
+    },
+    "ins-22": {
+        "model_r_0_cplex_no_presolve": "NaN",
+        "model_r_0_gurobi_no_presolve": "NaN"
+    },
+    "ins-23": {
+        "model_r_0_cplex_no_presolve": 7.053951740264893,
+        "model_r_0_gurobi_no_presolve": "NaN"
+    },
+    "ins-24": {
+        "model_r_0_cplex_no_presolve": 2.3565781116485596,
+        "model_r_0_gurobi_no_presolve": 3.4343883991241455
+    },
+    "ins-25": {
+        "model_r_0_cplex_no_presolve": "NaN",
+        "model_r_0_gurobi_no_presolve": "NaN"
+    },
+    "ins-26": {
+        "model_r_0_cplex_no_presolve": "NaN",
+        "model_r_0_gurobi_no_presolve": "NaN"
+    },
+    "ins-27": {
+        "model_r_0_cplex_no_presolve": "NaN",
+        "model_r_0_gurobi_no_presolve": 6.3492231369018555
+    },
+    "ins-28": {
+        "model_r_0_cplex_no_presolve": "NaN",
+        "model_r_0_gurobi_no_presolve": 7.016431570053101
+    },
+    "ins-29": {
+        "model_r_0_cplex_no_presolve": 14.471717119216919,
+        "model_r_0_gurobi_no_presolve": 198.42914605140686
+    },
+    "ins-30": {
+        "model_r_0_cplex_no_presolve": "NaN",
+        "model_r_0_gurobi_no_presolve": "NaN"
+    },
+    "ins-31": {
+        "model_r_0_cplex_no_presolve": 9.182145357131958,
+        "model_r_0_gurobi_no_presolve": 1.931715726852417
+    },
+    "ins-32": {
+        "model_r_0_cplex_no_presolve": "NaN",
+        "model_r_0_gurobi_no_presolve": "NaN"
+    },
+    "ins-33": {
+        "model_r_0_cplex_no_presolve": 4.914395093917847,
+        "model_r_0_gurobi_no_presolve": 8.902073860168457
+    },
+    "ins-34": {
+        "model_r_0_cplex_no_presolve": "NaN",
+        "model_r_0_gurobi_no_presolve": 89.17202949523926
+    },
+    "ins-35": {
+        "model_r_0_cplex_no_presolve": "NaN",
+        "model_r_0_gurobi_no_presolve": 25.14836835861206
+    },
+    "ins-36": {
+        "model_r_0_cplex_no_presolve": 213.43987607955933,
+        "model_r_0_gurobi_no_presolve": 153.71235871315002
+    },
+    "ins-37": {
+        "model_r_0_cplex_no_presolve": "NaN",
+        "model_r_0_gurobi_no_presolve": "NaN"
+    },
+    "ins-38": {
+        "model_r_0_cplex_no_presolve": "NaN",
+        "model_r_0_gurobi_no_presolve": "NaN"
+    },
+    "ins-39": {
+        "model_r_0_cplex_no_presolve": "NaN",
+        "model_r_0_gurobi_no_presolve": "NaN"
+    },
+    "ins-40": {
+        "model_r_0_cplex_no_presolve": "NaN",
+        "model_r_0_gurobi_no_presolve": "NaN"
+    }
+}
