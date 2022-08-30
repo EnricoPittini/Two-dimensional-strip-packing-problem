@@ -1,0 +1,322 @@
+{
+    "ins-1": {
+        "model_r_grid_cplex": 0.1269989013671875,
+        "model_r_grid_gurobi": 0.1123664379119873,
+        "model_r_grid_cplex_symmetry": 0.10207676887512207,
+        "model_r_grid_gurobi_symmetry": 0.08799934387207031,
+        "model_r_grid_cplex_dual": 0.08012819290161133,
+        "model_r_grid_gurobi_dual": 0.08924984931945801
+    },
+    "ins-2": {
+        "model_r_grid_cplex": 0.18302631378173828,
+        "model_r_grid_gurobi": 0.18800783157348633,
+        "model_r_grid_cplex_symmetry": 0.155792236328125,
+        "model_r_grid_gurobi_symmetry": 0.15444374084472656,
+        "model_r_grid_cplex_dual": 0.13273358345031738,
+        "model_r_grid_gurobi_dual": 0.14451003074645996
+    },
+    "ins-3": {
+        "model_r_grid_cplex": 0.29403233528137207,
+        "model_r_grid_gurobi": 0.4149918556213379,
+        "model_r_grid_cplex_symmetry": 0.23900055885314941,
+        "model_r_grid_gurobi_symmetry": 0.26982545852661133,
+        "model_r_grid_cplex_dual": 0.2785458564758301,
+        "model_r_grid_gurobi_dual": 0.2685966491699219
+    },
+    "ins-4": {
+        "model_r_grid_cplex": 0.6750011444091797,
+        "model_r_grid_gurobi": 0.4679996967315674,
+        "model_r_grid_cplex_symmetry": 0.4470057487487793,
+        "model_r_grid_gurobi_symmetry": 0.5570030212402344,
+        "model_r_grid_cplex_dual": 0.4239082336425781,
+        "model_r_grid_gurobi_dual": 0.43073034286499023
+    },
+    "ins-5": {
+        "model_r_grid_cplex": 0.6809990406036377,
+        "model_r_grid_gurobi": 0.7227394580841064,
+        "model_r_grid_cplex_symmetry": 0.8288679122924805,
+        "model_r_grid_gurobi_symmetry": 0.7907230854034424,
+        "model_r_grid_cplex_dual": 0.688406229019165,
+        "model_r_grid_gurobi_dual": 0.6482493877410889
+    },
+    "ins-6": {
+        "model_r_grid_cplex": 1.261352300643921,
+        "model_r_grid_gurobi": 1.4171156883239746,
+        "model_r_grid_cplex_symmetry": 1.364995002746582,
+        "model_r_grid_gurobi_symmetry": 1.2329959869384766,
+        "model_r_grid_cplex_dual": 1.05772066116333,
+        "model_r_grid_gurobi_dual": 1.2191662788391113
+    },
+    "ins-7": {
+        "model_r_grid_cplex": 1.562222957611084,
+        "model_r_grid_gurobi": 1.614419937133789,
+        "model_r_grid_cplex_symmetry": 1.4240341186523438,
+        "model_r_grid_gurobi_symmetry": 1.5720009803771973,
+        "model_r_grid_cplex_dual": 1.3991892337799072,
+        "model_r_grid_gurobi_dual": 1.4245049953460693
+    },
+    "ins-8": {
+        "model_r_grid_cplex": 2.1794114112854004,
+        "model_r_grid_gurobi": 2.1352133750915527,
+        "model_r_grid_cplex_symmetry": 1.9160001277923584,
+        "model_r_grid_gurobi_symmetry": 2.365983247756958,
+        "model_r_grid_cplex_dual": 1.98972487449646,
+        "model_r_grid_gurobi_dual": 1.968926191329956
+    },
+    "ins-9": {
+        "model_r_grid_cplex": 3.057764768600464,
+        "model_r_grid_gurobi": 3.0179200172424316,
+        "model_r_grid_cplex_symmetry": 2.7330472469329834,
+        "model_r_grid_gurobi_symmetry": 2.6500308513641357,
+        "model_r_grid_cplex_dual": 2.799692153930664,
+        "model_r_grid_gurobi_dual": 2.872788906097412
+    },
+    "ins-10": {
+        "model_r_grid_cplex": 6.08345365524292,
+        "model_r_grid_gurobi": 5.664144277572632,
+        "model_r_grid_cplex_symmetry": 5.192028999328613,
+        "model_r_grid_gurobi_symmetry": 4.507000207901001,
+        "model_r_grid_cplex_dual": 5.47608208656311,
+        "model_r_grid_gurobi_dual": 4.669781923294067
+    },
+    "ins-11": {
+        "model_r_grid_cplex": 12.924225330352783,
+        "model_r_grid_gurobi": 12.558233499526978,
+        "model_r_grid_cplex_symmetry": 10.898000001907349,
+        "model_r_grid_gurobi_symmetry": 11.870231628417969,
+        "model_r_grid_cplex_dual": 11.042273759841919,
+        "model_r_grid_gurobi_dual": 11.924819946289062
+    },
+    "ins-12": {
+        "model_r_grid_cplex": 10.856805324554443,
+        "model_r_grid_gurobi": 10.352489948272705,
+        "model_r_grid_cplex_symmetry": 8.623998403549194,
+        "model_r_grid_gurobi_symmetry": 8.646028757095337,
+        "model_r_grid_cplex_dual": 8.786090612411499,
+        "model_r_grid_gurobi_dual": 8.803812265396118
+    },
+    "ins-13": {
+        "model_r_grid_cplex": 14.377834796905518,
+        "model_r_grid_gurobi": 14.57044267654419,
+        "model_r_grid_cplex_symmetry": 12.438998699188232,
+        "model_r_grid_gurobi_symmetry": 13.010029554367065,
+        "model_r_grid_cplex_dual": 12.85623550415039,
+        "model_r_grid_gurobi_dual": 12.794810056686401
+    },
+    "ins-14": {
+        "model_r_grid_cplex": 20.05223059654236,
+        "model_r_grid_gurobi": 25.268311023712158,
+        "model_r_grid_cplex_symmetry": 17.05200219154358,
+        "model_r_grid_gurobi_symmetry": 23.718003034591675,
+        "model_r_grid_cplex_dual": 17.78827166557312,
+        "model_r_grid_gurobi_dual": 20.272259950637817
+    },
+    "ins-15": {
+        "model_r_grid_cplex": 28.268274068832397,
+        "model_r_grid_gurobi": 25.14829969406128,
+        "model_r_grid_cplex_symmetry": 22.849000215530396,
+        "model_r_grid_gurobi_symmetry": 19.876813888549805,
+        "model_r_grid_cplex_dual": 23.98120880126953,
+        "model_r_grid_gurobi_dual": 21.350858688354492
+    },
+    "ins-16": {
+        "model_r_grid_cplex": 42.41067337989807,
+        "model_r_grid_gurobi": 41.59550404548645,
+        "model_r_grid_cplex_symmetry": 38.92703652381897,
+        "model_r_grid_gurobi_symmetry": 41.70303511619568,
+        "model_r_grid_cplex_dual": 41.42965292930603,
+        "model_r_grid_gurobi_dual": 38.50928831100464
+    },
+    "ins-17": {
+        "model_r_grid_cplex": 33.139026165008545,
+        "model_r_grid_gurobi": 44.188220739364624,
+        "model_r_grid_cplex_symmetry": 31.352028846740723,
+        "model_r_grid_gurobi_symmetry": 44.18283176422119,
+        "model_r_grid_cplex_dual": 32.56813883781433,
+        "model_r_grid_gurobi_dual": 47.41428804397583
+    },
+    "ins-18": {
+        "model_r_grid_cplex": 50.568705797195435,
+        "model_r_grid_gurobi": 57.44217085838318,
+        "model_r_grid_cplex_symmetry": 46.155070066452026,
+        "model_r_grid_gurobi_symmetry": 53.66243290901184,
+        "model_r_grid_cplex_dual": 51.2348370552063,
+        "model_r_grid_gurobi_dual": 53.12826871871948
+    },
+    "ins-19": {
+        "model_r_grid_cplex": 79.24043130874634,
+        "model_r_grid_gurobi": 95.43255734443665,
+        "model_r_grid_cplex_symmetry": 73.99852514266968,
+        "model_r_grid_gurobi_symmetry": 93.09296679496765,
+        "model_r_grid_cplex_dual": 82.70294117927551,
+        "model_r_grid_gurobi_dual": 92.35417056083679
+    },
+    "ins-20": {
+        "model_r_grid_cplex": 83.68668675422668,
+        "model_r_grid_gurobi": 110.46991777420044,
+        "model_r_grid_cplex_symmetry": 77.4390025138855,
+        "model_r_grid_gurobi_symmetry": 110.15059638023376,
+        "model_r_grid_cplex_dual": 85.66829681396484,
+        "model_r_grid_gurobi_dual": 86.2608687877655
+    },
+    "ins-21": {
+        "model_r_grid_cplex": 101.60476112365723,
+        "model_r_grid_gurobi": 202.1245653629303,
+        "model_r_grid_cplex_symmetry": 96.94953107833862,
+        "model_r_grid_gurobi_symmetry": 138.05116176605225,
+        "model_r_grid_cplex_dual": 102.33728194236755,
+        "model_r_grid_gurobi_dual": 124.4045901298523
+    },
+    "ins-22": {
+        "model_r_grid_cplex": 128.10041880607605,
+        "model_r_grid_gurobi": 206.7117145061493,
+        "model_r_grid_cplex_symmetry": 120.92035746574402,
+        "model_r_grid_gurobi_symmetry": 172.86359524726868,
+        "model_r_grid_cplex_dual": 140.72086691856384,
+        "model_r_grid_gurobi_dual": 164.15391564369202
+    },
+    "ins-23": {
+        "model_r_grid_cplex": 132.65384578704834,
+        "model_r_grid_gurobi": 125.75684213638306,
+        "model_r_grid_cplex_symmetry": 98.11759638786316,
+        "model_r_grid_gurobi_symmetry": 108.86644577980042,
+        "model_r_grid_cplex_dual": 105.60576367378235,
+        "model_r_grid_gurobi_dual": 120.39320826530457
+    },
+    "ins-24": {
+        "model_r_grid_cplex": 135.40090012550354,
+        "model_r_grid_gurobi": 160.29548811912537,
+        "model_r_grid_cplex_symmetry": 120.83902931213379,
+        "model_r_grid_gurobi_symmetry": 142.30446696281433,
+        "model_r_grid_cplex_dual": 132.28830480575562,
+        "model_r_grid_gurobi_dual": 132.50537586212158
+    },
+    "ins-25": {
+        "model_r_grid_cplex": 278.3964273929596,
+        "model_r_grid_gurobi": "UNKNOWN",
+        "model_r_grid_cplex_symmetry": 253.96371817588806,
+        "model_r_grid_gurobi_symmetry": "UNKNOWN",
+        "model_r_grid_cplex_dual": 275.82537150382996,
+        "model_r_grid_gurobi_dual": "UNKNOWN"
+    },
+    "ins-26": {
+        "model_r_grid_cplex": 242.02902221679688,
+        "model_r_grid_gurobi": "UNKNOWN",
+        "model_r_grid_cplex_symmetry": 206.51149368286133,
+        "model_r_grid_gurobi_symmetry": "UNKNOWN",
+        "model_r_grid_cplex_dual": 245.29980039596558,
+        "model_r_grid_gurobi_dual": 299.39827251434326
+    },
+    "ins-27": {
+        "model_r_grid_cplex": 254.739741563797,
+        "model_r_grid_gurobi": 290.9516544342041,
+        "model_r_grid_cplex_symmetry": 257.4709825515747,
+        "model_r_grid_gurobi_symmetry": 287.26055455207825,
+        "model_r_grid_cplex_dual": 265.2823007106781,
+        "model_r_grid_gurobi_dual": 256.7470896244049
+    },
+    "ins-28": {
+        "model_r_grid_cplex": "UNKNOWN",
+        "model_r_grid_gurobi": "UNKNOWN",
+        "model_r_grid_cplex_symmetry": "UNKNOWN",
+        "model_r_grid_gurobi_symmetry": "UNKNOWN",
+        "model_r_grid_cplex_dual": "UNKNOWN",
+        "model_r_grid_gurobi_dual": "UNKNOWN"
+    },
+    "ins-29": {
+        "model_r_grid_cplex": "UNKNOWN",
+        "model_r_grid_gurobi": "UNKNOWN",
+        "model_r_grid_cplex_symmetry": "UNKNOWN",
+        "model_r_grid_gurobi_symmetry": "UNKNOWN",
+        "model_r_grid_cplex_dual": "UNKNOWN",
+        "model_r_grid_gurobi_dual": "UNKNOWN"
+    },
+    "ins-30": {
+        "model_r_grid_cplex": "UNKNOWN",
+        "model_r_grid_gurobi": "UNKNOWN",
+        "model_r_grid_cplex_symmetry": "UNKNOWN",
+        "model_r_grid_gurobi_symmetry": "UNKNOWN",
+        "model_r_grid_cplex_dual": "UNKNOWN",
+        "model_r_grid_gurobi_dual": "UNKNOWN"
+    },
+    "ins-31": {
+        "model_r_grid_cplex": "UNKNOWN",
+        "model_r_grid_gurobi": "UNKNOWN",
+        "model_r_grid_cplex_symmetry": "UNKNOWN",
+        "model_r_grid_gurobi_symmetry": "UNKNOWN",
+        "model_r_grid_cplex_dual": "UNKNOWN",
+        "model_r_grid_gurobi_dual": "UNKNOWN"
+    },
+    "ins-32": {
+        "model_r_grid_cplex": "UNKNOWN",
+        "model_r_grid_gurobi": "UNKNOWN",
+        "model_r_grid_cplex_symmetry": "UNKNOWN",
+        "model_r_grid_gurobi_symmetry": "UNKNOWN",
+        "model_r_grid_cplex_dual": "UNKNOWN",
+        "model_r_grid_gurobi_dual": "UNKNOWN"
+    },
+    "ins-33": {
+        "model_r_grid_cplex": "UNKNOWN",
+        "model_r_grid_gurobi": "UNKNOWN",
+        "model_r_grid_cplex_symmetry": "UNKNOWN",
+        "model_r_grid_gurobi_symmetry": "UNKNOWN",
+        "model_r_grid_cplex_dual": "UNKNOWN",
+        "model_r_grid_gurobi_dual": "UNKNOWN"
+    },
+    "ins-34": {
+        "model_r_grid_cplex": 71.1793622970581,
+        "model_r_grid_gurobi": 175.2258448600769,
+        "model_r_grid_cplex_symmetry": 73.27615213394165,
+        "model_r_grid_gurobi_symmetry": 117.58914303779602,
+        "model_r_grid_cplex_dual": 74.24320340156555,
+        "model_r_grid_gurobi_dual": 159.98266768455505
+    },
+    "ins-35": {
+        "model_r_grid_cplex": "UNKNOWN",
+        "model_r_grid_gurobi": "UNKNOWN",
+        "model_r_grid_cplex_symmetry": "UNKNOWN",
+        "model_r_grid_gurobi_symmetry": "UNKNOWN",
+        "model_r_grid_cplex_dual": "UNKNOWN",
+        "model_r_grid_gurobi_dual": "UNKNOWN"
+    },
+    "ins-36": {
+        "model_r_grid_cplex": "UNKNOWN",
+        "model_r_grid_gurobi": "UNKNOWN",
+        "model_r_grid_cplex_symmetry": "UNKNOWN",
+        "model_r_grid_gurobi_symmetry": "UNKNOWN",
+        "model_r_grid_cplex_dual": "UNKNOWN",
+        "model_r_grid_gurobi_dual": "UNKNOWN"
+    },
+    "ins-37": {
+        "model_r_grid_cplex": "UNKNOWN",
+        "model_r_grid_gurobi": "UNKNOWN",
+        "model_r_grid_cplex_symmetry": "UNKNOWN",
+        "model_r_grid_gurobi_symmetry": "UNKNOWN",
+        "model_r_grid_cplex_dual": "UNKNOWN",
+        "model_r_grid_gurobi_dual": "UNKNOWN"
+    },
+    "ins-38": {
+        "model_r_grid_cplex": "UNKNOWN",
+        "model_r_grid_gurobi": "UNKNOWN",
+        "model_r_grid_cplex_symmetry": "UNKNOWN",
+        "model_r_grid_gurobi_symmetry": "UNKNOWN",
+        "model_r_grid_cplex_dual": "UNKNOWN",
+        "model_r_grid_gurobi_dual": "UNKNOWN"
+    },
+    "ins-39": {
+        "model_r_grid_cplex": "UNKNOWN",
+        "model_r_grid_gurobi": "UNKNOWN",
+        "model_r_grid_cplex_symmetry": "UNKNOWN",
+        "model_r_grid_gurobi_symmetry": "UNKNOWN",
+        "model_r_grid_cplex_dual": "UNKNOWN",
+        "model_r_grid_gurobi_dual": "UNKNOWN"
+    },
+    "ins-40": {
+        "model_r_grid_cplex": "UNKNOWN",
+        "model_r_grid_gurobi": "UNKNOWN",
+        "model_r_grid_cplex_symmetry": "UNKNOWN",
+        "model_r_grid_gurobi_symmetry": "UNKNOWN",
+        "model_r_grid_cplex_dual": "UNKNOWN",
+        "model_r_grid_gurobi_dual": "UNKNOWN"
+    }
+}

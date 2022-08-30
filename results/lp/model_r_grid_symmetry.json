@@ -132,8 +132,8 @@
         "model_r_grid_gurobi_symmetry": "UNKNOWN"
     },
     "ins-34": {
-        "model_r_grid_cplex_dual": 73.27615213394165,
-        "model_r_grid_gurobi_dual": 117.58914303779602
+        "model_r_grid_cplex_symmetry": 73.27615213394165,
+        "model_r_grid_gurobi_symmetry": 117.58914303779602
     },
     "ins-35": {
         "model_r_grid_cplex_symmetry": "UNKNOWN",
