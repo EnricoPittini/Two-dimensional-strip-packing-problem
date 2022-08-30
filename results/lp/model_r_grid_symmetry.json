@@ -1,0 +1,162 @@
+{
+    "ins-1": {
+        "model_r_grid_cplex_symmetry": 0.10207676887512207,
+        "model_r_grid_gurobi_symmetry": 0.08799934387207031
+    },
+    "ins-2": {
+        "model_r_grid_cplex_symmetry": 0.155792236328125,
+        "model_r_grid_gurobi_symmetry": 0.15444374084472656
+    },
+    "ins-3": {
+        "model_r_grid_cplex_symmetry": 0.23900055885314941,
+        "model_r_grid_gurobi_symmetry": 0.26982545852661133
+    },
+    "ins-4": {
+        "model_r_grid_cplex_symmetry": 0.4470057487487793,
+        "model_r_grid_gurobi_symmetry": 0.5570030212402344
+    },
+    "ins-5": {
+        "model_r_grid_cplex_symmetry": 0.8288679122924805,
+        "model_r_grid_gurobi_symmetry": 0.7907230854034424
+    },
+    "ins-6": {
+        "model_r_grid_cplex_symmetry": 1.364995002746582,
+        "model_r_grid_gurobi_symmetry": 1.2329959869384766
+    },
+    "ins-7": {
+        "model_r_grid_cplex_symmetry": 1.4240341186523438,
+        "model_r_grid_gurobi_symmetry": 1.5720009803771973
+    },
+    "ins-8": {
+        "model_r_grid_cplex_symmetry": 1.9160001277923584,
+        "model_r_grid_gurobi_symmetry": 2.365983247756958
+    },
+    "ins-9": {
+        "model_r_grid_cplex_symmetry": 2.7330472469329834,
+        "model_r_grid_gurobi_symmetry": 2.6500308513641357
+    },
+    "ins-10": {
+        "model_r_grid_cplex_symmetry": 5.192028999328613,
+        "model_r_grid_gurobi_symmetry": 4.507000207901001
+    },
+    "ins-11": {
+        "model_r_grid_cplex_symmetry": 10.898000001907349,
+        "model_r_grid_gurobi_symmetry": 11.870231628417969
+    },
+    "ins-12": {
+        "model_r_grid_cplex_symmetry": 8.623998403549194,
+        "model_r_grid_gurobi_symmetry": 8.646028757095337
+    },
+    "ins-13": {
+        "model_r_grid_cplex_symmetry": 12.438998699188232,
+        "model_r_grid_gurobi_symmetry": 13.010029554367065
+    },
+    "ins-14": {
+        "model_r_grid_cplex_symmetry": 17.05200219154358,
+        "model_r_grid_gurobi_symmetry": 23.718003034591675
+    },
+    "ins-15": {
+        "model_r_grid_cplex_symmetry": 22.849000215530396,
+        "model_r_grid_gurobi_symmetry": 19.876813888549805
+    },
+    "ins-16": {
+        "model_r_grid_cplex_symmetry": 38.92703652381897,
+        "model_r_grid_gurobi_symmetry": 41.70303511619568
+    },
+    "ins-17": {
+        "model_r_grid_cplex_symmetry": 31.352028846740723,
+        "model_r_grid_gurobi_symmetry": 44.18283176422119
+    },
+    "ins-18": {
+        "model_r_grid_cplex_symmetry": 46.155070066452026,
+        "model_r_grid_gurobi_symmetry": 53.66243290901184
+    },
+    "ins-19": {
+        "model_r_grid_cplex_symmetry": 73.99852514266968,
+        "model_r_grid_gurobi_symmetry": 93.09296679496765
+    },
+    "ins-20": {
+        "model_r_grid_cplex_symmetry": 77.4390025138855,
+        "model_r_grid_gurobi_symmetry": 110.15059638023376
+    },
+    "ins-21": {
+        "model_r_grid_cplex_symmetry": 96.94953107833862,
+        "model_r_grid_gurobi_symmetry": 138.05116176605225
+    },
+    "ins-22": {
+        "model_r_grid_cplex_symmetry": 120.92035746574402,
+        "model_r_grid_gurobi_symmetry": 172.86359524726868
+    },
+    "ins-23": {
+        "model_r_grid_cplex_symmetry": 98.11759638786316,
+        "model_r_grid_gurobi_symmetry": 108.86644577980042
+    },
+    "ins-24": {
+        "model_r_grid_cplex_symmetry": 120.83902931213379,
+        "model_r_grid_gurobi_symmetry": 142.30446696281433
+    },
+    "ins-25": {
+        "model_r_grid_cplex_symmetry": 253.96371817588806,
+        "model_r_grid_gurobi_symmetry": "UNKNOWN"
+    },
+    "ins-26": {
+        "model_r_grid_cplex_symmetry": 206.51149368286133,
+        "model_r_grid_gurobi_symmetry": "UNKNOWN"
+    },
+    "ins-27": {
+        "model_r_grid_cplex_symmetry": 257.4709825515747,
+        "model_r_grid_gurobi_symmetry": 287.26055455207825
+    },
+    "ins-28": {
+        "model_r_grid_cplex_symmetry": "UNKNOWN",
+        "model_r_grid_gurobi_symmetry": "UNKNOWN"
+    },
+    "ins-29": {
+        "model_r_grid_cplex_symmetry": "UNKNOWN",
+        "model_r_grid_gurobi_symmetry": "UNKNOWN"
+    },
+    "ins-30": {
+        "model_r_grid_cplex_symmetry": "UNKNOWN",
+        "model_r_grid_gurobi_symmetry": "UNKNOWN"
+    },
+    "ins-31": {
+        "model_r_grid_cplex_symmetry": "UNKNOWN",
+        "model_r_grid_gurobi_symmetry": "UNKNOWN"
+    },
+    "ins-32": {
+        "model_r_grid_cplex_symmetry": "UNKNOWN",
+        "model_r_grid_gurobi_symmetry": "UNKNOWN"
+    },
+    "ins-33": {
+        "model_r_grid_cplex_symmetry": "UNKNOWN",
+        "model_r_grid_gurobi_symmetry": "UNKNOWN"
+    },
+    "ins-34": {
+        "model_r_grid_cplex_dual": 73.27615213394165,
+        "model_r_grid_gurobi_dual": 117.58914303779602
+    },
+    "ins-35": {
+        "model_r_grid_cplex_symmetry": "UNKNOWN",
+        "model_r_grid_gurobi_symmetry": "UNKNOWN"
+    },
+    "ins-36": {
+        "model_r_grid_cplex_symmetry": "UNKNOWN",
+        "model_r_grid_gurobi_symmetry": "UNKNOWN"
+    },
+    "ins-37": {
+        "model_r_grid_cplex_symmetry": "UNKNOWN",
+        "model_r_grid_gurobi_symmetry": "UNKNOWN"
+    },
+    "ins-38": {
+        "model_r_grid_cplex_symmetry": "UNKNOWN",
+        "model_r_grid_gurobi_symmetry": "UNKNOWN"
+    },
+    "ins-39": {
+        "model_r_grid_cplex_symmetry": "UNKNOWN",
+        "model_r_grid_gurobi_symmetry": "UNKNOWN"
+    },
+    "ins-40": {
+        "model_r_grid_cplex_symmetry": "UNKNOWN",
+        "model_r_grid_gurobi_symmetry": "UNKNOWN"
+    }
+}

@@ -183,8 +183,9 @@ def _set_model_main_params(w, n, dims, ampl, model):
     """
     ampl.param['n'] = n
     ampl.param['w'] = w
-    ampl.param['dimsX'] = [d[0] for d in dims]
-    ampl.param['dimsY'] = [d[1] for d in dims]
+    if 'grid' not in model:
+        ampl.param['dimsX'] = [d[0] for d in dims]
+        ampl.param['dimsY'] = [d[1] for d in dims]
     if model in ['model_2']:
         ampl.param['maxAreaIndex'] = int(np.argmax([d[0]*d[1] for d in dims]) + 1)
     if model in ['model_1', 'model_2']:

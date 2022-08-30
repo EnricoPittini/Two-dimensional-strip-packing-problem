@@ -1,0 +1,322 @@
+{
+    "ins-1": {
+        "model_1_cplex": 0.04684329032897949,
+        "model_1_gurobi": 0.04684782028198242,
+        "model_1_cplex_symmetry": 0.0781259536743164,
+        "model_1_gurobi_symmetry": 0.07809829711914062,
+        "model_1_cplex_dual": 0.07617354393005371,
+        "model_1_gurobi_dual": 0.06250715255737305
+    },
+    "ins-2": {
+        "model_1_cplex": 0.0737001895904541,
+        "model_1_gurobi": 0.056999921798706055,
+        "model_1_cplex_symmetry": 0.10937690734863281,
+        "model_1_gurobi_symmetry": 0.07933568954467773,
+        "model_1_cplex_dual": 0.10640740394592285,
+        "model_1_gurobi_dual": 0.07400083541870117
+    },
+    "ins-3": {
+        "model_1_cplex": 0.0538945198059082,
+        "model_1_gurobi": 0.05793452262878418,
+        "model_1_cplex_symmetry": 0.10938000679016113,
+        "model_1_gurobi_symmetry": 0.09430980682373047,
+        "model_1_cplex_dual": 0.07812666893005371,
+        "model_1_gurobi_dual": 0.06252741813659668
+    },
+    "ins-4": {
+        "model_1_cplex": 0.14098644256591797,
+        "model_1_gurobi": 0.06723380088806152,
+        "model_1_cplex_symmetry": 0.12498760223388672,
+        "model_1_gurobi_symmetry": 0.08500146865844727,
+        "model_1_cplex_dual": 0.109344482421875,
+        "model_1_gurobi_dual": 0.0625302791595459
+    },
+    "ins-5": {
+        "model_1_cplex": 0.07812666893005371,
+        "model_1_gurobi": 0.08004069328308105,
+        "model_1_cplex_symmetry": 0.15857172012329102,
+        "model_1_gurobi_symmetry": 0.10578346252441406,
+        "model_1_cplex_dual": 0.0993490219116211,
+        "model_1_gurobi_dual": 0.04687619209289551
+    },
+    "ins-6": {
+        "model_1_cplex": 0.15009236335754395,
+        "model_1_gurobi": 0.07813382148742676,
+        "model_1_cplex_symmetry": 0.17040681838989258,
+        "model_1_gurobi_symmetry": 0.11806488037109375,
+        "model_1_cplex_dual": 0.19351649284362793,
+        "model_1_gurobi_dual": 0.0781259536743164
+    },
+    "ins-7": {
+        "model_1_cplex": 0.10228562355041504,
+        "model_1_gurobi": 0.06929326057434082,
+        "model_1_cplex_symmetry": 0.13880419731140137,
+        "model_1_gurobi_symmetry": 0.09557771682739258,
+        "model_1_cplex_dual": 0.10937070846557617,
+        "model_1_gurobi_dual": 0.1112668514251709
+    },
+    "ins-8": {
+        "model_1_cplex": 0.12900853157043457,
+        "model_1_gurobi": 0.06909346580505371,
+        "model_1_cplex_symmetry": 0.3437209129333496,
+        "model_1_gurobi_symmetry": 0.09378409385681152,
+        "model_1_cplex_dual": 0.1562502384185791,
+        "model_1_gurobi_dual": 0.09170794486999512
+    },
+    "ins-9": {
+        "model_1_cplex": 0.1999680995941162,
+        "model_1_gurobi": 0.07457256317138672,
+        "model_1_cplex_symmetry": 0.20316076278686523,
+        "model_1_gurobi_symmetry": 0.12275528907775879,
+        "model_1_cplex_dual": 0.17891502380371094,
+        "model_1_gurobi_dual": 0.062499284744262695
+    },
+    "ins-10": {
+        "model_1_cplex": 0.2973322868347168,
+        "model_1_gurobi": 0.28120923042297363,
+        "model_1_cplex_symmetry": 0.4803905487060547,
+        "model_1_gurobi_symmetry": 0.4872584342956543,
+        "model_1_cplex_dual": 0.3415415287017822,
+        "model_1_gurobi_dual": 0.1073298454284668
+    },
+    "ins-11": {
+        "model_1_cplex": 8.627332925796509,
+        "model_1_gurobi": 1.5937514305114746,
+        "model_1_cplex_symmetry": 13.462385177612305,
+        "model_1_gurobi_symmetry": 2.623558521270752,
+        "model_1_cplex_dual": 9.562217712402344,
+        "model_1_gurobi_dual": 0.08975458145141602
+    },
+    "ins-12": {
+        "model_1_cplex": 0.22179365158081055,
+        "model_1_gurobi": 0.27704763412475586,
+        "model_1_cplex_symmetry": 0.519582986831665,
+        "model_1_gurobi_symmetry": 0.43567395210266113,
+        "model_1_cplex_dual": 0.24999308586120605,
+        "model_1_gurobi_dual": 0.09664630889892578
+    },
+    "ins-13": {
+        "model_1_cplex": 8.096116781234741,
+        "model_1_gurobi": 0.5624949932098389,
+        "model_1_cplex_symmetry": 11.17844820022583,
+        "model_1_gurobi_symmetry": 0.8826403617858887,
+        "model_1_cplex_dual": 7.868060111999512,
+        "model_1_gurobi_dual": 0.43495726585388184
+    },
+    "ins-14": {
+        "model_1_cplex": 28.30878257751465,
+        "model_1_gurobi": 0.4531238079071045,
+        "model_1_cplex_symmetry": 37.51808047294617,
+        "model_1_gurobi_symmetry": 0.7632701396942139,
+        "model_1_cplex_dual": 27.083937644958496,
+        "model_1_gurobi_dual": 2.885307788848877
+    },
+    "ins-15": {
+        "model_1_cplex": 1.0369031429290771,
+        "model_1_gurobi": 0.7000494003295898,
+        "model_1_cplex_symmetry": 1.5684232711791992,
+        "model_1_gurobi_symmetry": 1.0612080097198486,
+        "model_1_cplex_dual": 1.0114083290100098,
+        "model_1_gurobi_dual": 0.6189849376678467
+    },
+    "ins-16": {
+        "model_1_cplex": 8.123512983322144,
+        "model_1_gurobi": 0.5312507152557373,
+        "model_1_cplex_symmetry": 10.8389151096344,
+        "model_1_gurobi_symmetry": 0.808182954788208,
+        "model_1_cplex_dual": 7.756569862365723,
+        "model_1_gurobi_dual": 169.82850813865662
+    },
+    "ins-17": {
+        "model_1_cplex": 7.379695415496826,
+        "model_1_gurobi": 3.281250238418579,
+        "model_1_cplex_symmetry": 10.012351512908936,
+        "model_1_gurobi_symmetry": 4.721608400344849,
+        "model_1_cplex_dual": 7.180262565612793,
+        "model_1_gurobi_dual": 1.554893970489502
+    },
+    "ins-18": {
+        "model_1_cplex": 2.712822198867798,
+        "model_1_gurobi": 1.4843521118164062,
+        "model_1_cplex_symmetry": 3.6373465061187744,
+        "model_1_gurobi_symmetry": 2.168881416320801,
+        "model_1_cplex_dual": 2.542241096496582,
+        "model_1_gurobi_dual": 128.62176632881165
+    },
+    "ins-19": {
+        "model_1_cplex": "NaN",
+        "model_1_gurobi": "NaN",
+        "model_1_cplex_symmetry": "NaN",
+        "model_1_gurobi_symmetry": "NaN",
+        "model_1_cplex_dual": "NaN",
+        "model_1_gurobi_dual": 100.13550448417664
+    },
+    "ins-20": {
+        "model_1_cplex": "NaN",
+        "model_1_gurobi": 21.169323205947876,
+        "model_1_cplex_symmetry": 267.629341840744,
+        "model_1_gurobi_symmetry": 21.619906902313232,
+        "model_1_cplex_dual": 265.4278483390808,
+        "model_1_gurobi_dual": "NaN"
+    },
+    "ins-21": {
+        "model_1_cplex": 26.121528387069702,
+        "model_1_gurobi": 28.694162368774414,
+        "model_1_cplex_symmetry": 25.22594666481018,
+        "model_1_gurobi_symmetry": 29.134039640426636,
+        "model_1_cplex_dual": 25.273946523666382,
+        "model_1_gurobi_dual": "NaN"
+    },
+    "ins-22": {
+        "model_1_cplex": "NaN",
+        "model_1_gurobi": 27.78334140777588,
+        "model_1_cplex_symmetry": "NaN",
+        "model_1_gurobi_symmetry": 28.476694345474243,
+        "model_1_cplex_dual": "NaN",
+        "model_1_gurobi_dual": "NaN"
+    },
+    "ins-23": {
+        "model_1_cplex": 5.88256573677063,
+        "model_1_gurobi": 4.2968738079071045,
+        "model_1_cplex_symmetry": 5.838732957839966,
+        "model_1_gurobi_symmetry": 5.038528919219971,
+        "model_1_cplex_dual": 5.788650751113892,
+        "model_1_gurobi_dual": 42.41165852546692
+    },
+    "ins-24": {
+        "model_1_cplex": 16.048864603042603,
+        "model_1_gurobi": 2.265619993209839,
+        "model_1_cplex_symmetry": 16.269471645355225,
+        "model_1_gurobi_symmetry": 2.4223814010620117,
+        "model_1_cplex_dual": 15.72323489189148,
+        "model_1_gurobi_dual": 3.4536454677581787
+    },
+    "ins-25": {
+        "model_1_cplex": "NaN",
+        "model_1_gurobi": "NaN",
+        "model_1_cplex_symmetry": "NaN",
+        "model_1_gurobi_symmetry": "NaN",
+        "model_1_cplex_dual": "NaN",
+        "model_1_gurobi_dual": "NaN"
+    },
+    "ins-26": {
+        "model_1_cplex": 105.58359694480896,
+        "model_1_gurobi": 54.00400519371033,
+        "model_1_cplex_symmetry": 106.06979894638062,
+        "model_1_gurobi_symmetry": 56.53844404220581,
+        "model_1_cplex_dual": 102.00295042991638,
+        "model_1_gurobi_dual": 83.76685237884521
+    },
+    "ins-27": {
+        "model_1_cplex": 35.0775465965271,
+        "model_1_gurobi": 2.2968735694885254,
+        "model_1_cplex_symmetry": 35.15571975708008,
+        "model_1_gurobi_symmetry": 2.573730707168579,
+        "model_1_cplex_dual": 33.76793885231018,
+        "model_1_gurobi_dual": 2.93843674659729
+    },
+    "ins-28": {
+        "model_1_cplex": 50.917104721069336,
+        "model_1_gurobi": 2.8906219005584717,
+        "model_1_cplex_symmetry": 52.92699933052063,
+        "model_1_gurobi_symmetry": 3.277470111846924,
+        "model_1_cplex_dual": 49.3816876411438,
+        "model_1_gurobi_dual": 4.703020334243774
+    },
+    "ins-29": {
+        "model_1_cplex": 101.15579080581665,
+        "model_1_gurobi": 3.508387327194214,
+        "model_1_cplex_symmetry": 103.91281867027283,
+        "model_1_gurobi_symmetry": 4.047084331512451,
+        "model_1_cplex_dual": 98.80299806594849,
+        "model_1_gurobi_dual": 2.1301801204681396
+    },
+    "ins-30": {
+        "model_1_cplex": "NaN",
+        "model_1_gurobi": "NaN",
+        "model_1_cplex_symmetry": "NaN",
+        "model_1_gurobi_symmetry": "NaN",
+        "model_1_cplex_dual": "NaN",
+        "model_1_gurobi_dual": 185.05286598205566
+    },
+    "ins-31": {
+        "model_1_cplex": 3.069575548171997,
+        "model_1_gurobi": 5.718749761581421,
+        "model_1_cplex_symmetry": 3.1331255435943604,
+        "model_1_gurobi_symmetry": 5.9785261154174805,
+        "model_1_cplex_dual": 3.052969217300415,
+        "model_1_gurobi_dual": 2.187612533569336
+    },
+    "ins-32": {
+        "model_1_cplex": "NaN",
+        "model_1_gurobi": "NaN",
+        "model_1_cplex_symmetry": "NaN",
+        "model_1_gurobi_symmetry": "NaN",
+        "model_1_cplex_dual": "NaN",
+        "model_1_gurobi_dual": "NaN"
+    },
+    "ins-33": {
+        "model_1_cplex": 4.8516669273376465,
+        "model_1_gurobi": 0.18750452995300293,
+        "model_1_cplex_symmetry": 5.136878967285156,
+        "model_1_gurobi_symmetry": 0.23232483863830566,
+        "model_1_cplex_dual": 4.775585412979126,
+        "model_1_gurobi_dual": 1.9747788906097412
+    },
+    "ins-34": {
+        "model_1_cplex": "NaN",
+        "model_1_gurobi": 43.40472722053528,
+        "model_1_cplex_symmetry": "NaN",
+        "model_1_gurobi_symmetry": "NaN",
+        "model_1_cplex_dual": "NaN",
+        "model_1_gurobi_dual": "NaN"
+    },
+    "ins-35": {
+        "model_1_cplex": "NaN",
+        "model_1_gurobi": 274.18779015541077,
+        "model_1_cplex_symmetry": "NaN",
+        "model_1_gurobi_symmetry": 214.10384726524353,
+        "model_1_cplex_dual": "NaN",
+        "model_1_gurobi_dual": 267.75371503829956
+    },
+    "ins-36": {
+        "model_1_cplex": "NaN",
+        "model_1_gurobi": 54.30948615074158,
+        "model_1_cplex_symmetry": "NaN",
+        "model_1_gurobi_symmetry": "NaN",
+        "model_1_cplex_dual": "NaN",
+        "model_1_gurobi_dual": 18.3288676738739
+    },
+    "ins-37": {
+        "model_1_cplex": "NaN",
+        "model_1_gurobi": "NaN",
+        "model_1_cplex_symmetry": "NaN",
+        "model_1_gurobi_symmetry": "NaN",
+        "model_1_cplex_dual": "NaN",
+        "model_1_gurobi_dual": "NaN"
+    },
+    "ins-38": {
+        "model_1_cplex": "NaN",
+        "model_1_gurobi": "NaN",
+        "model_1_cplex_symmetry": "NaN",
+        "model_1_gurobi_symmetry": "NaN",
+        "model_1_cplex_dual": "NaN",
+        "model_1_gurobi_dual": "NaN"
+    },
+    "ins-39": {
+        "model_1_cplex": "NaN",
+        "model_1_gurobi": "NaN",
+        "model_1_cplex_symmetry": "NaN",
+        "model_1_gurobi_symmetry": "NaN",
+        "model_1_cplex_dual": "NaN",
+        "model_1_gurobi_dual": "NaN"
+    },
+    "ins-40": {
+        "model_1_cplex": "NaN",
+        "model_1_gurobi": "NaN",
+        "model_1_cplex_symmetry": "NaN",
+        "model_1_gurobi_symmetry": "NaN",
+        "model_1_cplex_dual": "NaN",
+        "model_1_gurobi_dual": "NaN"
+    }
+}

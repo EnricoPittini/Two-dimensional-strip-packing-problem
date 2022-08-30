@@ -94,6 +94,6 @@ array[1..n] of var bool: sorted_rotations = reverse(sort_by(rotations, maxDims))
 array[1..3*n] of var int: variables = [if (i mod 3 = 0) then sorted_coordsY[i div 3] elseif (i mod 3 = 2) then 
   sorted_coordsX[(i + 1) div 3] else sorted_rotations[(i+2) div 3] endif | i in 1..3*n];
   
-ann: search_ann_dec_width = int_search(variables, input_order, indomain_min);
+ann: search_ann_dec_maxDims = int_search(variables, input_order, indomain_min);
 
-solve :: seq_search([search_ann_l_from_min, search_ann_dec_width]) minimize l;
+solve :: seq_search([search_ann_l_from_min, search_ann_dec_maxDims]) minimize l;

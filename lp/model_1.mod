@@ -60,15 +60,3 @@ subject to oneOnlyY {i in N, j in 1..i-1}:
 # At least one of the above constraint must be active (not relaxed) for all the coordinates i,j.
 subject to overlapActivation {i in N, j in 1..i-1}:
 	b[i,j,1] + b[i,j,2] + b[j,i,1] + b[j,i,2] >= 1;
-
-# First lower bound guaranteeing that all the circuits fit in the plate.
-#subject to lowerBoundl1:
-#	l * w >= sum {i in N} dimsX[i]*dimsY[i];
-
-# Second lower bound guaranteeing that the highest circuit fits in the plate.
-#subject to lowerBoundl2:
-#	l >= max {i in N} dimsY[i];
-
-# Upper bound for the length of the plate.
-#subject to upperBoundl:
-#	l <= lMax;

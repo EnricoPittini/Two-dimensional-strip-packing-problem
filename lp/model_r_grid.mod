@@ -10,10 +10,6 @@ set N := 1..n;
 set doubleN := 1..2*n;
 /** The width of the plate. */
 param w integer > 0;
-/** Widths of the circuits. */
-param dimsX {N} integer >0 <=w;
-/** Heights of the circuits. */
-param dimsY {N} integer >0;
 /** The current minimum length of the plate. */
 param l integer >=0;
 /** The total number of available positions. */
@@ -24,7 +20,7 @@ param nCells integer > 0;
 param minV {doubleN} integer >=0 <=nPos;
 /** Maximum position id for each circuit. */
 param maxV {doubleN} integer >=0 <=nPos;
-/** Array of valid positions. */
+/** Correspondence matrix between the valid positions and the cells occupied in the plate. */
 param C {1..nPos, 1..nCells} integer >=0 <=1;
 
 ####### VARIABLES

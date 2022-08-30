@@ -1,0 +1,322 @@
+{
+    "ins-1": {
+        "model_grid_cplex": 0.2948122024536133,
+        "model_grid_gurobi": 0.1142120361328125,
+        "model_grid_cplex_symmetry": 0.1562507152557373,
+        "model_grid_gurobi_symmetry": 0.18747782707214355,
+        "model_grid_cplex_dual": 0.0937492847442627,
+        "model_grid_gurobi_dual": 0.09374213218688965
+    },
+    "ins-2": {
+        "model_grid_cplex": 0.15495824813842773,
+        "model_grid_gurobi": 0.1820065975189209,
+        "model_grid_cplex_symmetry": 0.0956275463104248,
+        "model_grid_gurobi_symmetry": 0.1147150993347168,
+        "model_grid_cplex_dual": 0.1580982208251953,
+        "model_grid_gurobi_dual": 0.15510964393615723
+    },
+    "ins-3": {
+        "model_grid_cplex": 0.19746661186218262,
+        "model_grid_gurobi": 0.1845693588256836,
+        "model_grid_cplex_symmetry": 0.18576264381408691,
+        "model_grid_gurobi_symmetry": 0.1718769073486328,
+        "model_grid_cplex_dual": 0.18149161338806152,
+        "model_grid_gurobi_dual": 0.1718757152557373
+    },
+    "ins-4": {
+        "model_grid_cplex": 0.31663084030151367,
+        "model_grid_gurobi": 0.4050018787384033,
+        "model_grid_cplex_symmetry": 0.24781060218811035,
+        "model_grid_gurobi_symmetry": 0.23437285423278809,
+        "model_grid_cplex_dual": 0.2480015754699707,
+        "model_grid_gurobi_dual": 0.26348233222961426
+    },
+    "ins-5": {
+        "model_grid_cplex": 0.5186030864715576,
+        "model_grid_gurobi": 0.6802442073822021,
+        "model_grid_cplex_symmetry": 0.3593418598175049,
+        "model_grid_gurobi_symmetry": 0.39783239364624023,
+        "model_grid_cplex_dual": 0.4932096004486084,
+        "model_grid_gurobi_dual": 0.35573911666870117
+    },
+    "ins-6": {
+        "model_grid_cplex": 0.9800012111663818,
+        "model_grid_gurobi": 0.9950120449066162,
+        "model_grid_cplex_symmetry": 0.5576572418212891,
+        "model_grid_gurobi_symmetry": 0.6538829803466797,
+        "model_grid_cplex_dual": 0.591839075088501,
+        "model_grid_gurobi_dual": 0.6013081073760986
+    },
+    "ins-7": {
+        "model_grid_cplex": 0.9017999172210693,
+        "model_grid_gurobi": 1.0213582515716553,
+        "model_grid_cplex_symmetry": 0.7774825096130371,
+        "model_grid_gurobi_symmetry": 0.8332827091217041,
+        "model_grid_cplex_dual": 0.8687288761138916,
+        "model_grid_gurobi_dual": 0.7526581287384033
+    },
+    "ins-8": {
+        "model_grid_cplex": 1.1635847091674805,
+        "model_grid_gurobi": 1.1442656517028809,
+        "model_grid_cplex_symmetry": 1.0113894939422607,
+        "model_grid_gurobi_symmetry": 1.045807123184204,
+        "model_grid_cplex_dual": 1.0114667415618896,
+        "model_grid_gurobi_dual": 1.164595603942871
+    },
+    "ins-9": {
+        "model_grid_cplex": 1.9816765785217285,
+        "model_grid_gurobi": 2.199908494949341,
+        "model_grid_cplex_symmetry": 1.3934998512268066,
+        "model_grid_gurobi_symmetry": 1.3059654235839844,
+        "model_grid_cplex_dual": 1.3995280265808105,
+        "model_grid_gurobi_dual": 1.3877990245819092
+    },
+    "ins-10": {
+        "model_grid_cplex": 2.984713077545166,
+        "model_grid_gurobi": 2.7889699935913086,
+        "model_grid_cplex_symmetry": 2.370764970779419,
+        "model_grid_gurobi_symmetry": 2.241316080093384,
+        "model_grid_cplex_dual": 2.299755811691284,
+        "model_grid_gurobi_dual": 2.3674302101135254
+    },
+    "ins-11": {
+        "model_grid_cplex": 7.1271984577178955,
+        "model_grid_gurobi": 6.401521444320679,
+        "model_grid_cplex_symmetry": 4.482431411743164,
+        "model_grid_gurobi_symmetry": 4.29477334022522,
+        "model_grid_cplex_dual": 4.826664686203003,
+        "model_grid_gurobi_dual": 4.630639553070068
+    },
+    "ins-12": {
+        "model_grid_cplex": 5.556770086288452,
+        "model_grid_gurobi": 5.054211616516113,
+        "model_grid_cplex_symmetry": 3.8967814445495605,
+        "model_grid_gurobi_symmetry": 3.7053515911102295,
+        "model_grid_cplex_dual": 4.45132303237915,
+        "model_grid_gurobi_dual": 4.2235307693481445
+    },
+    "ins-13": {
+        "model_grid_cplex": 7.168924331665039,
+        "model_grid_gurobi": 7.470567464828491,
+        "model_grid_cplex_symmetry": 4.80134129524231,
+        "model_grid_gurobi_symmetry": 4.587818384170532,
+        "model_grid_cplex_dual": 6.0486900806427,
+        "model_grid_gurobi_dual": 7.284128189086914
+    },
+    "ins-14": {
+        "model_grid_cplex": 8.23702096939087,
+        "model_grid_gurobi": 7.533203601837158,
+        "model_grid_cplex_symmetry": 6.768662452697754,
+        "model_grid_gurobi_symmetry": 6.383581876754761,
+        "model_grid_cplex_dual": 9.273574590682983,
+        "model_grid_gurobi_dual": 7.450451850891113
+    },
+    "ins-15": {
+        "model_grid_cplex": 9.6168372631073,
+        "model_grid_gurobi": 9.665809154510498,
+        "model_grid_cplex_symmetry": 8.560839176177979,
+        "model_grid_gurobi_symmetry": 9.119208335876465,
+        "model_grid_cplex_dual": 11.414829015731812,
+        "model_grid_gurobi_dual": 9.942256450653076
+    },
+    "ins-16": {
+        "model_grid_cplex": 18.863142728805542,
+        "model_grid_gurobi": 15.697762489318848,
+        "model_grid_cplex_symmetry": 16.958717823028564,
+        "model_grid_gurobi_symmetry": 13.809429407119751,
+        "model_grid_cplex_dual": 20.638853549957275,
+        "model_grid_gurobi_dual": 16.37565779685974
+    },
+    "ins-17": {
+        "model_grid_cplex": 17.26312255859375,
+        "model_grid_gurobi": 16.935041427612305,
+        "model_grid_cplex_symmetry": 14.851147413253784,
+        "model_grid_gurobi_symmetry": 14.423142433166504,
+        "model_grid_cplex_dual": 15.941118955612183,
+        "model_grid_gurobi_dual": 15.037335872650146
+    },
+    "ins-18": {
+        "model_grid_cplex": 28.60599374771118,
+        "model_grid_gurobi": 20.950018644332886,
+        "model_grid_cplex_symmetry": 18.131757020950317,
+        "model_grid_gurobi_symmetry": 18.131868600845337,
+        "model_grid_cplex_dual": 18.93177366256714,
+        "model_grid_gurobi_dual": 18.329323768615723
+    },
+    "ins-19": {
+        "model_grid_cplex": 38.4011025428772,
+        "model_grid_gurobi": 36.31315612792969,
+        "model_grid_cplex_symmetry": 30.129671573638916,
+        "model_grid_gurobi_symmetry": 27.041194677352905,
+        "model_grid_cplex_dual": 31.322731018066406,
+        "model_grid_gurobi_dual": 27.708810329437256
+    },
+    "ins-20": {
+        "model_grid_cplex": 38.0129280090332,
+        "model_grid_gurobi": 34.67495107650757,
+        "model_grid_cplex_symmetry": 32.24025559425354,
+        "model_grid_gurobi_symmetry": 30.401059865951538,
+        "model_grid_cplex_dual": 34.21120762825012,
+        "model_grid_gurobi_dual": 32.635688066482544
+    },
+    "ins-21": {
+        "model_grid_cplex": 49.011269330978394,
+        "model_grid_gurobi": 46.655847787857056,
+        "model_grid_cplex_symmetry": 42.76719284057617,
+        "model_grid_gurobi_symmetry": 41.1252064704895,
+        "model_grid_cplex_dual": 46.29098176956177,
+        "model_grid_gurobi_dual": 43.089679479599
+    },
+    "ins-22": {
+        "model_grid_cplex": 62.836594104766846,
+        "model_grid_gurobi": 86.44207239151001,
+        "model_grid_cplex_symmetry": 54.58362436294556,
+        "model_grid_gurobi_symmetry": 80.41570711135864,
+        "model_grid_cplex_dual": 57.182697772979736,
+        "model_grid_gurobi_dual": 67.19384360313416
+    },
+    "ins-23": {
+        "model_grid_cplex": 50.039687395095825,
+        "model_grid_gurobi": 50.440852642059326,
+        "model_grid_cplex_symmetry": 47.021923542022705,
+        "model_grid_gurobi_symmetry": 48.01885771751404,
+        "model_grid_cplex_dual": 45.414586544036865,
+        "model_grid_gurobi_dual": 49.31803250312805
+    },
+    "ins-24": {
+        "model_grid_cplex": 57.078306436538696,
+        "model_grid_gurobi": 56.041993856430054,
+        "model_grid_cplex_symmetry": 50.430275201797485,
+        "model_grid_gurobi_symmetry": 47.60551595687866,
+        "model_grid_cplex_dual": 53.7667338848114,
+        "model_grid_gurobi_dual": 47.146703481674194
+    },
+    "ins-25": {
+        "model_grid_cplex": 107.50597763061523,
+        "model_grid_gurobi": 96.02406573295593,
+        "model_grid_cplex_symmetry": 94.6272029876709,
+        "model_grid_gurobi_symmetry": 84.7919511795044,
+        "model_grid_cplex_dual": 94.95487785339355,
+        "model_grid_gurobi_dual": 106.86972284317017
+    },
+    "ins-26": {
+        "model_grid_cplex": 115.4201307296753,
+        "model_grid_gurobi": 96.62778639793396,
+        "model_grid_cplex_symmetry": 85.81764006614685,
+        "model_grid_gurobi_symmetry": 81.18184399604797,
+        "model_grid_cplex_dual": 152.5162169933319,
+        "model_grid_gurobi_dual": 142.10698175430298
+    },
+    "ins-27": {
+        "model_grid_cplex": 105.76873230934143,
+        "model_grid_gurobi": 108.89914560317993,
+        "model_grid_cplex_symmetry": 87.99859833717346,
+        "model_grid_gurobi_symmetry": 81.77163600921631,
+        "model_grid_cplex_dual": 135.661363363266,
+        "model_grid_gurobi_dual": 115.44710898399353
+    },
+    "ins-28": {
+        "model_grid_cplex": 144.32980489730835,
+        "model_grid_gurobi": 151.76386332511902,
+        "model_grid_cplex_symmetry": 117.34496331214905,
+        "model_grid_gurobi_symmetry": 120.13567972183228,
+        "model_grid_cplex_dual": 179.4179494380951,
+        "model_grid_gurobi_dual": 161.55518054962158
+    },
+    "ins-29": {
+        "model_grid_cplex": 158.12591218948364,
+        "model_grid_gurobi": 191.85164785385132,
+        "model_grid_cplex_symmetry": 145.48755717277527,
+        "model_grid_gurobi_symmetry": 158.8006556034088,
+        "model_grid_cplex_dual": 184.88829135894775,
+        "model_grid_gurobi_dual": 233.43518948554993
+    },
+    "ins-30": {
+        "model_grid_cplex": 299.47290325164795,
+        "model_grid_gurobi": "UNKNOWN",
+        "model_grid_cplex_symmetry": 230.64005494117737,
+        "model_grid_gurobi_symmetry": 251.62735414505005,
+        "model_grid_cplex_dual": "UNKNOWN",
+        "model_grid_gurobi_dual": "UNKNOWN"
+    },
+    "ins-31": {
+        "model_grid_cplex": 195.10670733451843,
+        "model_grid_gurobi": 180.68224501609802,
+        "model_grid_cplex_symmetry": 135.42613172531128,
+        "model_grid_gurobi_symmetry": 140.49262642860413,
+        "model_grid_cplex_dual": 262.85606575012207,
+        "model_grid_gurobi_dual": 239.2500865459442
+    },
+    "ins-32": {
+        "model_grid_cplex": "UNKNOWN",
+        "model_grid_gurobi": "UNKNOWN",
+        "model_grid_cplex_symmetry": "UNKNOWN",
+        "model_grid_gurobi_symmetry": "UNKNOWN",
+        "model_grid_cplex_dual": "UNKNOWN",
+        "model_grid_gurobi_dual": "UNKNOWN"
+    },
+    "ins-33": {
+        "model_grid_cplex": "UNKNOWN",
+        "model_grid_gurobi": 272.5774083137512,
+        "model_grid_cplex_symmetry": 223.74451661109924,
+        "model_grid_gurobi_symmetry": 218.03683280944824,
+        "model_grid_cplex_dual": "UNKNOWN",
+        "model_grid_gurobi_dual": "UNKNOWN"
+    },
+    "ins-34": {
+        "model_grid_cplex": 46.428680658340454,
+        "model_grid_gurobi": 79.9324631690979,
+        "model_grid_cplex_symmetry": 36.43139028549194,
+        "model_grid_gurobi_symmetry": 64.2950873374939,
+        "model_grid_cplex_dual": 48.44853210449219,
+        "model_grid_gurobi_dual": 155.58533453941345
+    },
+    "ins-35": {
+        "model_grid_cplex": 51.18339776992798,
+        "model_grid_gurobi": 144.68205380439758,
+        "model_grid_cplex_symmetry": 41.694342613220215,
+        "model_grid_gurobi_symmetry": 115.4751205444336,
+        "model_grid_cplex_dual": 54.03863716125488,
+        "model_grid_gurobi_dual": 146.06205344200134
+    },
+    "ins-36": {
+        "model_grid_cplex": 46.785016775131226,
+        "model_grid_gurobi": 58.53304100036621,
+        "model_grid_cplex_symmetry": 38.48365306854248,
+        "model_grid_gurobi_symmetry": 47.42130780220032,
+        "model_grid_cplex_dual": 51.10132908821106,
+        "model_grid_gurobi_dual": 46.13671612739563
+    },
+    "ins-37": {
+        "model_grid_cplex": "UNKNOWN",
+        "model_grid_gurobi": "UNKNOWN",
+        "model_grid_cplex_symmetry": "UNKNOWN",
+        "model_grid_gurobi_symmetry": "UNKNOWN",
+        "model_grid_cplex_dual": "UNKNOWN",
+        "model_grid_gurobi_dual": "UNKNOWN"
+    },
+    "ins-38": {
+        "model_grid_cplex": "UNKNOWN",
+        "model_grid_gurobi": "UNKNOWN",
+        "model_grid_cplex_symmetry": "UNKNOWN",
+        "model_grid_gurobi_symmetry": "UNKNOWN",
+        "model_grid_cplex_dual": "UNKNOWN",
+        "model_grid_gurobi_dual": "UNKNOWN"
+    },
+    "ins-39": {
+        "model_grid_cplex": "UNKNOWN",
+        "model_grid_gurobi": "UNKNOWN",
+        "model_grid_cplex_symmetry": "UNKNOWN",
+        "model_grid_gurobi_symmetry": "UNKNOWN",
+        "model_grid_cplex_dual": "UNKNOWN",
+        "model_grid_gurobi_dual": "UNKNOWN"
+    },
+    "ins-40": {
+        "model_grid_cplex": "UNKNOWN",
+        "model_grid_gurobi": "UNKNOWN",
+        "model_grid_cplex_symmetry": "UNKNOWN",
+        "model_grid_gurobi_symmetry": "UNKNOWN",
+        "model_grid_cplex_dual": "UNKNOWN",
+        "model_grid_gurobi_dual": "UNKNOWN"
+    }
+}
