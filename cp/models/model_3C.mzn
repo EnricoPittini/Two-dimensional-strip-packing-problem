@@ -9,35 +9,46 @@ include "diffn.mzn";
 
 
 %%%%%%% PARAMETERS
-int: w;  % The width of the plate
-int: n;  % Number of the rectangles
-array[1..n, 1..2] of int: dims;  % Dims X (i.e. width) and Y (i.e. height) of the rectangles
+/** The width of the plate */
+int: w;
+/** Number of circuits */
+int: n;
+/** Matrix containing for each circuit its dimensions (width and height) */
+array[1..n, 1..2] of int: dims;
+/** Derived width of the circuits */
 array[1..n] of int: dimsX = col(dims,1);
+/** Derived height of the circuits */
 array[1..n] of int: dimsY = col(dims,2);
 
-int: A_tot = sum(i in 1..n)(dimsX[i]*dimsY[i]);  % The overall area of all the given rectangles
-int: h_max = max(dimsY);  % The maximum height of a rectangle
-int: l_min = max([h_max, A_tot div w]);  % The lower bound for the length
-int: l_max = sum(dimsY);  % The upper bound for the length
+/** The overall area of all the given circuits */
+int: A_tot = sum(i in 1..n)(dimsX[i]*dimsY[i]);
+/** The maximum height of a circuit */
+int: h_max = max(dimsY);
+/** The lower bound for the length */
+int: l_min = max([h_max, A_tot div w]);
+/** The upper bound for the length */
+int: l_max = sum(dimsY);
 
 
 %%%%%%% VARIABLES
-% The length of the plate
+/** The length of the plate */
 var l_min..l_max: l;
-
-% NEW UPPER BOUND FOR COORDSY
-array[1..n] of var 0..l_max: coordsY;  % Coords X of the left-bottom corner of the rectangles
-array[1..n] of var 0..w: coordsX;  % Coords Y of the left-bottom corner of the rectangles
+/** X coordinate of the left-bottom corner of the circuits */
+array[1..n] of var 0..w: coordsX;
+/** Y coordinate of the left-bottom corner of the circuits */
+array[1..n] of var 0..l_max: coordsY;
+% The length of the plate
 
 
 %%%%%%% CONSTRAINTS
-% The rectangles, given by their left-bottom corners `coordsX,coordsY` and sizes `dimsX,dimsY`, must be non-overlapping
+% The circuits, given by their left-bottom corners `coordsX,coordsY` and sizes `dimsX,dimsY`, must be non-overlapping
 constraint diffn(coordsX, coordsY, dimsX, dimsY);
 
-% Each rectangle must not exceed the width of the plate (IT IS AN IMPLIED CONSTRAINT)
+% Each circuit must not exceed the width of the plate
 constraint forall(i in 1..n) (coordsX[i]+dimsX[i]<=w);
-% The length of the plate is the maximum height reached (IT IS AN IMPLIED CONSTRAINT)
+% The length of the plate is the maximum height reached
 constraint l = max(i in 1..n)(coordsY[i]+dimsY[i]);
+
 
 %%%%%%% SOLVING
 solve minimize l;
