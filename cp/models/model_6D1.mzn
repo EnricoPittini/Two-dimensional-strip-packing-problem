@@ -1,7 +1,7 @@
 %---------------------------------------------------------------------------------------------------------------------------%
 %                                                      MODEL 6D1 ☑                                                         %
 %                                                                                                                           %
-% Model that uses solver Chuffed and the following search heuristics:                                                                          %
+% Model that uses solver Chuffed and the following search heuristics:                                                       %
 % - Always select the lowest possible value in the domain of the length of the plate `l`;                                   %
 % - Apply an ordered search on the interleaved `coordsX` and `coordsY` of the circuits sorted by decreasing order with      %
 %   respect to the value of their width. Always choose the lowest value of the domains first.                               %
@@ -49,10 +49,10 @@ endif;
 %%%%%%% VARIABLES
 /** The length of the plate */
 var l_min..l_max: l;
-/** X coordinate of the left-bottom corner of the circuits */
-array[1..n] of var 0..w-w_min: coordsX;
 /** Y coordinate of the left-bottom corner of the circuits */
 array[1..n] of var 0..l_max-h_min: coordsY;
+/** X coordinate of the left-bottom corner of the circuits */
+array[1..n] of var 0..w-w_min: coordsX;
 
 
 %%%%%%% CONSTRAINTS 

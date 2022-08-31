@@ -50,10 +50,10 @@ endif;
 %%%%%%% VARIABLES
 /** The length of the plate */
 var l_min..l_max: l;
-/** X coordinate of the left-bottom corner of the circuits */
-array[1..n] of var 0..w-w_min: coordsX;
 /** Y coordinate of the left-bottom corner of the circuits */
 array[1..n] of var 0..l_max-h_min: coordsY;
+/** X coordinate of the left-bottom corner of the circuits */
+array[1..n] of var 0..w-w_min: coordsX;
 
 
 %%%%%%% CONSTRAINTS 

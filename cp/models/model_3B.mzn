@@ -33,10 +33,10 @@ int: l_max = sum(dimsY);
 %%%%%%% VARIABLES
 /** The length of the plate */
 var l_min..l_max: l;
-/** X coordinate of the left-bottom corner of the circuits */
-array[1..n] of var 0..w: coordsX;
 /** Y coordinate of the left-bottom corner of the circuits */
 array[1..n] of var 0..l_max: coordsY;
+/** X coordinate of the left-bottom corner of the circuits */
+array[1..n] of var 0..w: coordsX;
 
 
 %%%%%%% CONSTRAINTS

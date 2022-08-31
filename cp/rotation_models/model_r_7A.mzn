@@ -8,22 +8,27 @@ include "diffn.mzn";
 
 
 %%%%%%% PARAMETERS
-int: w;  % The width of the plate
-int: n;  % Number of the rectangles
-array[1..n, 1..2] of int: dims;  % Dims X (i.e. width) and Y (i.e. height) of the rectangles
+/** The width of the plate */
+int: w;
+/** Number of circuits */
+int: n;
+/** Matrix containing for each circuit its dimensions (width and height) */
+array[1..n, 1..2] of int: dims;
+/** Derived width of the circuits */
 array[1..n] of int: dimsX = col(dims,1);
+/** Derived height of the circuits */
 array[1..n] of int: dimsY = col(dims,2);
 
-array [1..n] of int: areas = [dimsX[i]*dimsY[i] | i in 1..n];  % The areas of the rectangles
-int: A_tot = sum(areas);  % The overall area of all the given rectangles
+array [1..n] of int: areas = [dimsX[i]*dimsY[i] | i in 1..n];  % The areas of the circuits
+int: A_tot = sum(areas);  % The overall area of all the given circuits
 
 int: l_min = A_tot div w; % The lower bound for the length
 
 int: maxDim = max(dimsX ++ dimsY);
 int: minDim = min(dimsX ++ dimsY);
 
-int: min_rects_per_row = w div maxDim; % Minimum number of rectangles per row
-int: max_rects_per_col = ceil(n / max([1, min_rects_per_row])); % Maximum number of rectangles per column
+int: min_rects_per_row = w div maxDim; % Minimum number of circuits per row
+int: max_rects_per_col = ceil(n / max([1, min_rects_per_row])); % Maximum number of circuits per column
 % The upper bound for the length.
 int: l_max = if min_rects_per_row < 2 
   then sum([max([dimsX[i], dimsY[i]]) | i in 1..n])
@@ -34,61 +39,70 @@ endif;
 
 
 %%%%%%% VARIABLES
-% The length of the plate
+/** The length of the plate */
 var l_min..l_max: l;
-
-array[1..n] of var 0..l_max-minDim: coordsY;  % Coords X of the left-bottom corner of the rectangles
-array[1..n] of var 0..w-minDim: coordsX;  % Coords Y of the left-bottom corner of the rectangles
-
+/** Y coordinate of the left-bottom corner of the circuits */
+array[1..n] of var 0..l_max-minDim: coordsY;
+/** X coordinate of the left-bottom corner of the circuits */
+array[1..n] of var 0..w-minDim: coordsX;
+/** Array expressing whether each circuit is rotated or not */
 array[1..n] of var bool: rotations;
-
+/** Actual width of the circuits according to their rotation */
 array[1..n] of var 1..maxDim: actualDimsX;
+/** Actual height of the circuits according to their rotation */
 array[1..n] of var 1..maxDim: actualDimsY;
 
+
 %%%%%%% CONSTRAINTS 
-% The rectangles, given by their left-bottom corners `coordsX,coordsY` and sizes `dimsX,dimsY`, must be non-overlapping
+% The circuits, given by their left-bottom corners `coordsX,coordsY` and sizes `actualDimsX,actualDimsY`, must be 
+% non-overlapping
 constraint diffn(coordsX, coordsY, actualDimsX, actualDimsY);
 
-% Cumulative constraint in which:
+% Cumulative implied constraint in which:
 %    - the starting times of the tasks are coordsX
-%    - the durations of the tasks are dimsX
-%    - the resource recquirements of the tasks are dimsY
+%    - the durations of the tasks are actualDimsX
+%    - the resource recquirements of the tasks are actualDimsY
 %    - the maximum resource bound is l
 constraint cumulative(coordsX, actualDimsX, actualDimsY, l);
 
-% Each rectangle must not exceed the width of the plate (IT IS AN IMPLIED CONSTRAINT)
+% Each circuit must not exceed the width of the plate
 constraint forall(i in 1..n) (coordsX[i]+actualDimsX[i]<=w);
-% The length of the plate is the maximum height reached (IT IS AN IMPLIED CONSTRAINT)
+% The length of the plate is the maximum height reached
 constraint l = max(i in 1..n)(coordsY[i]+actualDimsY[i]);
 
+% Constraints imposing that `actualDimsX` and `actualDimsY` must have values either `dimsX` or `dimsY`
 constraint forall(i in 1..n)(actualDimsX[i] = dimsX[i] \/ actualDimsX[i] = dimsY[i]); 
 constraint forall(i in 1..n)(actualDimsY[i] = dimsX[i] \/ actualDimsY[i] = dimsY[i]);
 
+% Constraints assignin the `actualDimsX` and `actualDimsY` based on the rotation of the circuit
 constraint forall(i in 1..n)(rotations[i] = false <-> (actualDimsX[i] = dimsX[i] /\ actualDimsY[i] = dimsY[i]));
 constraint forall(i in 1..n)(rotations[i] = true -> (actualDimsX[i] = dimsY[i] /\ actualDimsY[i] = dimsX[i]));
 
 
-
 %%%%%%% SYMMETRY BREAKING
-% Symmetry breaking constraint that imposes that the area of the rectangles on the right half of the plate should be less
-% or equal than half of the total area of the rectangles.
+% Symmetry breaking constraint that imposes that the area of the circuits on the right half of the plate should be less
+% or equal than half of the total area of the circuits.
 constraint let{int: w_half = ceil(w/2)} in (sum([areas[i] | i in 1..n where coordsX[i] >= w_half]) <= A_tot / 2);
-
-% Symmetry breaking constraint that imposes that the area of the rectangles on the top half of the plate should be less
-% or equal than half of the total area of the rectangles.
+% Symmetry breaking constraint that imposes that the area of the circuits on the top half of the plate should be less
+% or equal than half of the total area of the circuits.
 constraint sum([areas[i] | i in 1..n where coordsY[i] > l div 2]) <= A_tot / 2;
 
 
-
 %%%%%%% SOLVING
+/** Search annotation imposing that, regarding variable l, the lowest possible value in the domain is chosen first */
 ann: search_ann_l_from_min = int_search([l], input_order, indomain_min, complete);
-% Variables selection heuristic: it is based on the rectangles widths; it interleaves coordX and coordY.
-% Variables order: coordX of the rectangle with max width; coordY of the rectangle with max width; coordX of the rectangle 
-% with second max width; coordY of the rectangle with second max width; ... .
+
+/** Variables of `coordsX` sorted by the width of the circuits in a decreasing order */
 array[1..n] of var int: sorted_coordsX = reverse(sort_by(coordsX, dimsX));
+/** Variables of `coordsY` sorted by the width of the circuits in a decreasing order */
 array[1..n] of var int: sorted_coordsY = reverse(sort_by(coordsY, dimsX));
+/** Array containing the coordinates of the circuits (`coordsX`, `coordsY`) sorted by their widths in a decreasing order.
+Variables order: x coordinate of the circuit with max width; y coordinate of the circuit with max width; 
+x coordinate of the circuit with second max width; y coordinate of the circuit with second max width; ... . */
 array[1..2*n] of var int: variables = [if (i mod 2 = 0) then sorted_coordsY[i div 2] else sorted_coordsX[(i+1) div 2] endif
   | i in 1..2*n];
+/** Search annotation imposing to apply an ordered search through the variables expressed in `variables` selecting the 
+minimum value of their domains first */
 ann: search_ann_dec_width = int_search(variables, input_order, indomain_min);
 
 solve :: seq_search([search_ann_l_from_min, search_ann_dec_width]) minimize l;
