@@ -1,7 +1,7 @@
 %---------------------------------------------------------------------------------------------------------------------------%
 %                                                         MODEL R 7E                                                        %
 % Model that extends `MODEL R 2B` and adds and the following search heuristic:                                              %
-% - Apply an ordered search on the interleaved `coordsX` and `coordsY` and `rotations` of the circuits sorted by decreasing %
+% - Apply an ordered search on the interleaved `rotations` and `coordsX` and `coordsY` of the circuits sorted by decreasing %
 %   order with respect to the value of their maximum dimension. Always choose the lowest value of the domains first.        %
 %---------------------------------------------------------------------------------------------------------------------------%
 
