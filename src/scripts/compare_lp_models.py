@@ -63,6 +63,8 @@ def main() -> None:
     parser.add_argument('--use-no-presolve', action='store_true', 
                     help='Avoid AMPL presolving process.')
 
+    parser.add_argument('--no-visualize', action='store_true', help='Visualize the obtained comparisons.')
+
     arguments = parser.parse_args()
     
     output_folder_path = vars(arguments)['output-folder-path']
@@ -140,6 +142,11 @@ def main() -> None:
         # Save intermediate JSON solution.
         with open(output_file, 'w') as f:
             json.dump(result_dict, f, sort_keys=False, indent=4, separators=(',', ': '))
+
+    if not arguments.no_visualize:
+        plot_comparisons_path = os.path.join(os.path.dirname(__file__), 'plot_comparisons.py')
+        command = f'python {plot_comparisons_path} "{output_file}"'
+        subprocess.run(command)
 
 if __name__ == '__main__':
     main()

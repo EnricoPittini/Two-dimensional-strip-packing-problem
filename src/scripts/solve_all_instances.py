@@ -1,6 +1,5 @@
 import argparse
 import os
-from re import sub
 import subprocess
 import sys
 
@@ -15,29 +14,15 @@ def main() -> None:
                         nargs='?', 
                         help='The method to solve all the instances.')
     
-    parser.add_argument('output-folder-path', type=str, 
-                        default=None, 
-                        nargs='?', 
-                        help='The path in which the output files are stored.')
-    
-    parser.add_argument('--use-rotations', action='store_true', 
-                        help='Solve with rotations.')
+    parser.add_argument('--rotation', action='store_true', help='Allow the circuits rotation.')
 
     arguments = parser.parse_args()
     method = vars(arguments)['method']
-    output_folder_path = vars(arguments)['output-folder-path']
-    if output_folder_path is None:
-        output_folder_path = f'solutions/{method}/'
-    use_rotations = arguments.use_rotations
-    
+    rotations_command = '--rotation' if arguments.use_rotations else ''
+
     execute_script_path = os.path.dirname(__file__)
     
-    if use_rotations:
-        rotations_command = '--use-rotations' if method in ['cp', 'lp'] else '--rotations'
-    else:
-        rotations_command = ''
-    
-    command = f'python "{execute_script_path}/solve_all_instances_{method}.py" {output_folder_path} {rotations_command}'
+    command = f'python "{execute_script_path}/solve_all_instances_{method}.py" {rotations_command}'
     
     subprocess.run(command, stderr=sys.stderr, stdout=sys.stdout)
         

@@ -28,7 +28,7 @@ def main() -> None:
                         help='The path in which the output file is stored.')
 
     parser.add_argument('--encodings-list', '-m', metavar='encoding', type=str, choices=utils.SAT_ENCODINGS,
-                        # TODO: correct description
+                        default=['encoding_10B'],
                         help='List of SAT encodings to compare.',
                         nargs='*')
 
@@ -47,6 +47,8 @@ def main() -> None:
                         default=40,
                         help='Upper bound of instances to solve (default 40).', 
                         nargs='?')
+
+    parser.add_argument('--no-visualize', action='store_true', help='Visualize the obtained comparisons.')
 
     arguments = parser.parse_args()
 
@@ -97,6 +99,10 @@ def main() -> None:
         with open(output_file, 'w') as f:
             json.dump(result_dict, f, sort_keys=False, indent=4, separators=(',', ': '))
 
+    if not arguments.no_visualize:
+        plot_comparisons_path = os.path.join(os.path.dirname(__file__), 'plot_comparisons.py')
+        command = f'python {plot_comparisons_path} "{output_file}"'
+        subprocess.run(command)
 
 if __name__ == '__main__':
     main()
