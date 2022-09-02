@@ -33,7 +33,7 @@ int: maxDim = max(dimsX ++ dimsY);
 /** Length of the minimum dimension among all circuits */
 int: minDim = min(dimsX ++ dimsY);
 /** Minimum number of circuits per row */
-int: min_rects_per_row = w div maxDim; % Minimum number of circuits per row
+int: min_rects_per_row = w div maxDim;
 /** The upper bound for the length */
 int: l_max = if min_rects_per_row < 2 
   then sum([max([dimsX[i], dimsY[i]]) | i in 1..n])

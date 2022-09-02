@@ -19,23 +19,26 @@ array[1..n] of int: dimsX = col(dims,1);
 /** Derived height of the circuits */
 array[1..n] of int: dimsY = col(dims,2);
 
-array [1..n] of int: areas = [dimsX[i]*dimsY[i] | i in 1..n];  % The areas of the circuits
-int: A_tot = sum(areas);  % The overall area of all the given circuits
-
-int: l_min = A_tot div w; % The lower bound for the length
-
-int: maxDim = max(dimsX ++ dimsY);
+/** The areas of the circuits */
+array [1..n] of int: areas = [dimsX[i]*dimsY[i] | i in 1..n];
+/** The overall area of all the given circuits */
+int: A_tot = sum(areas);
+/** The lower bound for the length */
+int: l_min = A_tot div w;
+/** Length of the maximum dimension of each circuit */
+array [1..n] of int: maxDims = [max([dimsX[i], dimsY[i]]) | i in 1..n];
+/** Length of the maximum dimension among all circuits */
+int: maxDim = max(maxDims);
+/** Length of the minimum dimension among all circuits */
 int: minDim = min(dimsX ++ dimsY);
-
-int: min_rects_per_row = w div maxDim; % Minimum number of circuits per row
-int: max_rects_per_col = ceil(n / max([1, min_rects_per_row])); % Maximum number of circuits per column
-% The upper bound for the length.
+/** Minimum number of circuits per row */
+int: min_rects_per_row = w div maxDim;
+/** The upper bound for the length */
 int: l_max = if min_rects_per_row < 2 
-  then sum([max([dimsX[i], dimsY[i]]) | i in 1..n])
-  else let{array [1..n] of int: sorted_dims = reverse(sort([max([dimsX[i], dimsY[i]]) | i in 1..n ]))} in 
+  then sum(maxDims)
+  else let{array [1..n] of int: sorted_dims = reverse(sort(maxDims))} in 
     sum([sorted_dims[k] | k in 1..n where k mod min_rects_per_row = 1]) 
 endif;
-
 
 
 %%%%%%% VARIABLES
