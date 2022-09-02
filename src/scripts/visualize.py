@@ -12,9 +12,9 @@ import utils
 def main() -> None:
     """Visualize the specified VLSI problem instance solution.
 
-    Example of usage: python scripts\visualize.py solution-ins-12.txt
+    Example of usage: python src\scripts\visualize.py solution-ins-12.txt
 
-    Help: python scripts\visualize.py -h
+    Help: python src\scripts\visualize.py -h
 
     """
     parser = argparse.ArgumentParser(description='Script for visualizing a VLSI output solution.')

@@ -81,9 +81,9 @@ def vlsi_sat(w, n, dims, encoding_module, timeout=300, rotation=False):
 def main():
     """Runs the specified SAT encoding for solving the specified VLSI problem instance.
 
-    Example of usage: python scripts\execute_sat.py encoding_2 ins-3 300
+    Example of usage: python src\scripts\execute_sat.py encoding_2 ins-3 300
 
-    Help: python scripts\execute_sat.py -h
+    Help: python src\scripts\execute_sat.py -h
 
     Full list of available SAT encodings: see `ENCODINGS RECAP.md` inside the `sat` folder.
 
