@@ -20,12 +20,12 @@ A total of $40$ instances have been provided for testing purposes, setting a tim
 The directory `src/scripts` contains the scripts of the project that the user directly interacts with. There are three main groups of scripts:
 * **Execute**: `execute_cp.py`; `execute_lp.py`; `execute_sat.py`; `execute_smt.py`. They run the specified model, of the selected approach (*CP*, *LP*, *SAT* or *SMT*), for solving the specified VLSI problem instance. The following is an example of a solved instance.
 <p align="center">
-  <img src="./images/solved_solution_example.png">
+  <img width="300vw" src="./images/solved_solution_example.png">
 </p>
 
 * **Compare models**: `compare_cp_models.py`; `compare_lp_models.py`; `compare_sat_encodings.py`; `compare_smt_encodings.py`. They compare the specified model,  of the selected approach, on solving the specified VLSI problem instances. The following is an example of a comparison plot.
 <p align="center">
-  <img src="./images/sat/OrderEncodingRotation.png">
+  <img width="500vw" src="./images/sat/OrderEncodingRotation.png">
 </p>
 
 * **Solve all instances**: `solve_all_instances_cp.py`; `solve_all_instances_lp.py`; `solve_all_instances_sat.py`; `solve_all_instances_smt.py`. They solve the set of all the available instances using the best model of the selected approach.
@@ -281,9 +281,3 @@ Git is used for versioning.
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-<style type="text/css">
-    img {
-        width: 50vw;
-    }
-</style>
