@@ -306,7 +306,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
 
                 # Update lb<-l+1
                 lb = l+1
-                print(lb, ub)
+                # print(lb, ub)
 
         # The computation is finished
         self.results['finish'] = True       

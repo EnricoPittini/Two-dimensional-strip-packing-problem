@@ -408,7 +408,7 @@ class Vlsi_sat(Vlsi_sat_abstract):
                 self.results['best_l'] = l
                 self.results['actual_dimsX'] = actual_dimsX
                 self.results['actual_dimsY'] = actual_dimsY
-                print(l)
+                # print(l)
 
                 # Update ub<-l
                 ub = l
@@ -428,12 +428,6 @@ class Vlsi_sat(Vlsi_sat_abstract):
 
                 # Update lb<-l+1
                 lb = l+1
-
-        print(coords)
-        print(dimsX)
-        print(actual_dimsX)
-        print(dimsY)
-        print(actual_dimsY)
 
         # The computation is finished
         self.results['finish'] = True

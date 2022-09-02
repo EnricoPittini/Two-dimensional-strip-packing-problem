@@ -1,12 +1,17 @@
 from amplpy import AMPL, AMPLException
 import argparse
+import importlib
 import numpy as np
 import os
 import sys
 import time
 
-from position_and_covering import apply_position_and_covering
 from utils import INSTANCES, AMPL_MODEL_CHOICES, AMPL_SOLVER_CHOICES, create_output_file, parse_instance_txt
+
+module_name = 'position_and_covering'
+sys.path.insert(1,  os.path.join(os.path.dirname(os.path.dirname(__file__)), 'lp'))
+encoding_module = importlib.import_module(module_name)
+apply_position_and_covering = encoding_module.apply_position_and_covering
 
 
 #python scripts\execute_lp.py model_1 ins-1 cplex

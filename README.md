@@ -105,20 +105,20 @@ Finally, `execute_smt.py` presents the following parameter:
 ## Repository structure
 
     .
-    ├── images
-    │   ├── cp                              # Plots of the performances of the CP models
-    │   ├── lp                              # Plots of the performances of the LP models
-    │   ├── sat                             # Plots of the performances of the SAT encodings
-    │   └── smt                             # Plots of the performances of the SMT encodings
+    ├── images                              # Plots of the performances of different models for the different approaches
+    │   ├── cp
+    │   ├── lp
+    │   ├── sat
+    │   └── smt
     ├── instances                           
     │   ⋮
     │   └── ins-*-.txt                      # Instances to solve in `.txt` format
     ├── report
-    ├── results
-    │   ├── cp                              # Json results of the performances of the CP models
-    │   ├── lp                              # Json results of performances of the LP models
-    │   ├── sat                             # Json results of the performances of the SAT encodings
-    │   └── smt                             # Json results of performances of the SMT encodings
+    ├── results                             # Json results of the performances of different models for the given approaches
+    │   ├── cp
+    │   ├── lp
+    │   ├── sat
+    │   └── smt
     ├── solutions                           # Solutions for the given instances using different approaches
     │   ├── cp
     │   ├── cp-rotation
@@ -135,7 +135,7 @@ Finally, `execute_smt.py` presents the following parameter:
     │   │   ├── rotation_models             # Directory containing the models solving the problem in CP considering rotations
     │   │   ├── solvers                     # Directory containing the solver configurations for CP
     │   │   └── project_cp.mzp              # MiniZinc CP project
-    │   ├── lp                              # Directory containing the models solving the problem in LP
+    │   ├── lp
     │   │   ⋮
     │   │   └── model_*.mod                 # AMPL model solving the problem in LP
     │   ├── sat
@@ -158,6 +158,7 @@ Finally, `execute_smt.py` presents the following parameter:
     │   │   ├── solve_all_instances_sat.py  # Script solving all instances with SAT
     │   │   ├── solve_all_instances_smt.py  # Script solving all instances with SMT
     │   │   ├── solve_all_instances.py      # Script solving all instances with a desired methodology
+    │   │   ├── unify_jsons.py
     │   │   ├── utils.py                    # Script containing useful functions
     │   │   └── visualize.py                # Script to visualize a solved instance
     │   └── smt

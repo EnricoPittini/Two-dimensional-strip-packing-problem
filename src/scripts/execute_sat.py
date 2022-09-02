@@ -183,7 +183,7 @@ def main():
         if not arguments.no_visualize_output:
             scripts_folder = os.path.dirname(sys.argv[0])
             visualize_script_path = os.path.join(scripts_folder,'visualize.py')
-            print(output_file)
+            # print(output_file)
             os.system(f'python {visualize_script_path} "{output_file}"')
 
 

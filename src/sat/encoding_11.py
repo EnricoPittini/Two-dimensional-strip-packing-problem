@@ -534,19 +534,13 @@ class Vlsi_sat(Vlsi_sat_abstract):
                 self.results['best_l'] = l_max
                 self.results['actual_dimsX'] = actual_dimsX
                 self.results['actual_dimsY'] = actual_dimsY
-                print(l_max)
+                # print(l_max)
 
                 # Update `l_max`
                 l_max = l_max-1
 
             except UnsatError:  # Found UNSAT: leave the cycle
                 break
-
-        print(coords)
-        print(dimsX)
-        print(actual_dimsX)
-        print(dimsY)
-        print(actual_dimsY)
 
         # The computation is finished
         self.results['finish'] = True

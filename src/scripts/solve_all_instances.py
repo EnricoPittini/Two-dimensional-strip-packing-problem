@@ -40,10 +40,6 @@ def main() -> None:
     command = f'python "{execute_script_path}/solve_all_instances_{method}.py" {output_folder_path} {rotations_command}'
     
     subprocess.run(command, stderr=sys.stderr, stdout=sys.stdout)
-    """ with subprocess.Popen(command, bufsize=1, stdout=subprocess.PIPE, stderr=subprocess.PIPE) as sub:
-        for line in sub.stdout.readline():
-            print('here')
-            print(line, end='')"""
         
 if __name__ == '__main__':
     main()
