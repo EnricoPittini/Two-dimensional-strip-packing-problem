@@ -73,6 +73,23 @@ By default, the `execute_*.py` scripts create a graphical representation of the 
 
 By default, the scripts of the *compare models* group create a comparison plot. of the solution. This is achieved thanks to the auxiliary `plot_comparisons.py` script.
 
+# Model list
+The names of the models and encodings presented inside the `src` subfolders are numerical and therefore not easy to understand. The files `MODELS RECAP.md` and `ENCODINGS RECAP.md` inside `src` subfolders provide a description of each model (or encoding) name.
+
+The following is the list of the best models (or encodings) for each approach:
+* **CP**:
+  - Without rotation: `model_6D1`
+  - With rotation: `model_r_7B`
+* **LP**:
+  - Without rotation: `model_grid`, *CPLEX* solver and *symmetry breaking* applied
+  - With rotation: `model_r_0`, *Gurobi* solver and *symmetry breaking* applied
+* **SAT**:
+  - Without rotation: `encoding_10B`
+  - With rotation: `encoding_11B`
+* **SMT**:
+  - Without rotation: `encoding_2C`, *z3* solver
+  - With rotation: `encoding_5B`, *z3* solver
+
 ## Usage
 ### Execute models
 ```sh
@@ -115,7 +132,8 @@ python src/scripts/compare_smt_encodings.py --encodings-list encoding_2C encodin
 python src/scripts/solve_all_instances.py cp --rotation
 ```
 
-## Installation
+## Dependencies
+
 
 ## Interfaces
 
@@ -192,13 +210,17 @@ Finally, `compare_smt_encodings.py` presents the following parameter:
     │   │   ├── models                      # Directory containing the models solving the problem in CP
     │   │   ├── rotation_models             # Directory containing the models solving the problem in CP considering rotations
     │   │   ├── solvers                     # Directory containing the solver configurations for CP
+    │   │   ├── MODELS RECAP.md             # Recap of the CP MiniZinc models
     │   │   └── project_cp.mzp              # MiniZinc CP project
     │   ├── lp
     │   │   ⋮
-    │   │   └── model_*.mod                 # AMPL model solving the problem in LP
+    │   │   ├── model_*.mod                 # AMPL model solving the problem in LP
+    │   │   ├── MODELS RECAP.md             # Recap of the LP AMPL models
+    │   │   └── position_and_covering.py    # Script applying the Position and Covering technique for LP
     │   ├── sat
     │   │   ⋮
     │   │   ├── encoding_*.py               # Encoding solving the problem in LP
+    │   │   ├── ENCODINGS RECAP.md          # Recap of the SAT encodings
     │   │   └── sat_utils.py                # Script containing useful functions for SAT
     │   ├── scripts                      
     │   │   ├── compare_cp_models.py        # Script to compare the results of CP models on the instances
@@ -210,7 +232,6 @@ Finally, `compare_smt_encodings.py` presents the following parameter:
     │   │   ├── execute_sat.py              # Script to solve an instance using SAT
     │   │   ├── execute_smt.py              # Script to solve an instance using SMT
     │   │   ├── plot_comparisons.py         # Script to plot the results of the use of different models on the instances
-    │   │   ├── position_and_covering.py    # Script applying the Position and Covering technique for LP
     │   │   ├── solve_all_instances_cp.py   # Script solving all instances with CP
     │   │   ├── solve_all_instances_lp.py   # Script solving all instances with LP
     │   │   ├── solve_all_instances_sat.py  # Script solving all instances with SAT
@@ -223,6 +244,7 @@ Finally, `compare_smt_encodings.py` presents the following parameter:
     │       ├── solvers                     # Directory containing the solvers executable files for SMT
     │       │   ⋮
     │       ├── encoding_*.py               # Encoding solving the problem in SMT
+    │       ├── ENCODINGS RECAP.md          # Recap of the SMT encodings
     │       └── smt_utils.py                # Script containing useful functions for SMT
     ├── .gitattributes
     ├── .gitignore
