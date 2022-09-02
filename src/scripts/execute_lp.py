@@ -56,7 +56,7 @@ def main() -> None:
     time_limit = arguments.time_limit
     
     # Open instance file
-    instance_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), f'instances/{instance}.txt')
+    instance_path = os.path.join(os.path.dirname(os.path.dirname(os.path.dirname(__file__))), f'instances/{instance}.txt')
     
     with open(instance_path,'r') as f:
         w, n, dims = parse_instance_txt(f)

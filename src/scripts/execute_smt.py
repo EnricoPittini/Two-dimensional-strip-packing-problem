@@ -133,7 +133,7 @@ def main():
         raise ValueError('With the \'yices-smt2\' solver, you must specify an encoding in which a specific logic has been imposed')
     
     # Open instance file 
-    abs_path_source_folder = os.path.split(os.path.dirname(os.path.abspath(__file__)))[0]
+    abs_path_source_folder = os.path.split(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))[0]
     instance_path = os.path.join(abs_path_source_folder, 'instances', f'{instance_name}.txt')
     instance_file = open(instance_path, 'r')
 

@@ -125,7 +125,7 @@ def main():
         raise ValueError('You must specify a valid rotation encoding')
 
     # Open instance file 
-    abs_path_source_folder = os.path.split(os.path.dirname(os.path.abspath(__file__)))[0]
+    abs_path_source_folder = os.path.split(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))[0]
     instance_path = os.path.join(abs_path_source_folder, 'instances', f'{instance}.txt')
     instance_file = open(instance_path, 'r')
 
