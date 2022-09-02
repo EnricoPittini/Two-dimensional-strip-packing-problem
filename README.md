@@ -133,7 +133,22 @@ python src/scripts/solve_all_instances.py cp --rotation
 ```
 
 ## Dependencies
+It is required for the execution of the CP models to install [_MiniZinc_](https://www.minizinc.org/doc-2.2.3/en/installation.html) and add the executable to the environment variable PATH. 
 
+To execute SAT the *Z3* theorem prover for python is required. 
+The simplest way to install it is to use Python's package manager pip:
+```sh
+pip install z3-solver
+```
+
+The SMT solvers executables are already present in the directory `src/smt/solvers`.
+
+For LP the [_AMPL_](https://ampl.com/products/ampl/) software and license are required. Moreover at least one of the following solvers is needed: [_Gurobi_](https://www.gurobi.com/products/gurobi-optimizer/), [_CPLEX_](https://www.ibm.com/analytics/cplex-optimizer) and [_Cbc_](https://github.com/coin-or/Cbc). Note that some scripts require the installation of *Gurobi* or *CPLEX*. Finally, the installation of the *amplpy* library is necessary. It can easily be installed through pip:
+```sh
+pip install amplpy
+```
+
+If not already installed Python libraries *pandas* and *Numpy* shall be installed.
 
 ## Interfaces
 

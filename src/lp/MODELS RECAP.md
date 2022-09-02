@@ -10,4 +10,3 @@ Here is the list of the LP models, with the corresponding brief explanation.
 ## Position and Covering Approach
 0. The `model_grid` is the Position and Covering Approach implementation: it returns the position of each circuit according to their sets of valid positions in a way that they do not overlap and are in bound of the plate.
 1. The **rotation** variant is solved with `model_r_grid`, which applies some edits to `model_grid` in order to allow the rotation of the circuits.
-
