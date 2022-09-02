@@ -1,4 +1,5 @@
 import math
+import os
 from time import sleep
 from smt_utils import Vlsi_smt_abstract
 import subprocess
@@ -177,6 +178,7 @@ class Vlsi_smt(Vlsi_smt_abstract):
 
         """
         solver_name = self.solver_name
+        solver_path = os.path.join(os.getcwd(),'src', 'smt', 'solvers', solver_name)
 
         w, n, dimsX, dimsY = self.w, self.n, self.dimsX, self.dimsY
 
@@ -199,11 +201,11 @@ class Vlsi_smt(Vlsi_smt_abstract):
 
         # Command to execute on the terminal, for starting the solver process in incremental mode
         if solver_name=='z3':
-            command = f'z3 -in -T:{self.time_limit}'
+            command = f'{solver_path} -in -T:{self.time_limit}'
         elif solver_name=='cvc5':
-            command = f'cvc5 --incremental --tlimit={self.time_limit*1000}'
+            command = f'{solver_path} --incremental --tlimit={self.time_limit*1000}'
         elif solver_name=='yices-smt2':
-            command = f'yices-smt2 --incremental --timeout={self.time_limit}'
+            command = f'{solver_path} --incremental --timeout={self.time_limit}'
         
         # Start the solver process on the terminal.
         # We use pipes for the stdin and the stdout of the solver process, for communicating with it.

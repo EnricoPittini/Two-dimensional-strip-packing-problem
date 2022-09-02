@@ -10,7 +10,7 @@ CHUFFED_MODELS = [f'model_{i}' for i in range(3)] + [f'model_3{i}' for i in 'ABC
     [f'model_6{i}{j}' for i in 'DE' for j in range(2)]
 CHUFFED_ROTATION_MODELS = ['model_r_0'] + [f'model_r_1{i}' for i in 'ABCD'] +\
     [f'model_r_{i}{j}' for i in [2, 3] for j in 'AB'] + [f'model_r_4{i}' for i in 'ABCDEFGH'] +\
-    [f'model_r_5{i}' for i in 'CEH'] + [f'model_r_7{i}' for i in 'ABCDEFG']
+    [f'model_r_5{i}' for i in 'CEH'] + [f'model_r_7{i}' for i in 'ABCDEFG'] + ['model_r_6']
 MINIZINC_MODELS = GECODE_MODELS + CHUFFED_MODELS + CHUFFED_ROTATION_MODELS
 
 SAT_ENCODINGS = [f'encoding_{i}' for i in range(4)] + [f'encoding_{4}{i}' for i in ['A', 'B', 'C', 'D', 'E', 'F']] +\
@@ -19,7 +19,7 @@ SAT_ENCODINGS = [f'encoding_{i}' for i in range(4)] + [f'encoding_{4}{i}' for i 
              ['encoding_10A', 'encoding_10B', 'encoding_10C'] + ['encoding_11', 'encoding_11A', 'encoding_11B', 'encoding_11C']
 SAT_ROTATION_ENCODINGS = ['encoding_11', 'encoding_11A', 'encoding_11B', 'encoding_11C']
 
-SMT_ENCODINGS = [f'encoding_{i}' for i in range(2)] + [f'encoding_{2}{i}' for i in ['A', 'B', 'C']] +\
+SMT_ENCODINGS = [f'encoding_{i}' for i in range(2)] + [f'encoding_{2}{i}' for i in ['A', 'B', 'C', 'D']] +\
      [f'encoding_{3}{i}' for i in ['A', 'B', 'C', 'D', 'E', 'F']] + [f'encoding_{4}{i}' for i in ['A', 'B', 'C', 'D', 'E', 'F']] +\
         ['encoding_5A', 'encoding_5B']
 SMT_ROTATION_ENCODINGS = ['encoding_5A', 'encoding_5B']

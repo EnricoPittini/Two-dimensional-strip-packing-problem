@@ -152,6 +152,9 @@ class Vlsi_smt(Vlsi_smt_abstract):
         # Boolean flag reprenting if a first solution has already been found
         first_solution = False
 
+        solver_path = os.path.join(os.getcwd(),'src', 'smt', 'solvers', solver_name)
+        #print(solver_path)
+
         while True:            
             # Compute the bound for the maximum length of the plate, i.e. l_max 
             if not first_solution:  # No solution for now
@@ -163,7 +166,7 @@ class Vlsi_smt(Vlsi_smt_abstract):
             specific_encoding_path = self.__generate_encoding(l_max=l_max)
 
             # Run the solver on the generated SMT-LIB encoding
-            command = f'{solver_name} "{specific_encoding_path}"'
+            command = f'{solver_path} "{specific_encoding_path}"'
             result = subprocess.run(command, capture_output=True)
 
             # Delete the SMT-LIB file containing the encoding

@@ -133,6 +133,7 @@ class Vlsi_smt(Vlsi_smt_abstract):
 
         """
         solver_name = self.solver_name
+        solver_path = os.path.join(os.getcwd(),'src', 'smt', 'solvers', solver_name)
 
         w, n, dimsX, dimsY = self.w, self.n, self.dimsX, self.dimsY
 
@@ -157,7 +158,7 @@ class Vlsi_smt(Vlsi_smt_abstract):
             specific_encoding_path = self.__generate_encoding(l_max=l_max)
 
             # Run the solver on the generated SMT-LIB encoding
-            command = f'{solver_name} "{specific_encoding_path}"'
+            command = f'{solver_path} "{specific_encoding_path}"'
             result = subprocess.run(command, capture_output=True)
 
             # Delete the SMT-LIB file containing the encoding
