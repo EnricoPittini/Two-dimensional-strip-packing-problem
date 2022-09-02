@@ -9,28 +9,22 @@ from utils import INSTANCES
 def main() -> None:
     parser = argparse.ArgumentParser(description='Script to solve all the instances using SMT.')
 
-    parser.add_argument('output-folder-path', type=str, 
-                        default=os.path.normpath('solutions/smt/'), 
-                        nargs='?', 
-                        help='The path in which the output files are stored.')
-
     parser.add_argument('--rotation', action='store_true', 
                         help='Allow the circuits rotation.')
 
     arguments = parser.parse_args()
     
     if not arguments.rotation:
-        output_folder_path = vars(arguments)['output-folder-path']
+        output_folder_path = os.path.normpath('solutions/smt')
         os.makedirs(output_folder_path, exist_ok=True)
-        
         ENCODING = 'encoding_2C'
         SOLVER = 'z3'
     else:
-        output_folder_path = os.path.normpath('solutions/smt_rotation')
-        os.makedirs(output_folder_path, exist_ok=True)
-        
+        output_folder_path = os.path.normpath('solutions/smt-rotation')
         ENCODING = 'encoding_5B'
         SOLVER = 'z3'
+
+    os.makedirs(output_folder_path, exist_ok=True)
 
     INSTANCES.remove('ins-unsat')
     

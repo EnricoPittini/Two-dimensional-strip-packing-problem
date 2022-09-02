@@ -13,22 +13,22 @@ from utils import INSTANCES, AMPL_MODEL_CHOICES, AMPL_SOLVER_CHOICES, create_out
 def main() -> None:
     parser = argparse.ArgumentParser(description='Script for executing a VLSI AMPL model.')
 
-    parser.add_argument('model', type=str, choices=AMPL_MODEL_CHOICES, help='The model to execute.')
+    parser.add_argument('model', metavar='model', type=str, choices=AMPL_MODEL_CHOICES, help='The model to execute.')
 
-    parser.add_argument('instance', metavar='ins-1..ins-40; ins-unsat', type=str, choices=INSTANCES, 
+    parser.add_argument('instance', metavar='instance', type=str, choices=INSTANCES, 
                         help='The instance to solve.')
 
-    parser.add_argument('solver', type=str, default='cplex', nargs='?', choices=AMPL_SOLVER_CHOICES, 
+    parser.add_argument('solver', metavar='solver', type=str, default='cplex', nargs='?', choices=AMPL_SOLVER_CHOICES, 
                         help='The solver used for optimization.')
 
-    parser.add_argument('output-folder-path', type=str, default=os.getcwd(), nargs='?', 
+    parser.add_argument('--output-folder-path', type=str, default=os.getcwd(), nargs='?', 
                         help='The path in which the output file is stored.')
 
-    parser.add_argument('output-name', type=str, default=None, nargs='?', 
+    parser.add_argument('--output-name', type=str, default=None, nargs='?', 
                         help='The name of the output solution.')
 
     parser.add_argument('--time-limit', '-t', type=int, default=300, nargs='?',
-                        help='The allowed time to solve the task in seconds.', required=False)
+                        help='Time limit, in seconds', required=False)
 
     parser.add_argument('--no-create-output', action='store_true', 
                         help='Skip the creation of the output solution.')
@@ -36,10 +36,13 @@ def main() -> None:
     parser.add_argument('--no-visualize-output', action='store_true', 
                         help='Skip the visualization of the output solution (defaults as true if --no-create-output ' + \
                         'is passed).')
+
     parser.add_argument('--use-symmetry', action='store_true', 
                     help='Break symmetries in the presolve process.')
+
     parser.add_argument('--use-dual', action='store_true', 
                     help='Use the dual model.')
+
     parser.add_argument('--use-no-presolve', action='store_true', 
                     help='Avoid AMPL presolving process.')
 
@@ -149,9 +152,9 @@ def main() -> None:
         sys.exit('error = UNKOWN')
 
     if not arguments.no_create_output:
-        output_folder_path = vars(arguments)['output-folder-path']
+        output_folder_path = arguments.output_folder_path
 
-        output_name = vars(arguments)['output-name']
+        output_name = arguments.output_name
         if output_name is None:
             output_file = os.path.join(output_folder_path, f'solution-{instance}.txt')
         else:

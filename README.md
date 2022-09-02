@@ -25,7 +25,7 @@ The directory `src/scripts` contains the scripts of the project that the user di
 
 * **Compare models**: `compare_cp_models.py`; `compare_lp_models.py`; `compare_sat_encodings.py`; `compare_smt_encodings.py`. They compare the specified model,  of the selected approach, on solving the specified VLSI problem instances. The following is an example of a comparison plot.
 <p align="center">
-  <img width="100vw" src="./images/sat/OrderEncodingRotation.png">
+  <img src="./images/sat/OrderEncodingRotation.png">
 </p>
 
 * **Solve all instances**: `solve_all_instances_cp.py`; `solve_all_instances_lp.py`; `solve_all_instances_sat.py`; `solve_all_instances_smt.py`. They solve the set of all the available instances using the best model of the selected approach.
@@ -78,43 +78,28 @@ By default, the scripts of the *compare models* group create a comparison plot. 
 ## Installation
 
 ## Interfaces
+
 ### Execute models
-* `execute_cp.py`:
-    - `model`: The model to execute
-    - `instance`: The instance to solve
-    - `output-folder-path`: The path in which the output file is stored
-    - `output-name`: The name of the output solution
-    - `--time-limit`: The allowed time to solve the task in seconds
-    - `--no-create-output`: Skip the creation of the output solution
-    - `--no-visualize-output`: Skip the visualization of the output solution (defaults as true if --no-create-output is passed).
-* `execute_lp.py`:
-    - `model`: The model to execute
-    - `instance`: The instance to solve
-    - `solver`: The solver used for optimization
-    - `output-folder-path`: The path in which the output file is stored
-    - `output-name`: The name of the output solution
-    - `--time-limit`: The allowed time to solve the task in seconds
-    - `--no-create-output`: Skip the creation of the output solution
-    - `--no-visualize-output`: Skip the visualization of the output solution (defaults as true if --no-create-output is passed).
-    - `--use-symmetry`: Break symmetries in the presolve process.
-    - `--use-dual`: Use the dual model.
-    - `--use-no-presolve`: Avoid AMPL presolving process.
-* `execute_sat.py`:
-    - `model`: The model to execute
-    - `instance`: The instance to solve
-    - `output-folder-path`: The path in which the output file is stored
-    - `output-name`: The name of the output solution
-    - `--time-limit`: The allowed time to solve the task in seconds
-    - `--no-create-output`: Skip the creation of the output solution
-    - `--no-visualize-output`: Skip the visualization of the output solution (defaults as true if --no-create-output is passed).
-* `execute_smt.py`:
-    - `model`: The model to execute
-    - `instance`: The instance to solve
-    - `output-folder-path`: The path in which the output file is stored
-    - `output-name`: The name of the output solution
-    - `--time-limit`: The allowed time to solve the task in seconds
-    - `--no-create-output`: Skip the creation of the output solution
-    - `--no-visualize-output`: Skip the visualization of the output solution (defaults as true if --no-create-output is passed).
+The `execute_*.py` scripts all present the following positional arguments:
+* `model`: The model to execute (`encoding` for *SAT* and *SMt*)
+* `instance`: The instance to solve
+
+And the following optional parameters:
+* `output-folder-path`: The path in which the output file is stored
+* `output-name`: The name of the output solution
+* `--time-limit`: The allowed time to solve the task in seconds
+* `--no-create-output`: Skip the creation of the output solution
+* `--no-visualize-output`: Skip the visualization of the output solution (defaults as true if `--no-create-output` is passed).
+
+Moreover `execute_lp.py` presents the following parameters:
+* `solver`: The solver used for optimization
+* `--use-symmetry`: Break symmetries in the presolve process.
+* `--use-dual`: Use the dual model.
+* `--use-no-presolve`: Avoid AMPL presolving process.
+
+Finally, `execute_smt.py` presents the following parameter:
+* `solver`: The solver used for optimization.
+
 ### Compare models
 
 ## Repository structure
@@ -125,7 +110,9 @@ By default, the scripts of the *compare models* group create a comparison plot. 
     │   ├── lp                              # Plots of the performances of the LP models
     │   ├── sat                             # Plots of the performances of the SAT encodings
     │   └── smt                             # Plots of the performances of the SMT encodings
-    ├── instances                           # Directory containing the instances to solve in `.txt` format
+    ├── instances                           
+    │   ⋮
+    │   └── ins-*-.txt                      # Instances to solve in `.txt` format
     ├── report
     ├── results
     │   ├── cp                              # Json results of the performances of the CP models
@@ -149,7 +136,12 @@ By default, the scripts of the *compare models* group create a comparison plot. 
     │   │   ├── solvers                     # Directory containing the solver configurations for CP
     │   │   └── project_cp.mzp              # MiniZinc CP project
     │   ├── lp                              # Directory containing the models solving the problem in LP
-    │   ├── sat                             # Directory containing the encodings solving the problem in SAT
+    │   │   ⋮
+    │   │   └── model_*.mod                 # AMPL model solving the problem in LP
+    │   ├── sat
+    │   │   ⋮
+    │   │   ├── encoding_*.py               # Encoding solving the problem in LP
+    │   │   └── sat_utils.py                # Script containing useful functions for SAT
     │   ├── scripts                      
     │   │   ├── compare_cp_models.py        # Script to compare the results of CP models on the instances
     │   │   ├── compare_lp_models.py        # Script to compare the results of LP models on the instances
@@ -168,7 +160,11 @@ By default, the scripts of the *compare models* group create a comparison plot. 
     │   │   ├── solve_all_instances.py      # Script solving all instances with a desired methodology
     │   │   ├── utils.py                    # Script containing useful functions
     │   │   └── visualize.py                # Script to visualize a solved instance
-    │   └── smt                             # Directory containing the encodings solving the problem in SMT
+    │   └── smt
+    │       ├── solvers                     # Directory containing the solvers executable files for SMT
+    │       │   ⋮
+    │       ├── encoding_*.py               # Encoding solving the problem in SMT
+    │       └── smt_utils.py                # Script containing useful functions for SMT
     ├── .gitattributes
     ├── .gitignore
     ├── LICENSE

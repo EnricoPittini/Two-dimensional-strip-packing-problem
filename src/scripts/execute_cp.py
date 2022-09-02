@@ -13,20 +13,20 @@ from utils import create_output_file, parse_instance_txt
 def main() -> None:
     parser = argparse.ArgumentParser(description='Script for executing a VLSI CP model.')
 
-    parser.add_argument('model', type=str, choices=MINIZINC_MODELS+[f'model_final{i}' for i in range(2)], 
+    parser.add_argument('model', metavar='model', type=str, choices=MINIZINC_MODELS+[f'model_final{i}' for i in range(2)], 
                         help='The model to execute.')
 
-    parser.add_argument('instance', metavar='ins-1..ins-40; ins-unsat', type=str, choices=INSTANCES, 
+    parser.add_argument('instance', metavar='instance', type=str, choices=INSTANCES, 
                     help='The instance to solve.')
 
-    parser.add_argument('output-folder-path', type=str, default=os.getcwd(), nargs='?', 
+    parser.add_argument('--output-folder-path', type=str, default=os.getcwd(), nargs='?', 
                         help='The path in which the output file is stored.')
 
-    parser.add_argument('output-name', type=str, default=None, nargs='?', 
+    parser.add_argument('--output-name', type=str, default=None, nargs='?', 
                         help='The name of the output solution.')
 
     parser.add_argument('--time-limit', '-t', type=int, default=300, nargs='?',
-                        help='The allowed time to solve the task.', required=False)
+                        help='Time limit, in seconds', required=False)
 
     parser.add_argument('--no-create-output', action='store_true', 
                         help='Skip the creation of the output solution.')
@@ -105,9 +105,9 @@ def main() -> None:
             dimsY = json_result['actualDimsY']
             dims = list(zip(dimsX, dimsY))
 
-        output_folder_path = vars(arguments)['output-folder-path']
+        output_folder_path = arguments.output_folder_path
 
-        output_name = vars(arguments)['output-name']
+        output_name = arguments.output_name
         if output_name is None:
             output_file = os.path.join(output_folder_path, f'solution-{instance}.txt')
         else:

@@ -9,26 +9,19 @@ from utils import INSTANCES
 def main() -> None:
     parser = argparse.ArgumentParser(description='Script to solve all the instances using SAT.')
 
-    parser.add_argument('output-folder-path', type=str, 
-                        default=os.path.normpath('solutions/sat/'), 
-                        nargs='?', 
-                        help='The path in which the output files are stored.')
-
     parser.add_argument('--rotation', action='store_true', 
                         help='Allow the circuits rotation.')
 
     arguments = parser.parse_args()
     
     if not arguments.rotation:
-        output_folder_path = vars(arguments)['output-folder-path']
-        os.makedirs(output_folder_path, exist_ok=True)
-        
+        output_folder_path = os.path.normpath('solutions/sat')
         ENCODING = 'encoding_10B'
     else:
-        output_folder_path = os.path.normpath('solutions/sat_rotation')
-        os.makedirs(output_folder_path, exist_ok=True)
-        
+        output_folder_path = os.path.normpath('solutions/sat-rotation')
         ENCODING = 'encoding_11B'
+        
+    os.makedirs(output_folder_path, exist_ok=True)
 
     INSTANCES.remove('ins-unsat')
     
@@ -36,11 +29,8 @@ def main() -> None:
 
     for instance in INSTANCES:
         print(f'Solving instance {instance}...')
-        command = f'python "{execute_sat_script_path}" {ENCODING} {instance} 300 {output_folder_path} ' +\
-                    '--no-visualize-output'
-        if arguments.rotation: 
-            command += ' --rotation'
-        #print(command)
+        command = f'python "{execute_sat_script_path}" {ENCODING} {instance} --time-limit 300 ' +\
+            f'--output-folder-path {output_folder_path} --no-visualize-output'
         
         try:
             subprocess.run(command, capture_output=True)

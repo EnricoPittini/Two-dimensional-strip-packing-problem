@@ -90,18 +90,20 @@ def main():
     """
     parser = argparse.ArgumentParser(description='Script for executing a VLSI SAT encoding.')
 
-    parser.add_argument('encoding', type=str, choices=utils.SAT_ENCODINGS, help='The encoding to execute.')
+    parser.add_argument('encoding', metavar='encoding', type=str, choices=utils.SAT_ENCODINGS, 
+                        help='The encoding to execute.')
 
-    parser.add_argument('instance', metavar='ins-1..ins-40; ins-unsat', type=str, choices=utils.INSTANCES, 
+    parser.add_argument('instance', metavar='instance', type=str, choices=utils.INSTANCES, 
                         help='The instance to solve.')
 
-    parser.add_argument('time-limit', type=int, default=300, nargs='?', help='Time limit, in seconds')
-
-    parser.add_argument('output-folder-path', type=str, default=os.getcwd(), nargs='?', 
+    parser.add_argument('--output-folder-path', type=str, default=os.getcwd(), nargs='?', 
                         help='The path in which the output file is stored.')
 
-    parser.add_argument('output-name', type=str, default=None, nargs='?', 
+    parser.add_argument('--output-name', type=str, default=None, nargs='?', 
                         help='The name of the output solution.')
+    
+    parser.add_argument('--time-limit', '-t', type=int, default=300, nargs='?',
+                    help='Time limit, in seconds', required=False)
 
     parser.add_argument('--no-create-output', action='store_true', 
                         help='Skip the creation of the output solution.')
@@ -110,19 +112,11 @@ def main():
                         help='Skip the visualization of the output solution (defaults as true if `--no-create-output` ' + \
                         'is passed).')
 
-    parser.add_argument('--rotation', action='store_true', 
-                        help='Allow the circuits rotation.')
-
     arguments = parser.parse_args()
 
     encoding = vars(arguments)['encoding']
     instance = vars(arguments)['instance']
-    time_limit = vars(arguments)['time-limit']
-
-    if not arguments.rotation and encoding in utils.SAT_ROTATION_ENCODINGS:
-        raise ValueError('You must specify a valid non-rotation encoding')
-    if arguments.rotation and encoding not in utils.SAT_ROTATION_ENCODINGS:
-        raise ValueError('You must specify a valid rotation encoding')
+    time_limit = arguments.time_limit
 
     # Open instance file 
     abs_path_source_folder = os.path.split(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))[0]
@@ -143,7 +137,7 @@ def main():
 
     #try:
     start_time = time.time()
-    rotation = arguments.rotation
+    rotation = encoding in utils.SAT_ROTATION_ENCODINGS
     if not rotation:
         coords, l, finish, unsat = vlsi_sat(w, n, dims, encoding_module=encoding_module, timeout=time_limit)        
     else:
@@ -175,7 +169,7 @@ def main():
     #    sys.exit('UNSAT')
 
     if not arguments.no_create_output:
-        output_folder_path = vars(arguments)['output-folder-path']
+        output_folder_path = arguments.output_folder_path
 
         instance_file_name = os.path.basename(instance_file.name)
         output_file = os.path.join(output_folder_path,f'solution-{instance_file_name}')#f'{output_folder_path}\\solution-{instance_file.name.split("/")[-1]}'

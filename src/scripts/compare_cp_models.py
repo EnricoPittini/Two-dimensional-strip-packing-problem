@@ -11,13 +11,13 @@ from utils import MINIZINC_MODELS, MINIZINC_ERRORS
 def main() -> None:
     parser = argparse.ArgumentParser(description='Script comparing the execution time of MiniZinc models on a VLSI problem.')
 
+    parser.add_argument('output-name', type=str, default='solution', nargs='?', 
+                help='The name of the output solution.')
+
     parser.add_argument('output-folder-path', type=str, 
                         default=os.path.normpath('results/cp/'), 
                         nargs='?', 
                         help='The path in which the output file is stored.')
-    
-    parser.add_argument('output-name', type=str, default='solution', nargs='?', 
-                    help='The name of the output solution.')
 
     parser.add_argument('--models-list', '-m',
                         metavar='model',

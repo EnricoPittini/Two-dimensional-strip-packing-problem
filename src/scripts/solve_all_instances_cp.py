@@ -8,32 +8,28 @@ from utils import INSTANCES
 # python scripts/solve_all_instances_cp.py
 def main() -> None:
     parser = argparse.ArgumentParser(description='Script to solve all the instances using CP.')
-
-    parser.add_argument('output-folder-path', type=str, 
-                        default=os.path.normpath('solutions/cp/'), 
-                        nargs='?', 
-                        help='The path in which the output files are stored.')
     
-    parser.add_argument('--use-rotations', action='store_true', 
+    parser.add_argument('--rotation', action='store_true', 
                         help='Solve with rotations.')
 
     arguments = parser.parse_args()
-    
-    output_folder_path = vars(arguments)['output-folder-path']
-    use_rotations = arguments.use_rotations
+
+    if not arguments.rotation:
+        output_folder_path = os.path.normpath('solutions/cp')
+        MODEL = 'model_6D1'
+    else:
+        output_folder_path = os.path.normpath('solutions/cp-rotation')
+        MODEL = 'model_r_7B'
+
     os.makedirs(output_folder_path, exist_ok=True)
     
-    if use_rotations:
-        MODEL = 'model_r_7B'
-    else:
-        MODEL = 'model_6D1'
     INSTANCES.remove('ins-unsat')
     
     execute_cp_script_path = os.path.join(os.path.dirname(__file__), 'execute_cp.py')
 
     for instance in INSTANCES:
         print(f'Solving instance {instance}...')
-        command = f'python "{execute_cp_script_path}" {MODEL} {instance} {output_folder_path} ' +\
+        command = f'python "{execute_cp_script_path}" {MODEL} {instance} --output-folder-path {output_folder_path} ' +\
                     '--time-limit 300 --no-visualize-output'
         
         try:

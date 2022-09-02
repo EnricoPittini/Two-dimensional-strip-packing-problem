@@ -12,13 +12,13 @@ from utils import AMPL_SOLVER_CHOICES, AMPL_MODEL_CHOICES
 def main() -> None:
     parser = argparse.ArgumentParser(description='Script comparing the execution time of CP models on a VLSI problem.')
 
+    parser.add_argument('output-name', type=str, default='solution', nargs='?', 
+                    help='The name of the output solution.')
+
     parser.add_argument('output-folder-path', type=str, 
                         default=os.path.normpath('results/lp/'), 
                         nargs='?', 
                         help='The path in which the output file is stored.')
-    
-    parser.add_argument('output-name', type=str, default='solution', nargs='?', 
-                        help='The name of the output solution.')
 
     parser.add_argument('--models-list', '-m',
                         metavar='model',
@@ -53,10 +53,13 @@ def main() -> None:
                         default=40,
                         help='Upper bound of instances to solve (default 40).', 
                         nargs='?')
+    
     parser.add_argument('--use-symmetry', action='store_true', 
                     help='Break symmetries in the presolve process.')
+    
     parser.add_argument('--use-dual', action='store_true', 
                     help='Use the dual model.')
+    
     parser.add_argument('--use-no-presolve', action='store_true', 
                     help='Avoid AMPL presolving process.')
 

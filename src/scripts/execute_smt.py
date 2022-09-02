@@ -92,20 +92,22 @@ def main():
     """
     parser = argparse.ArgumentParser(description='Script for executing a VLSI SMT encoding.')
 
-    parser.add_argument('encoding', type=str, choices=utils.SMT_ENCODINGS, help='The encoding to execute.')
+    parser.add_argument('encoding', metavar='encoding', type=str, choices=utils.SMT_ENCODINGS, 
+                        help='The encoding to execute.')
 
-    parser.add_argument('instance', metavar='ins-1..ins-40; ins-unsat', choices=utils.INSTANCES, type=str, 
+    parser.add_argument('instance', metavar='instance', choices=utils.INSTANCES, type=str, 
                         help='The instance to solve.')
 
-    parser.add_argument('solver', type=str, choices=utils.SMT_SOLVERS, help='The name of the SMT solver.')
+    parser.add_argument('solver', metavar='solver', type=str, choices=utils.SMT_SOLVERS, help='The name of the SMT solver.')
 
-    parser.add_argument('time-limit', type=int, default=300, nargs='?', help='Time limit, in seconds')
-
-    parser.add_argument('output-folder-path', type=str, default=os.getcwd(), nargs='?', 
+    parser.add_argument('--output-folder-path', type=str, default=os.getcwd(), nargs='?', 
                         help='The path in which the output file is stored.')
 
-    parser.add_argument('output-name', type=str, default=None, nargs='?', 
+    parser.add_argument('--output-name', type=str, default=None, nargs='?', 
                         help='The name of the output solution.')
+    
+    parser.add_argument('--time-limit', '-t', type=int, default=300, nargs='?',
+                        help='Time limit, in seconds', required=False)
 
     parser.add_argument('--no-create-output', action='store_true', 
                         help='Skip the creation of the output solution.')
@@ -114,20 +116,12 @@ def main():
                         help='Skip the visualization of the output solution (defaults as true if `--no-create-output` ' + \
                         'is passed).')
 
-    parser.add_argument('--rotation', action='store_true', 
-                        help='Allow the circuits rotation.')
-
     arguments = parser.parse_args()
 
     encoding = vars(arguments)['encoding']
     instance_name = vars(arguments)['instance']
     solver_name = vars(arguments)['solver']
-    time_limit = vars(arguments)['time-limit']
-
-    if not arguments.rotation and encoding in utils.SMT_ROTATION_ENCODINGS:
-        raise ValueError('You must specify a valid non-rotation encoding')
-    if arguments.rotation and encoding not in utils.SMT_ROTATION_ENCODINGS:
-        raise ValueError('You must specify a valid rotation encoding')
+    time_limit = arguments.time_limit
 
     if solver_name=='yices-smt2' and encoding not in utils.SMT_IMPOSED_LOGIC_ENCODINGS:
         raise ValueError('With the \'yices-smt2\' solver, you must specify an encoding in which a specific logic has been imposed')
@@ -149,7 +143,7 @@ def main():
     encoding_module = importlib.import_module(module_name)
 
     start_time = time.time()
-    rotation = arguments.rotation
+    rotation = encoding in utils.SMT_ROTATION_ENCODINGS
     if not rotation:
         coords, l, finish, unsat = vlsi_smt(instance_name, solver_name, time_limit, w, n, dims, encoding_module=encoding_module)      
     else:
@@ -179,7 +173,7 @@ def main():
     coordsY = [coords[i][1] for i in range(n)]
 
     if not arguments.no_create_output:
-        output_folder_path = vars(arguments)['output-folder-path']
+        output_folder_path = arguments.output_folder_path
 
         output_file = os.path.join(output_folder_path,f'solution-{instance_name}.txt')#f'{output_folder_path}\\solution-{instance_file.name.split("/")[-1]}'
 
