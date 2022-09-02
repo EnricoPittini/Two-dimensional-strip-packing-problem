@@ -1,7 +1,6 @@
 # MODEL 1:
 # Improvement of the base model, optimization on the dimension of the variables and bounds for the length of the plate. 
 
-
 ####### INPUT PARAMETERS
 /** The number of the circuits. */
 param n integer > 0;

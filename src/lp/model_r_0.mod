@@ -1,6 +1,5 @@
-# MODEL 1:
-# Improvement of the base model, optimization on the dimension of the variables and bounds for the length of the plate. 
-
+# MODEL R 0:
+# Modification of Model 1 that introduces the possibility to rotate the circuits. 
 
 ####### INPUT PARAMETERS
 /** The number of the circuits. */

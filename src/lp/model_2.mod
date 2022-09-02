@@ -1,6 +1,5 @@
-# MODEL 1:
-# Improvement of the base model, optimization on the dimension of the variables and bounds for the length of the plate. 
-
+# MODEL 2:
+# Applies symmetry breaking by placing the circuit with the greatest area in the bottom left corner. 
 
 ####### INPUT PARAMETERS
 /** The number of the circuits. */

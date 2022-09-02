@@ -1,7 +1,6 @@
 # MODEL 0:
 # First base interpretation of the problem. 
 
-
 ####### INPUT PARAMETERS
 /** The number of the circuits. */
 param n integer > 0;

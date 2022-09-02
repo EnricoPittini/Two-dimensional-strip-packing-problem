@@ -18,7 +18,7 @@ def main() -> None:
 
     arguments = parser.parse_args()
     method = vars(arguments)['method']
-    rotations_command = '--rotation' if arguments.use_rotations else ''
+    rotations_command = '--rotation' if arguments.rotation else ''
 
     execute_script_path = os.path.dirname(__file__)
     
