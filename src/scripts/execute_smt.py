@@ -83,7 +83,7 @@ def vlsi_smt(instance_name, solver_name, time_limit, w, n, dims, encoding_module
 def main():
     """Runs the specified SMT encoding for solving the specified VLSI problem instance.
 
-    Example of usage: python src\scripts/execute_smt.py encoding_0 ins-3 z3 300
+    Example of usage: python src\scripts\execute_smt.py encoding_0 ins-3 z3 300
 
     Help: python src\scripts\execute_smt.py -h
 
