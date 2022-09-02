@@ -5,7 +5,7 @@ import subprocess
 from utils import INSTANCES
 
 
-# python scripts/solve_all_instances_sat.py
+# python src\scripts/solve_all_instances_sat.py
 def main() -> None:
     parser = argparse.ArgumentParser(description='Script to solve all the instances using SAT.')
 
