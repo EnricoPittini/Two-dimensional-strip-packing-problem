@@ -12,7 +12,7 @@ from utils import AMPL_SOLVER_CHOICES, AMPL_MODEL_CHOICES
 def main() -> None:
     parser = argparse.ArgumentParser(description='Script comparing the execution time of CP models on a VLSI problem.')
 
-    parser.add_argument('output-name', type=str, default='solution', nargs='?', 
+    parser.add_argument('output-name', type=str, default='results', nargs='?', 
                     help='The name of the output solution.')
 
     parser.add_argument('output-folder-path', type=str, 
@@ -63,7 +63,7 @@ def main() -> None:
     parser.add_argument('--use-no-presolve', action='store_true', 
                     help='Avoid AMPL presolving process.')
 
-    parser.add_argument('--no-visualize', action='store_true', help='Visualize the obtained comparisons.')
+    parser.add_argument('--no-visualize', action='store_true', help='Do not visualize the obtained comparisons.')
 
     arguments = parser.parse_args()
     

@@ -74,6 +74,46 @@ By default, the `execute_*.py` scripts create a graphical representation of the 
 By default, the scripts of the *compare models* group create a comparison plot. of the solution. This is achieved thanks to the auxiliary `plot_comparisons.py` script.
 
 ## Usage
+### Execute models
+```sh
+# Execute instance "ins-3" with CP "model_6D1"
+python src/scripts/execute_cp.py model_6D1 ins-3 --time-limit 300
+```
+```sh
+# Execute instance "ins-3" with LP "model_1" and solver "Gurobi"
+python src/scripts/execute_lp.py model_1 ins-3 gurobi --time-limit 300
+```
+```sh
+# Execute instance "ins-3" with SAT "encoding_10B"
+python src/scripts/execute_sat.py encoding_10B ins-3 --time-limit 300
+```
+```sh
+# Execute instance "ins-3" with SMT "encoding_2C" and solver "z3"
+python src/scripts/execute_smt.py encoding_2C ins-3 z3 --time-limit 300
+```
+
+### Compare models
+```sh
+# Compare the results of the first 10 instances with CP models "model_6D1" and "model_r_7B"
+python src/scripts/compare_cp_models.py --models-list model_6D1 model_r_7B -lb 1 -ub 10
+```
+```sh
+# Compare the results of the first 10 instances with LP models "model_1" and "model_r_0" and solvers "CPLEX" and "Gurobi"
+python src/scripts/compare_lp_models.py --models-list model_1 model_r_0 --solvers-list cplex gurobi -lb 1 -ub 10
+```
+```sh
+# Compare the results of the first 10 instances with SAT encodings "encoding_10B" and "encoding_11B"
+python src/scripts/compare_sat_encodings.py --encodings-list encoding_10B encoding_11B -lb 1 -ub 10
+```
+```sh
+# Compare the results of the first 10 instances with SMT encodings "encoding_2C" and "encoding_5B" and solvers "z3" and "cvc5"
+python src/scripts/compare_smt_encodings.py --encodings-list encoding_2C encoding_5B --solvers-list z3 cvc5 -lb 1 -ub 10
+```
+### Solve all instances
+```sh
+# Solve all instances accounting for the rotation of the circuits with the best model for solver CP. 
+python src/scripts/solve_all_instances.py cp --rotation
+```
 
 ## Installation
 
@@ -101,6 +141,24 @@ Finally, `execute_smt.py` presents the following parameter:
 * `solver`: The solver used for optimization.
 
 ### Compare models
+The `compare_*.py` scripts all present the following positional arguments:
+* `output-name`: The name of the output solution
+* `output-folder-path`: The path in which the output file is stored
+
+And the following optional parameters:
+* `--models-list`: List of models to compare
+* `--instances-lower-bound`: Lower bound of instances to solve (default 1)
+* `--instances-upper-bound`: Upper bound of instances to solve (default 40)
+* `--no-visualize`: Do not visualize the obtained comparisons
+
+Moreover `compare_lp_models.py` presents the following parameters:
+* `--solvers-list`: List of solvers to use for comparison (default all solvers)
+* `--use-symmetry`: Break symmetries in the presolve process.
+* `--use-dual`: Use the dual model.
+* `--use-no-presolve`: Avoid AMPL presolving process.
+
+Finally, `compare_smt_encodings.py` presents the following parameter:
+* `--solvers-list`: List of solvers to use for comparison (default *z3*)
 
 ## Repository structure
 

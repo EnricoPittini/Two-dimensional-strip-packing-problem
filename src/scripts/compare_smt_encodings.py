@@ -58,7 +58,7 @@ def main() -> None:
                         help='Upper bound of instances to solve (default 40).', 
                         nargs='?')
 
-    parser.add_argument('--no-visualize', action='store_true', help='Visualize the obtained comparisons.')
+    parser.add_argument('--no-visualize', action='store_true', help='Do not visualize the obtained comparisons.')
 
     arguments = parser.parse_args()
     
