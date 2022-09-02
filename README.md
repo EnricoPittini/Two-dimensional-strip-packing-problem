@@ -119,15 +119,15 @@ Finally, `execute_smt.py` presents the following parameter:
     │   ├── lp                              # Json results of performances of the LP models
     │   ├── sat                             # Json results of the performances of the SAT encodings
     │   └── smt                             # Json results of performances of the SMT encodings
-    ├── solutions
-    │   ├── cp                              # Solutions for the given instances using CP
-    │   ├── cp-rotations                    # Solutions for the given instances accounting for rotations using CP
-    │   ├── lp                              # Solutions for the given instances using LP
-    │   ├── lp-rotations                    # Solutions for the given instances accounting for rotations using LP
-    │   ├── sat                             # Solutions for the given instances using SAT
-    │   ├── sat-rotations                   # Solutions for the given instances accounting for rotations using SAT
-    │   ├── smt                             # Solutions for the given instances using SMT
-    │   └── smt-rotations                   # Solutions for the given instances accounting for rotations using SMT
+    ├── solutions                           # Solutions for the given instances using different approaches
+    │   ├── cp
+    │   ├── cp-rotation
+    │   ├── lp 
+    │   ├── lp-rotation
+    │   ├── sat
+    │   ├── sat-rotation
+    │   ├── smt
+    │   └── smt-rotation
     ├── src
     │   ├── cp                      
     │   │   ├── data                        # Directory containing data examples for the problem in CP

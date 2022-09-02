@@ -32,11 +32,8 @@ def main() -> None:
 
     for instance in INSTANCES:
         print(f'Solving instance {instance}...')
-        command = f'python "{execute_smt_script_path}" {ENCODING} {instance} {SOLVER} 300 {output_folder_path} ' +\
-                    '--no-visualize-output'
-        if arguments.rotation: 
-            command += ' --rotation'
-        #print(command)
+        command = f'python "{execute_smt_script_path}" {ENCODING} {instance} {SOLVER} --time-limit 300 ' +\
+            f'--output-folder-path {output_folder_path} --no-visualize-output'
         
         try:
             subprocess.run(command, capture_output=True)
