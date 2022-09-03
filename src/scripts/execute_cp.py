@@ -9,7 +9,7 @@ from utils import INSTANCES, MINIZINC_ERRORS, MINIZINC_MODELS, GECODE_MODELS, CH
 from utils import create_output_file, parse_instance_txt
 
 
-# python scripts\execute_cp.py model_1 ins-13
+# python src\scripts\execute_cp.py model_1 ins-13
 def main() -> None:
     parser = argparse.ArgumentParser(description='Script for executing a VLSI CP model.')
 

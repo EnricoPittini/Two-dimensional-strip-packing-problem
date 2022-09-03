@@ -14,7 +14,7 @@ encoding_module = importlib.import_module(module_name)
 apply_position_and_covering = encoding_module.apply_position_and_covering
 
 
-#python scripts\execute_lp.py model_1 ins-1 cplex
+#python src\scripts\execute_lp.py model_1 ins-1 cplex
 def main() -> None:
     parser = argparse.ArgumentParser(description='Script for executing a VLSI AMPL model.')
 

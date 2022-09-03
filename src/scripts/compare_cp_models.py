@@ -7,7 +7,7 @@ import subprocess
 from utils import MINIZINC_MODELS, MINIZINC_ERRORS
 
 
-# python scripts/compare_cp_models.py --models-list model_2 model_3A model_3B model_3C -lb 1 -ub 8
+# python src/scripts/compare_cp_models.py --models-list model_2 model_3A model_3B model_3C -lb 1 -ub 8
 def main() -> None:
     parser = argparse.ArgumentParser(description='Script comparing the execution time of MiniZinc models on a VLSI problem.')
 
