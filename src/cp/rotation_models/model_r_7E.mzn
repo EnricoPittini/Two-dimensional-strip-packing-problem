@@ -103,10 +103,10 @@ array[1..n] of var int: sorted_coordsX = reverse(sort_by(coordsX, maxDims));
 array[1..n] of var int: sorted_coordsY = reverse(sort_by(coordsY, maxDims));
 /** Variables of `rotations` sorted by the maximum dimension of the circuits in a decreasing order */
 array[1..n] of var bool: sorted_rotations = reverse(sort_by(rotations, maxDims));
-/** Array containing the coordinates of the circuits (`coordsX`, `coordsY`, `rotations`) sorted by their maximum 
-dimension in a decreasing order. Variables order: x coordinate of the circuit with max dimension; y coordinate of the 
-circuit with max dimension; rotation of the circuit with max dimension; x coordinate of the circuit with second max 
-dimension; y coordinate of the circuit with second max dimension; rotation of the circuit with second max dimension... . */
+/** Array containing the coordinates of the circuits (`rotations`, `coordsX`, `coordsY`) sorted by their maximum 
+dimension in a decreasing order. Variables order: rotation of the circuit with max dimension; x coordinate of the circuit  
+with max dimension; y coordinate of the circuit with max dimension; rotation of the circuit with second max dimension;
+x coordinate of the circuit with second max dimension; y coordinate of the circuit with second max dimension; ... . */
 array[1..3*n] of var int: variables = [if (i mod 3 = 0) then sorted_coordsY[i div 3] elseif (i mod 3 = 2) then 
   sorted_coordsX[(i + 1) div 3] else sorted_rotations[(i+2) div 3] endif | i in 1..3*n];
 /** Search annotation imposing to apply an ordered search through the variables expressed in `variables` selecting the 

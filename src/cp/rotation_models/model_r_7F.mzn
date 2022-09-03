@@ -1,7 +1,7 @@
 %---------------------------------------------------------------------------------------------------------------------------%
 %                                                         MODEL R 7F                                                        %
 % Model that extends `MODEL R 2B` and adds and the following search heuristic:                                              %
-% - Apply an ordered search on the interleaved `coordsX` and `coordsY` and `rotations` of the circuits sorted by decreasing %
+% - Apply an ordered search on the interleaved `rotations` and `coordsX` and `coordsY` of the circuits sorted by decreasing %
 %   order with respect to the value of their areas. Always choose the lowest value of the domains first.                    %
 %---------------------------------------------------------------------------------------------------------------------------%
 
@@ -103,10 +103,10 @@ array[1..n] of var int: sorted_coordsX = reverse(sort_by(coordsX, areas));
 array[1..n] of var int: sorted_coordsY = reverse(sort_by(coordsY, areas));
 /** Variables of `rotations` sorted by the area of the circuits in a decreasing order */
 array[1..n] of var bool: sorted_rotations = reverse(sort_by(rotations, areas));
-/** Array containing the coordinates of the circuits (`coordsX`, `coordsY`, `rotations`) sorted by their maximum 
-areas in a decreasing order. Variables order: x coordinate of the circuit with max area; y coordinate of the 
-circuit with max area; rotation of the circuit with max area; x coordinate of the circuit with second max 
-area; y coordinate of the circuit with second max area; rotation of the circuit with second max area... . */
+/** Array containing the coordinates of the circuits (`rotations`, `coordsX`, `coordsY`) sorted by their maximum 
+areas in a decreasing order. Variables order: rotation of the circuit with max area; x coordinate of the circuit  
+with max area; y coordinate of the circuit with max area;  rotation of the circuit with second max area
+x coordinate of the circuit with second max area; y coordinate of the circuit with second max area;... . */
 array[1..3*n] of var int: variables = [if (i mod 3 = 0) then sorted_coordsY[i div 3] elseif (i mod 3 = 2) then 
   sorted_coordsX[(i + 1) div 3] else sorted_rotations[(i+2) div 3] endif | i in 1..3*n];
 /** Search annotation imposing to apply an ordered search through the variables expressed in `variables` selecting the 
