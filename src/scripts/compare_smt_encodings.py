@@ -13,9 +13,9 @@ ENCODING_CHOICES = [f'encoding_{i}' for i in range(2)] + [f'encoding_{2}{i}' for
 def main() -> None:
     """Compare the specified SMT encodings in solving the specified VLSI problem instances.
 
-    Example of usage: python scripts/compare_smt_encodings.py --encodings-list encoding_1 encoding_2A encoding_2B encoding_2C encoding_2D --solvers-list z3 -lb 1 -ub 20
+    Example of usage: python src/scripts/compare_smt_encodings.py --encodings-list encoding_1 encoding_2A encoding_2B encoding_2C encoding_2D --solvers-list z3 -lb 1 -ub 20
 
-    Help: python scripts\compare_smt_encodings.py -h
+    Help: python src/scripts/compare_smt_encodings.py -h
 
     Full list of available SMT encodings: see `ENCODINGS RECAP.md` inside the `smt` folder.
     

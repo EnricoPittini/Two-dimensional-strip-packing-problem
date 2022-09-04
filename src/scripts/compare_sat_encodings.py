@@ -10,9 +10,9 @@ import utils
 def main() -> None:
     """Compare the specified SAT encodings in solving the specified VLSI problem instances.
 
-    Example of usage: python scripts/compare_sat_encodings.py --encodings-list encoding_3 encoding_4A encoding_4B encoding_4C encoding_4D -lb 1 -ub 15
+    Example of usage: python src/scripts/compare_sat_encodings.py --encodings-list encoding_3 encoding_4A encoding_4B encoding_4C encoding_4D -lb 1 -ub 15
 
-    Help: python scripts\compare_sat_encodings.py -h
+    Help: python src/scripts/compare_sat_encodings.py -h
 
     Full list of available SAT encodings: see `ENCODINGS RECAP.md` inside the `sat` folder.
     
