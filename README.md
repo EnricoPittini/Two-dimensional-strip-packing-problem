@@ -204,7 +204,6 @@ Finally, `compare_smt_encodings.py` presents the following parameter:
     ├── instances                           
     │   ⋮
     │   └── ins-*-.txt                      # Instances to solve in `.txt` format
-    ├── report
     ├── results                             # Json results of the performances of different models for the given approaches
     │   ├── cp
     │   ├── lp
@@ -261,9 +260,11 @@ Finally, `compare_smt_encodings.py` presents the following parameter:
     │       ├── encoding_*.py               # Encoding solving the problem in SMT
     │       ├── ENCODINGS RECAP.md          # Recap of the SMT encodings
     │       └── smt_utils.py                # Script containing useful functions for SMT
+    ├── assignment.pdf                      # Assignment of the project
     ├── .gitattributes
     ├── .gitignore
     ├── LICENSE
+    ├── report.pdf                          # Report of the project
     └── README.md
 
 ## Versioning
