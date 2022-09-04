@@ -56,8 +56,8 @@ def main() -> None:
         solver = 'solver_1'
     solver_file_path = os.path.join(os.path.dirname(os.path.dirname(__file__)), f'cp/solvers/{solver}.mpc')
     
-    command = f'minizinc {model_file_path} {parsed_cmdline_data} --time-limit {time_limit*1_000}' +\
-        f'--param-file {solver_file_path}'
+    command = f'minizinc "{model_file_path}" {parsed_cmdline_data} --time-limit {time_limit*1_000}' +\
+        f'--param-file "{solver_file_path}"'
     
     try:
         result = subprocess.run(command, capture_output=True)

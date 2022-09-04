@@ -100,7 +100,7 @@ def main() -> None:
                       f'{"with dual" if use_dual else ""} ' +
                       f'{"with no presolve" if use_no_presolve else ""}...')
                 
-                command = f'python "{execute_lp_script_path}" {model} ins-{instance} {solver} --no-create-output ' +\
+                command = f'python "{execute_lp_script_path}" {model} ins-{instance} "{solver}" --no-create-output ' +\
                     f'{"--use-symmetry" if use_symmetry else ""} {"--use-dual" if use_dual else ""} ' +\
                     f'{"--use-no-presolve" if use_no_presolve else ""}'
                 
@@ -145,7 +145,7 @@ def main() -> None:
 
     if not arguments.no_visualize:
         plot_comparisons_path = os.path.join(os.path.dirname(__file__), 'plot_comparisons.py')
-        command = f'python {plot_comparisons_path} "{output_file}"'
+        command = f'python "{plot_comparisons_path}" "{output_file}"'
         subprocess.run(command)
 
 if __name__ == '__main__':

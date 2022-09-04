@@ -168,12 +168,12 @@ def main() -> None:
         try:
             create_output_file(output_file, w, n, dims, l, coordsX, coordsY)
         except FileNotFoundError:
-            sys.exit(f'Output path {output_folder_path} does not exist.')
+            sys.exit(f'Output path "{output_folder_path}" does not exist.')
     
         if not arguments.no_visualize_output:
             scripts_folder = os.path.dirname(__file__)
             visualize_script_path = os.path.join(scripts_folder,'visualize.py')
-            os.system(f'python {visualize_script_path} "{output_file}"')
+            os.system(f'python "{visualize_script_path}" "{output_file}"')
 
 def _set_model_main_params(w, n, dims, ampl, model):
     """Set the main parameters of the `AMPL` model.

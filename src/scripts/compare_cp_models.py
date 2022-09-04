@@ -118,7 +118,7 @@ def main() -> None:
 
     if not arguments.no_visualize:
         plot_comparisons_path = os.path.join(os.path.dirname(__file__), 'plot_comparisons.py')
-        command = f'python {plot_comparisons_path} "{output_file}"'
+        command = f'python "{plot_comparisons_path}" "{output_file}"'
         subprocess.run(command)
 
 if __name__ == '__main__':
