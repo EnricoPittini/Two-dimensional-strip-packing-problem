@@ -52,7 +52,7 @@ with the following lines:
 describes an instance in which the silicon plate has the width $9$, and we need to place $5$ circuits, with the dimensions $3 \times 3$, $2 \times 4$, $2 \times 8$, $3 \times 9$, and $4 \times 12$.
 
 ### Solutions
-In the folder `solutions` the `.txt` representation of the solutions of the $40$ instances of the problem is present.
+In the folder `out` the `.txt` representation of the solutions of the $40$ instances of the problem is present.
 
 An solution of a VLSI instance is a text file consisting of lines of integer values. The first line gives $w$ and $l$, which are the width and the legth of the silicon plate respectively.
 The following line gives $n$, which is the number of necessary circuits to place inside the plate. Then $n$ lines follow, each with $w_i$, $h_i$, $x_i$, $y_i$, representing respectively the horizontal and vertical dimensions of the $i$-th circuit and its bottom-left coordinates. 
@@ -210,7 +210,7 @@ Finally, `compare_smt_encodings.py` presents the following parameter:
     │   ├── lp
     │   ├── sat
     │   └── smt
-    ├── solutions                           # Solutions for the given instances using different approaches
+    ├── out                                 # Solutions for the given instances using different approaches
     │   ├── cp
     │   ├── cp-rotation
     │   ├── lp 

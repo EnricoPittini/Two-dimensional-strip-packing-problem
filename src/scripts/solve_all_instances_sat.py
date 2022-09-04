@@ -15,10 +15,10 @@ def main() -> None:
     arguments = parser.parse_args()
     
     if not arguments.rotation:
-        output_folder_path = os.path.normpath('solutions/sat')
+        output_folder_path = os.path.normpath('out/sat')
         ENCODING = 'encoding_10B'
     else:
-        output_folder_path = os.path.normpath('solutions/sat-rotation')
+        output_folder_path = os.path.normpath('out/sat-rotation')
         ENCODING = 'encoding_11B'
         
     os.makedirs(output_folder_path, exist_ok=True)

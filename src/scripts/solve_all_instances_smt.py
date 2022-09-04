@@ -15,12 +15,12 @@ def main() -> None:
     arguments = parser.parse_args()
     
     if not arguments.rotation:
-        output_folder_path = os.path.normpath('solutions/smt')
+        output_folder_path = os.path.normpath('out/smt')
         os.makedirs(output_folder_path, exist_ok=True)
         ENCODING = 'encoding_2C'
         SOLVER = 'z3'
     else:
-        output_folder_path = os.path.normpath('solutions/smt-rotation')
+        output_folder_path = os.path.normpath('out/smt-rotation')
         ENCODING = 'encoding_5B'
         SOLVER = 'z3'
 

@@ -15,11 +15,11 @@ def main() -> None:
     arguments = parser.parse_args()
     
     if not arguments.rotation:
-        output_folder_path = os.path.normpath('solutions/lp')
+        output_folder_path = os.path.normpath('out/lp')
         MODEL = 'model_1'
         OPTIONS = ''
     else:
-        output_folder_path = os.path.normpath('solutions/lp-rotation')
+        output_folder_path = os.path.normpath('out/lp-rotation')
         MODEL = 'model_r_0'
         OPTIONS = '--use-symmetry'
 

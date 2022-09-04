@@ -15,10 +15,10 @@ def main() -> None:
     arguments = parser.parse_args()
 
     if not arguments.rotation:
-        output_folder_path = os.path.normpath('solutions/cp')
+        output_folder_path = os.path.normpath('out/cp')
         MODEL = 'model_6D1'
     else:
-        output_folder_path = os.path.normpath('solutions/cp-rotation')
+        output_folder_path = os.path.normpath('out/cp-rotation')
         MODEL = 'model_r_7B'
 
     os.makedirs(output_folder_path, exist_ok=True)

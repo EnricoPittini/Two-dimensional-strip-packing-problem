@@ -66,7 +66,6 @@ def main() -> None:
 
     result_dict = dict()
 
-    # TODO: handling of error solutions
     for instance in instances_range:
         instance_dict = dict()
         for model in models_list:
