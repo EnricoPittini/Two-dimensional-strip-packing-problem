@@ -73,8 +73,8 @@ By default, the `execute_*.py` scripts create a graphical representation of the 
 
 By default, the scripts of the *compare models* group create a comparison plot. of the solution. This is achieved thanks to the auxiliary `plot_comparisons.py` script.
 
-# Model list
-The names of the models and encodings presented inside the `src` subfolders are numerical and therefore not easy to understand. The files `MODELS RECAP.md` and `ENCODINGS RECAP.md` inside `src` subfolders provide a description of each model (or encoding) name.
+# Models list
+The names of the models and encodings presented inside the `src` subfolders are numerical and therefore not easy to understand. The files `MODELS RECAP.md` and `ENCODINGS RECAP.md` inside the `src` subfolders provide a description of each model (or encoding) name.
 
 The following is the list of the best models (or encodings) for each approach:
 * **CP**:
